@@ -144,7 +144,7 @@
             <p class="version">Version 1.0 Beta</p>
             <p class="edit-prompt">Let's Get Started by edit web/index.php!!!</p>
             <div class="cta-button">
-                <a href="https://github.com">Get Started</a>
+                <a href="https://github.com/AmmarBasha2011/INEX-SPA">Get Started</a>
             </div>
             </div>
             <div class="performance-info" id="performanceInfo">
