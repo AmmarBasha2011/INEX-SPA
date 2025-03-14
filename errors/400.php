@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found</title>
+    <title>400 Bad Request</title>
     <link rel="stylesheet" href="<?php echo getEnvValue('WEBSITE_URL'); ?>errors/style.css">
 </head>
 <body>
-    <h1>404</h1>
-    <p>Oops! The page you're looking for could not be found.</p>
+    <h1>400</h1>
+    <p>Oops! The server could not understand your request due to malformed syntax.</p>
     <button onclick="redirect('')">Go to Home</button>
 </body>
 </html>

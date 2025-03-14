@@ -1,6 +1,27 @@
 RewriteEngine On
+
+# Error Documents
+ErrorDocument 400 /errors/400.php
+# ErrorDocument 401 /errors/401.php
+# ErrorDocument 403 /errors/403.php
+ErrorDocument 404 /errors/404.php
+ErrorDocument 405 /errors/405.php
+# ErrorDocument 500 /errors/500.php
+
+# Your existing rules
+RewriteRule ^functions/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^custom/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^public/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^errors/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^.env index.php?page=.env [L,QSA]
+RewriteRule ^.htaccess$ index.php?page=.htaccess [L,QSA]
+RewriteRule ^LICENSE.md$ index.php?page=LICENSE.md [L,QSA]
+RewriteRule ^README.md$ index.php?page=README.md [L,QSA]
+RewriteRule ^SECURITY.md$ index.php?page=SECURITY.md [L,QSA]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+
 RewriteCond %{REQUEST_URI} ^/.*/$
 RewriteRule ^/(.*)$ index.php?page=/$1 [L,QSA]

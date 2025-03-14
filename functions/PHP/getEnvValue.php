@@ -1,22 +1,40 @@
 <?php
 function getEnvValue($key) {
-    $envPath = __DIR__ . '/../../.env';
-    if (!file_exists($envPath)) {
+    // Use realpath to ensure correct path resolution
+    $envPath = realpath(__DIR__ . '/../../.env');
+    
+    // Early return if file doesn't exist
+    if (!$envPath || !file_exists($envPath)) {
         return null;
     }
-    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        $line = trim($line);
-        // Skip comments
-        if (strpos($line, '#') === 0) {
-            continue;
+
+    try {
+        // Read file content
+        $content = file_get_contents($envPath);
+        if ($content === false) {
+            return null;
         }
-        // Split the line into key and value
-        $parts = explode('=', $line, 2);
-        if (count($parts) == 2 && trim($parts[0]) === $key) {
-            return trim($parts[1]);
+
+        // Parse file content
+        $lines = preg_split('/\r\n|\r|\n/', $content);
+        
+        // Process each line
+        foreach ($lines as $line) {
+            $line = trim($line);
+            
+            // Skip empty lines and comments
+            if (empty($line) || strpos($line, '#') === 0) {
+                continue;
+            }
+            
+            // Match key-value pair
+            if (preg_match('/^' . preg_quote($key) . '=(.*)$/i', $line, $matches)) {
+                return trim($matches[1]);
+            }
         }
+    } catch (Exception $e) {
+        return null;
     }
+    
     return null;
 }
-?>

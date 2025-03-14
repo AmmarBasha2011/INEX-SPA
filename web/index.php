@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to INEX SPA</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="<?php echo getEnvValue('WEBSITE_URL'); ?>style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     </head>
     <body>
-        <div class="container">
+        <div id="contentBox" class="container">
         <div class="glowing-text">
             <h1>INEX SPA</h1>
         </div>
@@ -21,9 +22,60 @@
             <a href="https://github.com/AmmarBasha2011/INEX-SPA">Get Started</a>
         </div>
         </div>
+        
+        <div id="toggleIcon">
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+        
+        <div id="appDetailsTable" style="display: none;">
+            <table border="1" style="margin: 0 auto; color: #fff; background-color: rgba(0,0,0,0.5);">
+                <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Application Name</td>
+                    <td><?php echo getEnvValue('APP_NAME'); ?></td>
+                </tr>
+                <tr>
+                    <td>Website URL</td>
+                    <td><?php echo getEnvValue('WEBSITE_URL'); ?></td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td><?php echo getEnvValue('VERSION'); ?></td>
+                </tr>
+                <tr>
+                    <td>Development Mode</td>
+                    <td><?php echo getEnvValue('DEV_MODE'); ?></td>
+                </tr>
+                <!-- New rows for MySQL information -->
+                <tr>
+                    <td>DB Host</td>
+                    <td><?php echo getEnvValue('DB_HOST'); ?></td>
+                </tr>
+                <tr>
+                    <td>DB User</td>
+                    <td><?php echo getEnvValue('DB_USER'); ?></td>
+                </tr>
+                <tr>
+                    <td>DB Password</td>
+                    <td><?php echo getEnvValue('DB_PASS'); ?></td>
+                </tr>
+                <tr>
+                    <td>DB Name</td>
+                    <td><?php echo getEnvValue('DB_NAME'); ?></td>
+                </tr>
+                <tr>
+                    <td>DB Use</td>
+                    <td><?php echo getEnvValue('DB_USE'); ?></td>
+                </tr>
+            </table>
+        </div>
+        
         <div class="performance-info" id="performanceInfo">
         Loading...
         </div>
-        <script src="script.js"></script>
+        <script src="<?php echo getEnvValue('WEBSITE_URL'); ?>script.js"></script>
     </body>
 </html>

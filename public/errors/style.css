@@ -1,0 +1,91 @@
+/* Enhanced CSS for a fresh look */
+
+/* Base reset and body styling with animated background hue */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #2c2c3c);
+    color: #ECECEC;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    animation: backgroundShift 15s ease infinite alternate;
+}
+
+@keyframes backgroundShift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(15deg); }
+}
+
+/* Headline with floating and pulsing glow effects */
+h1 {
+    font-size: 8em;
+    margin-bottom: 0.2em;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 4px 4px 8px rgba(0, 0, 0, 0.8);
+    animation: float 6s ease-in-out infinite, pulse 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        text-shadow: 0 0 15px rgba(255,255,255,0.5), 4px 4px 8px rgba(0, 0, 0, 0.8);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(255,255,255,0.8), 4px 4px 8px rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Paragraph with a subtle fade-in effect */
+p {
+    font-size: 1.4em;
+    margin-bottom: 2em;
+    max-width: 600px;
+    line-height: 1.6;
+    color: #B8B8D1;
+    opacity: 0;
+    animation: fadeIn 2s ease 1s forwards;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Button with updated gradient and smooth transitions */
+button {
+    background: linear-gradient(45deg, #FF9800, #FFA726);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    padding: 1.2em 2.4em;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(45deg, #FFA726, #FF9800);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

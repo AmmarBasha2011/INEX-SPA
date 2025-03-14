@@ -1,125 +1,211 @@
+/* Enhanced style for INEX SPA new version */
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(-45deg, #4a00e0, #8e2de2, #2b4bb3, #4834d4);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background-size: 200% 200%;
+    animation: bgAnimation 10s ease infinite;
+    color: #f0f0f0;
 }
 
-@keyframes gradientBG {
-0% { background-position: 0% 50%; }
-50% { background-position: 100% 50%; }
-100% { background-position: 0% 50%; }
+@keyframes bgAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .container {
-text-align: center;
-padding: 20px;
-transition: all 0.5s ease;
+    text-align: center;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    max-width: 800px;
+    margin: auto;
+    transition: transform 0.4s ease;
 }
 
 .container:hover {
-transform: scale(1.02);
+    transform: scale(1.03);
 }
 
 .glowing-text h1 {
-font-size: 4em;
-margin: 0;
-color: #fff;
-text-shadow: 0 0 10px #8e2de2,
-        0 0 20px #8e2de2,
-        0 0 30px #8e2de2;
-animation: glow 2s ease-in-out infinite alternate;
-transition: all 0.3s ease;
+    font-size: 3.5em;
+    margin-bottom: 20px;
+    color: #fff;
+    position: relative;
 }
 
-.glowing-text h1:hover {
-transform: scale(1.1);
-}
-
-@keyframes glow {
-from {
-    text-shadow: 0 0 10px #8e2de2,
-        0 0 20px #8e2de2,
-        0 0 30px #8e2de2;
-}
-to {
-    text-shadow: 0 0 20px #8e2de2,
-        0 0 30px #8e2de2,
-        0 0 40px #8e2de2;
-}
+.glowing-text h1::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -10px;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(to right, #ff00cc, #333399);
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(255,0,204,0.7);
 }
 
 .subtitle {
-color: #e0e0e0;
-font-size: 1.2em;
-margin: 20px 0;
-max-width: 600px;
-text-align: center;
-line-height: 1.5;
-transition: all 0.3s ease;
+    color: #dcdcdc;
+    font-size: 1.2em;
+    margin: 20px auto;
+    max-width: 650px;
+    line-height: 1.6;
+    transition: color 0.3s ease;
 }
 
 .subtitle:hover {
-color: #fff;
+    color: #fff;
 }
 
 .version {
-color: #ccc;
-font-size: 0.9em;
-margin-top: 10px;
-transition: color 0.3s ease;
-}
-
-.edit-prompt {
-color: #ffd700;
-font-size: 1.1em;
-margin-top: 15px;
-font-weight: bold;
-text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    color: #bbb;
+    font-size: 0.9em;
+    margin-top: 15px;
+    transition: color 0.3s ease;
 }
 
 .version:hover {
-color: #fff;
+    color: #fff;
+}
+
+.edit-prompt {
+    color: #ffcc00;
+    font-size: 1.1em;
+    margin: 20px 0;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(255, 204, 0, 0.8);
 }
 
 .cta-button {
-margin-top: 30px;
+    margin-top: 30px;
 }
 
 .cta-button a {
-background-color: #8e2de2;
-color: #fff;
-padding: 15px 30px;
-text-decoration: none;
-border-radius: 5px;
-font-weight: bold;
-transition: all 0.3s ease;
+    background-color: #333399;
+    color: #fff;
+    padding: 15px 35px;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .cta-button a:hover {
-background-color: #4a00e0;
-box-shadow: 0 0 20px #8e2de2;
-transform: translateY(-3px);
+    background-color: #ff00cc;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(255,0,204,0.5);
 }
 
 .performance-info {
-position: fixed;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%);
-color: #e0e0e0;
-font-size: 0.8em;
-transition: all 0.3s ease;
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ccc;
+    font-size: 0.9em;
+    padding: 5px 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 20px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    z-index: 100;
 }
 
 .performance-info:hover {
-color: #fff;
-transform: translateX(-50%) scale(1.1);
+    transform: translateX(-50%) scale(1.1);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* New styles for scroll icon and application details table */
+#scrollIcon {
+    transition: transform 0.3s ease;
+}
+#scrollIcon:hover {
+    transform: scale(1.2);
+}
+
+#appDetailsTable {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Optional: style enhancements for the table */
+#appDetailsTable table {
+    border-collapse: collapse;
+    width: 100%;
+}
+#appDetailsTable th,
+#appDetailsTable td {
+    padding: 8px 12px;
+}
+
+/* Updated toggle icon styles to position it above performance info */
+#toggleIcon {
+    position: fixed;
+    bottom: 80px;  /* Position above performance info */
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 100;
+}
+
+#toggleIcon i {
+    font-size: 2em;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 10px rgba(51, 51, 153, 0.5);
+    transition: all 0.3s ease;
+}
+
+#toggleIcon:hover i {
+    color: rgba(255, 0, 204, 0.8);
+    transform: translateY(-3px);
+    text-shadow: 0 0 15px rgba(255, 0, 204, 0.6);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .glowing-text h1 {
+        font-size: 2.8em;
+    }
+    .subtitle {
+        font-size: 1em;
+    }
+    .cta-button a {
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 20px;
+    }
+    .glowing-text h1 {
+        font-size: 2.4em;
+    }
+    .subtitle {
+        font-size: 0.9em;
+    }
 }
