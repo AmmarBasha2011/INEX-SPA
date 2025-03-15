@@ -19,19 +19,30 @@ jobs:
           sudo apt install -y apache2 php libapache2-mod-php php-mysql
           sudo systemctl start apache2
           sudo systemctl enable apache2
-
+      
       - name: Install MySQL
         run: |
+          sudo apt update
           sudo apt install -y mysql-server
           sudo systemctl start mysql
           sudo systemctl enable mysql
       
-          # Use sudo to log in as root and modify authentication
+          # Temporarily stop MySQL authentication enforcement
+          sudo systemctl stop mysql
+          sudo mysqld_safe --skip-grant-tables --skip-networking & sleep 5
+      
+          # Manually reset MySQL root user to allow password authentication
           sudo mysql -e "
+            FLUSH PRIVILEGES;
             ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
             FLUSH PRIVILEGES;
-            CREATE DATABASE inex-spa;
           "
+      
+          # Restart MySQL normally
+          sudo systemctl restart mysql
+      
+          # Create the inex-spa database
+          sudo mysql -uroot -e "CREATE DATABASE inex-spa;"
 
       - name: Deploy Application
         run: |
