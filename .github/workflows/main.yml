@@ -25,8 +25,11 @@ jobs:
           sudo apt install -y mysql-server
           sudo systemctl start mysql
           sudo systemctl enable mysql
-          sudo mysqladmin -u root password ""
-          sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY ''; FLUSH PRIVILEGES;"
+      
+          # Set MySQL root user authentication to password-based
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY ''; FLUSH PRIVILEGES;"
+      
+          # Create inex-spa database
           sudo mysql -uroot -e "CREATE DATABASE inex-spa;"
 
       - name: Deploy Application
