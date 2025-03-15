@@ -1,0 +1,36 @@
+name: Deploy to Apache Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Apache and PHP
+        run: |
+          sudo apt update
+          sudo apt install -y apache2 php libapache2-mod-php php-mysql
+
+      - name: Install MySQL
+        run: |
+          sudo apt install -y mysql-server
+          sudo systemctl start mysql
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '';"
+          sudo mysql -e "CREATE DATABASE inex-spa;"
+
+      - name: Deploy Application
+        run: |
+          sudo rm -rf /var/www/html/*
+          sudo cp -r . /var/www/html
+          sudo chown -R www-data:www-data /var/www/html
+          sudo systemctl restart apache2
+
+      - name: Get Public URL
+        run: echo "Website deployed at http://$(curl -s ifconfig.me)"
