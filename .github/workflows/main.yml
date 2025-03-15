@@ -17,13 +17,17 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y apache2 php libapache2-mod-php php-mysql
+          sudo systemctl start apache2
+          sudo systemctl enable apache2
 
       - name: Install MySQL
         run: |
           sudo apt install -y mysql-server
           sudo systemctl start mysql
-          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '';"
-          sudo mysql -e "CREATE DATABASE inex-spa;"
+          sudo systemctl enable mysql
+          sudo mysqladmin -u root password ""
+          sudo mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY ''; FLUSH PRIVILEGES;"
+          sudo mysql -uroot -e "CREATE DATABASE inex-spa;"
 
       - name: Deploy Application
         run: |
@@ -32,5 +36,5 @@ jobs:
           sudo chown -R www-data:www-data /var/www/html
           sudo systemctl restart apache2
 
-      - name: Get Public URL
+      - name: Display Public IP
         run: echo "Website deployed at http://$(curl -s ifconfig.me)"
