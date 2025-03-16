@@ -11,9 +11,9 @@ Built with PHP, under 1M in size, and optimized for standard Apache servers.
 - Quick load time benchmark
 
 ### Automaticly CSRF Security
-Now, when you add form to page, add csrf_token input automaticly:
+Now, when you add form to page, add `csrf_token` input automaticly:
 - First, create a basic form
-- Second, when send to file.php, add this line for check
+- Second, when send to `file.php`, add this line for check
 ```php
 <?php
 validateCsrfToken();
@@ -21,8 +21,8 @@ validateCsrfToken();
 ```
 If there any error in token, request will be stop.
 
-### Get Website URL Without getEnvValue function
-Now, you can get your website url without getEnvValue function:
+### Get Website URL Without `getEnvValue` function
+Now, you can get your website url without `getEnvValue` function:
 - In PHP
 ```php
 <?php
@@ -42,10 +42,10 @@ REQUIRED_HTTPS=true
 ```
 
 ### Use Bootstrap
-Now, you can use bootstrap:
+Now, you can use `bootstrap`:
 - Update .env
 ```ini
-USE_BOOTSTRAP=false
+USE_BOOTSTRAP=true
 ```
 
 ### Database Connection
