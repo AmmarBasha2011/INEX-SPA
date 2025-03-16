@@ -4,14 +4,15 @@ A high-performance PHP framework similar to NextJS/React, but lighter and faster
 
 Built with PHP, under 1M in size, and optimized for standard Apache servers.
 
-## Ammar Helper
-Now, our Framework have a CLI called `Ammar`, likely to `artisan` in `laravel`:
-
 ## Our AI Assistant
 Now, our Framework have an AI Assistant called "INEX SPA Helper". but this is Beta Version. and may cause a ton of errors.
 
 For try:
 [https://udify.app/chat/yPoqBBkpHgJbEfg0](https://udify.app/chat/yPoqBBkpHgJbEfg0)
+
+
+## Ammar Helper
+Now, our Framework have a CLI called `Ammar`, likely to `artisan` in `laravel`:
 
 ### make:route
 You can create a route by `php ammar make:route` and will ask you:
