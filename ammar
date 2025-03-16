@@ -1,0 +1,130 @@
+#!/usr/bin/env php
+<?php
+
+define('DB_FOLDER', __DIR__ . '/db');
+define('WEB_FOLDER', __DIR__ . '/web');
+
+// تأكد من وجود المجلدات المطلوبة
+if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
+if (!is_dir(WEB_FOLDER)) mkdir(WEB_FOLDER);
+
+// أوامر Ammar CLI
+$commands = [
+    'make:db' => 'Create a new DB File',
+    'make:route' => 'Create a new Route File',
+    'delete:route' => 'Delete an existing Route File',
+    'delete:db' => 'Delete an existing DB File',
+    'list' => 'List all commands'
+];
+
+$command = $argv[1] ?? null;
+$args = [];
+for ($i = 2; $i < count($argv); $i += 2) {
+    if (isset($argv[$i + 1]) && str_starts_with($argv[$i], '-')) {
+        $args[str_replace('-', '', $argv[$i])] = $argv[$i + 1];
+    }
+}
+
+if (!$command || $command === 'list') {
+    echo "Available commands:\n";
+    foreach ($commands as $cmd => $desc) {
+        echo "  php ammar $cmd - $desc\n";
+    }
+    exit(0);
+}
+
+if ($command === 'make:db') {
+    $action = $args['1'] ?? readline("1- What's the DB file for (create, delete, addFieldTo): ");
+    if (!in_array($action, ['create', 'delete', 'addFieldTo'])) {
+        exit("Invalid action!\n");
+    }
+
+    $table = $args['2'] ?? readline("2- What's table name? ");
+    if (!$table) exit("Table name is required!\n");
+
+    $timestamp = date('Y_m_d_H_i_s');
+    $filename = "{$action}{$table}Table_{$timestamp}.sql";
+    $filePath = DB_FOLDER . '/' . $filename;
+    
+    $sqlTemplate = match ($action) {
+        'create' => "CREATE TABLE $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'delete' => "DROP TABLE IF EXISTS $table;\n",
+        'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
+        default => ''
+    };
+    
+    file_put_contents($filePath, $sqlTemplate);
+    echo "DB file created: $filename\n";
+    exit(0);
+}
+
+if ($command === 'make:route') {
+    $route = $args['1'] ?? readline("1- What's route name? ");
+    if (!$route) exit("Route name is required!\n");
+    
+    $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic? (yes/no): ")) === 'yes';
+    
+    if ($isDynamic) {
+        $filename = "{$route}_dynamic.php";
+    } else {
+        $method = strtoupper($args['3'] ?? readline("3- What's available Type of request (GET, POST, PUT, PATCH, DELETE): "));
+        if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
+            exit("Invalid request type!\n");
+        }
+        $filename = "{$route}_request_{$method}.php";
+    }
+    
+    $filePath = WEB_FOLDER . '/' . $filename;
+    file_put_contents($filePath, "<?php\n// Route handler for $route\n");
+    echo "Route file created: $filename\n";
+    exit(0);
+}
+
+if ($command === 'delete:route') {
+    $route = $args['1'] ?? readline("1- What's route name? ");
+    if (!$route) exit("Route name is required!\n");
+    
+    $patterns = [
+        "$route.php",
+        "{$route}_dynamic.php",
+        "{$route}_request_GET.php",
+        "{$route}_request_POST.php",
+        "{$route}_request_PUT.php",
+        "{$route}_request_PATCH.php",
+        "{$route}_request_DELETE.php"
+    ];
+    
+    $deleted = false;
+    foreach ($patterns as $pattern) {
+        $filePath = WEB_FOLDER . '/' . $pattern;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            echo "Deleted: $pattern\n";
+            $deleted = true;
+        }
+    }
+    
+    if (!$deleted) {
+        echo "No matching route files found!\n";
+    }
+    exit(0);
+}
+
+if ($command === 'delete:db') {
+    $action = $args['1'] ?? readline("1- What's the DB file for (create, delete, addFieldTo): ");
+    $table = $args['2'] ?? readline("2- What's table name? ");
+    if (!$action || !$table) exit("Action and table name are required!\n");
+    
+    $files = glob(DB_FOLDER . "/{$action}{$table}Table_*.sql");
+    if (empty($files)) {
+        echo "No matching DB files found!\n";
+    } else {
+        foreach ($files as $file) {
+            unlink($file);
+            echo "Deleted: " . basename($file) . "\n";
+        }
+    }
+    exit(0);
+}
+
+exit("Unknown command: $command\n");

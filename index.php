@@ -21,6 +21,19 @@ if (getEnvValue('REQUIRED_HTTPS') == 'true' && $_SERVER['HTTPS'] != 'on') {
 require_once 'functions/PHP/generateCsrfToken.php';
 require_once 'functions/PHP/validateCsrfToken.php';
 require_once 'functions/PHP/getWebsiteUrl.php';
+require_once 'functions/PHP/executeSQLFilePDO.php';
+if (getEnvValue('DB_CHECK') == 'true' && getEnvValue('DB_USE') == 'true') {
+    $sqlFiles = glob("db/*.sql");
+    foreach ($sqlFiles as $sqlFile) {
+        executeSQLFilePDO(
+            getEnvValue('DB_HOST'), 
+            getEnvValue('DB_USER'), 
+            getEnvValue("DB_PASS"), 
+            getEnvValue('DB_NAME'), 
+            $sqlFile
+        );
+    }
+}
 require_once 'functions/PHP/getPage.php';
 getPage(isset($_GET['page']) ? $_GET['page'] : '');
 ?>

@@ -31,6 +31,7 @@ RewriteRule ^.htaccess$ index.php?page=.htaccess [L,QSA]
 RewriteRule ^LICENSE.md$ index.php?page=LICENSE.md [L,QSA]
 RewriteRule ^README.md$ index.php?page=README.md [L,QSA]
 RewriteRule ^SECURITY.md$ index.php?page=SECURITY.md [L,QSA]
+RewriteRule ^db/.*$ index.php?page=$0 [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
