@@ -10,6 +10,12 @@ Now, our Framework have an AI Assistant called "INEX SPA Helper". but this is Be
 For try:
 [https://udify.app/chat/yPoqBBkpHgJbEfg0](https://udify.app/chat/yPoqBBkpHgJbEfg0)
 
+## Our Blog
+Now, our Team have a Blog for all new news called "INEX Blog".
+
+For try:
+[https://inexteamblog.blogspot.com/](https://inexteamblog.blogspot.com/)
+
 
 ## Ammar Helper
 Now, our Framework have a CLI called `Ammar`, likely to `artisan` in `laravel`:
@@ -39,12 +45,44 @@ You can delete a db file by `php ammar delete:db` and will ask you:
 ### list
 You can list all commands by `php ammar list`.
 
+### list:routes
+You can list all routes by `php ammar list:routes`.
+
+### list:db
+You can list all `db` folder files by `php ammar list:db`.
+
+### run:db
+You can run the `db` folder `.sql` files by `php ammar run:db`.
+
+### make:cache
+You can create a new cache by `php ammar make:cache` and will ask you:
+- 1- Enter cache key:
+- 2- Enter cache value:
+- 3- Enter expiration time (in seconds):
+
+### get:cache
+You can get a cache value by `php ammar get:cache` and will ask you:
+- 1- Enter cache key:
+
+### update:cache
+You can update a cache value by `php ammar update:cache` and will ask you:
+- 1- Enter cache key:
+- 2- Enter new cache value:
+
+### delete:cache
+You can delete a cache by `php ammar delete:cache` and will ask you:
+- 1- Enter cache key:
+
 ### Inline Command
 You can create or delete a file by one command like
 - php ammar make:route -1 `routeName` -2 `yes/no` -3 `RequestType`
 - php ammar make:db -1 `dbFileFor` -2 `tableName`
 - php ammar delete:route -1 `routeName`
 - php ammar delete:db -1 `dbFileFor` -2 `tableName`
+- php ammar make:cache -1 `cacheKey` -2 `cacheValue` -3 `expirationTime`
+- php ammar get:cache -1 `cacheKey`
+- php ammar update:cache -1 `cacheKey` -2 `cacheValue`
+- php ammar delete:cache -1 `cacheKey`
 
 ## FrameWork Structure
 
@@ -89,6 +127,8 @@ my-project/
 │   │   ├── getWEBSITEURLValue.php
 │   │   ├── redirect.php
 │   │   └── validateCsrfToken.php
+├── cache/
+├── db/
 ├── public/
 ├── web/
 ├── .env
@@ -102,10 +142,11 @@ my-project/
 ### FrameWork Folders
 ```
 my-project/
+├── cache/
 ├── errors/
 ├── functions/
 ├── index.php
-├── .htaccess
+└── .htaccess
 ```
 Don't touch them, if you don't know what are you doing
 
@@ -114,7 +155,7 @@ Don't touch them, if you don't know what are you doing
 my-project/
 ├── public/
 ├── web/
-├── db/
+└── db/
 ```
 
 #### Public Folder
@@ -141,6 +182,7 @@ and this is Names of these .sql files you can use as an example:
 - createPostTable_2025_9_1_3_6_15.sql
 - deletePostTable_2025_10_2_4_6_20.sql
 - addUserToPostTable_2025_9_5_22_52_23.sql
+
 You can name like this [create/delete/addFieldTo][table_name]Table_[Year]_[Month]_[Day]_[Hour]_[Minute]_[Second].sql.
 
 ## Features
@@ -148,6 +190,65 @@ You can name like this [create/delete/addFieldTo][table_name]Table_[Year]_[Month
 - Minimal footprint and high performance
 - Responsive design with animated gradient background
 - Quick load time benchmark
+
+### Cache System
+Now, you have a cache system:
+- First update `.env`:
+```ini
+USE_CACHE=true
+```
+
+#### Create a new Cache
+You can create a new Cache by:
+```php
+<?php
+setCache(`key`, `value`, `expiration`[In Seconds]=3600);
+?>
+```
+like:
+```php
+<?php
+setCache('username', 'INEX SPA', 3600);
+?>
+```
+
+#### Get a Cache Value
+You can get a value of cache key (if still found):
+```php
+<?php
+getCache(`key`);
+?>
+```
+like:
+```php
+<?php
+getCache('username'); // INEX SPA
+?>
+```
+
+#### Update Cache Value
+You can update a cache value of cache key (if still found):
+```php
+<?php
+updateCache(`key`, `newValue`);
+?>
+```
+like:
+```php
+<?php
+updateCache('username', 'INEX SPA Framework'); // INEX SPA Framework
+?>
+```
+
+#### Delete Cache
+You can delete a cache (if still found):
+```php
+deleteCache(`key`);
+```
+like:
+```php
+deleteCache('username');
+```
 
 ### Run MySQL Commands
 Now, you can check Database by files:
@@ -331,51 +432,17 @@ Don't use these names (Not Recommend):
 - submitData.js
 - db.php
 - executeSQLFilePDO.php
-
-### Use 1 form in 1 Page
-Don't add more than 1 form in page (Not Recommend) like:
-- web/index.php
-```html
-<form>
-    <label> Name: </label>
-    <input type="text" id="name" />
-</form>
-<form>
-    <label> Email: </label>
-    <input type="text" id="email" />
-</form>
-```
-You have two solutions to solve this
-- First, put all forms in own form:
-```html
-<form>
-    <label> Name: </label>
-    <input type="text" id="name" />
-    <br>
-    <label> Email: </label>
-    <input type="text" id="email" />
-</form>
-```
-- Second, put two forms in two pages:
-- - Create web/index.php:
-```html
-<button type="button" onclick="redirect('email')" >Enter Email </button>
-<form>
-    <label> Name: </label>
-    <input type="text" id="name" />
-</form>
-```
-- - Create web/email.php
-```html
-<button type="button" onclick="redirect('')" >Enter Name </button>
-<form>
-    <label> Email: </label>
-    <input type="text" id="email" />
-</form>
-```
+- Cache.php
+- setCache.php
+- updateCache.php
+- getCache.php
+- deleteCache.php
 
 ### Don't delete public/errors
 Don't delete public/errors folder or [public/errors/style.css](public/errors/style.css)
+
+### Don't delete cache
+Don't delete [cache](cache) folder
 
 ### Don't use 2 scripts in next 2 pages
 Don't use 2 javascripts in next 2 pages (Not Recommend) like:
@@ -399,6 +466,66 @@ Not found a route will be dynamic and check request type at own file. this is un
 ### You can use any class or function without require_once
 Don't use require_once to load any framework code (Not Recommended) beacuse our framework load this automaticly. You only use a function and we will do everything for it.
 
+### Naming of routes
+This is Naming of routes:
+
+#### Create form Route
+if you build a create form route, name like this `create[Name].php`
+then in second file, name like this `[Name]/create_request_POST.php`
+like:
+- web/createBlog.php
+- web/Blog/create_request_POST.php
+
+#### Edit Form Route
+if you build a edit form route, name like this `edit[Name]_dynamic.php`
+then in second file, name like this `[Name]/edit_request_POST.php`
+like:
+- web/editBlog_dynamic.php
+- web/Blog/edit_request_POST.php
+
+#### Delete Form Route
+if you build a delete form route, name like this `delete[Name]_dynamic.php`
+then in second file, name like this `[Name]/delete_request_POST.php`
+like:
+- web/deleteBlog_dynamic.php
+- web/Blog/delete_request_POST.php
+
+#### Show Forms Route
+if you build a show forms route, name like this `[Name].php` or `index.php`
+like:
+- web/index.php
+- web/Blog
+
+## Best Practices
+
+### Code Organization
+- Keep route files in dedicated folders within `web/` directory
+- Follow consistent naming conventions for routes and files
+- Group related functionality in subdirectories
+
+### Security
+- Always validate CSRF tokens on forms
+- Enable HTTPS in production environments
+- Sanitize user input before database operations
+- Never expose sensitive data in public folders
+
+### Performance
+- Set `DB_CHECK=false` in production
+- Minimize JavaScript usage between page transitions 
+- Use the public folder for static assets only
+- Keep dynamic route handlers lightweight
+
+### Development
+- Test thoroughly before deploying changes
+- Document any custom route patterns
+- Follow the naming conventions for routes and files
+- Back up database before running migrations
+
+### Database
+- Use prepared statements for queries
+- Keep SQL files organized by date
+- Test migrations in development first
+- Follow table naming conventions
 
 ## Repository
 

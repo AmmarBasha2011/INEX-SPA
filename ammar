@@ -1,12 +1,17 @@
 #!/usr/bin/env php
 <?php
+require_once 'functions/PHP/executeSQLFilePDO.php';
+require_once 'functions/PHP/getEnvValue.php';
+require_once 'functions/PHP/classes/Cache.php';
 
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
+define('CACHE_FOLDER', __DIR__ . '/cache');
 
 // تأكد من وجود المجلدات المطلوبة
 if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
 if (!is_dir(WEB_FOLDER)) mkdir(WEB_FOLDER);
+if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
 
 // أوامر Ammar CLI
 $commands = [
@@ -14,6 +19,13 @@ $commands = [
     'make:route' => 'Create a new Route File',
     'delete:route' => 'Delete an existing Route File',
     'delete:db' => 'Delete an existing DB File',
+    'list:routes' => 'List all route files',
+    'list:db' => 'List all database files',
+    'run:db' => 'Run all .sql files in db folder',
+    'make:cache' => 'Create a new cache entry',
+    'get:cache' => 'Retrieve a cache entry',
+    'update:cache' => 'Update an existing cache entry',
+    'delete:cache' => 'Delete a cache entry',
     'list' => 'List all commands'
 ];
 
@@ -47,7 +59,7 @@ if ($command === 'make:db') {
     $filePath = DB_FOLDER . '/' . $filename;
     
     $sqlTemplate = match ($action) {
-        'create' => "CREATE TABLE $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
         'delete' => "DROP TABLE IF EXISTS $table;\n",
         'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
         default => ''
@@ -124,6 +136,77 @@ if ($command === 'delete:db') {
             echo "Deleted: " . basename($file) . "\n";
         }
     }
+    exit(0);
+}
+
+if ($command === 'list:routes') {
+    $files = glob(WEB_FOLDER . '/*.php');
+    echo "Available routes:\n";
+    foreach ($files as $file) {
+        echo "  " . basename($file) . "\n";
+    }
+    exit(0);
+}
+
+if ($command === 'list:db') {
+    $files = glob(DB_FOLDER . '/*.sql');
+    echo "Available DB files:\n";
+    foreach ($files as $file) {
+        echo "  " . basename($file) . "\n";
+    }
+    exit(0);
+}
+
+if ($command === 'run:db') {
+    $files = glob(DB_FOLDER . '/*.sql');
+    foreach ($files as $file) {
+        echo "Running: " . basename($file) . "\n";
+        executeSQLFilePDO(
+            getEnvValue('DB_HOST'), 
+            getEnvValue('DB_USER'), 
+            getEnvValue("DB_PASS"), 
+            getEnvValue('DB_NAME'), 
+            $file
+        );
+    }
+    exit(0);
+}
+
+if ($command === 'make:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    $value = $args['2'] ?? readline("2- Enter cache value: ");
+    $expiration = $args['3'] ?? readline("3- Enter expiration time (in seconds): ");
+    Cache::set($key, $value, $expiration);
+    echo "Cache entry created for key: $key\n";
+    exit(0);
+}
+
+if ($command === 'get:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    $value = Cache::get($key);
+    if ($value === false) {
+        echo "Cache entry not found for key: $key\n";
+    } else {
+        echo "Cache value: $value\n";
+    }
+    exit(0);
+}
+
+if ($command === 'update:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    $newValue = $args['2'] ?? readline("2- Enter new cache value: ");
+    if (Cache::update($key, $newValue)) {
+        echo "Cache updated for key: $key\n";
+    } else {
+        echo "Cache key not found: $key\n";
+    }
+    exit(0);
+}
+
+if ($command === 'delete:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    Cache::delete($key);
+    echo "Cache deleted for key: $key\n";
     exit(0);
 }
 

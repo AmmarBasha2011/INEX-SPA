@@ -21,8 +21,8 @@ if (getEnvValue('REQUIRED_HTTPS') == 'true' && $_SERVER['HTTPS'] != 'on') {
 require_once 'functions/PHP/generateCsrfToken.php';
 require_once 'functions/PHP/validateCsrfToken.php';
 require_once 'functions/PHP/getWebsiteUrl.php';
-require_once 'functions/PHP/executeSQLFilePDO.php';
 if (getEnvValue('DB_CHECK') == 'true' && getEnvValue('DB_USE') == 'true') {
+    require_once 'functions/PHP/executeSQLFilePDO.php';
     $sqlFiles = glob("db/*.sql");
     foreach ($sqlFiles as $sqlFile) {
         executeSQLFilePDO(
@@ -32,6 +32,21 @@ if (getEnvValue('DB_CHECK') == 'true' && getEnvValue('DB_USE') == 'true') {
             getEnvValue('DB_NAME'), 
             $sqlFile
         );
+    }
+}
+if (getEnvValue('USE_CACHE') == 'true') {
+    require_once 'functions/PHP/classes/Cache.php';
+    function setCache($key, $data, $expiration = 3600) {
+        Cache::set($key, $data, $expiration);
+    }
+    function getCache($key) {
+        return Cache::get($key);
+    }
+    function deleteCache($key) {
+        Cache::delete($key);
+    }
+    function updateCache($key, $newData) {
+        return Cache::update($key, $newData);
     }
 }
 require_once 'functions/PHP/getPage.php';
