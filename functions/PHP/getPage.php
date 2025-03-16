@@ -4,31 +4,39 @@ function getPage($RouteName) {
 
     if (!$_GET['page'] || empty($_GET['page'])) {
         if (file_exists('web/index.php')) {
+            if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
+            }
             ?>
             <script><?php echo getWEBSITEURLValue(); ?></script>
-            <?php
-            include 'web/index.php';
-            ?>
             <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
+            <script><?php echo require_once 'functions/JS/popstate.js'; ?></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
+            <?php
+            include 'web/index.php';
+            if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+            }
+            ?>
+            <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
             <?php
         } else {
             if (file_exists('errors/404.php')) {
                 ?>
                 <script><?php echo getWEBSITEURLValue(); ?></script>
+                <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
                 <?php
                 include 'errors/404.php';
-                ?>
-                <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
-                <?php
             } else {
                 return;
             }
         }
     } else {
+        if ($_GET['page'] == "fetchCsrfToken") {
+            echo generateCsrfToken();
+            return;
+        }
         if (file_exists('public/' . $_GET['page'])) {
             include 'public/' . $_GET['page'];
         } else {
@@ -37,24 +45,28 @@ function getPage($RouteName) {
                 if ($RouteData['after'] == "") {
                     ?>
                     <script><?php echo getWEBSITEURLValue(); ?></script>
+                    <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
                     <?php
                     include 'errors/400.php';
-                    ?>
-                    <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
-                    <?php
                     return;
+                }
+                if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                    echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
                 }
                 ?>
                 <script><?php echo getWEBSITEURLValue(); ?></script>
+                <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
+                <script><?php echo require_once 'functions/JS/popstate.js'; ?></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
                 <?php
                 $_GET['data'] = $RouteData['after'];
                 include 'web/' . $RouteData['before'] . '_dynamic.php';
+                if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                    echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+                }
                 ?>
-                <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
+                <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
                 <?php
                 return;
             }
@@ -67,47 +79,57 @@ function getPage($RouteName) {
                     if ($_SERVER['REQUEST_METHOD'] !== $method) {
                         ?>
                         <script><?php echo getWEBSITEURLValue(); ?></script>
+                        <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
                         <?php
                         include 'errors/405.php';
-                        ?>
-                        <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
-                        <?php
                         return;
+                    }
+                    if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                        echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
                     }
                     ?>
                     <script><?php echo getWEBSITEURLValue(); ?></script>
-                    <?php
-                    include $filePath;
-                    ?>
                     <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
+                    <script><?php echo require_once 'functions/JS/popstate.js'; ?></script>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
+                    <?php
+                    include $filePath;
+                    if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                        echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+                    }
+                    ?>
+                    <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
                     <?php
                     return;
                 }
             }
             if (file_exists('web/' . $_GET['page'] . '.php')) {
+                if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                    echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
+                }
                 ?>
                 <script><?php echo getWEBSITEURLValue(); ?></script>
-                <?php
-                include 'web/' . $_GET['page'] . '.php';
-                ?>
                 <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
+                <script><?php echo require_once 'functions/JS/popstate.js'; ?></script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
+                <?php
+                include 'web/' . $_GET['page'] . '.php';
+                if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+                    echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+                }
+                ?>
+                <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
                 <?php
             } else {
                 if (file_exists('errors/404.php')) {
                     ?>
                     <script><?php echo getWEBSITEURLValue(); ?></script>
+                    <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
                     <?php
                     include 'errors/404.php';
                     ?>
-                    <script><?php echo require_once 'functions/JS/redirect.js'; ?></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script><?php echo require_once 'functions/JS/submitData.js' ;?></script>
                     <?php
                 } else {
                     return;

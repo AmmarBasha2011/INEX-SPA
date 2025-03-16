@@ -2,13 +2,51 @@
 
 A high-performance PHP framework similar to NextJS/React, but lighter and faster.
 
-Built with PHP, under 100KB in size, and optimized for standard Apache servers.
+Built with PHP, under 1M in size, and optimized for standard Apache servers.
 
 ## Features
 
 - Minimal footprint and high performance
 - Responsive design with animated gradient background
 - Quick load time benchmark
+
+### Automaticly CSRF Security
+Now, when you add form to page, add csrf_token input automaticly:
+- First, create a basic form
+- Second, when send to file.php, add this line for check
+```php
+<?php
+validateCsrfToken();
+?>
+```
+If there any error in token, request will be stop.
+
+### Get Website URL Without getEnvValue function
+Now, you can get your website url without getEnvValue function:
+- In PHP
+```php
+<?php
+echo getWebsiteUrl();
+?>
+```
+- In JS
+```javascript
+console.log(window.WEBSITE_URL);
+```
+
+### Enable HTTPS as required
+Now, you can enable HTTPS as required:
+- Update .env
+```ini
+REQUIRED_HTTPS=true
+```
+
+### Use Bootstrap
+Now, you can use bootstrap:
+- Update .env
+```ini
+USE_BOOTSTRAP=false
+```
 
 ### Database Connection
 Now, you can connect to database.
@@ -118,6 +156,91 @@ echo getSlashData("post/1"); // {"before": "post", "after": "1"}
 ## Usage
 
 Edit the [web/index.php](web/index.php) to start customizing the application.
+
+## Notes
+
+### Don't use these names in files
+Don't use these names (Not Recommend):
+- web.php
+- public.php
+- functions.php
+- errors.php
+- js.php
+- php.php
+- [400-504].php
+- generateCsrfToken.php
+- getEnvValue.php
+- getPage.php
+- getSlashData.php
+- getWebsiteUrl.php
+- getWEBSITEURLValue.php
+- redirect.php
+- validateCsrfToken.php
+- classes.php
+- Database.php
+- csrfToken.js
+- popstate.js
+- redirect.js
+- submitData.js
+
+### Use 1 form in 1 Page
+Don't add more than 1 form in page (Not Recommend) like:
+- web/index.php
+```html
+<form>
+    <label> Name: </label>
+    <input type="text" id="name" />
+</form>
+<form>
+    <label> Email: </label>
+    <input type="text" id="email" />
+</form>
+```
+You have two solutions to solve this
+- First, put all forms in own form:
+```html
+<form>
+    <label> Name: </label>
+    <input type="text" id="name" />
+    <br>
+    <label> Email: </label>
+    <input type="text" id="email" />
+</form>
+```
+- Second, put two forms in two pages:
+- - Create web/index.php:
+```html
+<button type="button" onclick="redirect('email')" >Enter Email </button>
+<form>
+    <label> Name: </label>
+    <input type="text" id="name" />
+</form>
+```
+- - Create web/email.php
+```html
+<button type="button" onclick="redirect('')" >Enter Name </button>
+<form>
+    <label> Email: </label>
+    <input type="text" id="email" />
+</form>
+```
+
+### Don't delete public/errors
+Don't delete public/errors folder or [public/errors/style.css](public/errors/style.css)
+
+### Don't use 2 scripts in next 2 pages
+Don't use 2 javascripts in next 2 pages (Not Recommend) like:
+- Create web/index.php
+```html
+<button type='button' onclick='redirect("test")'>Go</button>
+<script>console.log('runned');</script>
+```
+- Create web/test.php
+```html
+<script> redirect(''); </script>
+```
+Now, if you refresh page will be see `runned` in `console`, But try to click on button, you will be redirect to `web/test.php` then to `web/index.php`, in this case, the js code in `web/index.php` will be not work.
+
 
 ## Repository
 

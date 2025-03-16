@@ -14,7 +14,7 @@
         </div>
         <p class="subtitle">
             A High-Performance PHP Framework similar to NextJS/React, but lighter and faster. 
-            Built with PHP, under 100KB, optimized for performance, and compatible with standard Apache servers.
+            Built with PHP, under 1M, optimized for performance, and compatible with standard Apache servers.
         </p>
         <p class="version">Version <?php echo getEnvValue('VERSION'); ?></p>
         <p class="edit-prompt">Let's Get Started by edit web/index.php!!!</p>
@@ -70,12 +70,22 @@
                     <td>DB Use</td>
                     <td><?php echo getEnvValue('DB_USE'); ?></td>
                 </tr>
+                <tr>
+                    <td>Required HTTPS</td>
+                    <td><?php echo getEnvValue('REQUIRED_HTTPS'); ?></td>
+                </tr>
+                <tr>
+                    <td>Use Bootstrap</td>
+                    <td><?php echo getEnvValue('USE_BOOTSTRAP'); ?></td>
+                </tr>
             </table>
         </div>
         
         <div class="performance-info" id="performanceInfo">
         Loading...
         </div>
-        <script src="<?php echo getEnvValue('WEBSITE_URL'); ?>script.js"></script>
+        <?php
+        echo '<script src="' . getEnvValue('WEBSITE_URL') . 'script.js"></script>';
+        ?>
     </body>
 </html>

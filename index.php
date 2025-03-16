@@ -15,6 +15,12 @@ if (getEnvValue('DB_USE') == 'true') {
         return $DB->query($sql, $params, $is_return);
     }
 }
+if (getEnvValue('REQUIRED_HTTPS') == 'true' && $_SERVER['HTTPS'] != 'on') {
+    header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+}
+require_once 'functions/PHP/generateCsrfToken.php';
+require_once 'functions/PHP/validateCsrfToken.php';
+require_once 'functions/PHP/getWebsiteUrl.php';
 require_once 'functions/PHP/getPage.php';
 getPage(isset($_GET['page']) ? $_GET['page'] : '');
 ?>

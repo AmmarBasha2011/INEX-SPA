@@ -1,13 +1,12 @@
-/* Enhanced CSS for a fresh look */
+/* Modern Error Page Styling */
 
-/* Base reset and body styling with animated background hue */
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #1e1e2f, #2c2c3c);
-    color: #ECECEC;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #FFFFFF;
     overflow: hidden;
 }
 
@@ -17,75 +16,97 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
-    animation: backgroundShift 15s ease infinite alternate;
+    padding: 2rem;
+    position: relative;
 }
 
-@keyframes backgroundShift {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(15deg); }
+/* Add animated particles in background */
+body::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.1;
+    animation: moveBackground 20s linear infinite;
 }
 
-/* Headline with floating and pulsing glow effects */
+@keyframes moveBackground {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
 h1 {
-    font-size: 8em;
-    margin-bottom: 0.2em;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 4px 4px 8px rgba(0, 0, 0, 0.8);
-    animation: float 6s ease-in-out infinite, pulse 3s ease-in-out infinite;
+    font-size: 12rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 20px rgba(255, 107, 107, 0.3);
+    animation: errorPulse 2s ease-in-out infinite;
 }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+@keyframes errorPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
 }
 
-@keyframes pulse {
-    0%, 100% {
-        text-shadow: 0 0 15px rgba(255,255,255,0.5), 4px 4px 8px rgba(0, 0, 0, 0.8);
-    }
-    50% {
-        text-shadow: 0 0 30px rgba(255,255,255,0.8), 4px 4px 8px rgba(0, 0, 0, 0.8);
-    }
-}
-
-/* Paragraph with a subtle fade-in effect */
 p {
-    font-size: 1.4em;
-    margin-bottom: 2em;
+    font-size: 1.5rem;
     max-width: 600px;
+    color: #a0a0c0;
+    margin: 2rem 0;
     line-height: 1.6;
-    color: #B8B8D1;
-    opacity: 0;
-    animation: fadeIn 2s ease 1s forwards;
+    animation: slideUp 0.6s ease-out;
 }
 
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-/* Button with updated gradient and smooth transitions */
 button {
-    background: linear-gradient(45deg, #FF9800, #FFA726);
+    background: linear-gradient(45deg, #4a90e2, #67b26f);
+    color: white;
     border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
     border-radius: 50px;
-    color: #fff;
-    padding: 1.2em 2.4em;
-    font-size: 1.2em;
     cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
     position: relative;
     overflow: hidden;
 }
 
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+}
+
 button:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(45deg, #FFA726, #FF9800);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+button:hover::before {
+    left: 100%;
 }
 
 button:active {
-    transform: translateY(1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
