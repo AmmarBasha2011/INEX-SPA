@@ -389,6 +389,9 @@ Don't use `DB_CHECK` in `.env` and set to `false` (Not Recommended) beacuse this
 ### Not Found route as dynamic and requestType
 Not found a route will be dynamic and check request type at own file. this is unSupported for our privacy policy.
 
+### You can use any class or function without require_once
+Don't use require_once to load any framework code (Not Recommended) beacuse our framework load this automaticly. You only use a function and we will do everything for it.
+
 
 ## Repository
 
