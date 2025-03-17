@@ -16,6 +16,55 @@ Now, our Team have a Blog for all new news called "INEX Blog".
 For try:
 [https://inexteamblog.blogspot.com/](https://inexteamblog.blogspot.com/)
 
+## Installation
+
+### Using Git
+Clone the repository using Git:
+```bash
+git clone https://github.com/AmmarBasha2011/INEX-SPA my-project
+cd my-project
+```
+
+### Manual Download
+1. Download the ZIP file from [GitHub releases](https://github.com/AmmarBasha2011/INEX-SPA/releases)
+2. Extract to your project directory
+3. Rename the folder if needed
+
+## Getting Started
+
+### Running Locally
+
+#### Using PHP's Built-in Server
+```bash
+php -S localhost:8000
+```
+Then visit [http://localhost:8000](http://localhost:8000)
+
+#### Using Apache
+1. Place the files in your Apache web root
+2. Configure virtual host if needed
+3. Access through your domain/localhost
+
+### Initial Configuration
+1. Copy `.env.example` to `.env` and configure settings:
+```bash
+# On Unix/Linux/macOS
+cp .env.example .env
+
+# On Windows
+copy .env.example .env
+```
+
+Note: Required for v3.7.6.5.8.1 and later versions. Contains essential configuration settings for database, API keys, and system features.
+2. Update environment variables as needed
+3. Set appropriate file permissions
+4. Configure database credentials if using MySQL
+
+### Verify Installation
+- Homepage should display without errors
+- Check error logs if issues occur
+- Test basic routing functionality
+- Confirm database connection if configured
 
 ## Ammar Helper
 Now, our Framework have a CLI called `Ammar`, likely to `artisan` in `laravel`:
@@ -81,18 +130,89 @@ You can now ask INEX SPA Helper in command line by `php ammar ask:helper` and wi
 You can now ask Gemini in command line by `php ammar ask:gemini` and will ask you:
 - 1- What's your question?
 
-### Inline Command
-You can create or delete a file by one command like
-- php ammar make:route -1 `routeName` -2 `yes/no` -3 `RequestType`
-- php ammar make:db -1 `dbFileFor` -2 `tableName`
-- php ammar delete:route -1 `routeName`
-- php ammar delete:db -1 `dbFileFor` -2 `tableName`
-- php ammar make:cache -1 `cacheKey` -2 `cacheValue` -3 `expirationTime`
-- php ammar get:cache -1 `cacheKey`
-- php ammar update:cache -1 `cacheKey` -2 `cacheValue`
-- php ammar delete:cache -1 `cacheKey`
-- php ammar ask:helper -1 `question`
-- php ammar ask:gemini -1 `question`
+### serve
+You can quickly start a development server using the built-in PHP server:
+
+```bash
+php ammar serve
+```
+
+This will launch the application at [http://localhost:8000](http://localhost:8000) by default.
+
+To use a custom port:
+```bash
+php ammar serve -1 9000
+```
+
+**Important Note:** When using PHP's built-in server:
+- Manual class loading may be required as automatic framework loading only works with Apache
+- Some framework features might be limited
+- Recommended for development only, not production use
+- Apache server provides full framework functionality
+
+Production deployments should use Apache or another production-grade web server.
+
+### Inline Commands
+The framework provides convenient single-line commands for common operations:
+
+#### Route Management
+```bash
+# Create a route
+php ammar make:route -1 routeName -2 isDynamic -3 requestType
+# Example: php ammar make:route -1 blog -2 yes -3 GET
+
+# Delete a route
+php ammar delete:route -1 routeName
+# Example: php ammar delete:route -1 blog
+```
+
+#### Database Operations
+```bash
+# Create database file
+php ammar make:db -1 operationType -2 tableName
+# Example: php ammar make:db -1 create -2 users
+
+# Delete database file
+php ammar delete:db -1 operationType -2 tableName
+# Example: php ammar delete:db -1 create -2 users
+```
+
+#### Cache Operations
+```bash
+# Create cache entry
+php ammar make:cache -1 key -2 value -3 expirationSeconds
+# Example: php ammar make:cache -1 user_profile -2 "data" -3 3600
+
+# Get cache value
+php ammar get:cache -1 key
+# Example: php ammar get:cache -1 user_profile
+
+# Update cache
+php ammar update:cache -1 key -2 newValue
+# Example: php ammar update:cache -1 user_profile -2 "updated_data"
+
+# Delete cache entry
+php ammar delete:cache -1 key
+# Example: php ammar delete:cache -1 user_profile
+```
+
+#### AI Assistance
+```bash
+# Ask INEX SPA Helper
+php ammar ask:helper -1 "your question"
+# Example: php ammar ask:helper -1 "How do I create a dynamic route?"
+
+# Ask Gemini AI
+php ammar ask:gemini -1 "your question"
+# Example: php ammar ask:gemini -1 "What are PHP best practices?"
+```
+
+#### Development Server
+```bash
+# Start server with custom port
+php ammar serve -1 portNumber
+# Example: php ammar serve -1 9000
+```
 
 ## FrameWork Structure
 

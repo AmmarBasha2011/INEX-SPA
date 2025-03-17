@@ -30,6 +30,7 @@ $commands = [
     'delete:cache' => 'Delete a cache entry',
     'ask:helper' => "Ask INEX SPA Helper",
     'ask:gemini' => "Ask Gemini",
+    'serve' => 'Serve the application',
     'list' => 'List all commands'
 ];
 
@@ -233,6 +234,13 @@ if ($command === 'ask:gemini') {
     } else {
         echo "Error: " . $gemini['error'];
     }
+    exit(0);
+}
+
+if ($command === "serve") {
+    $port = $args['1'] ?? 8000;
+    echo "Serving on http://localhost:$port\n";
+    exec("php -S localhost:$port -t web");
     exit(0);
 }
 
