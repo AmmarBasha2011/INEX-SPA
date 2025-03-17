@@ -3,6 +3,8 @@
 require_once 'functions/PHP/executeSQLFilePDO.php';
 require_once 'functions/PHP/getEnvValue.php';
 require_once 'functions/PHP/classes/Cache.php';
+require_once 'functions/PHP/inexSpaHelper.php';
+require_once 'functions/PHP/useGemini.php';
 
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
@@ -26,6 +28,8 @@ $commands = [
     'get:cache' => 'Retrieve a cache entry',
     'update:cache' => 'Update an existing cache entry',
     'delete:cache' => 'Delete a cache entry',
+    'ask:helper' => "Ask INEX SPA Helper",
+    'ask:gemini' => "Ask Gemini",
     'list' => 'List all commands'
 ];
 
@@ -207,6 +211,28 @@ if ($command === 'delete:cache') {
     $key = $args['1'] ?? readline("1- Enter cache key: ");
     Cache::delete($key);
     echo "Cache deleted for key: $key\n";
+    exit(0);
+}
+
+if ($command === 'ask:helper') {
+    $question = $args['1'] ?? readline("1- What's your question? ");
+    $inexspahelper = json_decode(inexSpaHelper($question), true);
+    if ($inexspahelper['success'] == true) {
+        echo "Response: " . $inexspahelper['message'];
+    } else {
+        echo "Error: " . $inexspahelper['error'];
+    }
+    exit(0);
+}
+
+if ($command === 'ask:gemini') {
+    $question = $args['1'] ?? readline("1- What's your question? ");
+    $gemini = json_decode(useGemini($question), true);
+    if ($gemini['success'] == true) {
+        echo "Response: " . $gemini['message'];
+    } else {
+        echo "Error: " . $gemini['error'];
+    }
     exit(0);
 }
 

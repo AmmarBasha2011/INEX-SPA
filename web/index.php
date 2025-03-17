@@ -78,6 +78,22 @@
                     <td>Use Bootstrap</td>
                     <td><?php echo getEnvValue('USE_BOOTSTRAP'); ?></td>
                 </tr>
+                <tr>
+                    <td>Use Cache</td>
+                    <td><?= getEnvValue('USE_CACHE'); ?></td>
+                </tr>
+                <tr>
+                    <td>Gemini API Key</td>
+                    <td><?= getEnvValue('GEMINI_API_KEY') ?></td>
+                </tr>
+                <tr>
+                    <td>Gemini Model Id</td>
+                    <td><?= getEnvValue('GEMINI_MODEL_ID'); ?></td>
+                </tr>
+                <tr>
+                    <td>Gemini EndPoint</td>
+                    <td><?= getEnvValue('GEMINI_ENDPOINT'); ?></td>
+                </tr>
             </table>
         </div>
         

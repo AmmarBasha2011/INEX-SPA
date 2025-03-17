@@ -73,6 +73,14 @@ You can update a cache value by `php ammar update:cache` and will ask you:
 You can delete a cache by `php ammar delete:cache` and will ask you:
 - 1- Enter cache key:
 
+### ask:helper
+You can now ask INEX SPA Helper in command line by `php ammar ask:helper` and will ask you:
+- 1- What's your question?
+
+### ask:gemini
+You can now ask Gemini in command line by `php ammar ask:gemini` and will ask you:
+- 1- What's your question?
+
 ### Inline Command
 You can create or delete a file by one command like
 - php ammar make:route -1 `routeName` -2 `yes/no` -3 `RequestType`
@@ -83,6 +91,8 @@ You can create or delete a file by one command like
 - php ammar get:cache -1 `cacheKey`
 - php ammar update:cache -1 `cacheKey` -2 `cacheValue`
 - php ammar delete:cache -1 `cacheKey`
+- php ammar ask:helper -1 `question`
+- php ammar ask:gemini -1 `question`
 
 ## FrameWork Structure
 
@@ -126,6 +136,8 @@ my-project/
 │   │   ├── getWebsiteUrl.php
 │   │   ├── getWEBSITEURLValue.php
 │   │   ├── redirect.php
+│   │   ├── inexSpaHelper.php
+│   │   ├── useGemini.php
 │   │   └── validateCsrfToken.php
 ├── cache/
 ├── db/
@@ -191,9 +203,61 @@ You can name like this [create/delete/addFieldTo][table_name]Table_[Year]_[Month
 - Responsive design with animated gradient background
 - Quick load time benchmark
 
+### Use INEX SPA Helper in code
+Now, you can chat with `INEX SPA Helper` but by code:
+- First, update `.env`:
+```ini
+GEMINI_API_KEY=
+GEMINI_MODEL_ID=gemini-2.0-flash
+GEMINI_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models/
+```
+- Second, in any part in the application:
+```php
+<?php
+$inexspahelper = json_decode(inexSpaHelper(`question`), true);
+print_r($inexspahelper);
+?>
+```
+- - if: return success=true, return message. else: return success=false, return error:
+```php
+<?php
+if ($inexspahelper['success'] == true) {
+    echo "Response: " . $inexspahelper['message'];
+} else {
+    echo "Error: " . $inexspahelper['error'];
+}
+?>
+```
+
+### Use Gemini
+Now, you can chat with `Gemini` but by code:
+- First, update `.env`:
+```ini
+GEMINI_API_KEY=
+GEMINI_MODEL_ID=gemini-2.0-flash
+GEMINI_ENDPOINT=https://generativelanguage.googleapis.com/v1beta/models/
+```
+- Second, in any part in the application:
+```php
+<?php
+$UseGemini = json_decode(useGemini(`question`, `knowledge`="", `instrcutions`="", `temperature`=0.7, `topK`=40, `topP`=0.95, `maxOutPutTokens`=2048), true);
+print_r($UseGemini);
+?>
+```
+- - if: return success=true, return message. else: return success=false, return error:
+```php
+<?php
+if ($UseGemini['success'] == true) {
+    echo "Response: " . $UseGemini['message'];
+} else {
+    echo "Error: " . $UseGemini['error'];
+}
+?>
+```
+
 ### Cache System
 Now, you have a cache system:
-- First update `.env`:
+- First, update `.env`:
 ```ini
 USE_CACHE=true
 ```
@@ -415,7 +479,7 @@ Don't use these names (Not Recommend):
 - errors.php
 - js.php
 - php.php
-- [400-504] numbers.php
+- [400-401-403-404-405-406-407-408-409-410-411-412-413-414-415-500-502-503-504] numbers.php
 - generateCsrfToken.php
 - getEnvValue.php
 - getPage.php
@@ -438,33 +502,114 @@ Don't use these names (Not Recommend):
 - getCache.php
 - deleteCache.php
 
-### Don't delete public/errors
-Don't delete public/errors folder or [public/errors/style.css](public/errors/style.css)
+### Critical Framework Components
 
-### Don't delete cache
-Don't delete [cache](cache) folder
+#### Error Pages Directory
+The `public/errors` directory and its `style.css` file are essential framework components:
+- Required for proper error handling and display
+- Contains styled templates for HTTP error codes
+- Ensures consistent error presentation
+- Do not modify or delete these files
+- Framework functionality depends on their presence
 
-### Don't use 2 scripts in next 2 pages
-Don't use 2 javascripts in next 2 pages (Not Recommend) like:
-- Create web/index.php
+#### Cache Directory
+The `cache` directory is a critical system component:
+- Required for caching functionality
+- Manages temporary data storage
+- Improves application performance
+- Must maintain proper permissions
+- Do not delete or relocate this directory
+
+#### JavaScript Execution Conflicts
+Avoid using JavaScript across consecutive page transitions:
 ```html
-<button type='button' onclick='redirect("test")'>Go</button>
-<script>console.log('runned');</script>
+<!-- Issue: Scripts won't execute properly -->
+Page 1: 
+<button onclick='redirect("page2")'>Next</button>
+<script>console.log('page1 script');</script>
+
+Page 2:
+<script>redirect('page1');</script>
 ```
-- Create web/test.php
-```html
-<script> redirect(''); </script>
+Problems this causes:
+- Script execution order becomes unpredictable
+- Event handlers may not attach properly
+- Memory leaks possible from orphaned listeners
+- Page transitions can break functionality
+- Browser history management issues
+
+Best practices:
+- Keep JavaScript isolated to single pages
+- Use framework routing methods
+- Implement proper state management
+- Handle transitions through router events
+- Avoid inline scripts when possible
+
+#### Production Database Checks
+The `DB_CHECK` setting should be disabled in production:
+```ini
+# Development only - Enable DB checks
+DB_CHECK=true
+
+# Production - Disable DB checks
+DB_CHECK=false
 ```
-Now, if you refresh page will be see `runned` in `console`, But try to click on button, you will be redirect to `web/test.php` then to `web/index.php`, in this case, the js code in `web/index.php` will be not work.
+Reasons to disable in production:
+- Significant performance impact
+- Unnecessary file system operations
+- Increased server load
+- Slower response times
+- Security considerations
 
-### Don't use DB_CHECK at production
-Don't use `DB_CHECK` in `.env` and set to `false` (Not Recommended) beacuse this is may take a long time for respond.
+#### Route Type Restrictions
+The framework enforces strict route typing:
+- Dynamic routes cannot also be request-type routes
+- Each route must have one clear purpose
+- Mixed route types are not supported
+- Maintains routing consistency
+- Ensures predictable behavior
+- Required for security policy compliance
+- Helps prevent routing conflicts
 
-### Not Found route as dynamic and requestType
-Not found a route will be dynamic and check request type at own file. this is unSupported for our privacy policy.
+Following these guidelines ensures:
+- Better application stability
+- Improved security
+- Consistent behavior
+- Easier maintenance
+- Better performance
 
-### You can use any class or function without require_once
-Don't use require_once to load any framework code (Not Recommended) beacuse our framework load this automaticly. You only use a function and we will do everything for it.
+### Autoloading Framework Components
+The framework implements an advanced autoloading system that automatically manages class and function dependencies. This means:
+
+- Don't use `require_once`, `require`, `include_once` or `include` for framework files
+- All framework classes and functions are automatically available
+- The autoloader handles dependency resolution efficiently
+- Proper namespacing ensures no conflicts between components
+- Framework core files are loaded in optimal order
+- Better performance by avoiding redundant file inclusions
+
+Example of correct usage:
+```php
+// Correct - Direct usage
+$result = executeStatement("SELECT * FROM users");
+
+// Incorrect - Don't do this
+require_once 'functions/PHP/classes/Database.php';
+$result = executeStatement("SELECT * FROM users");
+```
+
+### Framework Core Isolation 
+The framework core is designed to be self-contained and automatically managed. To maintain stability:
+
+- Never manually include framework core files
+- Don't modify the core loading sequence
+- Let the framework handle all core dependencies
+- Core functionality is initialized in the correct order
+- Framework bootstrapping is handled automatically
+- Prevents version conflicts and inconsistencies
+
+This ensures reliable operation and makes upgrades smoother while reducing potential errors from manual file management.
+
 
 ### Naming of routes
 This is Naming of routes:
@@ -496,36 +641,87 @@ like:
 - web/index.php
 - web/Blog
 
+### INEX SPA Helper in Command Line
+You can use INEX SPA Helper both in code and through the command line interface. This functionality is powered by Google's Gemini AI model. Note that you'll need valid Gemini API credentials to use this feature. While the command line version offers helpful assistance, the quality and capabilities may differ from the online INEX SPA Helper available at udify.app.
+
+### Additional Notes
+- Route files should use consistent suffix naming (_dynamic, _request_GET, etc)
+- Cache keys should be descriptive and namespaced to avoid conflicts
+- Use environment variables for configuration instead of hardcoding values
+- Keep framework core files unchanged to ensure smooth updates
+- Test thoroughly on development before deploying to production
+- Monitor cache usage to prevent memory issues
+- Document any custom implementations or modifications
+- Follow PHP best practices and coding standards
+- Keep backups of critical application data
+- Use version control for tracking changes
+
 ## Best Practices
 
 ### Code Organization
 - Keep route files in dedicated folders within `web/` directory
 - Follow consistent naming conventions for routes and files
 - Group related functionality in subdirectories
+- Organize controllers, models and views separately
+- Use meaningful file and folder names
+- Keep configuration files in root directory
 
 ### Security
 - Always validate CSRF tokens on forms
-- Enable HTTPS in production environments
+- Enable HTTPS in production environments 
 - Sanitize user input before database operations
 - Never expose sensitive data in public folders
+- Use environment variables for sensitive configuration
+- Implement proper session management
+- Add rate limiting for API endpoints
+- Keep dependencies updated
+- Follow secure password hashing practices
 
 ### Performance
 - Set `DB_CHECK=false` in production
-- Minimize JavaScript usage between page transitions 
+- Minimize JavaScript usage between page transitions
 - Use the public folder for static assets only
 - Keep dynamic route handlers lightweight
+- Enable caching where appropriate
+- Optimize database queries
+- Minify CSS/JS assets
+- Use compression for responses
+- Implement database indexing
 
 ### Development
 - Test thoroughly before deploying changes
 - Document any custom route patterns
 - Follow the naming conventions for routes and files
 - Back up database before running migrations
+- Use version control effectively
+- Write clear comments and documentation
+- Follow PSR coding standards
+- Use meaningful variable names
+- Implement proper error handling
+- Keep the codebase DRY (Don't Repeat Yourself)
 
 ### Database
 - Use prepared statements for queries
 - Keep SQL files organized by date
 - Test migrations in development first
 - Follow table naming conventions
+- Implement proper foreign key relationships
+- Use appropriate data types
+- Keep tables normalized
+- Document database schema changes
+- Backup data regularly
+- Monitor query performance
+
+### Maintenance
+- Monitor error logs regularly
+- Keep regular backups
+- Update dependencies securely
+- Document system requirements
+- Maintain clear deployment procedures
+- Track breaking changes
+- Plan for scalability
+- Implement proper logging
+- Have rollback procedures
 
 ## Repository
 

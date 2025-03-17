@@ -1,112 +1,88 @@
-/* Modern Error Page Styling */
+/* Modern Enterprise & Futuristic Style for INEX SPA Error Pages */
+@keyframes float {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+    100% { transform: translateY(0px) rotate(360deg); }
+}
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    color: #FFFFFF;
-    overflow: hidden;
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+    100% { opacity: 0.3; }
 }
 
 body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    text-align: center;
-    padding: 2rem;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #ffffff;
+    overflow: hidden;
     position: relative;
 }
 
-/* Add animated particles in background */
-body::before {
+body::before, body::after {
     content: '';
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background-image: radial-gradient(circle, #ffffff 1px, transparent 1px);
-    background-size: 50px 50px;
-    opacity: 0.1;
-    animation: moveBackground 20s linear infinite;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #4a90e2, #63f5aa);
+    filter: blur(60px);
+    opacity: 0.3;
+    z-index: -1;
+    animation: float 15s infinite ease-in-out, pulse 5s infinite ease-in-out;
 }
 
-@keyframes moveBackground {
-    0% { background-position: 0 0; }
-    100% { background-position: 50px 50px; }
+body::before {
+    top: -150px;
+    left: -150px;
+    animation-delay: 0s;
+}
+
+body::after {
+    bottom: -150px;
+    right: -150px;
+    animation-delay: -7.5s;
 }
 
 h1 {
-    font-size: 12rem;
-    font-weight: 800;
+    font-size: 120px;
     margin: 0;
-    background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+    background: linear-gradient(45deg, #4a90e2, #63f5aa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 20px rgba(255, 107, 107, 0.3);
-    animation: errorPulse 2s ease-in-out infinite;
-}
-
-@keyframes errorPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
+    text-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
 }
 
 p {
-    font-size: 1.5rem;
-    max-width: 600px;
-    color: #a0a0c0;
-    margin: 2rem 0;
-    line-height: 1.6;
-    animation: slideUp 0.6s ease-out;
+    font-size: 18px;
+    margin: 20px 0;
+    color: #a0a0a0;
 }
 
 button {
-    background: linear-gradient(45deg, #4a90e2, #67b26f);
-    color: white;
+    padding: 12px 30px;
+    font-size: 16px;
     border: none;
-    padding: 1rem 2.5rem;
-    font-size: 1.2rem;
-    border-radius: 50px;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #4a90e2, #63f5aa);
+    color: white;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
-    position: relative;
-    overflow: hidden;
-}
-
-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: 0.5s;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.2);
 }
 
 button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
-}
-
-button:hover::before {
-    left: 100%;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
 }
 
 button:active {
     transform: translateY(0);
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }

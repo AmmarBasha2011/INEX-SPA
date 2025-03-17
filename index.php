@@ -49,6 +49,8 @@ if (getEnvValue('USE_CACHE') == 'true') {
         return Cache::update($key, $newData);
     }
 }
+require_once 'functions/PHP/inexSpaHelper.php';
+require_once 'functions/PHP/useGemini.php';
 require_once 'functions/PHP/getPage.php';
 getPage(isset($_GET['page']) ? $_GET['page'] : '');
 ?>
