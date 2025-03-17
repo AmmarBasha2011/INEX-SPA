@@ -764,6 +764,26 @@ like:
 ### INEX SPA Helper in Command Line
 You can use INEX SPA Helper both in code and through the command line interface. This functionality is powered by Google's Gemini AI model. Note that you'll need valid Gemini API credentials to use this feature. While the command line version offers helpful assistance, the quality and capabilities may differ from the online INEX SPA Helper available at udify.app.
 
+### Preserving README.md for AI Assistant Integration
+
+The README.md file serves as a critical knowledge base for the INEX SPA Helper CLI tool:
+
+- Don't delete or substantially modify README.md
+- The AI assistant is trained on this documentation 
+- Removing it will impair AI helper functionality
+- Framework commands depend on this content
+- Keep documentation synchronized with code
+- Add new sections as needed, but preserve core content
+- File location must remain at project root
+- Maintains consistent AI responses
+- Required for `ask:helper` command operations
+
+If you need to customize documentation:
+- Create additional .md files
+- Use separate documentation folders
+- Keep README.md as primary reference
+- Document changes in CHANGELOG.md
+
 ### Additional Notes
 - Route files should use consistent suffix naming (_dynamic, _request_GET, etc)
 - Cache keys should be descriptive and namespaced to avoid conflicts
