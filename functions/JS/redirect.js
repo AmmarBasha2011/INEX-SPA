@@ -1,4 +1,9 @@
-function redirect(route, requestType="GET") {
+function redirect(route='', requestType="GET", dynamic="") {
+    let redirecturl = window.WEBSITE_URL + route;
+    if (dynamic != "") {
+        redirecturl += "/" + dynamic;
+    }
+    
     // Start with opacity 0 for smooth transition
     document.body.style.opacity = '0';
 
@@ -45,7 +50,7 @@ function redirect(route, requestType="GET") {
                 }
                 
                 // Update URL
-                window.history.pushState({}, "", window.WEBSITE_URL + route);
+                window.history.pushState({}, "", redirecturl);
                 
                 // Show the content with a smooth transition
                 document.body.style.opacity = '1';
@@ -56,6 +61,6 @@ function redirect(route, requestType="GET") {
             });
         }
     };
-    xhr.open(requestType, window.WEBSITE_URL + route, true);
+    xhr.open(requestType, redirecturl, true);
     xhr.send();
 }

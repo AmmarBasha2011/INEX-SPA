@@ -18,6 +18,11 @@ function getPage($RouteName) {
             if (getEnvValue('USE_BOOTSTRAP') == 'true') {
                 echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
             }
+            if (getEnvValue("USE_APP_NAME_IN_TITLE") == "true") {
+                ?>
+                <script><?php echo require_once 'functions/JS/addAppNametoHTML.js'; ?></script>
+                <?php
+            }
             ?>
             <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
             <?php
@@ -37,7 +42,7 @@ function getPage($RouteName) {
             echo generateCsrfToken();
             return;
         }
-        if (file_exists('public/' . $_GET['page'])) {
+        if (file_exists('public/' . $_GET['page']) && is_file('public/' . $_GET['page'])) {
             include 'public/' . $_GET['page'];
         } else {
             $RouteData = getSlashData($_GET['page']);
@@ -64,6 +69,11 @@ function getPage($RouteName) {
                 include 'web/' . $RouteData['before'] . '_dynamic.php';
                 if (getEnvValue('USE_BOOTSTRAP') == 'true') {
                     echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+                }
+                if (getEnvValue("USE_APP_NAME_IN_TITLE") == "true") {
+                    ?>
+                    <script><?php echo require_once 'functions/JS/addAppNametoHTML.js'; ?></script>
+                    <?php
                 }
                 ?>
                 <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
@@ -98,6 +108,11 @@ function getPage($RouteName) {
                     if (getEnvValue('USE_BOOTSTRAP') == 'true') {
                         echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
                     }
+                    if (getEnvValue("USE_APP_NAME_IN_TITLE") == "true") {
+                        ?>
+                        <script><?php echo require_once 'functions/JS/addAppNametoHTML.js'; ?></script>
+                        <?php
+                    }
                     ?>
                     <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>
                     <?php
@@ -118,6 +133,11 @@ function getPage($RouteName) {
                 include 'web/' . $_GET['page'] . '.php';
                 if (getEnvValue('USE_BOOTSTRAP') == 'true') {
                     echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+                }
+                if (getEnvValue("USE_APP_NAME_IN_TITLE") == "true") {
+                    ?>
+                    <script><?php echo require_once 'functions/JS/addAppNametoHTML.js'; ?></script>
+                    <?php
                 }
                 ?>
                 <script><?php echo require_once 'functions/JS/csrfToken.js'; ?></script>

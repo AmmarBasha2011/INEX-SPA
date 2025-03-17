@@ -323,6 +323,39 @@ You can name like this [create/delete/addFieldTo][table_name]Table_[Year]_[Month
 - Responsive design with animated gradient background
 - Quick load time benchmark
 
+### Application Title System
+
+The framework provides a flexible way to manage page titles with automatic application name prefixing:
+
+1. Configure title settings in `.env`:
+```ini
+USE_APP_NAME_IN_TITLE=true
+APP_NAME="INEX SPA"
+```
+
+2. Use standard HTML title tags in your pages:
+```html
+<title>Welcome</title>
+```
+
+The framework will automatically transform titles to include the app name:
+```html
+<title>INEX SPA - Welcome</title>
+```
+
+#### Advanced Usage
+- Disable for specific pages by setting `USE_APP_NAME_IN_TITLE=false`
+- Custom separators can be configured in .env
+- Supports dynamic titles from PHP variables
+- Maintains SEO-friendly title structure
+- Works with SPA page transitions
+
+Example with dynamic title:
+```php
+<?php $pageTitle = "User Profile: " . $username; ?>
+<title><?php echo $pageTitle; ?></title>
+```
+
 ### Use INEX SPA Helper in code
 Now, you can chat with `INEX SPA Helper` but by code:
 - First, update `.env`:
@@ -497,35 +530,91 @@ print_r(executeStatement("SELECT * FROM users WHERE id = ?", [1], true)) // SQL,
 ?>
 ```
 
-### Submit Data without Refresh
-Now, you can submit data to php file without refresh.
-- First, do the form
+### Submit Data without Page Refresh
+The framework provides client-side form submission functionality that enables AJAX-style data submission without page reloads.
+
+#### Basic Form Implementation
 ```html
-<form>
-    <label for="username">UserName:</label>
-    <input type="text" id="username" />
-    <br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" />
-    <br>
-    <button type="button" onclick="submitData('saveUserData', ['username', 'email'], 'POST', 'getUserData')">Save Data</button> <!-- submitData(sendDataToRoute, InputIds=[], RequestType='POST', redirectedRouteAfterEnd='') -->
+<form id="userForm">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" class="form-control" required>
+    </div>
+    <button type="button" onclick="submitData('saveUserData', ['username', 'email'])">
+        Save Data
+    </button>
 </form>
 ```
-- Second, create web/saveUserData_request_POST.php
+
+#### Advanced Usage
+The `submitData()` function supports multiple parameters:
+```javascript
+submitData(
+    routeName = '',           // Route to send data to
+    inputIds = [],       // Array of input IDs to collect
+    requestType = 'POST',// HTTP method (POST/GET/PUT/DELETE)
+    redirectRoute = '',  // Optional route to redirect after success
+    customValues = []    // Optional additional data to send
+)
+```
+
+#### Example with Custom Values and Redirect
+```html
+<button onclick="submitData(
+    'saveUserData',
+    ['username', 'email'],
+    'POST',
+    'getUserData',
+    [
+        {'id': 123},
+        {'role': 'admin'}
+    ]
+)">Save & View</button>
+```
+
+#### Server-Side Handling
+Create route handlers for both the submission and redirect:
+
 ```php
+// web/saveUserData_request_POST.php
 <?php
-session_start();
-$_SESSION['username'] = $_POST['username'];
-$_SESSION['email'] = $_POST['email'];
+validateCsrfToken();
+$_SESSION['user'] = [
+    'username' => $_POST['username'],
+    'email' => $_POST['email'],
+    'id' => $_POST['id'],
+    'role' => $_POST['role']
+];
+?>
+
+// web/getUserData_request_GET.php
+<?php
+if(isset($_SESSION['user'])) {
+    echo json_encode($_SESSION['user']);
+}
 ?>
 ```
-- Third, create web/getUserData_request_GET.php
-```php
-session_start();
-echo "Username: " . $_SESSION['username'];
-echo "Email: " . $_SESSION['email'];
-?>
-```
+
+#### Important Notes:
+- CSRF protection is automatically included
+- Input validation should be done on both client and server
+- Use meaningful route names for better maintainability
+- Custom values are sent as POST/GET parameters
+- Response handling is managed by the framework
+- Supports all standard HTTP methods
+- Maintains browser history state correctly
+
+The framework automatically handles:
+- Form data serialization
+- AJAX request management
+- Response processing
+- Error handling
+- State management
+- Browser history
 
 ### Check Request Type
 Now, you can check request type from
@@ -559,13 +648,75 @@ and user can access by ```[URL]/[FileName] without _dynamin.php/[data]``` like
 - http://localhost/post/1
 - http://localhost/blog/2
 
-### Redirect without refreshing
-Now, you can go to another page without refresh like this
-- Create web/index.php
+### Client-Side Navigation (Redirect without Refresh)
+The framework provides smooth client-side navigation without page refreshes using the `redirect()` function.
+
+#### Basic Redirection
 ```html
-<button onclick="redirect('login')">Login</button> <!-- redirect(RouteName) -->
+<!-- Simple redirect to a route -->
+<button onclick="redirect('login')">Login</button>
+
+<!-- Redirect with specific request type -->
+<button onclick="redirect('dashboard', 'GET')">Dashboard</button>
 ```
-- Create web/login.php
+
+#### Dynamic Route Navigation
+```html
+<!-- Navigate to dynamic routes -->
+<button onclick="redirect('post', 'GET', '123')">View Post</button>
+<button onclick="redirect('profile', 'GET', userId)">User Profile</button>
+
+<!-- With variables -->
+<script>
+    const productId = "456";
+    function viewProduct() {
+        redirect('product', 'GET', productId);
+    }
+</script>
+<button onclick="viewProduct()">View Product</button>
+```
+
+#### Common Usage Patterns
+```html
+<!-- Navigation menu example -->
+<nav>
+    <a href="#" onclick="redirect('home'); return false;">Home</a>
+    <a href="#" onclick="redirect('about'); return false;">About</a>
+    <a href="#" onclick="redirect('contact'); return false;">Contact</a>
+</nav>
+
+<!-- Form submission success redirect -->
+<script>
+    function submitForm() {
+        // Process form...
+        redirect('success');
+    }
+</script>
+
+<!-- Conditional navigation -->
+<script>
+    function checkAndRedirect() {
+        if(userLoggedIn) {
+            redirect('dashboard');
+        } else {
+            redirect('login');
+        }
+    }
+</script>
+```
+
+#### Important Notes
+- Always prevent default anchor behavior when using redirect()
+- Request type defaults to 'GET' if not specified
+- Dynamic parameter is optional
+- Navigation history is properly maintained
+- Browser back/forward buttons work as expected
+- URL updates without page reload
+
+The redirect function syntax:
+```javascript
+redirect(routeName = '', requestType = 'GET', dynamicParam = '')
+```
 
 ### Get Values From .env file
 Now, you can get values from .env file with comments (if found on same line) like

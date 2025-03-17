@@ -1,167 +1,180 @@
-/* Modern Enterprise & Futuristic Style for INEX SPA */
-
+/* Modern Enterprise Styling for INEX SPA v4.1 */
 :root {
     --primary-color: #00ff88;
-    --secondary-color: #0066ff;
-    --background-dark: #1a1a1a;
-    --text-color: #ffffff;
+    --secondary-color: #6600ff;
+    --background-dark: #0a0a1f;
+    --text-glow: 0 0 10px var(--primary-color);
+    --neon-glow: 0 0 20px var(--primary-color), 0 0 40px var(--secondary-color);
 }
 
 body {
+    background: linear-gradient(135deg, var(--background-dark), #000000);
+    color: #ffffff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background: linear-gradient(135deg, var(--background-dark), #000000);
-    font-family: 'Arial', sans-serif;
-    color: var(--text-color);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    overflow-x: hidden;
 }
 
 .container {
-    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 2rem;
-    max-width: 800px;
-    margin: 2rem auto;
+    text-align: center;
+    animation: fadeInUp 1s ease-out;
 }
 
 .glowing-text h1 {
-    font-size: 4rem;
-    margin: 0;
+    font-size: 4.5rem;
+    font-weight: 800;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-    animation: glow 2s ease-in-out infinite alternate;
+    text-shadow: var(--text-glow);
+    animation: pulse 2s infinite;
 }
 
 .subtitle {
     font-size: 1.2rem;
     line-height: 1.6;
-    color: #cccccc;
-    margin: 1.5rem 0;
+    color: #ffffff;
+    max-width: 800px;
+    margin: 2rem auto;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 .version {
     color: var(--primary-color);
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
     margin: 1rem 0;
+    text-shadow: var(--text-glow);
 }
 
 .edit-prompt {
-    color: #888;
-    font-style: italic;
+    color: #ffffff;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    animation: float 3s ease-in-out infinite;
 }
 
 .cta-button a {
     display: inline-block;
-    padding: 1rem 2rem;
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    color: var(--background-dark);
-    text-decoration: none;
-    border-radius: 30px;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
-    transition: transform 0.3s, box-shadow 0.3s;
-    margin: 2rem 0;
+    text-decoration: none;
+    color: #ffffff;
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    border-radius: 30px;
+    box-shadow: var(--neon-glow);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .cta-button a:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px var(--primary-color);
+}
+
+.cta-button a::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    animation: shine 3s infinite;
 }
 
 #toggleIcon {
     cursor: pointer;
-    color: var(--primary-color);
     text-align: center;
-    margin: 1rem 0;
-    transition: transform 0.3s;
-}
-
-#toggleIcon:hover {
-    transform: translateY(3px);
+    margin: 2rem auto;
+    font-size: 2rem;
+    color: var(--primary-color);
+    animation: bounce 2s infinite;
 }
 
 #appDetailsTable {
     margin: 2rem auto;
     width: 90%;
-    max-width: 800px;
-}
-
-#appDetailsTable table {
-    width: 100%;
+    max-width: 1000px;
     border-collapse: collapse;
-    background: rgba(26, 26, 26, 0.8);
     backdrop-filter: blur(10px);
 }
 
 #appDetailsTable th, #appDetailsTable td {
     padding: 1rem;
-    border: 1px solid rgba(0, 255, 136, 0.2);
-}
-
-#appDetailsTable th {
-    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(var(--primary-color), 0.3);
 }
 
 .performance-info {
     position: fixed;
-    bottom: 1rem;
-    right: 1rem;
+    bottom: 20px;
+    right: 20px;
     background: rgba(0, 0, 0, 0.8);
-    padding: 0.5rem 1rem;
-    border-radius: 15px;
+    padding: 1rem;
+    border-radius: 10px;
     border: 1px solid var(--primary-color);
-    font-size: 0.9rem;
+    box-shadow: var(--text-glow);
 }
 
-@keyframes glow {
+/* Animations */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes fadeInUp {
     from {
-        text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        opacity: 0;
+        transform: translateY(20px);
     }
     to {
-        text-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
+@keyframes shine {
+    from {
+        transform: rotate(45deg) translate(-100%, -100%);
+    }
+    to {
+        transform: rotate(45deg) translate(100%, 100%);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .glowing-text h1 {
         font-size: 3rem;
     }
     
-    .container {
-        padding: 1rem;
-        margin: 1rem;
+    .subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
     }
     
     #appDetailsTable {
-        width: 95%;
-    }
-}
-
-body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(125deg, #000000, #1a1a1a, #002233, #001a1a);
-    background-size: 400% 400%;
-    z-index: -1;
-    animation: gradientMove 15s ease infinite;
-}
-
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
+        font-size: 0.9rem;
     }
 }
