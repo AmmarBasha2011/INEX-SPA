@@ -5,6 +5,7 @@ require_once 'functions/PHP/getEnvValue.php';
 require_once 'functions/PHP/classes/Cache.php';
 require_once 'functions/PHP/inexSpaHelper.php';
 require_once 'functions/PHP/useGemini.php';
+#
 
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
