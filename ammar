@@ -5,6 +5,12 @@ require_once 'functions/PHP/getEnvValue.php';
 require_once 'functions/PHP/classes/Cache.php';
 require_once 'functions/PHP/inexSpaHelper.php';
 require_once 'functions/PHP/useGemini.php';
+require_once 'functions/PHP/classes/Database.php';
+require_once 'functions/PHP/classes/SitemapGenerator.php';
+function executeStatement($sql, $params = [], $is_return = true) {
+    $DB = new Database();
+    return $DB->query($sql, $params, $is_return);
+}
 
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
@@ -31,6 +37,11 @@ $commands = [
     'ask:helper' => "Ask INEX SPA Helper",
     'ask:gemini' => "Ask Gemini",
     'serve' => 'Serve the application',
+    'clear:cache' => 'Clear all cache files',
+    'clear:db' => 'Clear all DB files',
+    'clear:db:tables' => 'Clear all DB tables',
+    'clear:routes' => 'Clear all route files',
+    'make:sitemap' => 'Generate sitemap.xml',
     'list' => 'List all commands'
 ];
 
@@ -241,6 +252,35 @@ if ($command === "serve") {
     $port = $args['1'] ?? 8000;
     echo "Serving on http://localhost:$port\n";
     exec("php -S localhost:$port -t web");
+    exit(0);
+}
+
+if ($command === 'clear:cache') {
+    array_map("unlink", glob("cache/*"));
+    echo "Cache cleared!\n";
+    exit(0);
+}
+
+if ($command === 'clear:db') {
+    array_map("unlink", glob("db/*"));
+    echo "DB files cleared!\n";
+    exit(0);
+}
+
+if ($command === 'clear:db:tables') {
+    require_once 'functions/PHP/classes/ClearDBTables.php';
+    exit(0);
+}
+
+if ($command === "clear:routes") {
+    array_map("unlink", glob("web/*"));
+    echo "Route files cleared!\n";
+    exit(0);
+}
+
+if ($command === 'make:sitemap') {
+    SitemapGenerator::generate();
+    echo "Sitemap generated!\n";
     exit(0);
 }
 

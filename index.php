@@ -14,6 +14,7 @@ if (getEnvValue('DB_USE') == 'true') {
         $DB = new Database();
         return $DB->query($sql, $params, $is_return);
     }
+    require_once 'functions/PHP/runDB.php';
 }
 if (getEnvValue('REQUIRED_HTTPS') == 'true' && $_SERVER['HTTPS'] != 'on') {
     header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
@@ -51,6 +52,11 @@ if (getEnvValue('USE_CACHE') == 'true') {
 }
 require_once 'functions/PHP/inexSpaHelper.php';
 require_once 'functions/PHP/useGemini.php';
+if (getEnvValue('USE_RATELIMITER') == 'true') {
+    require_once 'functions/PHP/classes/RateLimiter.php';
+}
+require_once 'functions/PHP/classes/SitemapGenerator.php';
+require_once 'functions/PHP/classes/Layout.php';
 require_once 'functions/PHP/getPage.php';
 getPage(isset($_GET['page']) ? $_GET['page'] : '');
 ?>

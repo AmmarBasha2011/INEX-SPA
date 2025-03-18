@@ -35,6 +35,10 @@ RewriteRule ^db/.*$ index.php?page=$0 [L,QSA]
 RewriteRule ^ammar$ index.php?page=$0 [L,QSA]
 RewriteRule ^.gitignore$ index.php?page=$0 [L,QSA]
 RewriteRule ^cache/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^readme/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^.env.example$ index.php?page=.env.example [L,QSA]
+RewriteRule ^SUMMARY.md$ index.php?page=SUMMARY.md [L,QSA]
+RewriteRule ^layouts/.*$ index.php?page=$0 [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
