@@ -46,10 +46,16 @@ my-project/
 ├── db/
 ├── public/
 ├── web/
-├── .env
+├── .env.example
 ├── .htaccess
 ├── index.php
 ├── LICENSE.md
+├── readme/
+├── storage/
+├── layouts/
+├── ammar
+├── SUMMARY.md
 ├── README.md
+├── .gitignore
 └── SECURITY.md
 ```
