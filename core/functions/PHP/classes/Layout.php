@@ -21,13 +21,13 @@ class Layout {
     }
 
     public static function render($layoutName, $contentFile, $requestType = 'GET', $data = []) {
-        $layoutPath = __DIR__ . "/../../../layouts/$layoutName.php";
+        $layoutPath = __DIR__ . "/../../../../layouts/$layoutName.php";
         
         // دعم البحث عن المسارات الديناميكية و requestType
         $contentPaths = [
-            __DIR__ . "/../../../web/$contentFile.php", // المسار العادي
-            __DIR__ . "/../../../web/{$contentFile}_dynamic.php", // المسار الديناميكي
-            __DIR__ . "/../../../web/{$contentFile}_request_$requestType.php" // المسار مع نوع الطلب
+            __DIR__ . "/../../../../web/$contentFile.php", // المسار العادي
+            __DIR__ . "/../../../../web/{$contentFile}_dynamic.php", // المسار الديناميكي
+            __DIR__ . "/../../../../web/{$contentFile}_request_$requestType.php" // المسار مع نوع الطلب
         ];
         
         $foundContentPath = null;

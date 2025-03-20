@@ -1,6 +1,6 @@
 <?php
 function runDB() {
-    $files = glob(__DIR__ . '/../../db/*.sql');
+    $files = glob(__DIR__ . '/../../../db/*.sql');
     foreach ($files as $file) {
         echo "Running: " . basename($file) . "\n";
         executeSQLFilePDO(

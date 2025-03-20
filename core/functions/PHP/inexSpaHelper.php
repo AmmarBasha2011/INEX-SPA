@@ -93,7 +93,7 @@ function callGeminiApi($url, $apiKey, $payload) {
  */
 function getKnowledgeContent() {
     // Try to fetch the README.md from GitHub
-    $readmeUrl = __DIR__ . "/train.txt";
+    $readmeUrl = __DIR__ . "/train.md";
     
     // $ch = curl_init($readmeUrl);
     // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

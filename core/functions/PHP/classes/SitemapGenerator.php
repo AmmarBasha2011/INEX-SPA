@@ -2,7 +2,7 @@
 
 class SitemapGenerator {
     public static function generate() {
-        $routesDir = realpath(__DIR__ . "/../../../web/"); // Set correct path
+        $routesDir = realpath(__DIR__ . "/../../../../web/"); // Set correct path
         if (!$routesDir) {
             die("Error: Routes directory not found.");
         }
@@ -18,7 +18,7 @@ class SitemapGenerator {
         }
 
         $xml .= "</urlset>";
-        file_put_contents(__DIR__ . "/../../../public/sitemap.xml", $xml); // Save to public
+        file_put_contents(__DIR__ . "/../../../../public/sitemap.xml", $xml); // Save to public
     }
 
     private static function getRoutes($dir, $basePath = '') {

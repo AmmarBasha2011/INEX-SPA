@@ -1,12 +1,14 @@
 #!/usr/bin/env php
 <?php
-require_once 'functions/PHP/executeSQLFilePDO.php';
-require_once 'functions/PHP/getEnvValue.php';
-require_once 'functions/PHP/classes/Cache.php';
-require_once 'functions/PHP/inexSpaHelper.php';
-require_once 'functions/PHP/useGemini.php';
-require_once 'functions/PHP/classes/Database.php';
-require_once 'functions/PHP/classes/SitemapGenerator.php';
+require_once 'core/functions/PHP/executeSQLFilePDO.php';
+require_once 'core/functions/PHP/getEnvValue.php';
+require_once 'core/functions/PHP/classes/Cache.php';
+require_once 'core/functions/PHP/inexSpaHelper.php';
+require_once 'core/functions/PHP/useGemini.php';
+require_once 'core/functions/PHP/classes/Database.php';
+require_once 'core/functions/PHP/classes/SitemapGenerator.php';
+require_once 'core/functions/PHP/getSlashData.php';
+require_once 'core/functions/PHP/classes/Session.php';
 function executeStatement($sql, $params = [], $is_return = true) {
     $DB = new Database();
     return $DB->query($sql, $params, $is_return);
@@ -15,6 +17,7 @@ function executeStatement($sql, $params = [], $is_return = true) {
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
 define('CACHE_FOLDER', __DIR__ . '/cache');
+define('LANG_FOLDER', __DIR__ . '/lang');
 
 // تأكد من وجود المجلدات المطلوبة
 if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
@@ -23,26 +26,35 @@ if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
 
 // أوامر Ammar CLI
 $commands = [
-    'make:db' => 'Create a new DB File',
-    'make:route' => 'Create a new Route File',
-    'delete:route' => 'Delete an existing Route File',
-    'delete:db' => 'Delete an existing DB File',
+    'list' => 'List all commands',
     'list:routes' => 'List all route files',
     'list:db' => 'List all database files',
-    'run:db' => 'Run all .sql files in db folder',
+    'list:import' => 'List all libraries',
+    'list:lang' => 'List all languages',
+    'make:db' => 'Create a new DB File',
+    'make:route' => 'Create a new Route File',
     'make:cache' => 'Create a new cache entry',
+    'make:sitemap' => 'Generate sitemap.xml',
+    'make:session' => "Create a new session",
+    'make:lang' => "Create a new language file",
     'get:cache' => 'Retrieve a cache entry',
+    'get:session' => 'Retrieve a session entry',
+    'install:import' => 'Install a new library',
     'update:cache' => 'Update an existing cache entry',
+    'delete:route' => 'Delete an existing Route File',
+    'delete:db' => 'Delete an existing DB File',
     'delete:cache' => 'Delete a cache entry',
+    'delete:import' => 'Delete an import',
+    'delete:session' => 'Delete a session',
+    'delete:lang' => "Delete a language file",
     'ask:helper' => "Ask INEX SPA Helper",
     'ask:gemini' => "Ask Gemini",
-    'serve' => 'Serve the application',
     'clear:cache' => 'Clear all cache files',
     'clear:db' => 'Clear all DB files',
     'clear:db:tables' => 'Clear all DB tables',
     'clear:routes' => 'Clear all route files',
-    'make:sitemap' => 'Generate sitemap.xml',
-    'list' => 'List all commands'
+    'run:db' => 'Run all .sql files in db folder',
+    'serve' => 'Serve the application',
 ];
 
 $command = $argv[1] ?? null;
@@ -62,8 +74,8 @@ if (!$command || $command === 'list') {
 }
 
 if ($command === 'make:db') {
-    $action = $args['1'] ?? readline("1- What's the DB file for (create, delete, addFieldTo): ");
-    if (!in_array($action, ['create', 'delete', 'addFieldTo'])) {
+    $action = $args['1'] ?? readline("1- What's the DB file for (create, delete, addFieldTo, truncate, rename, modify, removeColumn): ");
+    if (!in_array($action, ['create', 'delete', 'addFieldTo', 'truncate', 'rename', 'modify', 'removeColumn'])) {
         exit("Invalid action!\n");
     }
 
@@ -78,6 +90,10 @@ if ($command === 'make:db') {
         'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
         'delete' => "DROP TABLE IF EXISTS $table;\n",
         'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
+        'truncate' => "TRUNCATE TABLE $table;\n",
+        'rename' => "RENAME TABLE $table TO new_name;\n",
+        'modify' => "ALTER TABLE $table MODIFY COLUMN column_name VARCHAR(255);\n",
+        'removeColumn' => "ALTER TABLE $table DROP COLUMN column_name;\n",
         default => ''
     };
     
@@ -93,16 +109,32 @@ if ($command === 'make:route') {
     $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic? (yes/no): ")) === 'yes';
     
     if ($isDynamic) {
-        $filename = "{$route}_dynamic.php";
+        $filename = "{$route}_dynamic";
     } else {
         $method = strtoupper($args['3'] ?? readline("3- What's available Type of request (GET, POST, PUT, PATCH, DELETE): "));
         if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             exit("Invalid request type!\n");
         }
-        $filename = "{$route}_request_{$method}.php";
+        $filename = "{$route}_request_{$method}";
+    }
+
+    $isAPI = strtolower($args['3'] ?? readline("3- Is this API? (yes,no): ")) === "yes";
+
+    if ($isAPI) {
+        $filename .= "_api.php";
+    } else {
+        $filename .= ".php";
+    }
+
+    $filePath = WEB_FOLDER . '/' . $filename;
+
+    if (getSlashData($filename) != "Not Found") {
+        $parentDirectory = dirname($filePath);
+        if (!is_dir($parentDirectory)) {
+            mkdir($parentDirectory, 0777, true);
+        }
     }
     
-    $filePath = WEB_FOLDER . '/' . $filename;
     file_put_contents($filePath, "<?php\n// Route handler for $route\n");
     echo "Route file created: $filename\n";
     exit(0);
@@ -119,7 +151,13 @@ if ($command === 'delete:route') {
         "{$route}_request_POST.php",
         "{$route}_request_PUT.php",
         "{$route}_request_PATCH.php",
-        "{$route}_request_DELETE.php"
+        "{$route}_request_DELETE.php",
+        "{$route}_request_GET_api.php",
+        "{$route}_request_POST_api.php",
+        "{$route}_request_PUT_api.php",
+        "{$route}_request_PATCH_api.php",
+        "{$route}_request_DELETE_api.php",
+        "{$route}_dynamic_api.php"
     ];
     
     $deleted = false;
@@ -156,27 +194,39 @@ if ($command === 'delete:db') {
 }
 
 if ($command === 'list:routes') {
-    $files = glob(WEB_FOLDER . '/*.php');
+    $files = array_merge(
+        glob(WEB_FOLDER . '/*.php'),
+        glob(WEB_FOLDER . '/**/*.php')
+    );
     echo "Available routes:\n";
     foreach ($files as $file) {
-        echo "  " . basename($file) . "\n";
+        $relativePath = str_replace(WEB_FOLDER . '/', '', $file);
+        echo "  " . $relativePath . "\n";
     }
     exit(0);
 }
 
 if ($command === 'list:db') {
-    $files = glob(DB_FOLDER . '/*.sql');
+    $files = array_merge(
+        glob(DB_FOLDER . '/*.sql'),
+        glob(DB_FOLDER . '/**/*.sql')
+    );
     echo "Available DB files:\n";
     foreach ($files as $file) {
-        echo "  " . basename($file) . "\n";
+        $relativePath = str_replace(DB_FOLDER . '/', '', $file);
+        echo "  " . $relativePath . "\n";
     }
     exit(0);
 }
 
 if ($command === 'run:db') {
-    $files = glob(DB_FOLDER . '/*.sql');
+    $files = array_merge(
+        glob(DB_FOLDER . '/*.sql'),
+        glob(DB_FOLDER . '/**/*.sql')
+    );
     foreach ($files as $file) {
-        echo "Running: " . basename($file) . "\n";
+        $relativePath = str_replace(DB_FOLDER . '/', '', $file);
+        echo "Running: " . $relativePath . "\n";
         executeSQLFilePDO(
             getEnvValue('DB_HOST'), 
             getEnvValue('DB_USER'), 
@@ -281,6 +331,163 @@ if ($command === "clear:routes") {
 if ($command === 'make:sitemap') {
     SitemapGenerator::generate();
     echo "Sitemap generated!\n";
+    exit(0);
+}
+
+if ($command === 'install:import') {
+    $link = $args['1'] ?? readline("1- Enter Git repository URL: ");
+    if (!filter_var($link, FILTER_VALIDATE_URL)) {
+        exit("Invalid URL provided!\n");
+    }
+
+    // Extract repo name from URL
+    $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+    
+    $importDir = __DIR__ . '/import';
+    $repoDir = $importDir . '/' . $repoName;
+    
+    if (!is_dir($importDir)) {
+        mkdir($importDir);
+    }
+
+    echo "Cloning repository...\n";
+    $command = "git clone $link $repoDir";
+    exec($command, $output, $returnVar);
+
+    if ($returnVar !== 0) {
+        echo "Error cloning repository!\n";
+        exit(1);
+    }
+
+    // Update package.json
+    $packageJsonPath = $importDir . '/package.json';
+    $packageData = [];
+    
+    if (file_exists($packageJsonPath)) {
+        $packageData = json_decode(file_get_contents($packageJsonPath), true) ?? [];
+    }
+
+    $packageData['dependencies'][$repoName] = $link;
+    
+    file_put_contents($packageJsonPath, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+    echo "Repository cloned successfully to import/$repoName!\n";
+    echo "Package.json updated with new dependency.\n";
+    exit(0);
+}
+
+if ($command === 'list:import') {
+    if (!is_dir(__DIR__ . '/import')) {
+        echo "No imports found!\n";
+        exit(0);
+    }
+    $imports = array_diff(scandir(__DIR__ . '/import'), ['.', '..']);
+    if (empty($imports)) {
+        echo "No imports found!\n";
+    } else {
+        echo "Available imports:\n";
+        foreach ($imports as $import) {
+            if ($import === "package.json") {
+                break;
+            }
+            echo "  $import\n";
+        }
+    }
+    exit(0);
+}
+
+if ($command === 'delete:import') {
+    $name = $args['1'] ?? readline("1- Enter import name to delete: ");
+    $importDir = __DIR__ . '/import/' . $name;
+    
+    if (!is_dir($importDir)) {
+        exit("Import not found: $name\n");
+    }
+
+    // Remove directory recursively
+    $files = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($importDir, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::CHILD_FIRST
+    );
+    
+    foreach ($files as $file) {
+        if ($file->isDir()) {
+            rmdir($file->getRealPath());
+        } else {
+            unlink($file->getRealPath());
+        }
+    }
+    rmdir($importDir);
+
+    // Update package.json
+    $packageJsonPath = __DIR__ . '/import/package.json';
+    if (file_exists($packageJsonPath)) {
+        $packageData = json_decode(file_get_contents($packageJsonPath), true) ?? [];
+        if (isset($packageData['dependencies'][$name])) {
+            unset($packageData['dependencies'][$name]);
+            file_put_contents($packageJsonPath, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
+    }
+
+    echo "Import deleted: $name\n";
+    exit(0);
+}
+
+if ($command === "make:session") {
+    $key = $args['1'] ?? readline("1- What's key? ");
+    $value = $args['2'] ?? readline("2- What's value? ");
+    Session::make($key, $value);
+    echo "Session Created!!!\n";
+    exit(0);
+}
+
+if ($command === "get:session") {
+    $key = $args['1'] ?? readline("1- What's key? ");
+    echo "Session Value: " . Session::get($key) . "\n";
+    exit(0);
+}
+
+if ($command === "delete:session") {
+    $key = $args['1'] ?? readline("1- What's key? ");
+    Session::delete($key);
+    echo "Session Deleted!!!\n";
+    exit(0);
+}
+
+if ($command === "make:lang") {
+    $langName = $args['1'] ?? readline("1- What's Language Name? ");
+    $file = LANG_FOLDER . "/$langName.json";
+    if (file_exists($file)) {
+        echo "Language file already exists!\n";
+    } else {
+        file_put_contents($file, "{}\n");
+        echo "Language file created: $file\n";
+    }
+    exit(0);
+}
+
+if ($command === "delete:lang") {
+    $langName = $args['1'] ?? readline("1- What's Language Name? ");
+    $file = LANG_FOLDER . "/$langName.json";
+    if (file_exists($file)) {
+        unlink($file);
+        echo "Deleted language file: $file\n";
+    } else {
+        echo "Language file not found!\n";
+    }
+    exit(0);
+}
+
+if ($command === "list:lang") {
+    $files = glob(LANG_FOLDER . "/*.json");
+    if (!$files) {
+        echo "No language files found!\n";
+        return;
+    }
+    echo "Available languages:\n";
+    foreach ($files as $file) {
+        echo "- " . basename($file, ".json") . "\n";
+    }
     exit(0);
 }
 

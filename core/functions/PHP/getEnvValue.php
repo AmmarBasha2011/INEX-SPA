@@ -1,7 +1,7 @@
 <?php
 function getEnvValue($key) {
     // Use realpath to ensure correct path resolution
-    $envPath = realpath(__DIR__ . '/../../.env');
+    $envPath = realpath(__DIR__ . '/../../../.env');
     
     // Early return if file doesn't exist
     if (!$envPath || !file_exists($envPath)) {
