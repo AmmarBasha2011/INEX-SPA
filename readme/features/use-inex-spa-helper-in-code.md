@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Use INEX SPA Helper in code
 
 Now, you can chat with `INEX SPA Helper` but by code:
