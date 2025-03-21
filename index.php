@@ -50,7 +50,6 @@ if (getEnvValue('USE_CACHE') == 'true') {
         return Cache::update($key, $newData);
     }
 }
-require_once 'core/functions/PHP/inexSpaHelper.php';
 require_once 'core/functions/PHP/useGemini.php';
 if (getEnvValue('USE_RATELIMITER') == 'true') {
     require_once 'core/functions/PHP/classes/RateLimiter.php';

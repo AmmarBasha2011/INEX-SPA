@@ -3,7 +3,6 @@
 require_once 'core/functions/PHP/executeSQLFilePDO.php';
 require_once 'core/functions/PHP/getEnvValue.php';
 require_once 'core/functions/PHP/classes/Cache.php';
-require_once 'core/functions/PHP/inexSpaHelper.php';
 require_once 'core/functions/PHP/useGemini.php';
 require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/SitemapGenerator.php';
@@ -16,7 +15,7 @@ function executeStatement($sql, $params = [], $is_return = true) {
 
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
-define('CACHE_FOLDER', __DIR__ . '/cache');
+define('CACHE_FOLDER', __DIR__ . '/core/cache');
 define('LANG_FOLDER', __DIR__ . '/lang');
 
 // تأكد من وجود المجلدات المطلوبة
@@ -47,7 +46,6 @@ $commands = [
     'delete:import' => 'Delete an import',
     'delete:session' => 'Delete a session',
     'delete:lang' => "Delete a language file",
-    'ask:helper' => "Ask INEX SPA Helper",
     'ask:gemini' => "Ask Gemini",
     'clear:cache' => 'Clear all cache files',
     'clear:db' => 'Clear all DB files',
@@ -276,17 +274,6 @@ if ($command === 'delete:cache') {
     exit(0);
 }
 
-if ($command === 'ask:helper') {
-    $question = $args['1'] ?? readline("1- What's your question? ");
-    $inexspahelper = json_decode(inexSpaHelper($question), true);
-    if ($inexspahelper['success'] == true) {
-        echo "Response: " . $inexspahelper['message'];
-    } else {
-        echo "Error: " . $inexspahelper['error'];
-    }
-    exit(0);
-}
-
 if ($command === 'ask:gemini') {
     $question = $args['1'] ?? readline("1- What's your question? ");
     $gemini = json_decode(useGemini($question), true);
@@ -343,11 +330,11 @@ if ($command === 'install:import') {
     // Extract repo name from URL
     $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
     
-    $importDir = __DIR__ . '/import';
+    $importDir = __DIR__ . '/core/import';
     $repoDir = $importDir . '/' . $repoName;
     
     if (!is_dir($importDir)) {
-        mkdir($importDir);
+        mkdir($importDir, 0777, true);
     }
 
     echo "Cloning repository...\n";
@@ -371,24 +358,25 @@ if ($command === 'install:import') {
     
     file_put_contents($packageJsonPath, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-    echo "Repository cloned successfully to import/$repoName!\n";
+    echo "Repository cloned successfully to core/import/$repoName!\n";
     echo "Package.json updated with new dependency.\n";
     exit(0);
 }
 
 if ($command === 'list:import') {
-    if (!is_dir(__DIR__ . '/import')) {
+    $importDir = __DIR__ . '/core/import';
+    if (!is_dir($importDir)) {
         echo "No imports found!\n";
         exit(0);
     }
-    $imports = array_diff(scandir(__DIR__ . '/import'), ['.', '..']);
+    $imports = array_diff(scandir($importDir), ['.', '..']);
     if (empty($imports)) {
         echo "No imports found!\n";
     } else {
         echo "Available imports:\n";
         foreach ($imports as $import) {
             if ($import === "package.json") {
-                break;
+                continue;
             }
             echo "  $import\n";
         }
@@ -398,7 +386,7 @@ if ($command === 'list:import') {
 
 if ($command === 'delete:import') {
     $name = $args['1'] ?? readline("1- Enter import name to delete: ");
-    $importDir = __DIR__ . '/import/' . $name;
+    $importDir = __DIR__ . '/core/import/' . $name;
     
     if (!is_dir($importDir)) {
         exit("Import not found: $name\n");
@@ -420,7 +408,7 @@ if ($command === 'delete:import') {
     rmdir($importDir);
 
     // Update package.json
-    $packageJsonPath = __DIR__ . '/import/package.json';
+    $packageJsonPath = __DIR__ . '/core/import/package.json';
     if (file_exists($packageJsonPath)) {
         $packageData = json_decode(file_get_contents($packageJsonPath), true) ?? [];
         if (isset($packageData['dependencies'][$name])) {
