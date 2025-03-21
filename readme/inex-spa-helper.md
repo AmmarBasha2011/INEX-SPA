@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # INEX SPA Helper
 
 ## INEX SPA Helper: A New Era of Assistance

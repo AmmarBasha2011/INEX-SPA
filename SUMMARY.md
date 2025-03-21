@@ -126,6 +126,7 @@
       * [Show Forms Route](readme/notes/naming-of-routes/show-forms-route.md)
     * [INEX SPA Helper in Command Line](readme/notes/inex-spa-helper-in-command-line.md)
     * [Additional Notes](readme/notes/additional-notes.md)
+    * [Add .git suffix](readme/notes/add-.git-suffix.md)
   * [Best Practices](readme/best-practices/README.md)
     * [Code Organization](readme/best-practices/code-organization.md)
     * [Security](readme/best-practices/security.md)
