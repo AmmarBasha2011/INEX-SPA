@@ -57,6 +57,7 @@
       * [Route Management](readme/ammar-helper/inline-commands/route-management.md)
       * [Database Operations](readme/ammar-helper/inline-commands/database-operations.md)
       * [Cache Operations](readme/ammar-helper/inline-commands/cache-operations.md)
+      * [INEX SPA Helper](readme/ammar-helper/inline-commands/inex-spa-helper.md)
       * [AI Assistance](readme/ammar-helper/inline-commands/ai-assistance.md)
       * [Development Server](readme/ammar-helper/inline-commands/development-server.md)
       * [Library Manager](readme/ammar-helper/inline-commands/library-manager.md)
@@ -159,3 +160,4 @@
     * [Don't match INEX SPA](how-to-create-a-new-library/notes/dont-match-inex-spa.md)
 * [MIT License](LICENSE.md)
 * [Security Policy](SECURITY.md)
+* [Changelog](changelog.md)
