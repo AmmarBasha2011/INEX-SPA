@@ -3,6 +3,7 @@
 You can manage cookies more easily by:
 
 ```php
+<?php
 // Create cookie
 CookieManager::set("username", "Ammar", 7);
 CookieManager::set("email", "ammar@example.com", 7);
