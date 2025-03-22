@@ -103,6 +103,7 @@ if ($command === 'make:db') {
 if ($command === 'make:route') {
     $route = $args['1'] ?? readline("1- What's route name? ");
     if (!$route) exit("Route name is required!\n");
+    $filedata = "<?php\n// Route handler for $route\n";
     
     $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic? (yes/no): ")) === 'yes';
     
@@ -113,6 +114,9 @@ if ($command === 'make:route') {
         if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             exit("Invalid request type!\n");
         }
+        if ($method == 'POST') {
+            $filedata .= "validateCsrfToken();\n";
+        }
         $filename = "{$route}_request_{$method}";
     }
 
@@ -120,6 +124,9 @@ if ($command === 'make:route') {
 
     if ($isAPI) {
         $filename .= "_api.php";
+        if ($method != 'POST') {
+            $filedata .= "validateCsrfToken();\n";
+        }
     } else {
         $filename .= ".php";
     }
@@ -133,7 +140,7 @@ if ($command === 'make:route') {
         }
     }
     
-    file_put_contents($filePath, "<?php\n// Route handler for $route\n");
+    file_put_contents($filePath, $filedata);
     echo "Route file created: $filename\n";
     exit(0);
 }

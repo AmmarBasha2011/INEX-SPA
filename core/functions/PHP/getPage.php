@@ -21,6 +21,10 @@ function loadScripts() {
             'core/functions/JS/submitDataWR.js',
         ];
         
+        if (getEnvValue('USE_COOKIE') == 'true') {
+            $scripts[] = 'core/functions/JS/classes/CookieManager.js'; // Correct way to append an element to an array
+        }        
+        
         foreach ($scripts as $script) {
             if (file_exists($script)) {
                 echo '<script>' . file_get_contents($script) . '</script>';
