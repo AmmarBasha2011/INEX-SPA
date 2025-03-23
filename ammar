@@ -312,7 +312,7 @@ if ($command === 'clear:db') {
 }
 
 if ($command === 'clear:db:tables') {
-    require_once 'functions/PHP/classes/ClearDBTables.php';
+    require_once 'core/functions/PHP/classes/ClearDBTables.php';
     exit(0);
 }
 
