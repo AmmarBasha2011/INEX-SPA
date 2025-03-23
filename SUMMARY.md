@@ -1,8 +1,10 @@
 # Table of contents
 
+* [🚀 INEX Team Documentation 💡🌍](README.md)
+
 ## INEX SPA
 
-* [INEX SPA](README.md)
+* [INEX SPA Documentation](<README (1).md>)
   * [INEX SPA Helper](inex-spa/readme/inex-spa-helper.md)
   * [INEX Blog](inex-spa/readme/inex-blog.md)
   * [Installation](inex-spa/readme/installation/README.md)
