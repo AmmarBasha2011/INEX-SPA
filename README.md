@@ -105,7 +105,7 @@ The INEX Blog is a platform where we share insights, tutorials, project updates,
 * **Exclusive interviews and case studies**, showcasing how INEX technologies are being used in real-world scenarios.
 * **Security and ethical AI discussions**, focusing on responsible AI development and data privacy.
 
-### 🔮 Our Plan for the Future 🚀🌍
+### 🔮 Our Plan for the Future 🚀
 
 At INEX, we are constantly evolving and pushing the boundaries of technology. Our future plans focus on expanding our capabilities, improving our existing projects, and pioneering new innovations. Here’s what we are working towards:
 
