@@ -8,6 +8,8 @@ icon: user-alien
 
 I am **Ammar**, a highly skilled **software developer, mathematician, and AI researcher** with over **5 years** of experience in programming. I am the **founder of INEX Team**, a professional tech group working on high-performance applications and frameworks. My ultimate goal is to become a **scientist**, not just a programmer.
 
+### Technical Skills
+
 * **Expert in:** PHP, JavaScript, C++, Python, and more.
 * **Linux Enthusiast:** Using **Linux Mint (MATE Desktop)** as my main OS.
 * **AI & Algorithms:** Developed **Atiyat**, the first **Artificial General Intelligence (AGI)** and **Extra Language Model (ELM)**.
@@ -17,7 +19,7 @@ I am **Ammar**, a highly skilled **software developer, mathematician, and AI res
 
 #### 🔹 INEX SPA (PHP Framework)
 
-#### A **high-performance PHP framework** similar to **Next.js/React** but much **lighter and faster**.
+A **high-performance PHP framework** similar to **Next.js/React** but much **lighter and faster**.
 
 * **Ultra-fast (1ms execution time).**
 * **CSRF Protection, Caching, Rate Limiter, Multilanguage Support.**
@@ -48,6 +50,8 @@ A **modern control panel** with over **100 features**, including:
 * **Favorite Subjects:** **Mathematics** & **English**.
 * **Fast Learner:** I can **memorize lessons in under 5 minutes**, while others need an hour.
 * **Personality:** Very **respectful**, with a strong **moral background**.
+* **Cultural Background:** Living in a **rural area**, from the **lineage of "Aliyah Ahmed"**, a highly respected figure in my community.
+* **No experience dealing with girls** due to my environment, but recently started **thinking about love** because of a friend’s conversation.
 
 ***
 
