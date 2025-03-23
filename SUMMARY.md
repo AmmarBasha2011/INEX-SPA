@@ -177,3 +177,14 @@
   * [v2.12.39-beta.3](changelog/v2.12.39-beta.3.md)
   * [v1.1.3-beta.2](changelog/v1.1.3-beta.2.md)
   * [v1.0-beta.1](changelog/v1.0-beta.1.md)
+
+## About me
+
+* [Who am I?](about-me/who-am-i.md)
+* [Quotes](about-me/quotes/README.md)
+  * ["Build Faster, Code Less"](about-me/quotes/build-faster-code-less.md)
+  * ["Send POST, Cookie Found"](about-me/quotes/send-post-cookie-found.md)
+  * ["Use Cookie, Server Less"](about-me/quotes/use-cookie-server-less.md)
+  * ["Use Cache, More Faster"](about-me/quotes/use-cache-more-faster.md)
+  * ["Use Framework, Do More Without More Time"](about-me/quotes/use-framework-do-more-without-more-time.md)
+  * ["Use Translate, Over World"](about-me/quotes/use-translate-over-world.md)
