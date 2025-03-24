@@ -50,8 +50,6 @@ A **modern control panel** with over **100 features**, including:
 * **Favorite Subjects:** **Mathematics** & **English**.
 * **Fast Learner:** I can **memorize lessons in under 5 minutes**, while others need an hour.
 * **Personality:** Very **respectful**, with a strong **moral background**.
-* **Cultural Background:** Living in a **rural area**, from the **lineage of "Aliyah Ahmed"**, a highly respected figure in my community.
-* **No experience dealing with girls** due to my environment, but recently started **thinking about love** because of a friend’s conversation.
 
 ***
 
