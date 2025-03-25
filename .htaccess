@@ -44,6 +44,8 @@ RewriteRule ^vendor/.*$ index.php?page=$0 [L,QSA]
 RewriteRule ^core/.*$ index.php?page=$0 [L,QSA]
 RewriteRule ^how-to-create-a-new-library/.*$ index.php?page=$0 [L,QSA]
 RewriteRule ^changelog/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^about-me/.*$ index.php?page=$0 [L,QSA]
+RewriteRule ^inex-spa/.*$ index.php?page=$0 [L,QSA]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
