@@ -67,6 +67,8 @@
       * [Library Manager](inex-spa/readme/ammar-helper/inline-commands/library-manager.md)
       * [Session Manager](inex-spa/readme/ammar-helper/inline-commands/session-manager.md)
       * [Language Manager](inex-spa/readme/ammar-helper/inline-commands/language-manager.md)
+  * [Ahmed Template](inex-spa/readme/ahmed-template/README.md)
+    * [\{{\}}](inex-spa/readme/ahmed-template/undefined.md)
   * [FrameWork Structure](inex-spa/readme/framework-structure/README.md)
     * [Full Structure](inex-spa/readme/framework-structure/full-structure.md)
     * [FrameWork Folders](inex-spa/readme/framework-structure/framework-folders.md)
@@ -78,6 +80,7 @@
       * [db folder](inex-spa/readme/framework-structure/user-folders/db-folder.md)
       * [layouts folder](inex-spa/readme/framework-structure/user-folders/layouts-folder.md)
   * [Features](inex-spa/readme/features/README.md)
+    * [Ahmed Template](inex-spa/readme/features/ahmed-template.md)
     * [Cookie Management](inex-spa/readme/features/cookie-management/README.md)
       * [JavaScript (JS)](inex-spa/readme/features/cookie-management/javascript-js.md)
       * [PHP](inex-spa/readme/features/cookie-management/php.md)
@@ -124,6 +127,8 @@
     * [Use library](inex-spa/readme/libraries/use-library/README.md)
       * [Example 1](inex-spa/readme/libraries/use-library/example-1.md)
   * [Notes](inex-spa/readme/notes/README.md)
+    * [Should name .ahmed.php](inex-spa/readme/notes/should-name-.ahmed.php.md)
+    * [Don't delete "JS" folder](inex-spa/readme/notes/dont-delete-js-folder.md)
     * [Don't use these names in files](inex-spa/readme/notes/dont-use-these-names-in-files.md)
     * [Critical Framework Components](inex-spa/readme/notes/critical-framework-components/README.md)
       * [Error Pages Directory](inex-spa/readme/notes/critical-framework-components/error-pages-directory.md)
@@ -172,6 +177,7 @@
 ***
 
 * [Changelog](changelog/README.md)
+  * [v4.9-beta](changelog/v4.9-beta.md)
   * [v4.8.5-beta](changelog/v4.8.5-beta.md)
   * [v4.8-beta](changelog/v4.8-beta.md)
   * [v4.4-beta.10](changelog/v4.4-beta.10.md)
