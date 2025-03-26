@@ -1,7 +1,7 @@
 {
     "subtitle": "إطار عمل PHP عالي الأداء مشابه لـ NextJS/React، لكنه أخف وأسرع. مبني باستخدام PHP، بحجم أقل من 1 ميجابايت، ومحسّن للأداء، ومتوافق مع خوادم Apache القياسية.",
     "version": "الإصدار",
-    "edit-prompt": "لنبدأ بالتعديل على web/index.php!!!",
+    "edit-prompt": "لنبدأ بالتعديل على web/index.ahmed.php!!!",
     "get-started": "ابدأ الآن",
     "field": "الحقل",
     "value": "القيمة",

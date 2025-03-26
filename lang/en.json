@@ -1,7 +1,7 @@
 {
     "subtitle": "A High-Performance PHP Framework similar to NextJS/React, but lighter and faster. Built with PHP, under 1M, optimized for performance, and compatible with standard Apache servers.",
     "version": "Version",
-    "edit-prompt": "Let's Get Started by editing web/index.php!!!",
+    "edit-prompt": "Let's Get Started by editing web/index.ahmed.php!!!",
     "get-started": "Get Started",
     "field": "Field",
     "value": "Value",
