@@ -21,34 +21,6 @@ ErrorDocument 413 /errors/413.php
 ErrorDocument 414 /errors/414.php
 ErrorDocument 415 /errors/415.php
 
-RewriteRule ^functions/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^errors/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^.env index.php?page=.env [L,QSA]
-RewriteRule ^.htaccess$ index.php?page=.htaccess [L,QSA]
-RewriteRule ^LICENSE.md$ index.php?page=LICENSE.md [L,QSA]
-RewriteRule ^README.md$ index.php?page=README.md [L,QSA]
-RewriteRule ^SECURITY.md$ index.php?page=SECURITY.md [L,QSA]
-RewriteRule ^db/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^ammar$ index.php?page=$0 [L,QSA]
-RewriteRule ^.gitignore$ index.php?page=$0 [L,QSA]
-RewriteRule ^cache/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^storage/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^layouts/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^public/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^readme/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^web/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^.env.example$ index.php?page=$0 [L,QSA]
-RewriteRule ^SUMMARY.md$ index.php?page=$0 [L,QSA]
-RewriteRule ^import/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^vendor/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^core/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^how-to-create-a-new-library/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^changelog/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^about-me/.*$ index.php?page=$0 [L,QSA]
-RewriteRule ^inex-spa/.*$ index.php?page=$0 [L,QSA]
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
 
 RewriteCond %{REQUEST_URI} ^/.*/$

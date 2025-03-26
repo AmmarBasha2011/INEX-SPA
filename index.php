@@ -1,4 +1,6 @@
 <?php
+require_once 'core/functions/PHP/classes/AhmedTemplate.php';
+$Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';
 require_once 'core/functions/PHP/redirect.php';
 

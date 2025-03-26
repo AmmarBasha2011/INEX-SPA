@@ -21,13 +21,17 @@ class Layout {
     }
 
     public static function render($layoutName, $contentFile, $requestType = 'GET', $data = []) {
-        $layoutPath = __DIR__ . "/../../../../layouts/$layoutName.php";
+        global $Ahmed;
+
+        $layoutPath = __DIR__ . "/../../../../layouts/$layoutName.ahmed.php";
         
         // دعم البحث عن المسارات الديناميكية و requestType
         $contentPaths = [
-            __DIR__ . "/../../../../web/$contentFile.php", // المسار العادي
-            __DIR__ . "/../../../../web/{$contentFile}_dynamic.php", // المسار الديناميكي
-            __DIR__ . "/../../../../web/{$contentFile}_request_$requestType.php" // المسار مع نوع الطلب
+            __DIR__ . "/../../../../web/$contentFile.ahmed.php", // المسار العادي
+            __DIR__ . "/../../../../web/{$contentFile}_dynamic.ahmed.php", // المسار الديناميكي
+            __DIR__ . "/../../../../web/{$contentFile}_request_$requestType.ahmed.php", // المسار مع نوع الطلب
+            __DIR__ . "/../../../../web/{$contentFile}_dynamic_api.ahmed.php", // المسار الديناميكي
+            __DIR__ . "/../../../../web/{$contentFile}_request_{$requestType}_api.ahmed.php" // المسار مع نوع الطلب
         ];
         
         $foundContentPath = null;
@@ -46,7 +50,7 @@ class Layout {
         }
         
         extract($data);
-        include $layoutPath;
+        echo $Ahmed->render($layoutPath);
     }
 
     public static function section($section) {

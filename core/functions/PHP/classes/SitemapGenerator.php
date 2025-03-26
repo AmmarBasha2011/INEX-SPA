@@ -36,15 +36,21 @@ class SitemapGenerator {
                 $routes = array_merge($routes, self::getRoutes($fullPath, $routePath . '/'));
             } else {
                 // Extract the route name
-                if (preg_match('/^(.+)_dynamic\.php$/', $file, $matches)) {
-                    // Dynamic route: [route]_dynamic.php -> /route/{id}
-                    $routes[] = str_replace('.php', '', $routePath) . "/{id}";
-                } elseif (preg_match('/^(.+)_request_(GET|POST|PUT|DELETE)\.php$/', $file, $matches)) {
-                    // Request type route: [route]_request_[requestType].php -> /route
-                    $routes[] = str_replace('.php', '', $routePath);
+                if (preg_match('/^(.+)_dynamic\.ahmed\.php$/', $file, $matches)) {
+                    // Dynamic route: [route]_dynamic.ahmed.php -> /route/{id}
+                    $routes[] = str_replace('.ahmed.php', '', $routePath) . "/{id}";
+                } elseif (preg_match('/^(.+)_request_(GET|POST|PUT|DELETE)\.ahmed\.php$/', $file, $matches)) {
+                    // Request type route: [route]_request_[requestType].ahmed.php -> /route
+                    $routes[] = str_replace('.ahmed.php', '', $routePath);
+                } elseif (preg_match('/^(.+)_api\.ahmed\.php$/', $file, $matches)) {
+                    // API route: [route]_api.ahmed.php -> /route/api
+                    $routes[] = str_replace('.ahmed.php', '', $routePath) . "/api";
+                } elseif (preg_match('/^(.+)_dynamic_api\.ahmed\.php$/', $file, $matches)) {
+                    // Dynamic API route: [route]_dynamic_api.ahmed.php -> /route/api/{id}
+                    $routes[] = str_replace('.ahmed.php', '', $routePath) . "/api/{id}";
                 } else {
-                    // Normal route: [route].php
-                    $routes[] = str_replace('.php', '', $routePath);
+                    // Normal route: [route].ahmed.php
+                    $routes[] = str_replace('.ahmed.php', '', $routePath);
                 }
             }
         }
