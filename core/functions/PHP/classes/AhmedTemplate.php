@@ -77,9 +77,23 @@ class AhmedTemplate {
             '/@strlen\((.+?)\)/' => '<?= strlen($1) ?>',
             '/@trim\((.+?)\)/' => '<?= trim($1) ?>',
             '/@getData\("(.+?)"\)/' => '<?= $_GET["$1"] ?? "" ?>',
+            '/@setCookie\("(.+?)",\s*"(.+?)",\s*(.+?)\)/' => '<?php CookieManager::set("$1", "$2", $3); ?>',
+            '/@getCookie\("(.+?)"\)/' => '<?= CookieManager::get("$1") ?>',
+            '/@existsCookie\("(.+?)"\)/' => '<?= CookieManager::exists("$1") ? "true" : "false" ?>',
+            '/@deleteCookie\("(.+?)"\)/' => '<?php CookieManager::delete("$1"); ?>',
+            '/@getAllCookies()/' => '<?= json_encode(CookieManager::getAll()) ?>',
+            '/@makeSession\("(.+?)",\s*"(.+?)"\)/' => '<?php Session::make("$1", "$2"); ?>',
+            '/@getSession\("(.+?)"\)/' => '<?= Session::get("$1") ?>',
+            '/@deleteSession\("(.+?)"\)/' => '<?php Session::delete("$1"); ?>',
+            '/@useGemini\((.+?),\s*(.*?),\s*(.*?),\s*(.+?),\s*(.+?),\s*(.+?),\s*(.+?)\)/' => '<?= json_encode(useGemini($1, $2, $3, $4, $5, $6, $7)) ?>',
+            '/@setCache\("(.+?)",\s*"(.+?)",\s*(.+?)\)/' => '<?php setCache("$1", "$2", $3); ?>',
+            '/@getCache\("(.+?)"\)/' => '<?php getCache("$1") ?>',
+            '/@updateCache\("(.+?)",\s*"(.+?)"\)/' => '<?php updateCache("$1", "$2"); ?>',
+            '/@deleteCache\("(.+?)"\)/' => '<?php deleteCache("$1"); ?>',
+            '/@getSection\("(.+?)"\)/' => '<?= Layout::section("$1") ?>',
             '/@([a-zA-Z_][a-zA-Z0-9_]*)\((.*?)\)/' => '<?= $1($2) ?>',
             '/@([a-zA-Z_][a-zA-Z0-9_]*)/' => '<?= $1() ?>',
-        ];        
+        ];
 
         return preg_replace(array_keys($patterns), array_values($patterns), $content);
     }

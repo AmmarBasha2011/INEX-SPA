@@ -104,6 +104,10 @@
             <td>@getLang("use-lang")</td>
             <td>@getEnv("DETECT_LANGUAGE")</td>
         </tr>
+        <tr>
+            <td>@getLang("use-cookie")</td>
+            <td>@getEnv("USE_COOKIE")</td>
+        </tr>
     </table>
 </div>
 

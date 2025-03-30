@@ -22,5 +22,6 @@
     "gemini-endpoint": "Gemini EndPoint",
     "use-rate": "Use RateLimiter",
     "rph": "Requests Per Hour (RPH)",
-    "use-lang": "Use Language"
+    "use-lang": "Use Language",
+    "use-cookie": "Use Cookie"
 }

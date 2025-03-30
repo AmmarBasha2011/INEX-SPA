@@ -17,11 +17,14 @@ define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
 define('CACHE_FOLDER', __DIR__ . '/core/cache');
 define('LANG_FOLDER', __DIR__ . '/lang');
+define('LAYOUT_FOLDER', __DIR__ . '/layouts');
 
 // تأكد من وجود المجلدات المطلوبة
 if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
 if (!is_dir(WEB_FOLDER)) mkdir(WEB_FOLDER);
 if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
+if (!is_dir(LANG_FOLDER)) mkdir(LANG_FOLDER);
+if (!is_dir(LAYOUT_FOLDER)) mkdir(LAYOUT_FOLDER);
 
 // أوامر Ammar CLI
 $commands = [
@@ -36,6 +39,7 @@ $commands = [
     'make:sitemap' => 'Generate sitemap.xml',
     'make:session' => "Create a new session",
     'make:lang' => "Create a new language file",
+    'make:layout' => "Create a new layout file",
     'get:cache' => 'Retrieve a cache entry',
     'get:session' => 'Retrieve a session entry',
     'install:import' => 'Install a new library',
@@ -123,12 +127,12 @@ if ($command === 'make:route') {
     $isAPI = strtolower($args['3'] ?? readline("3- Is this API? (yes,no): ")) === "yes";
 
     if ($isAPI) {
-        $filename .= "_api.php";
+        $filename .= "_api.ahmed.php";
         if ($method != 'POST') {
             $filedata .= "validateCsrfToken();\n";
         }
     } else {
-        $filename .= ".php";
+        $filename .= ".ahmed.php";
     }
 
     $filePath = WEB_FOLDER . '/' . $filename;
@@ -150,19 +154,19 @@ if ($command === 'delete:route') {
     if (!$route) exit("Route name is required!\n");
     
     $patterns = [
-        "$route.php",
-        "{$route}_dynamic.php",
-        "{$route}_request_GET.php",
-        "{$route}_request_POST.php",
-        "{$route}_request_PUT.php",
-        "{$route}_request_PATCH.php",
-        "{$route}_request_DELETE.php",
-        "{$route}_request_GET_api.php",
-        "{$route}_request_POST_api.php",
-        "{$route}_request_PUT_api.php",
-        "{$route}_request_PATCH_api.php",
-        "{$route}_request_DELETE_api.php",
-        "{$route}_dynamic_api.php"
+        "$route.ahmed.php",
+        "{$route}_dynamic.ahmed.php",
+        "{$route}_request_GET.ahmed.php",
+        "{$route}_request_POST.ahmed.php",
+        "{$route}_request_PUT.ahmed.php",
+        "{$route}_request_PATCH.ahmed.php",
+        "{$route}_request_DELETE.ahmed.php",
+        "{$route}_request_GET_api.ahmed.php",
+        "{$route}_request_POST_api.ahmed.php",
+        "{$route}_request_PUT_api.ahmed.php",
+        "{$route}_request_PATCH_api.ahmed.php",
+        "{$route}_request_DELETE_api.ahmed.php",
+        "{$route}_dynamic_api.ahmed.php"
     ];
     
     $deleted = false;
@@ -200,8 +204,8 @@ if ($command === 'delete:db') {
 
 if ($command === 'list:routes') {
     $files = array_merge(
-        glob(WEB_FOLDER . '/*.php'),
-        glob(WEB_FOLDER . '/**/*.php')
+        glob(WEB_FOLDER . '/*.ahmed.php'),
+        glob(WEB_FOLDER . '/**/*.ahmed.php')
     );
     echo "Available routes:\n";
     foreach ($files as $file) {
@@ -482,6 +486,18 @@ if ($command === "list:lang") {
     echo "Available languages:\n";
     foreach ($files as $file) {
         echo "- " . basename($file, ".json") . "\n";
+    }
+    exit(0);
+}
+
+if ($command === "make:layout") {
+    $layoutName = $args['1'] ?? readline("1- What's Layout Name? ");
+    $file = LAYOUT_FOLDER . "/$layoutName.ahmed.php";
+    if (file_exists($file)) {
+        echo "Layout file already exists!\n";
+    } else {
+        file_put_contents($file, "{}\n");
+        echo "Layout file created: $file\n";
     }
     exit(0);
 }
