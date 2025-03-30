@@ -174,5 +174,13 @@ class UserAuth {
             return "User successfully registered.";
         }
         return "Error inserting user.";
-    }    
+    }
+
+    public static function checkUser() {
+        return isset($_SESSION['user_id']) && $_SESSION['user_id'] != "";
+    }
+
+    public static function logout() {
+        $_SESSION['user_id'] = "";
+    }
 }

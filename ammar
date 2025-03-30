@@ -8,6 +8,8 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/SitemapGenerator.php';
 require_once 'core/functions/PHP/getSlashData.php';
 require_once 'core/functions/PHP/classes/Session.php';
+require_once 'core/functions/PHP/classes/Validation.php';
+require_once 'core/functions/PHP/classes/UserAuth.php';
 function executeStatement($sql, $params = [], $is_return = true) {
     $DB = new Database();
     return $DB->query($sql, $params, $is_return);
@@ -40,6 +42,7 @@ $commands = [
     'make:session' => "Create a new session",
     'make:lang' => "Create a new language file",
     'make:layout' => "Create a new layout file",
+    'make:auth' => "Create an auth db file",
     'get:cache' => 'Retrieve a cache entry',
     'get:session' => 'Retrieve a session entry',
     'install:import' => 'Install a new library',
@@ -499,6 +502,19 @@ if ($command === "make:layout") {
         file_put_contents($file, "{}\n");
         echo "Layout file created: $file\n";
     }
+    exit(0);
+}
+
+if ($command == "make:auth") {
+    $action = "create";
+    $table = "users";
+    $timestamp = date('Y_m_d_H_i_s');
+    $filename = "{$action}{$table}Table_{$timestamp}.sql";
+    $filePath = DB_FOLDER . '/' . $filename;
+    $sqlTemplate = UserAuth::generateSQL();
+    
+    file_put_contents($filePath, $sqlTemplate);
+    echo "DB file created: $filename\n";
     exit(0);
 }
 
