@@ -91,7 +91,7 @@ if (file_exists($packagesJsonPath)) {
         }
     }
 }
-
+require_once 'functions.php';
 require_once 'core/functions/PHP/getPage.php';
 getPage($_GET['page'] ?? '');
 ?>
