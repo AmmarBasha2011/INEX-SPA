@@ -24,5 +24,6 @@
     "use-rate": "Use RateLimiter",
     "rph": "Requests Per Hour (RPH)",
     "use-lang": "Use Language",
-    "use-cookie": "Use Cookie"
+    "use-cookie": "Use Cookie",
+    "use-auth": "Use Auth"
 }

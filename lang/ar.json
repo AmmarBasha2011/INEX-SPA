@@ -24,5 +24,6 @@
     "use-rate": "استخدام محدد المعدل",
     "rph": "الطلبات في الساعة (RPH)",
     "use-lang": "استخدام اللغة",
-    "use-cookie": "استخدام Cookie"
+    "use-cookie": "استخدام Cookie",
+    "use-auth": "إستخدام التسجيل"
 }

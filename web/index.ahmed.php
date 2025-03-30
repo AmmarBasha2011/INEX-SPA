@@ -112,6 +112,10 @@
             <td>@getLang("use-cookie")</td>
             <td>@getEnv("USE_COOKIE")</td>
         </tr>
+        <tr>
+            <td>@getLang("use-auth")</td>
+            <td>@getEnv("USE_AUTH")</td>
+        </tr>
     </table>
 </div>
 

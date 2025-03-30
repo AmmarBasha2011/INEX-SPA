@@ -79,6 +79,10 @@ if ($detectLanguage) {
     $selectedLang = $_COOKIE['lang'] ?? 'en';
     Language::setLanguage($selectedLang);
 }
+require_once 'core/functions/PHP/classes/Validation.php';
+if (getEnvValue("USE_AUTH") == "true") {
+    require_once 'core/functions/PHP/classes/UserAuth.php';
+}
 
 $packagesJsonPath = __DIR__ . '/core/import/package.json';
 if (file_exists($packagesJsonPath)) {
