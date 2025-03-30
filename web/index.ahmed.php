@@ -69,9 +69,13 @@
             <td>@getEnv("DB_USE")</td>
         </tr>
         <tr>
+            <td>@getLang("db-check")</td>
+            <td>@getEnv("DB_CHECK")</td>
+        </tr>
+        <!-- <tr>
             <td>@getLang("req-https")</td>
             <td>@getEnv("REQUIRED_HTTPS")</td>
-        </tr>
+        </tr> -->
         <tr>
             <td>@getLang("use-boot")</td>
             <td>@getEnv("USE_BOOTSTRAP")</td>
