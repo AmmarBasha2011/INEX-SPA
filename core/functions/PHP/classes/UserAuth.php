@@ -48,13 +48,13 @@ class UserAuth {
         }
 
         // Remove last comma and add closing bracket
-        $sql = rtrim($sql, ",\n") . "\n);";
+        $sql .= "  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);";
 
         // Print generated SQL
         return $sql;
     }
 
-    public static function signIn($details, $saveInSession = true) {
+    public static function signIn($details) {
         // Ensure $details is a non-empty array
         if (!is_array($details) || empty($details)) {
             return false;
@@ -69,20 +69,18 @@ class UserAuth {
             $params[] = $value;
         }
     
-        // Join conditions with "AND"
-        $query = "SELECT * FROM users WHERE " . implode(" AND ", $conditions);
-    
-        $result = executeStatement($query, $params);
-
-        if (count($result) > 0 && $saveInSession == false) {
-            $_SESSION['user_id'] = $result[0]['id'];
+        $placeholders = implode(" AND ", array_map(fn($key) => "$key = ?", array_keys($details)));
+        $sql = "SELECT * FROM users WHERE $placeholders";
+        $newUser = executeStatement($sql, array_values($details));
+        if (count($newUser) > 0) {
+            $_SESSION['user_id'] = $newUser[0]['id'];
+            return "User Found";
+        } else {
+            return "User Not Found";
         }
-    
-        // Check if any user found
-        return $result && count($result) > 0;
     }
     
-    public static function signUp($details, $saveInSession = true) {
+    public static function signUp($details) {
         $jsonString = file_get_contents(JSON_FOLDER);
         
         if ($jsonString === false) {
@@ -165,15 +163,16 @@ class UserAuth {
         $columns = implode(", ", array_keys($details));
         $placeholders = implode(", ", array_fill(0, count($details), "?"));
         $sql = "INSERT INTO users ($columns) VALUES ($placeholders)";
-        
-        if (executeStatement($sql, array_values($details))) {
-            $newUser = executeStatement("SELECT id FROM users WHERE $placeholders", array_values($details));
-            if (!empty($newUser) && $saveInSession) {
-                $_SESSION['user_id'] = $newUser[0]['id'];
-            }
+        try {
+            executeStatement($sql, array_values($details));
+            $placeholders = implode(" AND ", array_map(fn($key) => "$key = ?", array_keys($details)));
+            $sql = "SELECT id FROM users WHERE $placeholders";
+            $newUser = executeStatement($sql, array_values($details))[0];
+            $_SESSION['user_id'] = $newUser['id'];
             return "User successfully registered.";
-        }
-        return "Error inserting user.";
+        } catch (Exception $e) {
+            return "Error inserting user: " . $e->getMessage();
+        }        
     }
 
     public static function checkUser() {
