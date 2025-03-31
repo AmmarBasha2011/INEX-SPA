@@ -48,7 +48,7 @@ class UserAuth {
         }
 
         // Remove last comma and add closing bracket
-        $sql = rtrim($sql, ",\n") . "\n);";
+        $sql .= "  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);";
 
         // Print generated SQL
         return $sql;
