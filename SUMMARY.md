@@ -236,6 +236,7 @@
 ***
 
 * [Changelog](changelog/README.md)
+  * [v4.9.3](changelog/v4.9.3.md)
   * [v4.9.1](changelog/v4.9.1.md)
   * [v4.9-beta](changelog/v4.9-beta.md)
   * [v4.8.5-beta](changelog/v4.8.5-beta.md)
