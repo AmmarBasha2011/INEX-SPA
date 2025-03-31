@@ -33,6 +33,7 @@
         * [make:session](inex-spa/readme/ammar-helper/extrenal-commands/make-commands/make-session.md)
         * [make:lang](inex-spa/readme/ammar-helper/extrenal-commands/make-commands/make-lang.md)
         * [make:layout](inex-spa/readme/ammar-helper/extrenal-commands/make-commands/make-layout.md)
+        * [make:auth](inex-spa/readme/ammar-helper/extrenal-commands/make-commands/make-auth.md)
       * [get commands](inex-spa/readme/ammar-helper/extrenal-commands/get-commands/README.md)
         * [get:cache](inex-spa/readme/ammar-helper/extrenal-commands/get-commands/get-cache.md)
         * [get:session](inex-spa/readme/ammar-helper/extrenal-commands/get-commands/get-session.md)
@@ -235,6 +236,7 @@
 ***
 
 * [Changelog](changelog/README.md)
+  * [v4.9.1](changelog/v4.9.1.md)
   * [v4.9-beta](changelog/v4.9-beta.md)
   * [v4.8.5-beta](changelog/v4.8.5-beta.md)
   * [v4.8-beta](changelog/v4.8-beta.md)
