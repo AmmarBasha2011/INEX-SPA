@@ -80,7 +80,10 @@ $cleanInput = Security::validateAndSanitize($_POST['comment'], 'xss');
 
 #### ✅ Status
 
-✅ Simple & Effective ✅ Developer-friendly ✅ Extendable ✅ No external libraries
+✅ Lightweight\
+✅ Easy to configure\
+✅ Extensible\
+✅ No external libraries
 
 ***
 

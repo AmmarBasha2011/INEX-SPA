@@ -18,7 +18,7 @@ To enable the Firewall system, open your `.env` file and set the following:
 USE_FIREWALL=true
 ```
 
-Once enabled, INEX SPA will automatically check incoming requests against your defined rules.
+Once enabled, you can use the Firewall system manually by calling the Firewall class directly.
 
 ***
 
@@ -32,8 +32,14 @@ Once enabled, INEX SPA will automatically check incoming requests against your d
 #### ⚙️ How It Works
 
 1. INEX SPA loads the rules from `/Json/firewall.json`.
-2. On every request, it checks if the visitor's IP or user-agent matches any rule.
-3. If matched, the request is blocked immediately with a 403 error.
+2. You can manually check requests using the static method:
+
+```php
+Firewall::check();
+```
+
+3. The function compares the visitor's IP or user-agent against the rule list.
+4. If a match is found, the request is blocked with a 403 error.
 
 ***
 
@@ -55,7 +61,7 @@ Once enabled, INEX SPA will automatically check incoming requests against your d
 
 * `block_ips`: IP addresses to block.
 * `block_user_agents`: Partial or full matches of bad user-agents.
-* `redirect_blocked_to`: Page will be redirect to it when detect&#x20;
+* `redirect_blocked_to`: Page will redirect if blocked
 
 > 💡 Future versions may include rate limiting and temporary bans.
 
@@ -71,7 +77,10 @@ Once enabled, INEX SPA will automatically check incoming requests against your d
 
 #### ✅ Status
 
-✅ Lightweight ✅ Easy to configure ✅ Extensible ✅ No external libraries
+✅ Lightweight\
+✅ Easy to configure\
+✅ Extensible\
+✅ No external libraries
 
 ***
 

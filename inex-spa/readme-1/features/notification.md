@@ -78,7 +78,10 @@ Each `type` changes the background styling to match the purpose of the message. 
 
 #### ✅ Status
 
-✅ Lightweight & Fast ✅ Fully customizable ✅ Mobile friendly ✅ Developer-friendly API
+✅ Lightweight\
+✅ Easy to configure\
+✅ Extensible\
+✅ No external libraries
 
 ***
 

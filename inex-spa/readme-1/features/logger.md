@@ -89,7 +89,10 @@ Each entry is recorded like this:
 
 #### ✅ Status
 
-✅ Easy to use ✅ Organized by category ✅ Useful for debugging & security ✅ File-based for simplicity ✅ No external libraries
+✅ Lightweight\
+✅ Easy to configure\
+✅ Extensible\
+✅ No external libraries
 
 ***
 
