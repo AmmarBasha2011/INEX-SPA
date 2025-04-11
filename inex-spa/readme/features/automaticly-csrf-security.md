@@ -3,7 +3,7 @@
 Now, when you add form to page, add `csrf_token` input automaticly:
 
 * First, create a basic form
-* Second, when send to `file.php`, add this line for check
+* Second, when send to `file.ahmed.php`, add this line for check
 
 ```php
 <?php

@@ -16,7 +16,7 @@ Still to add all functions and classes, and you can use foreach loop for files:
 <?php
 
 # init.php
-$files = glob(__DIR__ . '/hi/*.php');
+$files = glob(__DIR__ . '/*.php');
 
 foreach ($files as $file) {
     if ($file !== __FILE__) {

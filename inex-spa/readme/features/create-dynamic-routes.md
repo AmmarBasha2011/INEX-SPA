@@ -2,10 +2,10 @@
 
 Now, you can create dynamic routes by:
 
-create a file named like this \[RouteName]\_dynamic.php like
+create a file named like this \[RouteName]\_dynamic.ahmed.php like
 
-* post\_dynamic.php
-* blog\_dynamic.php
+* post\_dynamic.ahmed.php
+* blog\_dynamic.ahmed.php
 
 You can get a data by this
 
@@ -13,7 +13,7 @@ You can get a data by this
 echo $_GET['data']; // 1
 ```
 
-and user can access by `[URL]/[FileName] without _dynamin.php/[data]` like
+and user can access by `[URL]/[FileName] without _dynamic.ahmed.php/[data]` like
 
 * http://localhost/post/1
 * http://localhost/blog/2

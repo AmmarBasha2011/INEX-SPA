@@ -4,6 +4,6 @@ Now, you can get values from .env file with comments (if found on same line) lik
 
 ```php
 <?php
-echo getEnvValue("WEBSITE_URL"); // http://localhost
+echo getEnvValue("WEBSITE_URL"); // http://localhost/
 ?>
 ```
