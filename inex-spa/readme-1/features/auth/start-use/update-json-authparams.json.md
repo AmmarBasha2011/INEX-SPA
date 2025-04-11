@@ -101,4 +101,46 @@ Work will all types (except `bool`)
 
 This is list have values, argument value shouldn't equal them
 
-Work will all types (except `bool`)
+Work will all types (except `bool` (Not Recommended))
+
+### shouldStart
+
+This is list have words, argument value should start with them
+
+Work with all types (except `bool`)
+
+### min
+
+This is number, argument value mustn't less than this
+
+Work with `number` type
+
+### max
+
+This is number, argument value mustn't over than this
+
+Work with `number` type
+
+### default
+
+This is default value if argument value is null
+
+Work with all types
+
+### subDomain
+
+This is bollean for check if allow this is sub domain
+
+Work with `domain` type
+
+### subDir
+
+This is bollean for check if allow this is sub directory
+
+Work with `domain` type
+
+### equal
+
+This is list have values, argument value should equal one of them
+
+Work with all types (except `bool` (Not Recommended))
