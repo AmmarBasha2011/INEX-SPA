@@ -8,7 +8,7 @@ INEX SPA PHP Framework introduces a powerful **Layout** feature that helps you e
 
 Layouts reside in the `layouts/` folder. These files define the reusable structure of your application pages.
 
-Create a new layout file at `layouts/main.php`:
+Create a new layout file at `layouts/main.ahmed.php`:
 
 ```php
 // layouts/main.php
@@ -48,7 +48,7 @@ Finally, complete the route file by rendering the layout:
 Layout::render('main', 'index', ['title' => 'INEX SPA']);
 ```
 
-This renders the `index.php` content inside `layouts/main.php`, passing variables like `$title` dynamically.
+This renders the `index.ahmed.php` content inside `layouts/main.ahmed.php`, passing variables like `$title` dynamically.
 
 ***
 

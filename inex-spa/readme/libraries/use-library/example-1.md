@@ -1,7 +1,7 @@
 # Example 1
 
 * 1- Download `hi` library from INEX SPA PHP Framework by this URL: [https://github.com/AmmarBasha2011/hi](https://github.com/AmmarBasha2011/hi).git
-* 2- open `web/index.php` :
+* 2- open `web/index.ahmed.php` :
 
 ```php
 <?php

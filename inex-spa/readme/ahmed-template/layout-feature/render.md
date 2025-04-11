@@ -14,7 +14,7 @@ The `@render` directive is used for generate page:
 
 ```php
 <h1>Hi, $name</h1>
-<?= Layout::section('content') ?>
+@getSection('content')
 ```
 
 ### Step 2: Create web/index.ahmed.php

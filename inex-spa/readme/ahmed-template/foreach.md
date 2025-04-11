@@ -35,11 +35,13 @@ If you need to access the index, use:
 Use `@empty` to handle cases where the array is empty:
 
 ```php
+@empty($products)
+<p>No products available.</p>
+@else
 @foreach($products as $product)
     <p>{{$product['name']}} - {{$product['price']}} USD</p>
-@empty
-    <p>No products available.</p>
 @endforeach
+@endempty # Or @endif
 ```
 
 ### Nesting ForEach Loops
