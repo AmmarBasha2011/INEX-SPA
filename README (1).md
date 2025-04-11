@@ -25,8 +25,8 @@ To install INEX SPA, clone the repository and set up your server:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/inex-spa.git
-cd inex-spa
+git clone https://github.com/AmmarBasha2011/INEX-SPA.git my-project
+cd my-project
 
 # Set correct permissions
 chmod -R 755 .
@@ -51,7 +51,7 @@ php ammar run:db  # Execute all SQL files
 Routes are defined in the `web` folder:
 
 ```php
-// web/home.php
+// web/home.ahmed.php
 <?php
 return function() {
     return "Welcome to INEX SPA!";
