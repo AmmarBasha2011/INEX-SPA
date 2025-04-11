@@ -20,6 +20,7 @@ define('WEB_FOLDER', __DIR__ . '/web');
 define('CACHE_FOLDER', __DIR__ . '/core/cache');
 define('LANG_FOLDER', __DIR__ . '/lang');
 define('LAYOUT_FOLDER', __DIR__ . '/layouts');
+define('PUBLIC_FOLDER', __DIR__ . '/public');
 
 // تأكد من وجود المجلدات المطلوبة
 if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
@@ -27,6 +28,7 @@ if (!is_dir(WEB_FOLDER)) mkdir(WEB_FOLDER);
 if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
 if (!is_dir(LANG_FOLDER)) mkdir(LANG_FOLDER);
 if (!is_dir(LAYOUT_FOLDER)) mkdir(LAYOUT_FOLDER);
+if (!is_dir(PUBLIC_FOLDER)) mkdir(PUBLIC_FOLDER);
 
 // أوامر Ammar CLI
 $commands = [
@@ -58,6 +60,8 @@ $commands = [
     'clear:db' => 'Clear all DB files',
     'clear:db:tables' => 'Clear all DB tables',
     'clear:routes' => 'Clear all route files',
+    'clear:start' => 'Clear all startup files',
+    'clear:docs' => 'Clear all docs',
     'run:db' => 'Run all .sql files in db folder',
     'serve' => 'Serve the application',
 ];
@@ -515,6 +519,102 @@ if ($command == "make:auth") {
     
     file_put_contents($filePath, $sqlTemplate);
     echo "DB file created: $filename\n";
+    exit(0);
+}
+
+if ($command == "clear:start") {
+    $fileslist = [
+        WEB_FOLDER . '/index.ahmed.php',
+        PUBLIC_FOLDER . '/script.js',
+        PUBLIC_FOLDER . '/style.css',
+        PUBLIC_FOLDER . '/sitemap.xml',
+        LAYOUT_FOLDER . '/main.ahmed.php',
+        LANG_FOLDER . '/ar.json',
+        LANG_FOLDER . '/en.json',
+        DB_FOLDER . '/createusersTable_2025_03_16_08_47_56.sql',
+        CACHE_FOLDER . '/14c4b06b824ec593239362517f538b29.cache'
+    ];
+
+    foreach ($fileslist as $file) {
+        if (file_exists($file)) {
+            unlink($file);
+            echo "🗑️ Deleted file: $file\n";
+        } else {
+            echo "❌ Not found file: $file\n";
+        }
+    }
+
+    echo "🔥 All startup files have been deleted!\n";
+    exit(0);
+}
+
+if ($command == 'clear:docs') {
+    $folderlist = [
+        __DIR__ . '/about-me',
+        __DIR__ . '/changelog',
+        __DIR__ . '/inex-spa',
+    ];
+    $filelist = [
+        __DIR__ . '/README (1).md',
+        __DIR__ . '/README.md',
+        __DIR__ . '/SUMMARY.md'
+    ];
+
+    // حذف الملفات المفردة
+    foreach ($filelist as $file) {
+        if (file_exists($file)) {
+            if (unlink($file)) {
+                echo "🗑️ Deleted file: $file\n";
+            } else {
+                echo "❌ Failed to delete file: $file\n";
+            }
+        } else {
+            echo "❌ File not found: $file\n";
+        }
+    }
+
+    // دالة لحذف المجلدات وما بداخلها مهما كان العمق
+    function deleteFolderRecursively($folderPath) {
+        if (!is_dir($folderPath)) return;
+
+        $items = scandir($folderPath);
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') continue;
+            $path = $folderPath . DIRECTORY_SEPARATOR . $item;
+
+            if (is_dir($path)) {
+                deleteFolderRecursively($path); // 🔁 نداء ذاتي للحذف العميق
+                if (rmdir($path)) {
+                    echo "📁 Deleted folder: $path\n";
+                } else {
+                    echo "❌ Failed to delete folder: $path\n";
+                }
+            } else {
+                if (unlink($path)) {
+                    echo "🗑️ Deleted file: $path\n";
+                } else {
+                    echo "❌ Failed to delete file: $path\n";
+                }
+            }
+        }
+    }
+
+    // تنفيذ الحذف للمجلدات الرئيسية
+    foreach ($folderlist as $folder) {
+        if (is_dir($folder)) {
+            echo "🔍 Cleaning folder: $folder\n";
+            deleteFolderRecursively($folder);
+            if (rmdir($folder)) {
+                echo "✅ Deleted root folder: $folder\n";
+            } else {
+                echo "❌ Failed to delete root folder: $folder (maybe not empty)\n";
+            }
+        } else {
+            echo "❌ Not found folder: $folder\n";
+        }
+    }
+
+    echo "🔥 All docs have been deleted!\n";
     exit(0);
 }
 
