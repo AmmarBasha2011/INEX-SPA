@@ -1,101 +1,346 @@
-/* Hyper-Modern Enterprise Style v4.1 for Error Pages */
-@keyframes hyperFloat {
-    0% { transform: translateY(0) rotate(0deg) scale(1); }
-    50% { transform: translateY(-30px) rotate(180deg) scale(1.05); }
-    100% { transform: translateY(0) rotate(360deg) scale(1); }
+/* INEX SPA v5 - Error Pages Stylesheet
+   Featuring hyper-modern dark theme with animated elements */
+
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* CSS Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@keyframes neonPulse {
-    0% { opacity: 0.5; filter: brightness(0.8); }
-    50% { opacity: 0.9; filter: brightness(1.2); }
-    100% { opacity: 0.5; filter: brightness(0.8); }
-}
-
-@keyframes backgroundShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+:root {
+  --primary: #0e84ff;
+  --primary-light: #3a9bff;
+  --primary-glow: rgba(14, 132, 255, 0.2);
+  --dark-bg: #111827;
+  --darker-bg: #0d1117;
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border: rgba(255, 255, 255, 0.1);
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(-45deg, #0a0047, #1e0063, #3700ff, #00d9ff);
-    background-size: 400% 400%;
-    animation: backgroundShift 15s ease infinite;
-    color: #ffffff;
-    overflow: hidden;
-    position: relative;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--darker-bg), var(--dark-bg));
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  overflow: hidden;
+  position: relative;
 }
 
-body::before, body::after {
-    content: '';
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #ff00ea, #00ffff);
-    filter: blur(80px);
-    opacity: 0.4;
-    z-index: -1;
-    animation: hyperFloat 20s infinite ease-in-out, neonPulse 3s infinite ease-in-out;
-}
-
+/* Background grid effect */
 body::before {
-    top: -200px;
-    left: -200px;
-    animation-delay: 0s;
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(14, 25, 41, 0.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 25, 41, 0.6) 1px, transparent 1px);
+  background-size: 35px 35px;
+  z-index: -1;
+  opacity: 0.3;
 }
 
+/* Dynamic animated background */
 body::after {
-    bottom: -200px;
-    right: -200px;
-    animation-delay: -10s;
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+  opacity: 0.4;
+  z-index: -1;
+  animation: pulse 8s infinite alternate;
 }
 
+/* Error code styling */
 h1 {
-    font-size: 150px;
-    margin: 0;
-    background: linear-gradient(45deg, #ff00ea, #00ffff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 30px rgba(255, 0, 234, 0.5);
-    animation: neonPulse 2s infinite ease-in-out;
+  font-size: 12rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff, var(--primary-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+  letter-spacing: -0.05em;
+  animation: float 6s ease infinite;
+  text-shadow: 0 10px 30px rgba(14, 132, 255, 0.15);
 }
 
+/* Create 3D effect for the error code */
+h1::before {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: blur(20px);
+  opacity: 0.4;
+  transform: translateY(10px);
+}
+
+/* Error message styling */
 p {
-    font-size: 20px;
-    margin: 20px 0;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  animation: fadeIn 1s ease-out 0.5s both;
+  position: relative;
 }
 
+/* Animated underline for the error message */
+p::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1rem;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  animation: expand 3s ease infinite;
+}
+
+/* Button styling */
 button {
-    padding: 15px 40px;
-    font-size: 18px;
-    border: none;
-    border-radius: 30px;
-    background: linear-gradient(45deg, #ff00ea, #00ffff);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 20px rgba(255, 0, 234, 0.4);
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(14, 132, 255, 0.3);
+  animation: fadeIn 1s ease-out 1s both;
 }
 
+/* Button hover effect */
 button:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 0, 234, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(14, 132, 255, 0.5);
 }
 
-button:active {
-    transform: translateY(0) scale(0.98);
+/* Button shimmer effect */
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: all 0.6s ease;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+/* Error container with a subtle border */
+body > div {
+  animation: fadeIn 1s ease-out;
+  position: relative;
+  z-index: 10;
+}
+
+/* Adding animated particles */
+@keyframes float-particle {
+  0% { transform: translateY(0) rotate(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+}
+
+/* Create animated particles using ::before pseudo-elements */
+h1::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  box-shadow: 0 0 10px var(--primary-glow);
+  animation: float-particle 8s infinite linear;
+  top: 50%;
+  left: 0;
+}
+
+/* Additional particles with different timings */
+p::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: var(--primary-light);
+  box-shadow: 0 0 15px var(--primary-glow);
+  animation: float-particle 12s infinite linear 2s;
+  bottom: 0;
+  right: 20%;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  box-shadow: 0 0 8px var(--primary-glow);
+  animation: float-particle 10s infinite linear 1s;
+  top: -20px;
+  right: 30%;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--darker-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes expand {
+  0%, 100% {
+    width: 50px;
+  }
+  50% {
+    width: 150px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 6rem;
+  }
+
+  p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+/* Additional code to ensure the page is centered and attractive */
+body {
+  perspective: 1000px;
+}
+
+/* Container for 3D effect */
+body > * {
+  transform-style: preserve-3d;
+}
+
+/* Make sure content stays on top of background effects */
+h1, p, button {
+  position: relative;
+  z-index: 2;
+}
+
+/* Add error code-specific colors for different error types */
+/* For 403 Forbidden */
+body.error-403 h1,
+body h1:contains("403") {
+  background: linear-gradient(135deg, #ff3a3a, var(--primary-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* For 404 Not Found */
+body.error-404 h1,
+body h1:contains("404") {
+  background: linear-gradient(135deg, #ffb700, var(--primary-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* For 500 Server Error */
+body.error-500 h1,
+body h1:contains("500") {
+  background: linear-gradient(135deg, #ff5e3a, var(--primary-light));
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Create a wrapper for better centering */
+@media (min-height: 600px) {
+  body {
+    padding-bottom: 10vh; /* Adjust vertical centering */
+  }
 }

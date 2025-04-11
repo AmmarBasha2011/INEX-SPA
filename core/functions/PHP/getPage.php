@@ -27,6 +27,11 @@ function loadScripts() {
         if (getEnvValue('USE_APP_NAME_IN_TITLE') == 'true') {
             $scripts[] = 'JS/addAppNametoHTML.js';
         }
+
+        if (getEnvValue('USE_NOTIFICATION') == 'true') {
+            echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "errors/notification.css'/>";
+            $scripts[] = 'JS/showNotification.js';
+        }
         
         foreach ($scripts as $script) {
             echo "<script src='" . getEnvValue("WEBSITE_URL") . $script . "'></script>";
@@ -88,6 +93,14 @@ function getPage($RouteName) {
     
     if ($_GET['page'] == "fetchCsrfToken") {
         echo generateCsrfToken();
+        return;
+    }
+
+    if ($_GET['page'] == 'blocked') {
+        if (file_exists(__DIR__ . '/../../../core/errors/403.php')) {
+            loadScripts();
+            include __DIR__ . '/../../../core/errors/403.php';
+        }
         return;
     }
 

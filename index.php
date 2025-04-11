@@ -83,6 +83,18 @@ require_once 'core/functions/PHP/classes/Validation.php';
 if (getEnvValue("USE_AUTH") == "true") {
     require_once 'core/functions/PHP/classes/UserAuth.php';
 }
+if (getEnvValue('USE_FIREWALL') == 'true') {
+    require_once 'core/functions/PHP/classes/Firewall.php';
+}
+if (getEnvValue('USE_SECURITY') == 'true') {
+    require_once 'core/functions/PHP/classes/Security.php';
+}
+if (getEnvValue('USE_LOGGING') == 'true') {
+    require_once 'core/functions/PHP/classes/Logger.php';
+}
+if (getEnvValue('USE_WEBHOOK') == 'true') {
+    require_once 'core/functions/PHP/classes/Webhook.php';
+}
 
 $packagesJsonPath = __DIR__ . '/core/import/package.json';
 if (file_exists($packagesJsonPath)) {
