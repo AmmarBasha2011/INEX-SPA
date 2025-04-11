@@ -132,6 +132,11 @@
       * [db folder](inex-spa/readme/framework-structure/user-folders/db-folder.md)
       * [layouts folder](inex-spa/readme/framework-structure/user-folders/layouts-folder.md)
   * [Features](inex-spa/readme/features/README.md)
+    * [Webhook](inex-spa/readme-1/features/webhook.md)
+    * [Notification](inex-spa/readme-1/features/notification.md)
+    * [Security](inex-spa/readme-1/features/security.md)
+    * [Logger](inex-spa/readme-1/features/logger.md)
+    * [Firewall](inex-spa/readme-1/features/firewall.md)
     * [Validation](inex-spa/readme/features/validation/README.md)
       * [isEmail](inex-spa/readme/features/validation/isemail.md)
       * [isTextLength](inex-spa/readme/features/validation/istextlength.md)
@@ -233,6 +238,7 @@
 ***
 
 * [Changelog](changelog/README.md)
+  * [v5](changelog/v5.md)
   * [v4.9.3](changelog/v4.9.3.md)
   * [v4.9.1](changelog/v4.9.1.md)
   * [v4.9-beta](changelog/v4.9-beta.md)
