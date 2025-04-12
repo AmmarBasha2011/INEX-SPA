@@ -181,5 +181,6 @@ class UserAuth {
 
     public static function logout() {
         $_SESSION['user_id'] = "";
+        return "User logged out.";
     }
 }
