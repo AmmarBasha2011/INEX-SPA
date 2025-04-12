@@ -553,11 +553,13 @@ if ($command == 'clear:docs') {
         __DIR__ . '/about-me',
         __DIR__ . '/changelog',
         __DIR__ . '/inex-spa',
+        __DIR__ . '/.gitbook'
     ];
     $filelist = [
         __DIR__ . '/README (1).md',
         __DIR__ . '/README.md',
-        __DIR__ . '/SUMMARY.md'
+        __DIR__ . '/SUMMARY.md',
+        __DIR__ . '/LICENSE'
     ];
 
     // حذف الملفات المفردة
