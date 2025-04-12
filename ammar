@@ -553,7 +553,7 @@ if ($command == 'clear:docs') {
         __DIR__ . '/about-me',
         __DIR__ . '/changelog',
         __DIR__ . '/inex-spa',
-        __DIR__ . '/.gitbook',
+        __DIR__ . '/.gitbook'
     ];
     $filelist = [
         __DIR__ . '/README (1).md',
