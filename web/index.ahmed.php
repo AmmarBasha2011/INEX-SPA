@@ -40,7 +40,7 @@
                 <div class="stat-label">Latest Version</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">12+</div>
+                <div class="stat-number">42+</div>
                 <div class="stat-label">Core Features</div>
             </div>
         </div>
