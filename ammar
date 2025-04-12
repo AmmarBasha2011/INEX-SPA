@@ -557,7 +557,8 @@ if ($command == 'clear:docs') {
     $filelist = [
         __DIR__ . '/README (1).md',
         __DIR__ . '/README.md',
-        __DIR__ . '/SUMMARY.md'
+        __DIR__ . '/SUMMARY.md',
+        __DIR__ . '/LICENSE'
     ];
 
     // حذف الملفات المفردة
