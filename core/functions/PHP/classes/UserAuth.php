@@ -12,7 +12,7 @@ class UserAuth {
         }
 
         // Initialize the SQL query
-        $sql = "CREATE TABLE users (\n";
+        $sql = "CREATE TABLE IF NOT EXISTS users (\n";
         $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n"; // Auto-increment ID
 
         // Mapping JSON data types to SQL types
