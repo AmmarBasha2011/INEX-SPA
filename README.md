@@ -42,7 +42,7 @@ INEX SPA provides a command-line tool `Ammar CLI` to automate tasks.
 
 ```bash
 php ammar list:routes  # List all routes
-php ammar make:route -1 home -2 no/yes -3 GET  # Create a route
+php ammar make:route -1 home -2 no/yes -3 GET -4 no/yes  # Create a route
 php ammar run:db  # Execute all SQL files
 ```
 
