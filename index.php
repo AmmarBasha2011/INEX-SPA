@@ -1,4 +1,12 @@
 <?php
+// Simulate $_GET from CLI arguments if running in CLI
+if (php_sapi_name() === 'cli') {
+    global $argv;
+    if (isset($argv[1])) { // $argv[0] is the script name
+        parse_str($argv[1], $_GET);
+    }
+}
+
 require_once 'core/functions/PHP/classes/AhmedTemplate.php';
 $Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';
