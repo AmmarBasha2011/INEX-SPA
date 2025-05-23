@@ -87,7 +87,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // title.style.color = 'red';
 
     const message = document.createElement('p');
-    message.innerHTML = `<strong>Message:</strong> ${error.message.replace(/\n/g, '<br>')}`;
+    const messageText = document.createElement('strong');
+    messageText.textContent = 'Message:';
+    message.appendChild(messageText);
+    const messageContent = document.createElement('span');
+    messageContent.textContent = error.message;
+    message.appendChild(messageContent);
+    messageContent.innerHTML = messageContent.innerHTML.replace(/\n/g, '<br>');
 
     const location = document.createElement('p');
     const locationLabel = document.createElement('strong');
