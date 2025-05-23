@@ -90,7 +90,10 @@ document.addEventListener('DOMContentLoaded', function () {
     message.innerHTML = `<strong>Message:</strong> ${error.message.replace(/\n/g, '<br>')}`;
 
     const location = document.createElement('p');
-    location.innerHTML = `<strong>Location:</strong> ${error.file} on line ${error.line}`;
+    const locationLabel = document.createElement('strong');
+    locationLabel.textContent = 'Location:';
+    location.appendChild(locationLabel);
+    location.appendChild(document.createTextNode(` ${error.file} on line ${error.line}`));
 
     content.appendChild(closeButton);
     content.appendChild(title);
