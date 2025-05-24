@@ -4,6 +4,7 @@
 
 require_once __DIR__ . '/core/functions/PHP/getEnvValue.php'; // Ensure getEnvValue is loaded first
 require_once __DIR__ . '/core/functions/PHP/image.php';
+require_once __DIR__ . '/core/functions/PHP/animate.php';
 
 // Add any other global function includes here if this file is used for that purpose.
 ?>

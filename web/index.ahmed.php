@@ -6,6 +6,7 @@
     <title>INEX SPA v5 - High-Performance PHP Framework</title>
     <link rel="stylesheet" href='@getEnvValue("WEBSITE_URL")style.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href='@getEnvValue("WEBSITE_URL")public/css/motion-animations.css'>
 </head>
 <body>
     <header>
@@ -112,6 +113,7 @@ chmod -R 755 .
         <p>&copy; 2025 INEX Team. All rights reserved.</p>
     </footer>
 
+    <script src='@getEnvValue("WEBSITE_URL")public/JS/motion_engine.js'></script>
     <script>
         // Animation for list items
         document.querySelectorAll('li').forEach((item, index) => {
