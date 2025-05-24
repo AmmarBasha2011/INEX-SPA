@@ -1,0 +1,22 @@
+/* Base class for motion animations */
+.motion-animate {
+  /* Common animation properties can be added here */
+}
+
+/* Keyframes for fade-in animation */
+@keyframes motionFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Class to apply the fade-in animation */
+.motion-fade-in {
+  animation-name: motionFadeIn;
+  /* You might want to add animation-duration, animation-timing-function, etc. here 
+     or in the .motion-animate class if it's common for all animations.
+     For now, keeping it simple as per the request. */
+}
