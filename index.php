@@ -1,16 +1,7 @@
 <?php
-// Simulate $_GET from CLI arguments if running in CLI
-if (php_sapi_name() === 'cli') {
-    global $argv;
-    if (isset($argv[1])) { // $argv[0] is the script name
-        parse_str($argv[1], $_GET);
-    }
-}
-
 require_once 'core/functions/PHP/classes/AhmedTemplate.php';
 $Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';
-require_once 'core/debug/ErrorHandler.php'; // Added ErrorHandler
 require_once 'core/functions/PHP/redirect.php';
 
 $devMode = getEnvValue('DEV_MODE') == 'true';
@@ -22,23 +13,9 @@ $useCookie = getEnvValue('USE_COOKIE') == 'true';
 $detectLanguage = getEnvValue('DETECT_LANGUAGE') == 'true';
 
 if ($devMode) {
-    // This is the existing block
-    // ini_set('display_errors', 1); // Or 0, if we want to fully control display via overlay
-    // ini_set('display_startup_errors', 1); // Or 0
-    // error_reporting(E_ALL); // This should be set regardless for the handler to catch all errors
-
-    // New code for custom error handler:
-    ErrorHandler::init($devMode); // Initialize with devMode status
-    set_error_handler([ErrorHandler::class, 'handleError']);
-    set_exception_handler([ErrorHandler::class, 'handleException']);
-    ErrorHandler::registerShutdownHandler(); // To handle fatal errors and display collected errors
-
-    // Optional: We might want to turn off PHP's own display_errors
-    // if our handler is working, to avoid double display or messy output.
-    // Let's set it to 0 for now, assuming our handler will take over.
-    ini_set('display_errors', 0);
-    ini_set('display_startup_errors', 0);
-    error_reporting(E_ALL); // Ensure all errors are reported to our handler
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
 }
 
 require_once 'core/functions/PHP/getWEBSITEURLValue.php';

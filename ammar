@@ -21,7 +21,6 @@ define('CACHE_FOLDER', __DIR__ . '/core/cache');
 define('LANG_FOLDER', __DIR__ . '/lang');
 define('LAYOUT_FOLDER', __DIR__ . '/layouts');
 define('PUBLIC_FOLDER', __DIR__ . '/public');
-define('CRONJOBS_FOLDER', __DIR__ . '/core/cronjobs');
 
 // تأكد من وجود المجلدات المطلوبة
 if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
@@ -30,7 +29,6 @@ if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
 if (!is_dir(LANG_FOLDER)) mkdir(LANG_FOLDER);
 if (!is_dir(LAYOUT_FOLDER)) mkdir(LAYOUT_FOLDER);
 if (!is_dir(PUBLIC_FOLDER)) mkdir(PUBLIC_FOLDER);
-if (!is_dir(CRONJOBS_FOLDER)) mkdir(CRONJOBS_FOLDER, 0777, true);
 
 // أوامر Ammar CLI
 $commands = [
@@ -39,7 +37,6 @@ $commands = [
     'list:db' => 'List all database files',
     'list:import' => 'List all libraries',
     'list:lang' => 'List all languages',
-    'list:cronjobs' => 'List all cron job files',
     'make:db' => 'Create a new DB File',
     'make:route' => 'Create a new Route File',
     'make:cache' => 'Create a new cache entry',
@@ -48,7 +45,6 @@ $commands = [
     'make:lang' => "Create a new language file",
     'make:layout' => "Create a new layout file",
     'make:auth' => "Create an auth db file",
-    'make:cronjob' => 'Create a new Cron Job file',
     'get:cache' => 'Retrieve a cache entry',
     'get:session' => 'Retrieve a session entry',
     'install:import' => 'Install a new library',
@@ -59,7 +55,6 @@ $commands = [
     'delete:import' => 'Delete an import',
     'delete:session' => 'Delete a session',
     'delete:lang' => "Delete a language file",
-    'delete:cronjob' => 'Delete an existing Cron Job file',
     'ask:gemini' => "Ask Gemini",
     'clear:cache' => 'Clear all cache files',
     'clear:db' => 'Clear all DB files',
@@ -68,7 +63,6 @@ $commands = [
     'clear:start' => 'Clear all startup files',
     'clear:docs' => 'Clear all docs',
     'run:db' => 'Run all .sql files in db folder',
-    'run:cronjob' => 'Manually run a specific Cron Job',
     'serve' => 'Serve the application',
 ];
 
@@ -84,72 +78,6 @@ if (!$command || $command === 'list') {
     echo "Available commands:\n";
     foreach ($commands as $cmd => $desc) {
         echo "  php ammar $cmd - $desc\n";
-    }
-    exit(0);
-}
-
-if ($command === 'run:cronjob') {
-    $className = ucfirst($args['1'] ?? readline("1- What's the cron job class name to run? "));
-    if (!$className) exit("Cron job class name is required!\n");
-
-    $filePath = CRONJOBS_FOLDER . '/' . $className . '.php';
-
-    if (!file_exists($filePath)) {
-        echo "Cron job file not found: {$className}.php\n";
-        exit(1);
-    }
-
-    require_once $filePath;
-
-    if (class_exists($className)) {
-        $jobInstance = new $className();
-        if (method_exists($jobInstance, 'execute') && (new ReflectionMethod($className, 'execute'))->isPublic()) {
-            $jobInstance->execute();
-            echo "Cron job '{$className}' executed successfully.\n";
-        } else {
-            echo "Error: Method 'execute()' not found or not public in class '{$className}'.\n";
-            exit(1);
-        }
-    } else {
-        echo "Error: Class '{$className}' not found in file '{$className}.php'.\n";
-        exit(1);
-    }
-    exit(0);
-}
-
-if ($command === 'delete:cronjob') {
-    $className = ucfirst($args['1'] ?? readline("1- What's the cron job class name to delete? "));
-    if (!$className) exit("Cron job class name is required!\n");
-
-    $filePath = CRONJOBS_FOLDER . '/' . $className . '.php';
-
-    if (!file_exists($filePath)) {
-        echo "Cron job file not found: {$className}.php\n";
-        exit(1);
-    }
-
-    if (unlink($filePath)) {
-        echo "Cron job file deleted: {$className}.php\n";
-    } else {
-        echo "Error deleting cron job file: {$className}.php\n";
-        exit(1);
-    }
-    exit(0);
-}
-
-if ($command === 'list:cronjobs') {
-    if (!is_dir(CRONJOBS_FOLDER)) {
-        echo "No cron jobs directory found.\n";
-        exit(1);
-    }
-    $files = glob(CRONJOBS_FOLDER . '/*.php');
-    if (empty($files)) {
-        echo "No cron jobs found.\n";
-        exit(0);
-    }
-    echo "Available cron jobs:\n";
-    foreach ($files as $file) {
-        echo "  " . basename($file, ".php") . "\n";
     }
     exit(0);
 }
@@ -594,20 +522,6 @@ if ($command == "make:auth") {
     exit(0);
 }
 
-if ($command === 'make:cronjob') {
-    $className = ucfirst($args['1'] ?? readline("1- What's the cron job class name? "));
-    if (!$className) exit("Cron job class name is required!\n");
-
-    // CRONJOBS_FOLDER is already defined and directory created globally
-    $filePath = CRONJOBS_FOLDER . '/' . $className . '.php';
-    if (file_exists($filePath)) exit("Cron job file '{$className}.php' already exists!\n");
-
-    $fileContent = "<?php\n\nclass " . $className . " {\n    /**\n     * The main logic for the cron job.\n     */\n    public function execute() {\n        // Your cron job logic here\n        echo \"Cron job '" . $className . "' executed at \" . date('Y-m-d H:i:s') . \"\\n\";\n    }\n}\n";
-    file_put_contents($filePath, $fileContent);
-    echo "Cron job file created: core/cronjobs/{$className}.php\n";
-    exit(0);
-}
-
 if ($command == "clear:start") {
     $fileslist = [
         WEB_FOLDER . '/index.ahmed.php',
@@ -639,8 +553,7 @@ if ($command == 'clear:docs') {
         __DIR__ . '/about-me',
         __DIR__ . '/changelog',
         __DIR__ . '/inex-spa',
-        __DIR__ . '/.gitbook',
-        __DIR__ . '/.github'
+        __DIR__ . '/.gitbook'
     ];
     $filelist = [
         __DIR__ . '/README (1).md',
