@@ -1,42 +1,40 @@
-// Flag to ensure _initMotionEngine is called only once
-window.motionEngineInitialized = false;
+function animate(elementOrSelector, animationName, durationMs) {
+  // 1. Element Resolution
+  let element;
+  if (typeof elementOrSelector === 'string') {
+    element = document.querySelector(elementOrSelector);
+  } else if (elementOrSelector instanceof HTMLElement) {
+    element = elementOrSelector;
+  }
 
-function _initMotionEngine() {
-  // Check if already initialized
-  if (window.motionEngineInitialized) {
+  if (!element) {
+    console.error('Motion Engine: Element not found for selector or element provided:', elementOrSelector);
     return;
   }
 
-  const elements = document.querySelectorAll('.motion-animate');
+  // 2. Parameter Validation
+  if (typeof animationName !== 'string' || animationName.trim() === '') {
+    console.error('Motion Engine: animationName must be a non-empty string.');
+    return;
+  }
+  if (typeof durationMs !== 'number' || durationMs <= 0) {
+    console.error('Motion Engine: durationMs must be a positive number.');
+    return;
+  }
 
-  elements.forEach(element => {
-    element.addEventListener('animationend', function handler(event) {
-      // Iterate over classList to find and remove the specific animation class
-      for (const cls of element.classList) {
-        if (cls.startsWith('motion-') && cls !== 'motion-animate') {
-          element.classList.remove(cls);
-          // Assuming only one such animation class is active at a time
-          // If multiple could be, this logic might need adjustment or a data-attribute approach
-          break; 
-        }
-      }
+  // 3. Apply Animation
+  element.style.animationDuration = `${durationMs}ms`;
+  element.classList.add('motion-animate', `motion-${animationName}`);
 
-      // Remove the base animation class
-      element.classList.remove('motion-animate');
+  // 4. Handle Animation End
+  function handleAnimationEnd() {
+    element.classList.remove('motion-animate', `motion-${animationName}`);
+    element.style.animationDuration = ''; // Reset duration
+    // Remove the event listener to prevent it from running again
+    element.removeEventListener('animationend', handleAnimationEnd);
+  }
 
-      // Reset animation duration
-      element.style.animationDuration = '';
-
-      // Optional: remove the event listener if it's meant to be a one-time cleanup for this specific animation instance
-      // element.removeEventListener('animationend', handler); 
-      // For now, keeping it to clean up any future animations on the same element if re-applied.
-    });
-  });
-
-  // Set the flag to true after initialization
-  window.motionEngineInitialized = true;
-  // console.log('Motion engine initialized.'); // For debugging
+  // Add the event listener.
+  // The self-removal in handleAnimationEnd should generally suffice.
+  element.addEventListener('animationend', handleAnimationEnd);
 }
-
-// Example of how it might be called - this line might be removed later if PHP handles the call.
-// document.addEventListener('DOMContentLoaded', _initMotionEngine);
