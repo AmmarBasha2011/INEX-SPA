@@ -28,6 +28,12 @@ function loadScripts() {
             $scripts[] = 'JS/addAppNametoHTML.js';
         }
 
+        // Add this new block for motion engine assets
+        if (getEnvValue('USE_ANIMATE') == 'true') {
+            echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "css/motion-animations.css'>";
+            $scripts[] = 'JS/motion_engine.js'; // Add to the array of scripts
+        }
+
         if (getEnvValue('USE_NOTIFICATION') == 'true') {
             echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "errors/notification.css'/>";
             $scripts[] = 'JS/showNotification.js';

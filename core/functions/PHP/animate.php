@@ -1,4 +1,12 @@
 <?php
+/*
+DEPRECATED: This PHP animate() function is deprecated as of 2024-07-11.
+Please use the new JavaScript-based motion engine.
+
+The new `animate(elementOrSelector, animationName, durationMs)` function is available in `public/JS/motion_engine.js`.
+Ensure the Motion Engine is enabled by setting `USE_ANIMATE=true` in your .env file, which will load the necessary JS and CSS files.
+
+The old function code is preserved below for reference but should not be used in new development.
 
 /**
  * Applies a CSS animation to a given element.
@@ -60,4 +68,5 @@ function animate(string $elementSelectorOrId, string $animationName, int $durati
     echo "</script>\n";
 }
 
+*/
 ?>
