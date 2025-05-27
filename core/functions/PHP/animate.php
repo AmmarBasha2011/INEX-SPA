@@ -67,6 +67,4 @@ function animate(string $elementSelectorOrId, string $animationName, int $durati
     echo "  })();\n";
     echo "</script>\n";
 }
-
-*/
 ?>
