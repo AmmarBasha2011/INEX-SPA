@@ -1,4 +1,5 @@
 <?php
+
 require_once 'core/functions/PHP/classes/AhmedTemplate.php';
 $Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';
@@ -23,8 +24,10 @@ require_once 'core/functions/PHP/getSlashData.php';
 
 if ($dbUse) {
     require_once 'core/functions/PHP/classes/Database.php';
-    function executeStatement($sql, $params = [], $is_return = true) {
+    function executeStatement($sql, $params = [], $is_return = true)
+    {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
     require_once 'core/functions/PHP/runDB.php';
@@ -38,10 +41,10 @@ if ($dbCheck && $dbUse) {
     require_once 'core/functions/PHP/executeSQLFilePDO.php';
     foreach (glob('db/*.sql') as $sqlFile) {
         executeSQLFilePDO(
-            getEnvValue('DB_HOST'), 
-            getEnvValue('DB_USER'), 
-            getEnvValue('DB_PASS'), 
-            getEnvValue('DB_NAME'), 
+            getEnvValue('DB_HOST'),
+            getEnvValue('DB_USER'),
+            getEnvValue('DB_PASS'),
+            getEnvValue('DB_NAME'),
             $sqlFile
         );
     }
@@ -49,16 +52,20 @@ if ($dbCheck && $dbUse) {
 
 if ($useCache) {
     require_once 'core/functions/PHP/classes/Cache.php';
-    function setCache($key, $data, $expiration = 3600) {
+    function setCache($key, $data, $expiration = 3600)
+    {
         Cache::set($key, $data, $expiration);
     }
-    function getCache($key) {
+    function getCache($key)
+    {
         return Cache::get($key);
     }
-    function deleteCache($key) {
+    function deleteCache($key)
+    {
         Cache::delete($key);
     }
-    function updateCache($key, $newData) {
+    function updateCache($key, $newData)
+    {
         return Cache::update($key, $newData);
     }
 }
@@ -80,7 +87,7 @@ if ($detectLanguage) {
     Language::setLanguage($selectedLang);
 }
 require_once 'core/functions/PHP/classes/Validation.php';
-if (getEnvValue("USE_AUTH") == "true") {
+if (getEnvValue('USE_AUTH') == 'true') {
     require_once 'core/functions/PHP/classes/UserAuth.php';
 }
 if (getEnvValue('USE_FIREWALL') == 'true') {
@@ -96,13 +103,13 @@ if (getEnvValue('USE_WEBHOOK') == 'true') {
     require_once 'core/functions/PHP/classes/Webhook.php';
 }
 
-$packagesJsonPath = __DIR__ . '/core/import/package.json';
+$packagesJsonPath = __DIR__.'/core/import/package.json';
 if (file_exists($packagesJsonPath)) {
     $packagesJson = json_decode(file_get_contents($packagesJsonPath), true);
     if (is_array($packagesJson)) {
         foreach ($packagesJson as $packages) {
             foreach ($packages as $key => $value) {
-                require_once __DIR__ . '/core/import/' . $key . '/init.php';
+                require_once __DIR__.'/core/import/'.$key.'/init.php';
             }
         }
     }
@@ -110,4 +117,3 @@ if (file_exists($packagesJsonPath)) {
 require_once 'functions.php';
 require_once 'core/functions/PHP/getPage.php';
 getPage($_GET['page'] ?? '');
-?>

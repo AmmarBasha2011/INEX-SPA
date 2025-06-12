@@ -4,7 +4,7 @@ class Firewall
 {
     public static function check()
     {
-        $configPath = __DIR__ . "/../../../../Json/firewall.json";
+        $configPath = __DIR__.'/../../../../Json/firewall.json';
 
         if (!file_exists($configPath)) {
             return; // لا توجد إعدادات
@@ -32,7 +32,7 @@ class Firewall
 
     private static function block($config)
     {
-        $redirectTo = getEnvValue('WEBSITE_URL') . $config['redirect_blocked_to'] ?? 'blocked';
+        $redirectTo = getEnvValue('WEBSITE_URL').$config['redirect_blocked_to'] ?? 'blocked';
         header("Location: $redirectTo");
         exit;
     }

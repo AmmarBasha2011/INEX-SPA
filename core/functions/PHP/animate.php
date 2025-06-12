@@ -1,4 +1,5 @@
 <?php
+
 /*
 DEPRECATED: This PHP animate() function is deprecated as of 2024-07-11.
 Please use the new JavaScript-based motion engine.
@@ -15,23 +16,28 @@ The old function code is preserved below for reference but should not be used in
  * @param string $animationName The name of the animation (e.g., 'fade-in').
  * @param int $durationMs The duration of the animation in milliseconds.
  */
-function animate(string $elementSelectorOrId, string $animationName, int $durationMs): void {
+function animate(string $elementSelectorOrId, string $animationName, int $durationMs): void
+{
     if (getEnvValue('MOTION_ENGINE_ENABLED') !== 'true') {
         echo "<!-- Motion Engine is disabled via .env configuration -->\n";
+
         return;
     }
 
     // Input validation
     if (empty(trim($elementSelectorOrId))) {
         echo "<!-- Motion Engine: Invalid parameters (elementSelectorOrId is empty) -->\n";
+
         return;
     }
     if (empty(trim($animationName))) {
         echo "<!-- Motion Engine: Invalid parameters (animationName is empty) -->\n";
+
         return;
     }
     if ($durationMs <= 0) {
         echo "<!-- Motion Engine: Invalid parameters (durationMs must be positive) -->\n";
+
         return;
     }
 
@@ -39,7 +45,7 @@ function animate(string $elementSelectorOrId, string $animationName, int $durati
     $durationMs = (int) $durationMs;
 
     // Prepare strings for JavaScript. htmlspecialchars is important for $elementSelectorOrId.
-    $jsSelector = json_encode($elementSelectorOrId); 
+    $jsSelector = json_encode($elementSelectorOrId);
     $jsAnimationName = json_encode($animationName); // Though used in concatenation, good practice.
 
     echo "<script>\n";
@@ -67,4 +73,3 @@ function animate(string $elementSelectorOrId, string $animationName, int $durati
     echo "  })();\n";
     echo "</script>\n";
 }
-?>
