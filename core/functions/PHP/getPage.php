@@ -8,9 +8,10 @@ function loadBootstrap()
     }
 }
 
-function loadPWA(){
+function loadPWA()
+{
     if (getEnvValue('USE_PWA') == 'true') {
-        $manifest_config = file_get_contents(__DIR__ . '/../../../public/manifest_config.html');
+        $manifest_config = file_get_contents(__DIR__.'/../../../public/manifest_config.html');
         echo $manifest_config;
         echo '<script src="'.getEnvValue('WEBSITE_URL').'JS/pwa.js"></script>';
     }
