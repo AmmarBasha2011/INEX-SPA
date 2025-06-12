@@ -1,167 +1,180 @@
 <?php
-function loadBootstrap() {
-    if (getEnvValue('USE_BOOTSTRAP') == 'true') {
-        echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
-        echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
-    }
-}
+// core/functions/PHP/getPage.php
 
-function loadScripts() {
-    static $cachedScripts = null;
-    if ($cachedScripts === null) {
-        ob_start();
-        echo "<script src='" . getEnvValue("WEBSITE_URL") . "JS/getWEBSITEURLValue.js'></script>";
-        
-        $scripts = [
-            'JS/redirect.js',
-            'JS/popstate.js',
-            'JS/submitData.js',
-            'JS/csrfToken.js',
-            'JS/submitDataWR.js',
-        ];
-        
-        if (getEnvValue('USE_COOKIE') == 'true') {
-            $scripts[] = 'JS/classes/CookieManager.js'; // Correct way to append an element to an array
-        }        
+// loadBootstrap() and loadScripts() are intentionally NOT here.
+// They have been moved to index.php to be globally available.
 
-        if (getEnvValue('USE_APP_NAME_IN_TITLE') == 'true') {
-            $scripts[] = 'JS/addAppNametoHTML.js';
+if (!function_exists('handleRequestMethod')) {
+    function handleRequestMethod(\$methods) {
+        global \$Ahmed; // Assuming \$Ahmed (AhmedTemplate instance) is globally available
+
+        // Ensure \$_GET['page'] is set, otherwise this function might not behave as expected.
+        if (!isset(\$_GET['page'])) {
+            // This case should ideally be handled before calling handleRequestMethod
+            // or getPage, perhaps by setting \$_GET['page'] to a default.
+            return false;
         }
 
-        // Add this new block for motion engine assets
-        if (getEnvValue('USE_ANIMATE') == 'true') {
-            echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "css/motion-animations.css'>";
-            $scripts[] = 'JS/motion_engine.js'; // Add to the array of scripts
-        }
-
-        if (getEnvValue('USE_NOTIFICATION') == 'true') {
-            echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "errors/notification.css'/>";
-            $scripts[] = 'JS/showNotification.js';
-        }
-        
-        foreach ($scripts as $script) {
-            echo "<script src='" . getEnvValue("WEBSITE_URL") . $script . "'></script>";
-        }
-        
-        echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>';
-        
-        $cachedScripts = ob_get_clean();
-    }
-    echo $cachedScripts;
-}
-
-function handleRequestMethod($methods) {
-    global $Ahmed;
-
-    foreach ($methods as $method) {
-        $filePath = "web/{$_GET['page']}_request_{$method}.ahmed.php";
-        if (file_exists($filePath)) {
-            if ($_SERVER['REQUEST_METHOD'] !== $method) {
-                loadScripts();
-                include 'core/errors/405.php';
-                return true;
+        foreach (\$methods as \$method) {
+            \$page_key = \$_GET['page'] ?? ''; // Use a default if not set to avoid warnings
+            \$filePath = "web/" . \$page_key . "_request_{\$method}.ahmed.php";
+            if (file_exists(\$filePath)) {
+                if (\$_SERVER['REQUEST_METHOD'] !== strtoupper(\$method)) { // Ensure method comparison is case-insensitive
+                    if (function_exists('loadScripts')) loadScripts(); // Call global loadScripts
+                    http_response_code(405); // Method Not Allowed
+                    include 'core/errors/405.php';
+                    return true; // Stop further processing
+                }
+                if (function_exists('loadBootstrap')) loadBootstrap(); // Call global loadBootstrap
+                if (function_exists('loadScripts')) loadScripts();   // Call global loadScripts
+                echo \$Ahmed->render(\$filePath);
+                return true; // Handled
             }
-            loadBootstrap();
-            loadScripts();
-            echo $Ahmed->render($filePath);
-            return true;
-        }
-        $filePath = "web/{$_GET['page']}_request_{$method}_api.ahmed.php";
-        if (file_exists($filePath)) {
-            if ($_SERVER['REQUEST_METHOD'] !== $method) {
-                loadScripts();
-                include 'core/errors/405.php';
-                return true;
+            \$filePathApi = "web/" . \$page_key . "_request_{\$method}_api.ahmed.php";
+            if (file_exists(\$filePathApi)) {
+                if (\$_SERVER['REQUEST_METHOD'] !== strtoupper(\$method)) {
+                     // No loadScripts for API 405 for consistency, or decide if needed
+                    http_response_code(405);
+                    include 'core/errors/405.php'; // Or a JSON error response
+                    return true;
+                }
+                // No loadBootstrap or loadScripts for API requests typically
+                echo \$Ahmed->render(\$filePathApi);
+                return true; // Handled
             }
-            echo $Ahmed->render($filePath);
-            return true;
         }
+        return false; // Not handled by this function
     }
-    return false;
 }
 
-function getPage($RouteName) {
-    global $Ahmed;
 
-    $_GET['page'] = $RouteName;
+if (!function_exists('getPage')) {
+    function getPage(\$RouteName) {
+        global \$Ahmed; // Assuming \$Ahmed (AhmedTemplate instance) is globally available
 
-    if (empty($_GET['page'])) {
-        if (file_exists('web/index.ahmed.php')) {
-            loadBootstrap();
-            loadScripts();
-            echo $Ahmed->render("web/index.ahmed.php");
-        } elseif (file_exists('core/errors/404.php')) {
-            loadScripts();
+        // Fallback for \$_GET['page'] if RouteName is directly used.
+        // The original getPage directly modified \$_GET['page'].
+        \$_GET['page'] = \$RouteName;
+        \$page_key = \$RouteName; // Use a local variable for safety
+
+        if (empty(\$page_key)) {
+            if (file_exists('web/index.ahmed.php')) {
+                if (function_exists('loadBootstrap')) loadBootstrap();
+                if (function_exists('loadScripts')) loadScripts();
+                echo \$Ahmed->render("web/index.ahmed.php");
+            } elseif (file_exists('core/errors/404.php')) {
+                if (function_exists('loadScripts')) loadScripts();
+                http_response_code(404);
+                include 'core/errors/404.php';
+            }
+            return;
+        }
+
+        // Special hardcoded routes from original getPage
+        if (\$page_key == "fetchCsrfToken") {
+            // Assumes generateCsrfToken() is available globally (it is in index.php)
+            if (function_exists('generateCsrfToken')) {
+                echo generateCsrfToken();
+            }
+            return;
+        }
+
+        if (\$page_key == 'blocked') {
+            if (file_exists('core/errors/403.php')) { // Original path was __DIR__ . '/../../../core/errors/403.php'
+                if (function_exists('loadScripts')) loadScripts();
+                http_response_code(403);
+                include 'core/errors/403.php';
+            }
+            return;
+        }
+
+        if (\$page_key == "JS/getWEBSITEURLValue.js") {
+            // Assumes getWEBSITEURLValue() is available globally (it is in index.php)
+            if (function_exists('getWEBSITEURLValue')) {
+                echo getWEBSITEURLValue();
+            }
+            return;
+        }
+
+        if (\$page_key == "setLanguage" && getEnvValue('DETECT_LANGUAGE') == 'true') {
+            if (isset(\$_POST['lang'])) {
+                \$lang = \$_POST['lang'];
+                setcookie('lang', \$lang, time() + (86400 * 30), "/"); // 30 days
+                // Original code did not redirect or give output here.
+                // Consider if redirect is needed: redirect(getEnvValue('WEBSITE_URL'));
+            }
+            return; // Stop further processing for setLanguage
+        }
+
+        // Attempt to load direct .ahmed.php files from web/
+        if (file_exists("web/" . \$page_key . ".ahmed.php")) {
+            if (function_exists('loadBootstrap')) loadBootstrap();
+            if (function_exists('loadScripts')) loadScripts();
+            echo \$Ahmed->render("web/" . \$page_key . ".ahmed.php");
+            return;
+        }
+
+        // Attempt to serve files directly from public/
+        // This is generally not recommended to be handled in PHP for actual static assets like CSS/JS/images
+        // but was in the original getPage.php.
+        if (file_exists("public/" . \$page_key) && is_file("public/" . \$page_key)) {
+            // Determine content type based on file extension for basic asset types
+            \$extension = strtolower(pathinfo(\$page_key, PATHINFO_EXTENSION));
+            switch (\$extension) {
+                case 'css':
+                    header('Content-Type: text/css');
+                    break;
+                case 'js':
+                    header('Content-Type: application/javascript');
+                    break;
+                // Add more common types if necessary (png, jpg, etc.)
+            }
+            readfile("public/" . \$page_key);
+            return;
+        }
+
+        // Handle dynamic routes using getSlashData (e.g., page/data)
+        // Assumes getSlashData() is available (restored in getSlashData.php)
+        if (function_exists('getSlashData')) {
+            \$RouteData = getSlashData(\$page_key);
+            if (\$RouteData !== "Not Found" && is_array(\$RouteData)) {
+                // Original logic: if (\$RouteData['after'] == "") { include 'core/errors/400.php'; return; }
+                // This implies 'after' must exist. The restored getSlashData ensures this.
+
+                \$_GET['data'] = \$RouteData['after']; // Make dynamic part available
+                \$dynamic_page_key = \$RouteData['before'];
+
+                if (file_exists("web/" . \$dynamic_page_key . "_dynamic.ahmed.php")) {
+                    if (function_exists('loadBootstrap')) loadBootstrap();
+                    if (function_exists('loadScripts')) loadScripts();
+                    echo \$Ahmed->render("web/" . \$dynamic_page_key . "_dynamic.ahmed.php");
+                    return;
+                }
+                if (file_exists("web/" . \$dynamic_page_key . "_dynamic_api.ahmed.php")) {
+                    // No loadBootstrap or loadScripts for API templates
+                    echo \$Ahmed->render("web/" . \$dynamic_page_key . "_dynamic_api.ahmed.php");
+                    return;
+                }
+            }
+        }
+
+        // Handle request methods (GET, POST, PUT, DELETE, PATCH)
+        // This was originally a call to handleRequestMethod().
+        // The definition of handleRequestMethod is included above.
+        if (handleRequestMethod(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])) {
+            return; // Handled by handleRequestMethod
+        }
+
+        // If no route matched, display 404 error
+        if (file_exists('core/errors/404.php')) {
+            if (function_exists('loadScripts')) loadScripts();
+            http_response_code(404);
             include 'core/errors/404.php';
+        } else {
+            http_response_code(404);
+            echo "Error 404: Page Not Found (Fallback)";
         }
-        return;
-    }
-    
-    if ($_GET['page'] == "fetchCsrfToken") {
-        echo generateCsrfToken();
-        return;
-    }
-
-    if ($_GET['page'] == 'blocked') {
-        if (file_exists(__DIR__ . '/../../../core/errors/403.php')) {
-            loadScripts();
-            include __DIR__ . '/../../../core/errors/403.php';
-        }
-        return;
-    }
-
-    if ($_GET['page'] == "JS/getWEBSITEURLValue.js") {
-        echo getWEBSITEURLValue();
-        return;
-    }
-
-    if ($_GET['page'] == "setLanguage" && getEnvValue('DETECT_LANGUAGE') == 'true') {
-        if (isset($_POST['lang'])) {
-            $lang = $_POST['lang'];
-            setcookie('lang', $lang, time() + (86400 * 30), "/"); // Store for 30 days
-            return;
-        }
-    }
-
-    if (file_exists("web/{$_GET['page']}.ahmed.php")) {
-        loadBootstrap();
-        loadScripts();
-        echo $Ahmed->render("web/{$_GET['page']}.ahmed.php");
-        return;
-    }
-
-    if (file_exists("public/{$_GET['page']}") && is_file("public/{$_GET['page']}")) {
-        include "public/{$_GET['page']}";
-        return;
-    }
-
-    $RouteData = getSlashData($_GET['page']);
-    if ($RouteData !== "Not Found") {
-        if ($RouteData['after'] == "") {
-            loadScripts();
-            include 'core/errors/400.php';
-            return;
-        }
-        $_GET['data'] = $RouteData['after'];
-        if (file_exists("web/{$RouteData['before']}_dynamic.ahmed.php")) {
-            loadBootstrap();
-            loadScripts();
-            echo $Ahmed->render("web/{$RouteData['before']}_dynamic.ahmed.php");
-            return;
-        }
-        if (file_exists("web/{$RouteData['before']}_dynamic_api.ahmed.php")) {
-            echo $Ahmed->render("web/{$RouteData['before']}_dynamic_api.ahmed.php");
-            return;
-        }
-    }
-
-    if (handleRequestMethod(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])) {
-        return;
-    }
-
-    if (file_exists('core/errors/404.php')) {
-        loadScripts();
-        include 'core/errors/404.php';
         return;
     }
 }
+?>

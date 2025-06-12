@@ -30,6 +30,15 @@ if (!is_dir(LANG_FOLDER)) mkdir(LANG_FOLDER);
 if (!is_dir(LAYOUT_FOLDER)) mkdir(LAYOUT_FOLDER);
 if (!is_dir(PUBLIC_FOLDER)) mkdir(PUBLIC_FOLDER);
 
+// Determine routing system mode
+$rawUseNewRoutes = getEnvValue('USE_NEW_ROUTES');
+// Default to true if the .env variable is missing, empty, or explicitly 'true'
+$isNewRoutingSystemActive = true; // Default assumption
+if ($rawUseNewRoutes !== null && $rawUseNewRoutes !== '' && strtolower($rawUseNewRoutes) === 'false') {
+    $isNewRoutingSystemActive = false;
+}
+// $isNewRoutingSystemActive will now be true or false.
+
 // أوامر Ammar CLI
 $commands = [
     'list' => 'List all commands',
@@ -112,82 +121,325 @@ if ($command === 'make:db') {
 }
 
 if ($command === 'make:route') {
-    $route = $args['1'] ?? readline("1- What's route name? ");
-    if (!$route) exit("Route name is required!\n");
-    $filedata = "<?php\n// Route handler for $route\n";
-    
-    $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic? (yes/no): ")) === 'yes';
-    
-    if ($isDynamic) {
-        $filename = "{$route}_dynamic";
+    // The global $isNewRoutingSystemActive is set at the beginning of the script.
+
+    if ($isNewRoutingSystemActive) {
+        echo "Operating in NEW routing system mode (routes.php).\n";
+
+        // --- New Routing System Logic ---
+        $path = readline("1- Enter route path (e.g., /users, /products/{id}): ");
+        if (empty($path)) exit("Route path is required!\n");
+
+        $method = strtoupper(readline("2- Enter HTTP method (GET, POST, PUT, DELETE, ANY): "));
+        if (!in_array($method, ['GET', 'POST', 'PUT', 'DELETE', 'ANY'])) {
+            exit("Invalid HTTP method!\n");
+        }
+
+        $type = strtolower(readline("3- Enter route type (preview or command): "));
+        if (!in_array($type, ['preview', 'command'])) {
+            exit("Invalid route type! Must be 'preview' or 'command'.\n");
+        }
+
+        $handler_info = "";
+        $handler_for_file = ""; // For creating preview files
+
+        if ($type === 'preview') {
+            $handler = readline("4- Enter handler (path to template in web/, e.g., pages/index.ahmed.php): ");
+            if (empty($handler)) exit("Handler (template path) is required for preview routes!\n");
+            $handler_for_file = $handler; // Store for file creation
+            $handler_info = "'" . addslashes($handler) . "'";
+        } else { // command
+            $handler = readline("4- Enter handler (function name or 'closure' for anonymous function): ");
+            if (empty($handler)) exit("Handler (function name or 'closure') is required for command routes!\n");
+            if (strtolower($handler) === 'closure') {
+                $handler_info = "function() {\n            // TODO: Implement your command logic here\n            echo 'Command route " . addslashes($path) . " executed.';\n        }";
+            } else {
+                $handler_info = "'" . addslashes($handler) . "'";
+            }
+        }
+
+        $is_api_input = strtolower(readline("5- Is this an API route? (yes/no, default: no): "));
+        $is_api = ($is_api_input === 'yes');
+
+        // Basic dynamic segment detection from path (e.g. {id}, {name})
+        $dynamic_segments = [];
+        if (preg_match_all('/\\{([a-zA-Z0-9_]+)\\}/', $path, $matches)) {
+            $dynamic_segments = $matches[1];
+        }
+        $dynamic_segment_info = "null";
+        if (count($dynamic_segments) === 1) {
+            $dynamic_segment_info = "'" . addslashes($dynamic_segments[0]) . "'";
+        } elseif (count($dynamic_segments) > 1) {
+            $segments_str_array = array_map(function($seg) { return "'" . addslashes($seg) . "'"; }, $dynamic_segments);
+            $dynamic_segment_info = "[" . implode(", ", $segments_str_array) . "]";
+        }
+
+        $route_definition = "\n\$routes[] = [\n";
+        $route_definition .= "    'path'            => '" . addslashes($path) . "',\n";
+        $route_definition .= "    'method'          => '" . $method . "',\n";
+        $route_definition .= "    'type'            => '" . $type . "',\n";
+        $route_definition .= "    'handler'         => " . $handler_info . ",\n";
+        $route_definition .= "    'is_api'          => " . ($is_api ? 'true' : 'false') . ",\n";
+        if ($dynamic_segment_info !== "null") {
+            $route_definition .= "    'dynamic_segment' => " . $dynamic_segment_info . ",\n";
+        }
+        $route_definition .= "];\n";
+
+        // Append to routes.php
+        $routes_file_path = __DIR__ . '/routes.php';
+        if (!file_exists($routes_file_path)) {
+            // Create routes.php if it doesn't exist with basic structure
+            $initial_routes_content = "<?php\n\n/**\n * Web Routes (New System)\n */\n\n\$routes = [];\n";
+            file_put_contents($routes_file_path, $initial_routes_content);
+            echo "Created routes.php as it was missing.\n";
+        }
+
+        // Read current content, ensure $routes array is not closed prematurely
+        $current_routes_content = file_get_contents($routes_file_path);
+        // Remove closing PHP tag if exists to append array elements safely
+        $current_routes_content = preg_replace('/\?>\s*$/', '', $current_routes_content);
+        file_put_contents($routes_file_path, $current_routes_content . $route_definition);
+
+        echo "Route definition added to routes.php for path: " . $path . "\n";
+
+        // Create placeholder file for preview type
+        if ($type === 'preview' && !empty($handler_for_file)) {
+            $preview_file_path = WEB_FOLDER . '/' . $handler_for_file;
+            $preview_file_data = "<?php\n// Preview template for route: " . $path . "\n// Handler: " . $handler_for_file . "\n?>\n<h1>Preview for " . htmlspecialchars($path) . "</h1>\n";
+
+            // Create directory if it doesn't exist
+            $preview_file_dir = dirname($preview_file_path);
+            if (!is_dir($preview_file_dir)) {
+                mkdir($preview_file_dir, 0777, true);
+            }
+
+            if (!file_exists($preview_file_path)) {
+                file_put_contents($preview_file_path, $preview_file_data);
+                echo "Created placeholder template: " . $preview_file_path . "\n";
+            } else {
+                echo "Template file already exists: " . $preview_file_path . "\n";
+            }
+        }
+
     } else {
-        $method = strtoupper($args['3'] ?? readline("3- What's available Type of request (GET, POST, PUT, PATCH, DELETE): "));
-        if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
-            exit("Invalid request type!\n");
+        // --- Legacy Routing System Logic (Original code) ---
+        echo "Operating in LEGACY routing system mode (web/ files).\n";
+
+        // Note: $args is populated from CLI parameters like -1, -2, etc.
+        // We'll use the original logic which mixes $args and readline.
+        $route = $args['1'] ?? readline("1- What's route name (e.g., mypage, products/view)? ");
+        if (!$route) exit("Route name is required!\n");
+
+        $filedata = "<?php\n// Legacy route handler for " . htmlspecialchars($route) . "\n";
+
+        $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic (creates PAGENAME_dynamic.ahmed.php)? (yes/no): ")) === 'yes';
+        $filename_base = str_replace('/', '_', $route); // Sanitize for filename part
+
+        if ($isDynamic) {
+            $filename = $filename_base . "_dynamic";
+        } else {
+            $method_input = strtoupper($args['3'] ?? readline("3- What's available Type of request (GET, POST, PUT, PATCH, DELETE): "));
+            if (!in_array($method_input, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
+                exit("Invalid request type!\n");
+            }
+            if ($method_input == 'POST') {
+                // Assuming validateCsrfToken() is available or defined elsewhere if needed
+                // For CLI generated file, it's a placeholder.
+                $filedata .= "// validateCsrfToken(); // Uncomment if CSRF protection is needed\n";
+            }
+            $filename = $filename_base . "_request_" . $method_input;
         }
-        if ($method == 'POST') {
-            $filedata .= "validateCsrfToken();\n";
+
+        // The original logic for $isAPI used $args['3'] for both dynamic and non-dynamic, which is confusing.
+        // Let's use a new argument index for API to avoid conflict if dynamic was chosen.
+        // If dynamic (arg2), API is arg3. If not dynamic (arg2 for type), API is arg4.
+        // For simplicity, let's make it a consistent question number.
+        $api_question_number = $isDynamic ? "3" : "4";
+        $isAPI = strtolower($args[$api_question_number] ?? readline($api_question_number . "- Is this an API route (appends _api to filename)? (yes/no): ")) === "yes";
+
+        if ($isAPI) {
+            $filename .= "_api.ahmed.php";
+            // Original logic for API CSRF token:
+            // if ($method_input != 'POST' && isset($method_input)) {
+            //    $filedata .= "// validateCsrfToken(); // Uncomment if CSRF protection is needed for non-POST API\n";
+            // }
+        } else {
+            $filename .= ".ahmed.php";
         }
-        $filename = "{$route}_request_{$method}";
+
+        $filePath = WEB_FOLDER . '/' . $filename; // Filename is now more sanitized
+
+        // Create directory if route name implies subdirectories (e.g., products/view)
+        // For legacy, the filename itself doesn't contain slashes, but the $route might.
+        // The original getSlashData check for filename was not quite right for this structure.
+        // We should ensure the directory structure from $route is created.
+        $targetDir = WEB_FOLDER;
+        if (strpos($route, '/') !== false) {
+            $targetDir = WEB_FOLDER . '/' . dirname($route);
+             // The actual filename will be flat (e.g., products_view_request_GET.ahmed.php)
+             // but placed inside web/products/ if $route was 'products/view'.
+             // This means the $filename should NOT include the path part for file creation.
+             // Let's adjust: create directory from $route, but use $filename_base for the file.
+            $filePath = $targetDir . '/' . basename($filename); // Use basename of the constructed filename
+        }
+
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // Add some content to the file
+        $filedata .= "\necho 'Handler for legacy route: " . htmlspecialchars($route) . " (File: " . basename($filePath) . ")';\n";
+        $filedata .= "?>";
+
+        if (!file_exists($filePath)) {
+            file_put_contents($filePath, $filedata);
+            echo "Legacy route file created: " . $filePath . "\n";
+        } else {
+            echo "Legacy route file already exists: " . $filePath . "\n";
+        }
     }
-
-    $isAPI = strtolower($args['3'] ?? readline("3- Is this API? (yes,no): ")) === "yes";
-
-    if ($isAPI) {
-        $filename .= "_api.ahmed.php";
-        if ($method != 'POST') {
-            $filedata .= "validateCsrfToken();\n";
-        }
-    } else {
-        $filename .= ".ahmed.php";
-    }
-
-    $filePath = WEB_FOLDER . '/' . $filename;
-
-    if (getSlashData($filename) != "Not Found") {
-        $parentDirectory = dirname($filePath);
-        if (!is_dir($parentDirectory)) {
-            mkdir($parentDirectory, 0777, true);
-        }
-    }
-    
-    file_put_contents($filePath, $filedata);
-    echo "Route file created: $filename\n";
     exit(0);
 }
 
 if ($command === 'delete:route') {
-    $route = $args['1'] ?? readline("1- What's route name? ");
-    if (!$route) exit("Route name is required!\n");
-    
-    $patterns = [
-        "$route.ahmed.php",
-        "{$route}_dynamic.ahmed.php",
-        "{$route}_request_GET.ahmed.php",
-        "{$route}_request_POST.ahmed.php",
-        "{$route}_request_PUT.ahmed.php",
-        "{$route}_request_PATCH.ahmed.php",
-        "{$route}_request_DELETE.ahmed.php",
-        "{$route}_request_GET_api.ahmed.php",
-        "{$route}_request_POST_api.ahmed.php",
-        "{$route}_request_PUT_api.ahmed.php",
-        "{$route}_request_PATCH_api.ahmed.php",
-        "{$route}_request_DELETE_api.ahmed.php",
-        "{$route}_dynamic_api.ahmed.php"
-    ];
-    
-    $deleted = false;
-    foreach ($patterns as $pattern) {
-        $filePath = WEB_FOLDER . '/' . $pattern;
-        if (file_exists($filePath)) {
-            unlink($filePath);
-            echo "Deleted: $pattern\n";
-            $deleted = true;
+    // The global $isNewRoutingSystemActive is set at the beginning of the script.
+
+    if ($isNewRoutingSystemActive) {
+        echo "Operating in NEW routing system mode (routes.php).\n";
+        $route_path_to_delete = readline("1- Enter the exact route path to delete (e.g., /users, /products/{id}): ");
+        if (empty($route_path_to_delete)) exit("Route path is required!\n");
+
+        $routes_file_path = __DIR__ . '/routes.php';
+        if (!file_exists($routes_file_path)) {
+            echo "routes.php file not found! Cannot delete route.\n";
+            exit(1);
         }
-    }
-    
-    if (!$deleted) {
-        echo "No matching route files found!\n";
+
+        // Load existing routes
+        $routes = [];
+        // Capture potential output from routes.php, though it should only define $routes
+        ob_start();
+        require $routes_file_path;
+        ob_end_clean();
+
+        $original_routes_count = count($routes);
+        $updated_routes = [];
+        $route_found = false;
+        $deleted_route_handler = null;
+        $deleted_route_type = null;
+
+        foreach ($routes as $route) {
+            if (isset($route['path']) && $route['path'] === $route_path_to_delete) {
+                $route_found = true;
+                $deleted_route_handler = $route['handler'] ?? null;
+                $deleted_route_type = $route['type'] ?? null;
+                // Don't add this route to $updated_routes
+                echo "Found route with path: " . $route_path_to_delete . ". Marking for deletion.\n";
+            } else {
+                $updated_routes[] = $route;
+            }
+        }
+
+        if (!$route_found) {
+            echo "Route with path '" . $route_path_to_delete . "' not found in routes.php.\n";
+            exit(1);
+        }
+
+        // Reconstruct the routes.php file content
+        // Start with the initial comments and $routes array declaration.
+        // It's safer to get the content before the actual $routes array definition from the original file.
+
+        $original_content = file_get_contents($routes_file_path);
+        $routes_declaration_pos = strpos($original_content, '$routes =');
+        $header_content = '';
+        if ($routes_declaration_pos !== false) {
+            $header_content = substr($original_content, 0, $routes_declaration_pos);
+        } else {
+            // Fallback if '$routes =' isn't found, though it should be.
+            $header_content = "<?php\n\n/**\n * Web Routes (New System)\n */\n\n";
+        }
+
+        $new_routes_content = $header_content;
+        $new_routes_content .= "\$routes = " . var_export($updated_routes, true) . ";\n\n";
+        // Try to append any content that was after the original $routes array definition, if any.
+        // This is tricky. For now, var_export will be the end of the active PHP part.
+        // Adding a closing PHP tag if the original header didn't have one and wasn't just <?php
+        if (strpos(trim($header_content), '<?php') === 0 && substr(trim($header_content), -2) !== '?>') {
+             // Minimal check if header is just <?php or <?php /* comments */
+            // This logic might need to be more robust if routes.php has complex structure.
+        }
+
+        // Overwrite routes.php with the new content
+        if (file_put_contents($routes_file_path, $new_routes_content) !== false) {
+            echo "Route '" . $route_path_to_delete . "' has been deleted from routes.php.\n";
+
+            if ($deleted_route_type === 'preview' && is_string($deleted_route_handler)) {
+                $handler_file_path = WEB_FOLDER . '/' . $deleted_route_handler;
+                if (file_exists($handler_file_path)) {
+                    $delete_handler_file = strtolower(readline("  Associated preview file found: " . $handler_file_path . ". Delete it? (yes/no): "));
+                    if ($delete_handler_file === 'yes') {
+                        if (unlink($handler_file_path)) {
+                            echo "  Deleted preview file: " . $handler_file_path . "\n";
+                        } else {
+                            echo "  Failed to delete preview file: " . $handler_file_path . "\n";
+                        }
+                    }
+                }
+            }
+        } else {
+            echo "Error writing updated routes to routes.php!\n";
+            exit(1);
+        }
+
+    } else {
+        // --- Legacy Routing System Logic (Original code) ---
+        echo "Operating in LEGACY routing system mode (web/ files).\n";
+        $route_name_to_delete = $args['1'] ?? readline("1- What's route name to delete (e.g., mypage, products/view)? ");
+        if (!$route_name_to_delete) exit("Route name is required!\n");
+
+        // Sanitize the base name for pattern matching, similar to how legacy make:route created them.
+        $base_filename_pattern = str_replace('/', '_', $route_name_to_delete);
+
+        $patterns = [
+            $base_filename_pattern . ".ahmed.php", // Simple page (though not directly made by old make:route)
+            $base_filename_pattern . "_dynamic.ahmed.php",
+            $base_filename_pattern . "_dynamic_api.ahmed.php",
+            $base_filename_pattern . "_request_GET.ahmed.php",
+            $base_filename_pattern . "_request_POST.ahmed.php",
+            $base_filename_pattern . "_request_PUT.ahmed.php",
+            $base_filename_pattern . "_request_PATCH.ahmed.php",
+            $base_filename_pattern . "_request_DELETE.ahmed.php",
+            $base_filename_pattern . "_request_GET_api.ahmed.php",
+            $base_filename_pattern . "_request_POST_api.ahmed.php",
+            $base_filename_pattern . "_request_PUT_api.ahmed.php",
+            $base_filename_pattern . "_request_PATCH_api.ahmed.php",
+            $base_filename_pattern . "_request_DELETE_api.ahmed.php",
+        ];
+
+        $deleted_count = 0;
+        // Determine potential directory based on $route_name_to_delete
+        $targetDir = WEB_FOLDER;
+        if (strpos($route_name_to_delete, '/') !== false) {
+            $targetDir = WEB_FOLDER . '/' . dirname($route_name_to_delete);
+        }
+
+        foreach ($patterns as $pattern_suffix) {
+            $filePath = $targetDir . '/' . $pattern_suffix;
+            if (is_dir($targetDir) && file_exists($filePath)) {
+                if (unlink($filePath)) {
+                    echo "  Deleted: " . $filePath . "\n";
+                    $deleted_count++;
+                } else {
+                    echo "  Failed to delete: " . $filePath . "\n";
+                }
+            }
+        }
+
+        if ($deleted_count === 0) {
+            echo "No matching legacy route files found for base '" . $route_name_to_delete . "' in " . $targetDir . "/\n";
+        } else {
+            echo "Deletion process complete for legacy route '" . $route_name_to_delete . "'.\n";
+        }
     }
     exit(0);
 }
@@ -210,14 +462,73 @@ if ($command === 'delete:db') {
 }
 
 if ($command === 'list:routes') {
-    $files = array_merge(
-        glob(WEB_FOLDER . '/*.ahmed.php'),
-        glob(WEB_FOLDER . '/**/*.ahmed.php')
-    );
-    echo "Available routes:\n";
-    foreach ($files as $file) {
-        $relativePath = str_replace(WEB_FOLDER . '/', '', $file);
-        echo "  " . $relativePath . "\n";
+    // The global $isNewRoutingSystemActive is set at the beginning of the script.
+
+    if ($isNewRoutingSystemActive) {
+        echo "Listing routes from routes.php (NEW routing system):\n";
+        $routes_file_path = __DIR__ . '/routes.php';
+        if (!file_exists($routes_file_path)) {
+            echo "routes.php file not found! No routes to list for the new system.\n";
+            exit(1);
+        }
+
+        // Temporarily capture output and prevent direct execution if routes.php does more than define $routes
+        ob_start();
+        // In a real CLI, you might want to sandbox this require if routes.php could have side effects.
+        // For this context, we assume routes.php primarily defines the $routes array.
+        $routes = []; // Initialize to prevent errors if routes.php is empty or malformed
+        require $routes_file_path; // This will make $routes array available
+        ob_end_clean();
+
+        if (empty($routes)) {
+            echo "No routes defined in routes.php.\n";
+        } else {
+            foreach ($routes as $index => $route) {
+                echo "Route #" . ($index + 1) . ":\n";
+                echo "  Path:    " . ($route['path'] ?? 'N/A') . "\n";
+                echo "  Method:  " . ($route['method'] ?? 'N/A') . "\n";
+                echo "  Type:    " . ($route['type'] ?? 'N/A') . "\n";
+
+                $handler_display = 'N/A';
+                if (isset($route['handler'])) {
+                    if (is_string($route['handler'])) {
+                        $handler_display = $route['handler'];
+                    } elseif (is_callable($route['handler'])) {
+                        $handler_display = '[Closure]';
+                    }
+                }
+                echo "  Handler: " . $handler_display . "\n";
+
+                if (isset($route['is_api'])) {
+                    echo "  API:     " . ($route['is_api'] ? 'Yes' : 'No') . "\n";
+                }
+                if (isset($route['dynamic_segment'])) {
+                    if (is_array($route['dynamic_segment'])) {
+                        echo "  Dynamic: " . implode(', ', $route['dynamic_segment']) . "\n";
+                    } else {
+                        echo "  Dynamic: " . $route['dynamic_segment'] . "\n";
+                    }
+                }
+                echo "------------------------------------\n";
+            }
+        }
+
+    } else {
+        // --- Legacy Routing System Logic (Original code) ---
+        echo "Listing legacy route files from web/ directory (LEGACY routing system):\n";
+        $files = array_merge(
+            glob(WEB_FOLDER . '/*.ahmed.php'),
+            glob(WEB_FOLDER . '/**/*.ahmed.php') // Include subdirectories
+        );
+        if (empty($files)) {
+            echo "No .ahmed.php files found in " . WEB_FOLDER . "\n";
+        } else {
+            echo "Available legacy route files (potential routes):\n";
+            foreach ($files as $file) {
+                $relativePath = str_replace(WEB_FOLDER . '/', '', $file);
+                echo "  " . $relativePath . "\n";
+            }
+        }
     }
     exit(0);
 }
@@ -328,8 +639,100 @@ if ($command === 'clear:db:tables') {
 }
 
 if ($command === "clear:routes") {
-    array_map("unlink", glob("web/*"));
-    echo "Route files cleared!\n";
+    // The global $isNewRoutingSystemActive is set at the beginning of the script.
+
+    if ($isNewRoutingSystemActive) {
+        echo "Operating in NEW routing system mode.\n";
+
+        $confirm_clear_routes_file = strtolower(readline("Do you want to clear the routes.php file (reset to empty \$routes array)? (yes/no): "));
+        if ($confirm_clear_routes_file === 'yes') {
+            $routes_file_path = __DIR__ . '/routes.php';
+            $original_content = file_exists($routes_file_path) ? file_get_contents($routes_file_path) : "<?php\n\n\$routes = [];\n";
+
+            $routes_declaration_pos = strpos($original_content, '$routes =');
+            $header_content = '';
+
+            if ($routes_declaration_pos !== false) {
+                // Try to preserve content before '$routes ='
+                $header_content = substr($original_content, 0, $routes_declaration_pos);
+                // Ensure header has PHP opening tag if it's not just whitespace
+                if (trim($header_content) === '' && strpos($original_content, '<?php') === 0) {
+                    $header_content = "<?php\n\n"; // Default minimal header
+                } elseif (strpos(trim($header_content), '<?php') === false) {
+                     // If <?php is missing from header (e.g. it was just comments), add it.
+                    $header_content = "<?php\n" . $header_content;
+                }
+            } else {
+                // Fallback: if '$routes =' not found, use a default header.
+                // This might happen if routes.php was completely emptied or malformed.
+                $header_content = "<?php\n\n/**\n * Web Routes (New System)\n * Cleared by Ammar CLI\n */\n\n";
+            }
+
+            // Ensure there's a new line after header if it's not empty
+            if(trim($header_content) !== '' && substr($header_content, -1) !== "\n") {
+                $header_content .= "\n";
+            }
+
+            $cleared_routes_content = $header_content . "\$routes = [];\n";
+
+            if (file_put_contents($routes_file_path, $cleared_routes_content) !== false) {
+                echo "routes.php has been cleared (reinitialized to \$routes = []).\n";
+            } else {
+                echo "Error clearing routes.php!\n";
+            }
+        }
+
+        $confirm_clear_web_files = strtolower(readline("Do you also want to delete all *.ahmed.php files from the web/ directory and its subdirectories? (yes/no): "));
+        if ($confirm_clear_web_files === 'yes') {
+            echo "Deleting *.ahmed.php files from web/ directory...\n";
+            $deleted_count = 0;
+            $web_files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(WEB_FOLDER, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST
+            );
+
+            foreach ($web_files as $fileinfo) {
+                if ($fileinfo->isFile() && $fileinfo->getExtension() === 'ahmed.php') {
+                    if (unlink($fileinfo->getRealPath())) {
+                        echo "  Deleted: " . $fileinfo->getRealPath() . "\n";
+                        $deleted_count++;
+                    } else {
+                        echo "  Failed to delete: " . $fileinfo->getRealPath() . "\n";
+                    }
+                }
+            }
+            echo $deleted_count . " *.ahmed.php file(s) deleted from web/ directory.\n";
+        }
+
+    } else {
+        // --- Legacy Routing System Logic ---
+        echo "Operating in LEGACY routing system mode.\n";
+        $confirm_clear_web_files_legacy = strtolower(readline("Are you sure you want to delete all *.ahmed.php files from the web/ directory and its subdirectories? (yes/no): "));
+        if ($confirm_clear_web_files_legacy === 'yes') {
+            echo "Deleting *.ahmed.php files from web/ directory...\n";
+            $deleted_count = 0;
+            // Use RecursiveIteratorIterator to find all .ahmed.php files in web/ and subdirectories
+            $web_files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(WEB_FOLDER, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST // Important for deleting files before directories if we were deleting dirs
+            );
+
+            foreach ($web_files as $fileinfo) {
+                if ($fileinfo->isFile() && $fileinfo->getExtension() === 'ahmed.php') {
+                    if (unlink($fileinfo->getRealPath())) {
+                        echo "  Deleted: " . $fileinfo->getRealPath() . "\n";
+                        $deleted_count++;
+                    } else {
+                        echo "  Failed to delete: " . $fileinfo->getRealPath() . "\n";
+                    }
+                }
+            }
+            echo $deleted_count . " *.ahmed.php file(s) deleted from web/ directory.\n";
+
+        } else {
+            echo "Operation cancelled by user.\n";
+        }
+    }
     exit(0);
 }
 

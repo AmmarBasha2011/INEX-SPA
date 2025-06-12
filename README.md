@@ -25,12 +25,202 @@ INEX is driven by a passion for technological advancement. Our core mission incl
 A powerful and lightweight PHP framework built for speed and efficiency, offering features such as:
 
 * **Ultra-fast execution (1ms response time).**
-* **Built-in CLI (Ammar CLI)** for managing routes, databases, and configurations with ease.
-* **Advanced routing and database management**, making backend development streamlined and efficient.
+* **Built-in CLI (Ammar CLI)** for managing routes, databases, configurations, and more. See the "Command Line Interface" section below for details.
+* **Flexible file-based routing system (see Routing section below) and database management**, making backend development streamlined and efficient.
 * **Built-in CSRF protection** to enhance security against web vulnerabilities.
 * **Support for modular development**, allowing developers to expand their projects with plugins and additional functionalities.
 * **Integrated caching and session management**, reducing server load and enhancing application performance.
 * **Extensive documentation and community support**, making development easier and more accessible.
+
+##### Key Configuration (.env)
+
+INEX SPA behavior can be customized using variables in your `.env` file (create one by copying `.env.example`).
+
+*   **`USE_NEW_ROUTES`**:
+    *   Controls which routing system is active.
+    *   Set to `true` (default): Uses the new, flexible routing system defined in `routes.php` (see details in the "INEX SPA: Routing" section below).
+    *   Set to `false`: Uses the legacy routing system. In this mode, pages are typically loaded based on a `page` query parameter (e.g., `index.php?page=about`), which corresponds to files like `web/about.ahmed.php` or handles special predefined cases.
+    *   The `.env.example` file includes this variable set to `true`.
+
+*   **`USE_ANIMATE`**: (Already documented, but listed here for completeness of a "Key Configuration" idea)
+    *   Set to `true` to enable the built-in JavaScript Motion Engine for CSS animations.
+    *   Set to `false` to disable it. (Default: `true`)
+    *   *(Details for the Motion Engine are documented further down.)*
+
+##### Command Line Interface (Ammar CLI)
+
+INEX SPA includes a command-line tool named `ammar` (run as `php ammar <command>`) to help with common development tasks. The behavior of some route management commands depends on the `USE_NEW_ROUTES` setting in your `.env` file.
+
+**General Usage:**
+`php ammar [command] [options]`
+
+To see a list of all available commands:
+`php ammar list` or `php ammar`
+
+**Route Management Commands:**
+
+The following route management commands adapt their behavior based on the `USE_NEW_ROUTES` setting in your `.env` file:
+
+*   **`php ammar make:route`**
+    *   **If `USE_NEW_ROUTES=true` (New Routing System):**
+        *   Prompts for: route path (e.g., `/users/{id}`), HTTP method, type (`preview` or `command`), handler (template path for `preview`, function name or 'closure' for `command`), and API status.
+        *   Adds the route definition to the `$routes` array in `routes.php`.
+        *   If `type` is `preview`, it also creates a placeholder `.ahmed.php` template file in the `web/` directory (respecting subdirectories like `web/pages/`).
+        *   Example: `php ammar make:route` (then follow prompts)
+    *   **If `USE_NEW_ROUTES=false` (Legacy Routing System):**
+        *   Prompts for: route name (e.g., `myPage`, `products/view`), dynamic status, HTTP method (if not dynamic), and API status.
+        *   Creates the appropriate `.ahmed.php` file(s) in the `web/` directory (e.g., `web/myPage_request_GET.ahmed.php`, `web/products/products_view_dynamic.ahmed.php`).
+        *   Example: `php ammar make:route` (then follow prompts)
+
+*   **`php ammar list:routes`**
+    *   **If `USE_NEW_ROUTES=true`:**
+        *   Reads `routes.php` and lists all defined routes with their properties (path, method, type, handler, etc.).
+    *   **If `USE_NEW_ROUTES=false`:**
+        *   Lists all `*.ahmed.php` files found in the `web/` directory and its subdirectories, representing potential legacy routes.
+
+*   **`php ammar delete:route`**
+    *   **If `USE_NEW_ROUTES=true`:**
+        *   Prompts for the exact route path to remove.
+        *   Removes the corresponding entry from the `$routes` array in `routes.php`.
+        *   If the deleted route was a `preview` type, it will ask if you also want to delete the associated `.ahmed.php` template file from `web/`.
+    *   **If `USE_NEW_ROUTES=false`:**
+        *   Prompts for the base route name.
+        *   Deletes associated `*.ahmed.php` files from the `web/` directory based on common naming patterns for that route name.
+
+*   **`php ammar clear:routes`**
+    *   **If `USE_NEW_ROUTES=true`:**
+        *   Asks for confirmation to clear `routes.php` (resets `$routes = [];` while attempting to preserve comments before it).
+        *   Asks for separate confirmation to delete all `*.ahmed.php` files from the `web/` directory and its subdirectories.
+    *   **If `USE_NEW_ROUTES=false`:**
+        *   Asks for confirmation to delete all `*.ahmed.php` files from the `web/` directory and its subdirectories.
+
+**Other Commands:**
+The `ammar` CLI also includes commands for database management (`make:db`, `list:db`, `delete:db`, `run:db`), cache management (`make:cache`, `get:cache`, `clear:cache`), session management, language file creation, sitemap generation, and more. Use `php ammar list` to see all available commands and their descriptions.
+
+## 🚀 INEX SPA: Routing
+
+**Note:** This routing system is active when the `USE_NEW_ROUTES` environment variable is set to `true` in your `.env` file (or if the variable is not set, as `true` is the default). If `USE_NEW_ROUTES=false`, the framework uses the legacy page routing system (based on `index.php?page=...`). See the "Key Configuration" section under "INEX SPA" for more details on this flag.
+
+INEX SPA uses a simple yet powerful file-based routing system. All your web routes are defined in the `routes.php` file located in the root directory of your project. The system allows you to map URL patterns to specific handlers, which can either render a view template or execute custom PHP logic.
+
+### Defining Routes in `routes.php`
+
+The `routes.php` file should contain a PHP array named `\$routes`. Each element in this array is an associative array that defines a single route.
+
+Here's the basic structure of a route definition:
+
+```php
+\$routes[] = [
+    'path'          => '/your-url-path', // The URL path this route responds to.
+    'method'        => 'GET',            // HTTP method (GET, POST, PUT, DELETE, ANY).
+    'type'          => 'preview',        // 'preview' (render template) or 'command' (execute PHP).
+    'handler'       => 'template.ahmed.php', // For 'preview': path to template in web/
+                                         // For 'command': function name or callable.
+    'is_api'        => false,            // Optional: true if this is an API endpoint (skips full layout/scripts). Defaults to false.
+    'dynamic_segment' => null,           // Optional: Name(s) of dynamic segment(s) if path contains placeholders like /product/{id}.
+];
+```
+
+**Key Parameters:**
+
+*   `path`: The URI pattern for the route. You can define dynamic segments using curly braces (e.g., `/users/{userId}`).
+*   `method`: The HTTP method the route responds to. Common values are `GET`, `POST`, `PUT`, `DELETE`. Use `ANY` to match any method.
+*   `type`:
+    *   `preview`: Renders a PHP template file (using the AhmedTemplate engine). The `handler` should be the path to your template file relative to the `web/` directory (e.g., `pages/about.ahmed.php`).
+    *   `command`: Executes PHP code. The `handler` can be a string with the name of a globally available function (e.g., defined in `functions.php`) or an anonymous function (Closure).
+*   `handler`: Specifies what code to execute or what template to render.
+    *   For `preview` routes: The filename of the template in the `web/` directory (e.g., `index.ahmed.php`, `products/list.ahmed.php`).
+    *   For `command` routes: A string with the function name (e.g., `'handleFormSubmission'`) or an anonymous function `function() { ... }`.
+*   `is_api` (optional): Set to `true` if the route is an API endpoint. This typically means that global assets like Bootstrap CSS/JS and common site scripts might not be loaded by the router for this route. Defaults to `false`.
+*   `dynamic_segment` (optional): If your `path` contains dynamic segments (e.g., `/product/{id}`), this field can specify the name of the segment.
+    *   For a single segment like `/product/{id}`, you can use `'dynamic_segment' => 'id'`. The matched value will be available in `\$_GET['id']` (for preview templates) and passed as a parameter to command handlers.
+    *   For multiple segments like `/orders/{orderId}/items/{itemId}`, you can use an array: `'dynamic_segment' => ['orderId', 'itemId']`. Values will be in `\$_GET['orderId']`, `\$_GET['itemId']` and passed as multiple parameters to command handlers in the order they appear.
+
+### Examples
+
+**1. Basic Preview Route (Homepage):**
+
+```php
+// In routes.php
+\$routes[] = [
+    'path' => '/',
+    'method' => 'GET',
+    'type' => 'preview',
+    'handler' => 'index.ahmed.php',
+];
+```
+This will render the `web/index.ahmed.php` file when a user visits the root of your website.
+
+**2. Preview Route with Dynamic Segment:**
+
+```php
+// In routes.php
+\$routes[] = [
+    'path' => '/users/{userId}/profile',
+    'method' => 'GET',
+    'type' => 'preview',
+    'handler' => 'user_profile.ahmed.php',
+    'dynamic_segment' => 'userId',
+];
+```
+If a user visits `/users/123/profile`, the `web/user_profile.ahmed.php` template will be rendered. Inside this template, you can access the value `123` via `\$_GET['userId']`.
+
+**3. Command Route (API Endpoint or Form Handling):**
+
+Let's say you have a function in `functions.php`:
+```php
+// In functions.php
+function process_contact_form() {
+    if (\$_SERVER['REQUEST_METHOD'] === 'POST') {
+        \$name = htmlspecialchars(\$_POST['name'] ?? 'Anonymous');
+        // ... process data ...
+        echo json_encode(['message' => "Thank you for your message, " . \$name . "!"]);
+    }
+}
+```
+You can route to it like this:
+```php
+// In routes.php
+\$routes[] = [
+    'path' => '/api/contact-submit',
+    'method' => 'POST',
+    'type' => 'command',
+    'handler' => 'process_contact_form',
+    'is_api' => true, // Important for API endpoints
+];
+```
+
+**4. Command Route with Anonymous Function:**
+
+```php
+// In routes.php
+\$routes[] = [
+    'path' => '/say-hello/{name}',
+    'method' => 'GET',
+    'type' => 'command',
+    'handler' => function(\$name) {
+        echo "Hello, " . htmlspecialchars(\$name) . "!";
+    },
+    'dynamic_segment' => 'name',
+    'is_api' => true,
+];
+```
+Visiting `/say-hello/Jules` would output "Hello, Jules!".
+
+### Route Matching Order
+
+Routes are matched in the order they are defined in the `\$routes` array. The first route that matches the requested URI and method will be used. Therefore, more specific routes should generally be defined before more generic ones.
+
+### Special Migrated Routes
+
+The following utility routes, previously part of the core, are now defined in `routes.php`. You can modify them if needed, but they provide essential framework functionalities:
+
+*   `/fetchCsrfToken` (GET): Retrieves a CSRF token.
+*   `/blocked` (GET): Displays a "403 Forbidden" error page.
+*   `/JS/getWEBSITEURLValue.js` (GET): Outputs JavaScript to provide `WEBSITE_URL` to client-side scripts.
+*   `/setLanguage` (POST): Sets the user's preferred language via a cookie. Expects a `lang` parameter in the POST request.
+
+This new routing system provides a clear and flexible way to manage all your application's entry points.
 
 #### ☁️ INEX SPA Cloud 🛜🔧
 

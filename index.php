@@ -2,6 +2,60 @@
 require_once 'core/functions/PHP/classes/AhmedTemplate.php';
 $Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';
+
+// Moved from core/functions/PHP/getPage.php
+function loadBootstrap() {
+    if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+        echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
+        echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
+    }
+}
+
+function loadScripts() {
+    static $cachedScripts = null;
+    if ($cachedScripts === null) {
+        ob_start();
+        echo "<script src='" . getEnvValue("WEBSITE_URL") . "JS/getWEBSITEURLValue.js'></script>";
+
+        $scripts = [
+            'JS/redirect.js',
+            'JS/popstate.js',
+            'JS/submitData.js',
+            'JS/csrfToken.js',
+            'JS/submitDataWR.js',
+        ];
+
+        if (getEnvValue('USE_COOKIE') == 'true') {
+            $scripts[] = 'JS/classes/CookieManager.js'; // Correct way to append an element to an array
+        }
+
+        if (getEnvValue('USE_APP_NAME_IN_TITLE') == 'true') {
+            $scripts[] = 'JS/addAppNametoHTML.js';
+        }
+
+        // Add this new block for motion engine assets
+        if (getEnvValue('USE_ANIMATE') == 'true') {
+            echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "css/motion-animations.css'>";
+            $scripts[] = 'JS/motion_engine.js'; // Add to the array of scripts
+        }
+
+        if (getEnvValue('USE_NOTIFICATION') == 'true') {
+            echo "<link rel='stylesheet' href='" . getEnvValue("WEBSITE_URL") . "errors/notification.css'/>";
+            $scripts[] = 'JS/showNotification.js';
+        }
+
+        foreach ($scripts as $script) {
+            echo "<script src='" . getEnvValue("WEBSITE_URL") . $script . "'></script>";
+        }
+
+        echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>';
+
+        $cachedScripts = ob_get_clean();
+    }
+    echo $cachedScripts;
+}
+// End of moved functions
+
 require_once 'core/functions/PHP/redirect.php';
 
 $devMode = getEnvValue('DEV_MODE') == 'true';
@@ -19,7 +73,6 @@ if ($devMode) {
 }
 
 require_once 'core/functions/PHP/getWEBSITEURLValue.php';
-require_once 'core/functions/PHP/getSlashData.php';
 
 if ($dbUse) {
     require_once 'core/functions/PHP/classes/Database.php';
@@ -108,6 +161,35 @@ if (file_exists($packagesJsonPath)) {
     }
 }
 require_once 'functions.php';
-require_once 'core/functions/PHP/getPage.php';
-getPage($_GET['page'] ?? '');
+
+// --- ROUTING LOGIC ---
+$useNewRoutes = getEnvValue('USE_NEW_ROUTES');
+
+// Default to true if the .env variable is missing or empty
+if ($useNewRoutes === null || $useNewRoutes === '') {
+    $useNewRoutes = 'true';
+}
+
+if (strtolower($useNewRoutes) === 'true') {
+    // Use the New Routing System
+    require_once 'routes.php';    // Load the route definitions
+    require_once 'core/Router.php'; // Load the Router class
+
+    // Ensure $Ahmed is available (it's initialized at the top of index.php)
+    $router = new Router($routes, $Ahmed);
+    $requestUri = $_SERVER['REQUEST_URI'];
+    $requestMethod = $_SERVER['REQUEST_METHOD'];
+    $router->dispatch($requestUri, $requestMethod);
+
+} else {
+    // Use the Old (Legacy) Routing System
+    // getSlashData.php is needed by getPage.php
+    require_once 'core/functions/PHP/getSlashData.php';
+    require_once 'core/functions/PHP/getPage.php';
+
+    // The old system relies on $_GET['page']
+    $page = $_GET['page'] ?? '';
+    getPage($page);
+}
+// --- END ROUTING LOGIC ---
 ?>
