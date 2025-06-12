@@ -251,7 +251,7 @@ class {$taskName} {
 PHP;
 
     if (file_put_contents($filePath, $fileContent)) {
-        chmod(\$filePath, 0664); // Set reasonable permissions
+        chmod($filePath, 0664); // Set reasonable permissions
         echo "Cron task file created: {$filePath}\n";
     } else {
         echo "Error: Could not write to file: {$filePath}\n";
