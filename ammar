@@ -293,6 +293,15 @@ if ($command === 'make:route') {
     $route = $args['1'] ?? readline("1- What's route name? ");
     if (!$route) exit("Route name is required!\n");
     $filedata = "<?php\n// Route handler for $route\n";
+    if ($route == "index") {
+        $filedata .= "// This is the default route handler.\n";
+        $filePath = WEB_FOLDER . '/' . $filename;
+        file_put_contents($filePath, $filedata);
+        echo "Route file created: $filename\n";
+        exit(0);
+    } else {
+        $filedata .= "// This route handles requests for $route.\n";
+    }
     
     $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic? (yes/no): ")) === 'yes';
     
@@ -303,7 +312,7 @@ if ($command === 'make:route') {
         if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
             exit("Invalid request type!\n");
         }
-        if ($method == 'POST') {
+        if ($method == 'POST' || $method == 'PUT' || $method == 'PATCH' || $method == 'DELETE') {
             $filedata .= "validateCsrfToken();\n";
         }
         $filename = "{$route}_request_{$method}";

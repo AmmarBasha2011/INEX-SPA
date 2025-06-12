@@ -1,0 +1,14 @@
+You are offline. Please check your internet connection and try again.
+<script>
+  // This script checks if the user is online or offline
+  window.addEventListener('offline', function() {
+    document.body.innerHTML = 'You are offline. Please check your internet connection and try again.';
+  });
+
+  window.addEventListener('online', function() {
+    document.body.innerHTML = 'You are back online!';
+    setTimeout(() => {
+      window.location.reload();
+    }, 5000);
+  });
+</script>
