@@ -1,5 +1,6 @@
 <?php
-function getWebsiteUrl() {
+
+function getWebsiteUrl()
+{
     return getEnvValue('WEBSITE_URL');
 }
-?>

@@ -1,8 +1,12 @@
 <?php
 
-class Webhook {
-    public static function send($url, $data = []) {
-        if (!filter_var($url, FILTER_VALIDATE_URL)) return false;
+class Webhook
+{
+    public static function send($url, $data = [])
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+            return false;
+        }
 
         $payload = json_encode($data);
 
@@ -10,7 +14,7 @@ class Webhook {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($payload)
+            'Content-Length: '.strlen($payload),
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);

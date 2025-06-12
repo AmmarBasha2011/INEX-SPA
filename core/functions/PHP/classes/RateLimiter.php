@@ -1,15 +1,18 @@
 <?php
 
-class RateLimiter {
+class RateLimiter
+{
     private static $limit;
     private static $timeFrame = 3600; // Time window (1 hour)
-    private static $storageFile = __DIR__ . "/../../../storage/rate_limit.json"; // Store request counts
+    private static $storageFile = __DIR__.'/../../../storage/rate_limit.json'; // Store request counts
 
-    public static function init() {
+    public static function init()
+    {
         self::$limit = getEnvValue('REQUESTS_PER_HOUR'); // Load from environment
     }
 
-    public static function check($userIP) {
+    public static function check($userIP)
+    {
         // Ensure init() is called
         if (!isset(self::$limit)) {
             self::init();
@@ -31,7 +34,7 @@ class RateLimiter {
         } else {
             if ($data[$userIP]['count'] >= self::$limit) {
                 http_response_code(429); // Too Many Requests
-                exit(json_encode(["error" => "Rate limit exceeded. Try again later."]));
+                exit(json_encode(['error' => 'Rate limit exceeded. Try again later.']));
             }
             $data[$userIP]['count']++;
         }
