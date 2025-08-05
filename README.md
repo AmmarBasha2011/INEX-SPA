@@ -32,6 +32,24 @@ A powerful and lightweight PHP framework built for speed and efficiency, offerin
 * **Integrated caching and session management**, reducing server load and enhancing application performance.
 * **Extensive documentation and community support**, making development easier and more accessible.
 
+### 🔐 Auth Feature 🛡️
+
+INEX SPA includes a robust and flexible authentication system that can be easily configured and extended. The authentication system is designed to be secure and easy to use, providing a solid foundation for any application that requires user management.
+
+**Key Features:**
+
+*   **Dynamic Validation:** The authentication system uses a JSON file (`Json/AuthParams.json`) to define validation rules for user registration. This allows developers to easily add or modify validation rules without changing any PHP code.
+*   **Password Hashing:** All passwords are automatically hashed using the secure `BCRYPT` algorithm, ensuring that user credentials are protected.
+*   **Role-Based Access Control (RBAC):** The system includes a simple RBAC system with `user` and `admin` roles. This allows you to easily restrict access to certain parts of your application based on user roles.
+*   **Extensible Validation Rules:** The validation system is easily extensible. You can add new validation types by simply adding a new method to the `Validation` class and updating the `UserAuth` class. The following validation types are supported out of the box:
+    *   `text`
+    *   `email`
+    *   `number`
+    *   `bool`
+    *   `domain`
+    *   `url`
+    *   `ip`
+
 #### ☁️ INEX SPA Cloud 🛜🔧
 
 A free hosting platform exclusively for INEX SPA applications, offering:

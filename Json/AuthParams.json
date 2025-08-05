@@ -7,5 +7,8 @@
     "isCompany": {"type": "bool", "required": true, "default": false},
     "domain": {"type": "domain", "maxLength": 50, "subDomain": true, "subDir": true, "shouldEnd": [".com", ".org"], "notEqual": ["https://inexteam.blogspot.com", "https://github.com/AmmarBasha2011/INEX-SPA"]},
     "password": {"type": "text", "required": true, "default": "0123456789", "maxLength": 60, "minLength": 8},
-    "inviteCode": {"type": "number", "required": true, "minLength": 6, "maxLength": 6, "equal": ["012345", "123456", "234567", "345678", "456789"]}
+    "inviteCode": {"type": "number", "required": true, "minLength": 6, "maxLength": 6, "equal": ["012345", "123456", "234567", "345678", "456789"]},
+    "website": {"type": "url", "required": false},
+    "ip_address": {"type": "ip", "required": false},
+    "role": {"type": "text", "required": true, "default": "user"}
 }

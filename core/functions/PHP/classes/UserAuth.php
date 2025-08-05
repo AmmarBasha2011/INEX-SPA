@@ -25,6 +25,8 @@ class UserAuth
             'number' => 'INT',
             'bool'   => 'TINYINT(1)',
             'domain' => 'VARCHAR',
+            'url'    => 'VARCHAR',
+            'ip'     => 'VARCHAR',
         ];
 
         foreach ($data as $field => $attributes) {
@@ -59,45 +61,34 @@ class UserAuth
 
     public static function signIn($details)
     {
-        // Ensure $details is a non-empty array
-        if (!is_array($details) || empty($details)) {
-            return false;
+        // Ensure that details array contains username and password
+        if (!isset($details['username']) || !isset($details['password'])) {
+            return 'Username and password are required.';
         }
 
-        // Extract values dynamically
-        $params = [];
-        $conditions = [];
+        $username = $details['username'];
+        $password = $details['password'];
 
-        foreach ($details as $key => $value) {
-            $conditions[] = "$key = ?";
-            $params[] = $value;
-        }
+        // Fetch user by username
+        $sql = "SELECT * FROM users WHERE username = ?";
+        $user = executeStatement($sql, [$username]);
 
-        $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($details)));
-        $sql = "SELECT * FROM users WHERE $placeholders";
-        $newUser = executeStatement($sql, array_values($details));
-        if (count($newUser) > 0) {
-            $_SESSION['user_id'] = $newUser[0]['id'];
-
-            return 'User Found';
+        if (count($user) > 0) {
+            $user = $user[0];
+            // Verify password
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                return 'User Found';
+            } else {
+                return 'Invalid password.';
+            }
         } else {
             return 'User Not Found';
         }
     }
 
-    public static function signUp($details)
+    private static function validate($details, $data)
     {
-        $jsonString = file_get_contents(JSON_FOLDER);
-
-        if ($jsonString === false) {
-            return 'Error reading JSON file.';
-        }
-
-        $data = json_decode($jsonString, true);
-        if ($data === null) {
-            return 'Error decoding JSON.';
-        }
-
         // Validate required fields
         foreach ($data as $key => $value) {
             if (!empty($value['required']) && $value['required'] === true && !isset($details[$key])) {
@@ -124,6 +115,12 @@ class UserAuth
                         }
                         if ($constraint == 'domain' && !Validation::isDomain($value)) {
                             return "$key must be a valid domain.";
+                        }
+                        if ($constraint == 'url' && !Validation::isUrl($value)) {
+                            return "$key must be a valid URL.";
+                        }
+                        if ($constraint == 'ip' && !Validation::isIp($value)) {
+                            return "$key must be a valid IP address.";
                         }
                         break;
                     case 'maxLength':
@@ -189,12 +186,36 @@ class UserAuth
                 }
             }
         }
+        return null;
+    }
+
+    public static function signUp($details)
+    {
+        $jsonString = file_get_contents(JSON_FOLDER);
+        if ($jsonString === false) {
+            return 'Error reading JSON file.';
+        }
+
+        $data = json_decode($jsonString, true);
+        if ($data === null) {
+            return 'Error decoding JSON.';
+        }
+
+        $validationError = self::validate($details, $data);
+        if ($validationError !== null) {
+            return $validationError;
+        }
 
         // Check if user already exists
         $placeholders = implode(' AND ', array_map(fn ($k) => "$k = ?", array_keys($details)));
         $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values($details));
         if (!empty($existingUser)) {
             return 'User already exists.';
+        }
+
+        // Hash the password if it exists in the details
+        if (isset($details['password'])) {
+            $details['password'] = password_hash($details['password'], PASSWORD_BCRYPT);
         }
 
         // Insert new user
@@ -225,5 +246,22 @@ class UserAuth
         $_SESSION['user_id'] = '';
 
         return 'User logged out.';
+    }
+
+    public static function isAdmin()
+    {
+        if (!self::checkUser()) {
+            return false;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $sql = "SELECT role FROM users WHERE id = ?";
+        $user = executeStatement($sql, [$userId]);
+
+        if (count($user) > 0 && $user[0]['role'] === 'admin') {
+            return true;
+        }
+
+        return false;
     }
 }

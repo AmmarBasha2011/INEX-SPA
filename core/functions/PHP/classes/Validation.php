@@ -63,4 +63,14 @@ class Validation
     {
         return $text === true || $text === false || $text === 'true' || $text === 'false' || $text === 1 || $text === 0 || $text === '1' || $text === '0';
     }
+
+    public static function isUrl($text)
+    {
+        return filter_var($text, FILTER_VALIDATE_URL) !== false;
+    }
+
+    public static function isIp($text)
+    {
+        return filter_var($text, FILTER_VALIDATE_IP) !== false;
+    }
 }
