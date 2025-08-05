@@ -100,7 +100,7 @@ class UserAuth
 
         // Validate required fields
         foreach ($data as $key => $value) {
-            if (!empty($value['required']) && $value['required'] === 'true' && (empty($details[$key]) || !isset($details[$key]))) {
+            if (!empty($value['required']) && $value['required'] === true && !isset($details[$key])) {
                 return "Missing required parameter: $key";
             }
         }
@@ -138,17 +138,17 @@ class UserAuth
                         break;
                     case 'shouldEnd':
                         if (!Validation::isEndWith($value, $constraint)) {
-                            return "$key must end with $constraint.";
+                            return "$key must end with ".implode(', ', $constraint).'.';
                         }
                         break;
                     case 'shouldNotStart':
                         if (Validation::isStartWith($value, $constraint)) {
-                            return "$key should not start with $constraint.";
+                            return "$key should not start with ".implode(', ', $constraint).'.';
                         }
                         break;
                     case 'shouldNotEnd':
                         if (Validation::isEndWith($value, $constraint)) {
-                            return "$key should not end with $constraint.";
+                            return "$key should not end with ".implode(', ', $constraint).'.';
                         }
                         break;
                     case 'notEqual':
