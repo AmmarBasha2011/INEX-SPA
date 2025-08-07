@@ -51,6 +51,11 @@ function loadScripts()
             $scripts[] = 'JS/showNotification.js';
         }
 
+        if (getEnvValue('DEV_MODE') == 'true') {
+            echo "<link rel='stylesheet' href='".getEnvValue('WEBSITE_URL')."css/devtools.css'>";
+            $scripts[] = 'JS/devtools.js';
+        }
+
         foreach ($scripts as $script) {
             echo "<script src='".getEnvValue('WEBSITE_URL').$script."'></script>";
         }
