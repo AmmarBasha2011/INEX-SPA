@@ -15,9 +15,9 @@ class DevTools
     public static function addQuery($query, $params, $time)
     {
         self::$queries[] = [
-            'query' => $query,
+            'query'  => $query,
             'params' => $params,
-            'time' => $time,
+            'time'   => $time,
         ];
     }
 
