@@ -340,3 +340,35 @@ Example `.env` entry:
 ```
 DEV_MODE=true
 ```
+
+## 🧱 Component System
+
+INEX SPA includes a simple yet powerful component system that allows you to create reusable UI elements. This helps in organizing your code and reducing duplication.
+
+### Creating a Component
+
+To create a component, simply create a new PHP file in the `components/` directory. The name of the file will be the name of the component.
+
+For example, let's create a `Button` component in `components/Button.php`:
+
+```php
+<button class="btn">
+    <?= $text ?>
+</button>
+```
+
+As you can see, the component is a simple PHP file that can contain any HTML and PHP code. The data is passed to the component as an associative array, and the keys are extracted as variables.
+
+### Using a Component
+
+To use a component in your views, you can use the `component()` function:
+
+```php
+<?= component('Button', ['text' => 'Click Me!']) ?>
+```
+
+This will render the `Button` component and pass the `text` variable to it.
+
+### Partial Hydration (Future Feature)
+
+We are working on adding support for partial hydration, which will allow you to optionally use JavaScript to enhance your components on the client-side. Stay tuned for updates!
