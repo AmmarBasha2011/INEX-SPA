@@ -1,0 +1,65 @@
+#inex-devtools-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ccc;
+    z-index: 9999;
+    font-family: sans-serif;
+    font-size: 14px;
+    max-height: 250px;
+    display: block !important; /* Override inline style */
+}
+
+#inex-devtools-bar .inex-menu {
+    background-color: #e1e1e1;
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+#inex-devtools-bar .inex-tab-button {
+    background-color: #e1e1e1;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    outline: none;
+}
+
+#inex-devtools-bar .inex-tab-button.active {
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+#inex-devtools-bar .inex-tab-content {
+    padding: 15px;
+    display: none;
+    height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+#inex-devtools-bar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#inex-devtools-bar th, #inex-devtools-bar td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#inex-devtools-bar th {
+    background-color: #f2f2f2;
+}
+
+#inex-devtools-bar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#inex-devtools-bar li {
+    padding: 2px 0;
+}

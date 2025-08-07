@@ -27,8 +27,17 @@ class Database
 
     public function query($sql, $params = [], $is_return = true)
     {
+        $startTime = microtime(true);
+
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
+
+        $endTime = microtime(true);
+        $executionTime = ($endTime - $startTime) * 1000;
+
+        if (getEnvValue('DEV_MODE') == 'true') {
+            DevTools::addQuery($sql, $params, $executionTime);
+        }
 
         return $is_return ? $stmt->fetchAll() : true;
     }
