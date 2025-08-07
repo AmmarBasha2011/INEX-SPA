@@ -341,6 +341,48 @@ Example `.env` entry:
 DEV_MODE=true
 ```
 
+## 🚀 Routing System
+
+INEX SPA uses a file-based routing system that is simple, powerful, and secure. It supports static routes, dynamic routes with parameters, and nested routes.
+
+### Static Routes
+
+To create a static route, create a file in the `web/` directory. For example, to create a `/about` route, create a file named `web/about.ahmed.php`.
+
+### Nested Routes
+
+To create nested routes, create subdirectories inside the `web/` directory. For example, to create a route `/admin/dashboard`, you would create the following file: `web/admin/dashboard.ahmed.php`.
+
+The router will automatically resolve the URL to the correct file. This allows you to organize your application into logical modules.
+
+**Example: Nested Static Route**
+- **URL:** `/admin/settings`
+- **File:** `web/admin/settings.ahmed.php`
+
+### Dynamic Routes
+
+To create a dynamic route that accepts parameters in the URL, you need to append `_dynamic` to your filename. For example, to create a route that handles `/users/some_user_id`, you would create a file named `web/users_dynamic.ahmed.php`.
+
+The router will automatically capture the value after `/users/` and make it available in the `$_GET['data']` variable inside your page file.
+
+**Example: Dynamic Route**
+- **URL:** `/products/123`
+- **File:** `web/products_dynamic.ahmed.php`
+- **In `products_dynamic.ahmed.php`:** `$_GET['data']` will be `'123'`.
+
+### Nested Dynamic Routes
+
+You can also combine nested and dynamic routes. For example, to handle a URL like `/admin/users/edit/1`, you would create the file `web/admin/users/edit_dynamic.ahmed.php`.
+
+**Example: Nested Dynamic Route**
+- **URL:** `/admin/posts/view/45`
+- **File:** `web/admin/posts/view_dynamic.ahmed.php`
+- **In `view_dynamic.ahmed.php`:** `$_GET['data']` will be `'45'`.
+
+### Security
+
+The routing system is designed with security in mind. It prevents directory traversal attacks by ensuring that only files located within the `web/` directory can be accessed. Any attempt to access files outside of this directory will be blocked.
+
 ## 🧱 Component System
 
 INEX SPA includes a simple yet powerful component system that allows you to create reusable UI elements. This helps in organizing your code and reducing duplication.
