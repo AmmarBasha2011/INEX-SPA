@@ -99,6 +99,7 @@ if (getEnvValue('USE_FIREWALL') == 'true') {
 }
 if (getEnvValue('USE_SECURITY') == 'true') {
     require_once 'core/functions/PHP/classes/Security.php';
+    require_once 'core/functions/PHP/classes/SecurityV2.php';
 }
 if (getEnvValue('USE_LOGGING') == 'true') {
     require_once 'core/functions/PHP/classes/Logger.php';
