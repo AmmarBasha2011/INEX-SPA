@@ -21,7 +21,6 @@ ErrorDocument 413 /errors/413.php
 ErrorDocument 414 /errors/414.php
 ErrorDocument 415 /errors/415.php
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
-
-RewriteCond %{REQUEST_URI} ^/.*/$
-RewriteRule ^/(.*)$ index.php?page=/$1 [L,QSA]
