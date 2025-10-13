@@ -4,7 +4,9 @@ class SecurityV2
 {
     /**
      * Sanitize a string by removing tags and trimming whitespace.
+     *
      * @param string $input The input string.
+     *
      * @return string The sanitized string.
      */
     public static function sanitizeString(string $input): string
@@ -14,17 +16,21 @@ class SecurityV2
 
     /**
      * Sanitize input to ensure it is an integer.
+     *
      * @param string $input The input string.
+     *
      * @return int The sanitized integer.
      */
     public static function sanitizeInt(string $input): int
     {
-        return (int)filter_var($input, FILTER_SANITIZE_NUMBER_INT);
+        return (int) filter_var($input, FILTER_SANITIZE_NUMBER_INT);
     }
 
     /**
      * Sanitize an email address.
+     *
      * @param string $input The input string.
+     *
      * @return string The sanitized email.
      */
     public static function sanitizeEmail(string $input): string
@@ -34,7 +40,9 @@ class SecurityV2
 
     /**
      * Sanitize a URL.
+     *
      * @param string $input The input string.
+     *
      * @return string The sanitized URL.
      */
     public static function sanitizeUrl(string $input): string
@@ -44,7 +52,9 @@ class SecurityV2
 
     /**
      * Validate an email address.
+     *
      * @param string $email The email to validate.
+     *
      * @return bool
      */
     public static function isEmail(string $email): bool
@@ -54,7 +64,9 @@ class SecurityV2
 
     /**
      * Validate a URL.
+     *
      * @param string $url The URL to validate.
+     *
      * @return bool
      */
     public static function isUrl(string $url): bool
@@ -64,7 +76,9 @@ class SecurityV2
 
     /**
      * Check if a string contains only alphanumeric characters.
+     *
      * @param string $string The string to check.
+     *
      * @return bool
      */
     public static function isAlphaNumeric(string $string): bool
@@ -74,6 +88,7 @@ class SecurityV2
 
     /**
      * Check if the current request is a POST request.
+     *
      * @return bool
      */
     public static function isPost(): bool
@@ -83,6 +98,7 @@ class SecurityV2
 
     /**
      * Check if the current request is a GET request.
+     *
      * @return bool
      */
     public static function isGet(): bool
@@ -92,7 +108,9 @@ class SecurityV2
 
     /**
      * Escape HTML entities in a string.
+     *
      * @param string $string The string to escape.
+     *
      * @return string
      */
     public static function escapeHtml(string $string): string
@@ -102,8 +120,10 @@ class SecurityV2
 
     /**
      * Check password strength.
-     * (e.g., at least 8 characters, one uppercase, one lowercase, one number)
+     * (e.g., at least 8 characters, one uppercase, one lowercase, one number).
+     *
      * @param string $password The password to check.
+     *
      * @return bool
      */
     public static function checkPasswordStrength(string $password): bool
@@ -120,23 +140,28 @@ class SecurityV2
         if (!preg_match('/[0-9]/', $password)) {
             return false;
         }
+
         return true;
     }
 
     /**
      * Generate and store a CSRF token in the session.
+     *
      * @return string The generated token.
      */
     public static function generateCsrfToken(): string
     {
         $token = bin2hex(random_bytes(32));
         $_SESSION['csrf_token'] = $token;
+
         return $token;
     }
 
     /**
      * Validate a CSRF token.
+     *
      * @param string $token The token from the user's request.
+     *
      * @return bool
      */
     public static function validateCsrfToken(string $token): bool
@@ -158,6 +183,7 @@ class SecurityV2
 
     /**
      * Check if the current request is over HTTPS.
+     *
      * @return bool
      */
     public static function isSecureRequest(): bool
@@ -167,7 +193,9 @@ class SecurityV2
 
     /**
      * Generate a numeric One-Time Password (OTP).
+     *
      * @param int $length The length of the OTP.
+     *
      * @return string
      */
     public static function generateOtp(int $length = 6): string
@@ -176,13 +204,16 @@ class SecurityV2
         for ($i = 0; $i < $length; $i++) {
             $otp .= random_int(0, 9);
         }
+
         return $otp;
     }
 
     /**
      * A basic filter to prevent SQL injection.
      * Note: It's always better to use prepared statements.
+     *
      * @param string $input The string to filter.
+     *
      * @return string
      */
     public static function filterSqlInjection(string $input): string
@@ -192,13 +223,14 @@ class SecurityV2
 
     /**
      * Log a security event.
+     *
      * @param string $message The message to log.
      */
     public static function logSecurityEvent(string $message): void
     {
         // Assumes a Logger class or a log file path is configured
         // For example: Logger::log('SECURITY: ' . $message);
-        error_log('SECURITY EVENT: ' . $message);
+        error_log('SECURITY EVENT: '.$message);
     }
 
     /**
@@ -207,13 +239,14 @@ class SecurityV2
     public static function enforceHttps(): void
     {
         if (!self::isSecureRequest()) {
-            header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], true, 301);
-            exit();
+            header('Location: https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], true, 301);
+            exit;
         }
     }
 
     /**
      * Get the client's IP address safely.
+     *
      * @return string
      */
     public static function getClientIp(): string
@@ -234,8 +267,8 @@ class SecurityV2
     {
         session_start([
             'cookie_httponly' => true,
-            'cookie_secure' => self::isSecureRequest(),
-            'cookie_samesite' => 'Lax'
+            'cookie_secure'   => self::isSecureRequest(),
+            'cookie_samesite' => 'Lax',
         ]);
     }
 
@@ -251,25 +284,28 @@ class SecurityV2
 
     /**
      * Sets a secure cookie.
-     * @param string $name The name of the cookie.
-     * @param string $value The value of the cookie.
-     * @param int $expire The expiration timestamp.
+     *
+     * @param string $name   The name of the cookie.
+     * @param string $value  The value of the cookie.
+     * @param int    $expire The expiration timestamp.
      */
     public static function setSecureCookie(string $name, string $value, int $expire): void
     {
         setcookie($name, $value, [
-            'expires' => $expire,
-            'path' => '/',
-            'domain' => $_SERVER['HTTP_HOST'],
-            'secure' => self::isSecureRequest(),
+            'expires'  => $expire,
+            'path'     => '/',
+            'domain'   => $_SERVER['HTTP_HOST'],
+            'secure'   => self::isSecureRequest(),
             'httponly' => true,
-            'samesite' => 'Lax'
+            'samesite' => 'Lax',
         ]);
     }
 
     /**
      * Validates an IP address.
+     *
      * @param string $ip The IP address to validate.
+     *
      * @return bool
      */
     public static function validateIpAddress(string $ip): bool
@@ -279,7 +315,9 @@ class SecurityV2
 
     /**
      * Checks if an IP is in a private range (e.g., 192.168.x.x).
+     *
      * @param string $ip The IP to check.
+     *
      * @return bool
      */
     public static function isPrivateIp(string $ip): bool
@@ -289,25 +327,30 @@ class SecurityV2
 
     /**
      * Prevents directory traversal attacks on a file path.
+     *
      * @param string $path The path to check.
+     *
      * @return string|null The real path if safe, or null if traversal is detected.
      */
     public static function preventDirectoryTraversal(string $path): ?string
     {
         $realPath = realpath($path);
         // Define the base directory relative to this file's location
-        $baseDir = realpath(__DIR__ . '/../../../../');
+        $baseDir = realpath(__DIR__.'/../../../../');
         if ($realPath === false || strpos($realPath, $baseDir) !== 0) {
             return null;
         }
+
         return $realPath;
     }
 
     /**
      * Simple rate limiting check using sessions.
-     * @param string $key A unique key for the action being limited.
-     * @param int $limit The number of allowed requests.
-     * @param int $period The time period in seconds.
+     *
+     * @param string $key    A unique key for the action being limited.
+     * @param int    $limit  The number of allowed requests.
+     * @param int    $period The time period in seconds.
+     *
      * @return bool True if the limit is exceeded, false otherwise.
      */
     public static function checkRequestRate(string $key, int $limit = 10, int $period = 60): bool
@@ -317,33 +360,39 @@ class SecurityV2
         }
         $currentTime = time();
         // Clean up old timestamps
-        $_SESSION['rate_limit'][$key] = array_filter($_SESSION['rate_limit'][$key] ?? [], function($timestamp) use ($currentTime, $period) {
+        $_SESSION['rate_limit'][$key] = array_filter($_SESSION['rate_limit'][$key] ?? [], function ($timestamp) use ($currentTime, $period) {
             return ($currentTime - $timestamp) < $period;
         });
         if (count($_SESSION['rate_limit'][$key]) >= $limit) {
             return true; // Limit exceeded
         }
         $_SESSION['rate_limit'][$key][] = $currentTime;
+
         return false;
     }
 
     /**
      * Checks if the request origin matches the host.
+     *
      * @return bool
      */
     public static function verifyRequestOrigin(): bool
     {
         if (isset($_SERVER['HTTP_ORIGIN'])) {
             $origin = parse_url($_SERVER['HTTP_ORIGIN'], PHP_URL_HOST);
+
             return $origin === $_SERVER['HTTP_HOST'];
         }
+
         return true; // No origin header present
     }
 
     /**
      * Generates a Hash-based Message Authentication Code (HMAC).
+     *
      * @param string $data The data to be hashed.
-     * @param string $key The secret key.
+     * @param string $key  The secret key.
+     *
      * @return string
      */
     public static function generateHmac(string $data, string $key): string
@@ -353,9 +402,11 @@ class SecurityV2
 
     /**
      * Verifies an HMAC.
+     *
      * @param string $data The original data.
      * @param string $hmac The HMAC to verify.
-     * @param string $key The secret key.
+     * @param string $key  The secret key.
+     *
      * @return bool
      */
     public static function verifyHmac(string $data, string $hmac, string $key): bool
@@ -365,49 +416,58 @@ class SecurityV2
 
     /**
      * Validate that a string is valid JSON.
+     *
      * @param string $json The string to validate.
+     *
      * @return bool
      */
     public static function validateJson(string $json): bool
     {
         json_decode($json);
+
         return json_last_error() === JSON_ERROR_NONE;
     }
 
     /**
      * Validate a date string against a specific format.
-     * @param string $date The date string.
+     *
+     * @param string $date   The date string.
      * @param string $format The expected format.
+     *
      * @return bool
      */
     public static function validateDate(string $date, string $format = 'Y-m-d H:i:s'): bool
     {
         $d = DateTime::createFromFormat($format, $date);
+
         return $d && $d->format($format) === $date;
     }
 
     /**
      * Generate a UUID v4.
+     *
      * @return string
      */
     public static function generateUuidV4(): string
     {
         return sprintf(
             '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0x0fff) | 0x4000,
-            random_int(0, 0x3fff) | 0x8000,
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0xffff)
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF),
+            random_int(0, 0x0FFF) | 0x4000,
+            random_int(0, 0x3FFF) | 0x8000,
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF),
+            random_int(0, 0xFFFF)
         );
     }
 
     /**
      * A more comprehensive XSS filter.
+     *
      * @param string $input The string to filter.
+     *
      * @return string
      */
     public static function comprehensiveXssFilter(string $input): string
@@ -416,38 +476,45 @@ class SecurityV2
         $input = self::escapeHtml($input);
         $input = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $input);
         $input = preg_replace('#(on[a-z]+)=([\'"])(.*?)\\2#i', '', $input);
+
         return $input;
     }
 
     /**
      * Generate a Content Security Policy header string.
+     *
      * @param array $directives Associative array of CSP directives.
+     *
      * @return string
      */
     public static function generateCspHeader(array $directives): string
     {
         $header = '';
         foreach ($directives as $directive => $sources) {
-            $header .= $directive . ' ' . implode(' ', $sources) . '; ';
+            $header .= $directive.' '.implode(' ', $sources).'; ';
         }
+
         return trim($header);
     }
 
     /**
      * Apply a Content Security Policy header.
+     *
      * @param array $directives
      */
     public static function applyCspHeader(array $directives): void
     {
         $headerValue = self::generateCspHeader($directives);
-        header('Content-Security-Policy: ' . $headerValue);
+        header('Content-Security-Policy: '.$headerValue);
     }
 
     /**
      * Validate a file upload for security.
-     * @param array $file The $_FILES['input_name'] array.
+     *
+     * @param array $file             The $_FILES['input_name'] array.
      * @param array $allowedMimeTypes e.g., ['image/jpeg', 'image/png']
-     * @param int $maxSize In bytes.
+     * @param int   $maxSize          In bytes.
+     *
      * @return bool
      */
     public static function validateFileUpload(array $file, array $allowedMimeTypes, int $maxSize): bool
@@ -461,12 +528,15 @@ class SecurityV2
         if (!in_array(mime_content_type($file['tmp_name']), $allowedMimeTypes)) {
             return false; // Invalid file type
         }
+
         return true;
     }
 
     /**
      * Checks if a string is a valid UUID.
+     *
      * @param string $uuid The string to check.
+     *
      * @return bool
      */
     public static function isUuid(string $uuid): bool
@@ -476,8 +546,10 @@ class SecurityV2
 
     /**
      * Compare two strings in constant time to prevent timing attacks.
+     *
      * @param string $str1
      * @param string $str2
+     *
      * @return bool
      */
     public static function timingSafeEquals(string $str1, string $str2): bool
@@ -487,7 +559,9 @@ class SecurityV2
 
     /**
      * Remove invisible characters from a string.
+     *
      * @param string $string
+     *
      * @return string
      */
     public static function removeInvisibleCharacters(string $string): string
@@ -497,8 +571,10 @@ class SecurityV2
 
     /**
      * Validate that a string contains only letters (and optionally spaces).
+     *
      * @param string $string
-     * @param bool $allowSpaces
+     * @param bool   $allowSpaces
+     *
      * @return bool
      */
     public static function isAlpha(string $string, bool $allowSpaces = false): bool
@@ -506,12 +582,15 @@ class SecurityV2
         if ($allowSpaces) {
             return (bool) preg_match('/^[a-zA-Z\s]+$/', $string);
         }
+
         return ctype_alpha($string);
     }
 
     /**
      * Validate that a string contains only letters and numbers.
+     *
      * @param string $string
+     *
      * @return bool
      */
     public static function isAlphaNumericStrict(string $string): bool
@@ -521,7 +600,9 @@ class SecurityV2
 
     /**
      * Validate integer value.
+     *
      * @param mixed $value
+     *
      * @return bool
      */
     public static function isInteger($value): bool
@@ -531,7 +612,9 @@ class SecurityV2
 
     /**
      * Validate float value.
+     *
      * @param mixed $value
+     *
      * @return bool
      */
     public static function isFloat($value): bool
@@ -541,8 +624,10 @@ class SecurityV2
 
     /**
      * Get a value from the session safely.
+     *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public static function getSessionValue(string $key, $default = null)
@@ -552,8 +637,9 @@ class SecurityV2
 
     /**
      * Set a value in the session.
+     *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      */
     public static function setSessionValue(string $key, $value): void
     {
@@ -562,6 +648,7 @@ class SecurityV2
 
     /**
      * Unset a session value.
+     *
      * @param string $key
      */
     public static function unsetSessionValue(string $key): void
@@ -576,11 +663,16 @@ class SecurityV2
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
             $_SESSION = [];
-            if (ini_get("session.use_cookies")) {
+            if (ini_get('session.use_cookies')) {
                 $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
+                setcookie(
+                    session_name(),
+                    '',
+                    time() - 42000,
+                    $params['path'],
+                    $params['domain'],
+                    $params['secure'],
+                    $params['httponly']
                 );
             }
             session_destroy();
@@ -590,8 +682,10 @@ class SecurityV2
     /**
      * Check for common insecure direct object reference patterns.
      * For example, ensuring a user can only access their own resources.
-     * @param int $ownerId The ID of the resource's owner.
+     *
+     * @param int $ownerId       The ID of the resource's owner.
      * @param int $currentUserId The ID of the user making the request.
+     *
      * @return bool
      */
     public static function checkOwnership(int $ownerId, int $currentUserId): bool
@@ -601,30 +695,41 @@ class SecurityV2
 
     /**
      * Generate a random password with specified complexity.
-     * @param int $length
+     *
+     * @param int  $length
      * @param bool $useUppercase
      * @param bool $useNumbers
      * @param bool $useSymbols
+     *
      * @return string
      */
     public static function generateRandomPassword(int $length = 12, bool $useUppercase = true, bool $useNumbers = true, bool $useSymbols = true): string
     {
         $chars = 'abcdefghijklmnopqrstuvwxyz';
-        if ($useUppercase) $chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        if ($useNumbers) $chars .= '0123456789';
-        if ($useSymbols) $chars .= '!@#$%^&*()_+-=[]{}|';
+        if ($useUppercase) {
+            $chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        }
+        if ($useNumbers) {
+            $chars .= '0123456789';
+        }
+        if ($useSymbols) {
+            $chars .= '!@#$%^&*()_+-=[]{}|';
+        }
 
         $password = '';
         $charLength = strlen($chars) - 1;
         for ($i = 0; $i < $length; $i++) {
             $password .= $chars[random_int(0, $charLength)];
         }
+
         return $password;
     }
 
     /**
      * Validate a credit card number using the Luhn algorithm.
+     *
      * @param string $cardNumber
+     *
      * @return bool
      */
     public static function validateCreditCard(string $cardNumber): bool
@@ -642,12 +747,15 @@ class SecurityV2
             }
             $sum += $digit;
         }
+
         return ($sum % 10) == 0;
     }
 
     /**
      * Check if a string is a valid hexadecimal value.
+     *
      * @param string $hex
+     *
      * @return bool
      */
     public static function isHex(string $hex): bool
@@ -657,7 +765,9 @@ class SecurityV2
 
     /**
      * Check if a string is a valid base64 encoded string.
+     *
      * @param string $string
+     *
      * @return bool
      */
     public static function isBase64(string $string): bool
@@ -667,53 +777,61 @@ class SecurityV2
 
     /**
      * Set the Referrer-Policy header.
+     *
      * @param string $policy
      */
     public static function setReferrerPolicyHeader(string $policy = 'no-referrer-when-downgrade'): void
     {
-        header("Referrer-Policy: " . $policy);
+        header('Referrer-Policy: '.$policy);
     }
 
     /**
      * Set the Permissions-Policy header (formerly Feature-Policy).
+     *
      * @param array $directives
      */
     public static function setPermissionsPolicyHeader(array $directives): void
     {
         $header = '';
-        foreach($directives as $directive => $sources) {
-            $header .= $directive . ' ' . (is_array($sources) ? implode(' ', $sources) : $sources) . '; ';
+        foreach ($directives as $directive => $sources) {
+            $header .= $directive.' '.(is_array($sources) ? implode(' ', $sources) : $sources).'; ';
         }
-        header("Permissions-Policy: " . trim($header));
+        header('Permissions-Policy: '.trim($header));
     }
 
     /**
      * Validate a domain name.
+     *
      * @param string $domain
+     *
      * @return bool
      */
     public static function validateDomain(string $domain): bool
     {
-        return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain) //valid chars
-                && preg_match("/^.{1,253}$/", $domain) //overall length
-                && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain)); //length of each label
+        return preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain) //valid chars
+                && preg_match('/^.{1,253}$/', $domain) //overall length
+                && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain); //length of each label
     }
 
     /**
      * Generate a random alphanumeric string.
+     *
      * @param int $length
+     *
      * @return string
      */
     public static function generateRandomString(int $length = 16): string
     {
-        return substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/62))), 1, $length);
+        return substr(str_shuffle(str_repeat('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / 62))), 1, $length);
     }
 
     /**
      * Limit login attempts for a given key (e.g., username or IP).
+     *
      * @param string $key
-     * @param int $maxAttempts
-     * @param int $lockoutTime in seconds
+     * @param int    $maxAttempts
+     * @param int    $lockoutTime in seconds
+     *
      * @return bool True if attempts are exceeded, false otherwise.
      */
     public static function limitLoginAttempts(string $key, int $maxAttempts = 5, int $lockoutTime = 300): bool
@@ -728,11 +846,13 @@ class SecurityV2
         }
         $attempts['count']++;
         $_SESSION['login_attempts'][$key] = $attempts;
+
         return false;
     }
 
     /**
      * Reset login attempts for a given key.
+     *
      * @param string $key
      */
     public static function resetLoginAttempts(string $key): void
@@ -742,7 +862,9 @@ class SecurityV2
 
     /**
      * Sanitize a filename to prevent directory traversal and other attacks.
+     *
      * @param string $filename
+     *
      * @return string
      */
     public static function sanitizeFilename(string $filename): string
@@ -760,7 +882,9 @@ class SecurityV2
 
     /**
      * Validate an IPv4 address.
+     *
      * @param string $ip
+     *
      * @return bool
      */
     public static function validateIpv4(string $ip): bool
@@ -770,7 +894,9 @@ class SecurityV2
 
     /**
      * Validate an IPv6 address.
+     *
      * @param string $ip
+     *
      * @return bool
      */
     public static function validateIpv6(string $ip): bool
@@ -780,7 +906,9 @@ class SecurityV2
 
     /**
      * Strip null bytes from a string.
+     *
      * @param string $string
+     *
      * @return string
      */
     public static function stripNullBytes(string $string): string
@@ -790,7 +918,9 @@ class SecurityV2
 
     /**
      * Check if a string contains only ASCII characters.
+     *
      * @param string $string
+     *
      * @return bool
      */
     public static function isAscii(string $string): bool
@@ -800,7 +930,9 @@ class SecurityV2
 
     /**
      * Sanitize a path to remove directory traversal characters.
+     *
      * @param string $path
+     *
      * @return string
      */
     public static function sanitizePath(string $path): string
@@ -810,18 +942,25 @@ class SecurityV2
 
     /**
      * Check if a string is a serialized string.
+     *
      * @param string $data
+     *
      * @return bool
      */
     public static function isSerialized(string $data): bool
     {
-        if (trim($data) === '') return false;
-        return (@unserialize($data) !== false || $data === 'b:0;');
+        if (trim($data) === '') {
+            return false;
+        }
+
+        return @unserialize($data) !== false || $data === 'b:0;';
     }
 
     /**
      * Generate a cryptographic nonce.
+     *
      * @param int $length
+     *
      * @return string
      */
     public static function generateNonce(int $length = 16): string
@@ -831,25 +970,28 @@ class SecurityV2
 
     /**
      * Set Expect-CT header to enforce Certificate Transparency.
-     * @param int $maxAge
-     * @param bool $enforce
+     *
+     * @param int         $maxAge
+     * @param bool        $enforce
      * @param string|null $reportUri
      */
     public static function setExpectCtHeader(int $maxAge = 86400, bool $enforce = false, ?string $reportUri = null): void
     {
         $header = "max-age={$maxAge}";
         if ($enforce) {
-            $header .= "; enforce";
+            $header .= '; enforce';
         }
         if ($reportUri) {
             $header .= "; report-uri=\"{$reportUri}\"";
         }
-        header("Expect-CT: " . $header);
+        header('Expect-CT: '.$header);
     }
 
     /**
      * Remove all script tags from a string.
+     *
      * @param string $html
+     *
      * @return string
      */
     public static function stripScriptTags(string $html): string
@@ -859,6 +1001,7 @@ class SecurityV2
 
     /**
      * Verify that the user agent has not changed during a session.
+     *
      * @return bool
      */
     public static function verifyUserAgent(): bool
@@ -869,49 +1012,61 @@ class SecurityV2
             return false;
         }
         $_SESSION['user_agent'] = $userAgent;
+
         return true;
     }
 
     /**
      * Validate an IBAN number.
+     *
      * @param string $iban
+     *
      * @return bool
      */
     public static function validateIban(string $iban): bool
     {
         // Basic IBAN validation, for more robust validation a library might be needed
         $iban = strtolower(str_replace(' ', '', $iban));
-        $countries = ['al','ad','at','az','bh','by','be','ba','br','bg','cr','hr','cy','cz','dk','do','sv','ee','fo','fi','fr','ge','de','gi','gr','gt','hu','is','ie','il','it','jo','kz','kw','lv','lb','li','lt','lu','mk','mt','mr','mu','mc','md','me','nl','no','pk','ps','pl','pt','qa','ro','sm','sa','rs','sk','si','es','se','ch','tn','tr','ae','gb','vg'];
-        if (!in_array(substr($iban,0,2), $countries)) {
+        $countries = ['al', 'ad', 'at', 'az', 'bh', 'by', 'be', 'ba', 'br', 'bg', 'cr', 'hr', 'cy', 'cz', 'dk', 'do', 'sv', 'ee', 'fo', 'fi', 'fr', 'ge', 'de', 'gi', 'gr', 'gt', 'hu', 'is', 'ie', 'il', 'it', 'jo', 'kz', 'kw', 'lv', 'lb', 'li', 'lt', 'lu', 'mk', 'mt', 'mr', 'mu', 'mc', 'md', 'me', 'nl', 'no', 'pk', 'ps', 'pl', 'pt', 'qa', 'ro', 'sm', 'sa', 'rs', 'sk', 'si', 'es', 'se', 'ch', 'tn', 'tr', 'ae', 'gb', 'vg'];
+        if (!in_array(substr($iban, 0, 2), $countries)) {
             return false;
         }
-        $iban = substr($iban,4).substr($iban,0,4);
+        $iban = substr($iban, 4).substr($iban, 0, 4);
         $iban = strtr($iban, 'abcdefghijklmnopqrstuvwxyz', '1011121314151617181920212223242526');
+
         return bcmod($iban, '97') === '1';
     }
 
     /**
      * Generate a file checksum.
+     *
      * @param string $filePath
      * @param string $algo
+     *
      * @return string|false
      */
     public static function generateFileChecksum(string $filePath, string $algo = 'sha256')
     {
-        if (!file_exists($filePath)) return false;
+        if (!file_exists($filePath)) {
+            return false;
+        }
+
         return hash_file($algo, $filePath);
     }
 
     /**
      * Verify a file checksum.
+     *
      * @param string $filePath
      * @param string $expectedChecksum
      * @param string $algo
+     *
      * @return bool
      */
     public static function verifyFileChecksum(string $filePath, string $expectedChecksum, string $algo = 'sha256'): bool
     {
         $actualChecksum = self::generateFileChecksum($filePath, $algo);
+
         return $actualChecksum && hash_equals($expectedChecksum, $actualChecksum);
     }
 
@@ -925,19 +1080,24 @@ class SecurityV2
 
     /**
      * Securely parse an XML string.
+     *
      * @param string $xmlString
+     *
      * @return SimpleXMLElement|false
      */
     public static function secureParseXml(string $xmlString)
     {
         self::disableXmlExternalEntities();
+
         return simplexml_load_string($xmlString);
     }
 
     /**
      * Check if a password has been exposed in a data breach (requires an API like Have I Been Pwned).
      * This is a conceptual example.
+     *
      * @param string $password
+     *
      * @return bool True if exposed, false otherwise.
      */
     public static function isPasswordPwned(string $password): bool
@@ -946,16 +1106,19 @@ class SecurityV2
         $prefix = substr($sha1Password, 0, 5);
         $suffix = substr($sha1Password, 5);
 
-        $response = @file_get_contents('https://api.pwnedpasswords.com/range/' . $prefix);
+        $response = @file_get_contents('https://api.pwnedpasswords.com/range/'.$prefix);
         if ($response === false) {
             return false; // Could not check
         }
+
         return strpos($response, $suffix) !== false;
     }
 
     /**
      * Generate a strong, random key.
+     *
      * @param int $length
+     *
      * @return string
      */
     public static function generateEncryptionKey(int $length = 32): string
@@ -965,7 +1128,9 @@ class SecurityV2
 
     /**
      * Set a timeout for the current session.
+     *
      * @param int $timeoutSeconds
+     *
      * @return bool True if session is still valid, false if timed out.
      */
     public static function setSessionTimeout(int $timeoutSeconds = 1800): bool
@@ -974,15 +1139,19 @@ class SecurityV2
         $currentTime = time();
         if (isset($_SESSION['last_activity']) && ($currentTime - $_SESSION['last_activity'] > $timeoutSeconds)) {
             self::destroySession();
+
             return false;
         }
         $_SESSION['last_activity'] = $currentTime;
+
         return true;
     }
 
     /**
      * Sanitize a string for use in a LIKE query.
+     *
      * @param string $string
+     *
      * @return string
      */
     public static function sanitizeForLike(string $string): string
@@ -992,8 +1161,10 @@ class SecurityV2
 
     /**
      * Check if a given string is a valid username format.
-     * (e.g., 3-20 characters, alphanumeric and underscores)
+     * (e.g., 3-20 characters, alphanumeric and underscores).
+     *
      * @param string $username
+     *
      * @return bool
      */
     public static function validateUsername(string $username): bool
@@ -1003,7 +1174,9 @@ class SecurityV2
 
     /**
      * Validate a US phone number format.
+     *
      * @param string $phone
+     *
      * @return bool
      */
     public static function validateUsPhone(string $phone): bool
@@ -1013,7 +1186,9 @@ class SecurityV2
 
     /**
      * Securely read from a file.
+     *
      * @param string $path
+     *
      * @return string|false
      */
     public static function secureReadFile(string $path)
@@ -1022,13 +1197,16 @@ class SecurityV2
         if ($safePath && is_readable($safePath)) {
             return file_get_contents($safePath);
         }
+
         return false;
     }
 
     /**
      * Securely write to a file.
+     *
      * @param string $path
      * @param string $data
+     *
      * @return int|false
      */
     public static function secureWriteFile(string $path, string $data)
@@ -1037,12 +1215,15 @@ class SecurityV2
         if ($safePath) {
             return file_put_contents($safePath, $data, LOCK_EX);
         }
+
         return false;
     }
 
     /**
      * Obfuscate an email address.
+     *
      * @param string $email
+     *
      * @return string
      */
     public static function obfuscateEmail(string $email): string
@@ -1050,12 +1231,15 @@ class SecurityV2
         $parts = explode('@', $email);
         $name = $parts[0];
         $domain = $parts[1];
-        return substr($name, 0, 2) . str_repeat('*', strlen($name) - 2) . '@' . $domain;
+
+        return substr($name, 0, 2).str_repeat('*', strlen($name) - 2).'@'.$domain;
     }
 
     /**
      * Check if a string is a valid time format (HH:MM:SS).
+     *
      * @param string $time
+     *
      * @return bool
      */
     public static function validateTime(string $time): bool
@@ -1065,7 +1249,9 @@ class SecurityV2
 
     /**
      * Validate a MAC address.
+     *
      * @param string $mac
+     *
      * @return bool
      */
     public static function validateMacAddress(string $mac): bool
@@ -1075,35 +1261,40 @@ class SecurityV2
 
     /**
      * Set a Cross-Origin-Opener-Policy header.
+     *
      * @param string $policy
      */
     public static function setCoopHeader(string $policy = 'same-origin'): void
     {
-        header("Cross-Origin-Opener-Policy: " . $policy);
+        header('Cross-Origin-Opener-Policy: '.$policy);
     }
 
     /**
      * Set a Cross-Origin-Embedder-Policy header.
+     *
      * @param string $policy
      */
     public static function setCoepHeader(string $policy = 'require-corp'): void
     {
-        header("Cross-Origin-Embedder-Policy: " . $policy);
+        header('Cross-Origin-Embedder-Policy: '.$policy);
     }
 
     /**
      * Set a Cross-Origin-Resource-Policy header.
+     *
      * @param string $policy
      */
     public static function setCorpHeader(string $policy = 'same-origin'): void
     {
-        header("Cross-Origin-Resource-Policy: " . $policy);
+        header('Cross-Origin-Resource-Policy: '.$policy);
     }
 
     /**
      * Generate a cryptographically secure random integer within a range.
+     *
      * @param int $min
      * @param int $max
+     *
      * @return int
      */
     public static function secureRandomInt(int $min, int $max): int
@@ -1113,8 +1304,10 @@ class SecurityV2
 
     /**
      * Validate that a string has a minimum length.
+     *
      * @param string $string
-     * @param int $minLength
+     * @param int    $minLength
+     *
      * @return bool
      */
     public static function validateMinLength(string $string, int $minLength): bool
@@ -1124,8 +1317,10 @@ class SecurityV2
 
     /**
      * Validate that a string has a maximum length.
+     *
      * @param string $string
-     * @param int $maxLength
+     * @param int    $maxLength
+     *
      * @return bool
      */
     public static function validateMaxLength(string $string, int $maxLength): bool
@@ -1135,28 +1330,33 @@ class SecurityV2
 
     /**
      * Validate that a number is within a specific range.
+     *
      * @param int|float $number
      * @param int|float $min
      * @param int|float $max
+     *
      * @return bool
      */
     public static function validateRange($number, $min, $max): bool
     {
-        return ($number >= $min && $number <= $max);
+        return $number >= $min && $number <= $max;
     }
 
     /**
      * Get the current URL safely.
+     *
      * @return string
      */
     public static function getCurrentUrl(): string
     {
         $protocol = self::isSecureRequest() ? 'https' : 'http';
-        return $protocol . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+        return $protocol.'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     }
 
     /**
      * Check if a session has been initiated.
+     *
      * @return bool
      */
     public static function isSessionStarted(): bool
@@ -1166,23 +1366,38 @@ class SecurityV2
 
     /**
      * Enforce a password policy.
+     *
      * @param string $password
-     * @param array $policy e.g., ['minLength' => 8, 'requireUppercase' => true, 'requireNumber' => true, 'requireSymbol' => true]
+     * @param array  $policy   e.g., ['minLength' => 8, 'requireUppercase' => true, 'requireNumber' => true, 'requireSymbol' => true]
+     *
      * @return bool
      */
     public static function enforcePasswordPolicy(string $password, array $policy): bool
     {
-        if (isset($policy['minLength']) && strlen($password) < $policy['minLength']) return false;
-        if (isset($policy['requireUppercase']) && !preg_match('/[A-Z]/', $password)) return false;
-        if (isset($policy['requireLowercase']) && !preg_match('/[a-z]/', $password)) return false;
-        if (isset($policy['requireNumber']) && !preg_match('/[0-9]/', $password)) return false;
-        if (isset($policy['requireSymbol']) && !preg_match('/[\W_]/', $password)) return false; // \W is any non-word character
+        if (isset($policy['minLength']) && strlen($password) < $policy['minLength']) {
+            return false;
+        }
+        if (isset($policy['requireUppercase']) && !preg_match('/[A-Z]/', $password)) {
+            return false;
+        }
+        if (isset($policy['requireLowercase']) && !preg_match('/[a-z]/', $password)) {
+            return false;
+        }
+        if (isset($policy['requireNumber']) && !preg_match('/[0-9]/', $password)) {
+            return false;
+        }
+        if (isset($policy['requireSymbol']) && !preg_match('/[\W_]/', $password)) {
+            return false;
+        } // \W is any non-word character
+
         return true;
     }
 
     /**
      * Validate a given timezone identifier.
+     *
      * @param string $timezone
+     *
      * @return bool
      */
     public static function validateTimezone(string $timezone): bool
@@ -1192,7 +1407,9 @@ class SecurityV2
 
     /**
      * Remove the UTF-8 Byte Order Mark (BOM) from a string.
+     *
      * @param string $string
+     *
      * @return string
      */
     public static function removeBom(string $string): string
@@ -1200,6 +1417,7 @@ class SecurityV2
         if (substr($string, 0, 3) == pack('CCC', 0xEF, 0xBB, 0xBF)) {
             return substr($string, 3);
         }
+
         return $string;
     }
 }
