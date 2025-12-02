@@ -31,6 +31,7 @@ A powerful and lightweight PHP framework built for speed and efficiency, offerin
 * **Support for modular development**, allowing developers to expand their projects with plugins and additional functionalities.
 * **Integrated caching and session management**, reducing server load and enhancing application performance.
 * **Extensive documentation and community support**, making development easier and more accessible.
+- **Built-in Fetch Layer**, a powerful cURL wrapper for making HTTP requests with features like auto-retry, caching, and automatic authorization headers.
 
 #### ☁️ INEX SPA Cloud 🛜🔧
 
@@ -349,6 +350,105 @@ Once enabled, the DevTools bar will appear at the bottom of your screen. You can
 -   **`Ctrl + D`**: Show or hide the DevTools bar.
 
 You can click on the tabs to navigate between different panels.
+
+## 🌐 Built-in Fetch Layer
+
+The INEX SPA framework includes a powerful and convenient fetch layer for making HTTP requests to external APIs. It's built on top of cURL and provides a simple interface with advanced features like auto-retry, caching, and automatic authorization headers.
+
+### Enabling the Fetch Layer
+
+To enable the fetch layer, set the `USE_FETCH` variable to `true` in your `.env` file:
+
+```
+USE_FETCH=true
+```
+
+### Using the `useFetch` function
+
+Once enabled, you can use the `useFetch` function anywhere in your application.
+
+**Syntax:**
+`useFetch(string $url, array $options = []): array`
+
+- `$url`: The URL of the API endpoint you want to call.
+- `$options` (optional): An associative array of options to customize the request.
+
+The function returns an associative array containing the `body`, `status`, and `error` of the response.
+
+### Options
+
+The `$options` array can contain the following keys:
+
+- `method` (string): The HTTP method to use (e.g., `'GET'`, `'POST'`, `'PUT'`, `'DELETE'`). Defaults to `'GET'`.
+- `headers` (array): An associative array of HTTP headers to send with the request.
+- `body` (mixed): The body of the request. If an array is provided, it will be automatically encoded as JSON and the `Content-Type` header will be set to `application/json`.
+- `retries` (int): The number of times to retry the request if it fails with a network error or a 5xx HTTP status code. Defaults to `0`.
+- `retryDelay` (int): The delay in milliseconds between retries. Defaults to `1000`.
+- `cache` (int): The number of seconds to cache the response. Defaults to `0` (no caching).
+- `auth` (bool): Whether to automatically add the `Authorization` header. Defaults to `true`.
+
+### Examples
+
+**Basic GET request:**
+
+```php
+$response = useFetch('https://api.example.com/posts');
+
+if ($response['status'] === 200) {
+    $posts = json_decode($response['body'], true);
+    // Do something with the posts
+}
+```
+
+**POST request with a JSON body:**
+
+```php
+$postData = ['title' => 'New Post', 'body' => 'This is the content of the post.'];
+
+$response = useFetch('https://api.example.com/posts', [
+    'method' => 'POST',
+    'body' => $postData,
+]);
+
+if ($response['status'] === 201) {
+    // Post created successfully
+}
+```
+
+**Request with auto-retry:**
+
+```php
+// This request will be retried 3 times with a 2-second delay between each retry if it fails.
+$response = useFetch('https://api.example.com/flaky-endpoint', [
+    'retries' => 3,
+    'retryDelay' => 2000,
+]);
+```
+
+**Request with caching:**
+
+```php
+// The response from this request will be cached for 1 hour (3600 seconds).
+$response = useFetch('https://api.example.com/users', [
+    'cache' => 3600,
+]);
+```
+
+### Automatic Authorization Header
+
+The fetch layer can automatically add an `Authorization` header to your requests. To use this feature, set the `AUTH_TOKEN` variable in your `.env` file:
+
+```
+AUTH_TOKEN=your-api-token
+```
+
+Now, all requests made with `useFetch` will include the `Authorization: Bearer your-api-token` header by default. You can disable this behavior for a specific request by setting the `auth` option to `false`:
+
+```php
+$response = useFetch('https://api.example.com/public-endpoint', [
+    'auth' => false,
+]);
+```
 
 ## 🛡️ SecurityV2 Class Reference
 
