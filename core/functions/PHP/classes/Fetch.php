@@ -20,7 +20,7 @@ class Fetch
         $auth = $options['auth'] ?? true;
 
         if ($cacheTTL > 0 && function_exists('getCache')) {
-            $cacheKey = 'fetch_' . md5($url . json_encode($options));
+            $cacheKey = 'fetch_'.md5($url.json_encode($options));
             $cachedResponse = getCache($cacheKey);
             if ($cachedResponse !== null) {
                 return $cachedResponse;
@@ -30,7 +30,7 @@ class Fetch
         if ($auth && function_exists('getEnvValue')) {
             $token = getEnvValue('AUTH_TOKEN');
             if ($token && !isset($headers['Authorization'])) {
-                $headers['Authorization'] = 'Bearer ' . $token;
+                $headers['Authorization'] = 'Bearer '.$token;
             }
         }
 
@@ -80,15 +80,15 @@ class Fetch
         curl_close($ch);
 
         if (!empty($error)) {
-            self::logError('cURL Error: ' . $error, $url, $options);
+            self::logError('cURL Error: '.$error, $url, $options);
         } elseif ($httpCode >= 400) {
-            self::logError('HTTP Error: ' . $httpCode, $url, $options, $response);
+            self::logError('HTTP Error: '.$httpCode, $url, $options, $response);
         }
 
         $result = [
-            'body' => $response,
+            'body'   => $response,
             'status' => $httpCode,
-            'error' => $error,
+            'error'  => $error,
         ];
 
         if ($cacheTTL > 0 && function_exists('setCache') && empty($error) && $httpCode < 400) {
@@ -100,15 +100,15 @@ class Fetch
 
     private static function logError($message, $url, $options, $response = null)
     {
-        $logMessage = "[" . date('Y-m-d H:i:s') . "] Fetch Error: " . $message . "\n";
-        $logMessage .= "URL: " . $url . "\n";
-        $logMessage .= "Options: " . json_encode($options) . "\n";
+        $logMessage = '['.date('Y-m-d H:i:s').'] Fetch Error: '.$message."\n";
+        $logMessage .= 'URL: '.$url."\n";
+        $logMessage .= 'Options: '.json_encode($options)."\n";
         if ($response) {
-            $logMessage .= "Response: " . $response . "\n";
+            $logMessage .= 'Response: '.$response."\n";
         }
         $logMessage .= "-----------------\n";
 
-        $logPath = __DIR__ . '/../../logs/fetch.log';
+        $logPath = __DIR__.'/../../logs/fetch.log';
         error_log($logMessage, 3, $logPath);
     }
 }
