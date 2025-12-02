@@ -2,7 +2,7 @@
 
 // To run this test, make sure USE_FETCH is true in your .env file.
 
-require_once __DIR__ . '/../index.php';
+require_once __DIR__.'/../index.php';
 
 function testFetchFunctionExists()
 {
@@ -25,7 +25,7 @@ function testFetchApiCall()
             echo "Test Failed: API call to jsonplaceholder failed, response body is not as expected.\n";
         }
     } else {
-        echo "Test Failed: API call to jsonplaceholder failed with status code " . $response['status'] . ".\n";
+        echo 'Test Failed: API call to jsonplaceholder failed with status code '.$response['status'].".\n";
     }
 }
 
