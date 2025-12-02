@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . '/../core/import/PHPMailer/init.php';
-require_once __DIR__ . '/../core/functions/PHP/getEnvValue.php';
-require_once __DIR__ . '/../core/functions/Mail.php';
+
+require_once __DIR__.'/../core/import/PHPMailer/init.php';
+require_once __DIR__.'/../core/functions/PHP/getEnvValue.php';
+require_once __DIR__.'/../core/functions/Mail.php';
 
 $envBackup = null;
 if (file_exists('.env')) {
@@ -9,7 +10,7 @@ if (file_exists('.env')) {
 }
 
 // Create a dummy .env file for testing
-file_put_contents('.env', "
+file_put_contents('.env', '
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.example.com
 MAIL_PORT=587
@@ -18,7 +19,7 @@ MAIL_PASSWORD=testpass
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=test@example.com
 MAIL_FROM_NAME=Test
-");
+');
 
 // Instantiate the Mail class
 $mail = new Mail();
