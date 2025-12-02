@@ -14,6 +14,7 @@
  * @copyright 2010 - 2012 Jim Jagielski
  * @copyright 2004 - 2009 Andy Prevost
  * @license   https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html GNU Lesser General Public License
+ *
  * @note      This program is distributed in the hope that it will be useful - WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
@@ -36,7 +37,7 @@ interface OAuthTokenProvider
     /**
      * Generate a base64-encoded OAuth token ensuring that the access token has not expired.
      * The string to be base 64 encoded should be in the form:
-     * "user=<user_email_address>\001auth=Bearer <access_token>\001\001"
+     * "user=<user_email_address>\001auth=Bearer <access_token>\001\001".
      *
      * @return string
      */

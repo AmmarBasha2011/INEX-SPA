@@ -1,6 +1,7 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
+
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Mail
 {
@@ -20,12 +21,12 @@ class Mail
 
             if ($mailerType === 'smtp') {
                 $this->mailer->isSMTP();
-                $this->mailer->Host       = getEnvValue('MAIL_HOST');
-                $this->mailer->SMTPAuth   = true;
-                $this->mailer->Username   = getEnvValue('MAIL_USERNAME');
-                $this->mailer->Password   = getEnvValue('MAIL_PASSWORD');
+                $this->mailer->Host = getEnvValue('MAIL_HOST');
+                $this->mailer->SMTPAuth = true;
+                $this->mailer->Username = getEnvValue('MAIL_USERNAME');
+                $this->mailer->Password = getEnvValue('MAIL_PASSWORD');
                 $this->mailer->SMTPSecure = getEnvValue('MAIL_ENCRYPTION');
-                $this->mailer->Port       = getEnvValue('MAIL_PORT');
+                $this->mailer->Port = getEnvValue('MAIL_PORT');
             } elseif ($mailerType === 'sendmail') {
                 $this->mailer->isSendmail();
             } else {
@@ -62,9 +63,11 @@ class Mail
     {
         try {
             $this->mailer->send();
+
             return true;
         } catch (Exception $e) {
             $this->errorInfo = $this->mailer->ErrorInfo;
+
             return false;
         }
     }

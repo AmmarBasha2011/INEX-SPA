@@ -14,6 +14,7 @@
  * @copyright 2010 - 2012 Jim Jagielski
  * @copyright 2004 - 2009 Andy Prevost
  * @license   https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html GNU Lesser General Public License
+ *
  * @note      This program is distributed in the hope that it will be useful - WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.
@@ -45,6 +46,7 @@ class POP3
      * The POP3 PHPMailer Version number.
      *
      * @var string
+     *
      * @deprecated This constant will be removed in PHPMailer 8.0. Use `PHPMailer::VERSION` instead.
      */
     const VERSION = '7.0.1';
@@ -67,6 +69,7 @@ class POP3
      * POP3 class debug output mode.
      * Debug output level.
      * Options:
+     *
      * @see POP3::DEBUG_OFF: No output
      * @see POP3::DEBUG_SERVER: Server messages, connection/server errors
      * @see POP3::DEBUG_CLIENT: Client and Server messages, connection/server errors
@@ -145,7 +148,7 @@ class POP3
 
     /**
      * Debug level to show server -> client messages
-     * also shows clients connection errors or errors from server
+     * also shows clients connection errors or errors from server.
      *
      * @var int
      */
@@ -311,6 +314,7 @@ class POP3
     {
         if (!$this->connected) {
             $this->setError('Not connected to POP3 server');
+
             return false;
         }
         if (empty($username)) {
@@ -321,11 +325,11 @@ class POP3
         }
 
         //Send the Username
-        $this->sendString("USER $username" . static::LE);
+        $this->sendString("USER $username".static::LE);
         $pop3_response = $this->getResponse();
         if ($this->checkResponse($pop3_response)) {
             //Send the Password
-            $this->sendString("PASS $password" . static::LE);
+            $this->sendString("PASS $password".static::LE);
             $pop3_response = $this->getResponse();
             if ($this->checkResponse($pop3_response)) {
                 return true;
@@ -345,7 +349,7 @@ class POP3
             return;
         }
 
-        $this->sendString('QUIT' . static::LE);
+        $this->sendString('QUIT'.static::LE);
 
         // RFC 1939 shows POP3 server sending a +OK response to the QUIT command.
         // Try to get it.  Ignore any failures here.
@@ -365,7 +369,7 @@ class POP3
 
         // Clean up attributes.
         $this->connected = false;
-        $this->pop_conn  = false;
+        $this->pop_conn = false;
     }
 
     /**
@@ -463,7 +467,7 @@ class POP3
     protected function catchWarning($errno, $errstr, $errfile, $errline)
     {
         $this->setError(
-            'Connecting to the POP3 server raised a PHP warning:' .
+            'Connecting to the POP3 server raised a PHP warning:'.
             "errno: $errno errstr: $errstr; errfile: $errfile; errline: $errline"
         );
     }
