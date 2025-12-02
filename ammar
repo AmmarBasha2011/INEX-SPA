@@ -71,6 +71,10 @@ $commands = [
     'run:db' => 'Run all .sql files in db folder',
     'run:cron' => 'Manually run a specific cron task',
     'serve' => 'Serve the application',
+    'test' => 'Run all tests',
+    'test:unit' => 'Run unit tests',
+    'test:component' => 'Run component tests',
+    'test:snapshot' => 'Run snapshot tests',
 ];
 
 $command = $argv[1] ?? null;
@@ -910,6 +914,35 @@ if ($command == 'clear:docs') {
 
     echo "🔥 All docs have been deleted!\n";
     exit(0);
+}
+
+if (str_starts_with($command, 'test')) {
+    $phpunit = __DIR__ . '/tools/phpunit.phar';
+    $configFile = __DIR__ . '/phpunit.xml';
+    $testSuite = '';
+
+    if ($command === 'test:unit') {
+        $testSuite = '--testsuite Unit';
+    } elseif ($command === 'test:component') {
+        $testSuite = '--testsuite Component';
+    } elseif ($command === 'test:snapshot') {
+        $testSuite = '--testsuite Snapshot';
+    }
+
+    if (!file_exists($phpunit)) {
+        echo "Error: PHPUnit PHAR not found at $phpunit\n";
+        exit(1);
+    }
+
+    if (!file_exists($configFile)) {
+        echo "Error: phpunit.xml not found at $configFile\n";
+        exit(1);
+    }
+
+    $execCommand = "php $phpunit --configuration $configFile $testSuite";
+    echo "Running command: $execCommand\n";
+    passthru($execCommand, $returnCode);
+    exit($returnCode);
 }
 
 exit("Unknown command: $command\n");
