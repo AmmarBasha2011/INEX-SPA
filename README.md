@@ -1754,3 +1754,47 @@ This will render the `Button` component and pass the `text` variable to it.
 ### Partial Hydration (Future Feature)
 
 We are working on adding support for partial hydration, which will allow you to optionally use JavaScript to enhance your components on the client-side. Stay tuned for updates!
+
+## 📧 Mail Service
+
+INEX SPA includes a built-in mail service that allows you to send emails from your application. The mail service is a wrapper around the popular PHPMailer library, providing a simple and consistent API for sending emails.
+
+### Configuration
+
+To use the mail service, you first need to configure it in your `.env` file. The following mail-related variables are available:
+
+- `MAIL_MAILER`: The mailer to use (e.g., `smtp`, `sendmail`).
+- `MAIL_HOST`: The SMTP host (e.g., `smtp.mailtrap.io`).
+- `MAIL_PORT`: The SMTP port (e.g., `587`).
+- `MAIL_USERNAME`: The SMTP username.
+- `MAIL_PASSWORD`: The SMTP password.
+- `MAIL_ENCRYPTION`: The SMTP encryption (e.g., `tls`).
+- `MAIL_FROM_ADDRESS`: The "from" email address.
+- `MAIL_FROM_NAME`: The "from" name.
+
+### Sending Emails
+
+To send an email, you can use the `Mail` class. Here's an example of how to send a simple email:
+
+```php
+//
+// Note: This is a simplified example. You should handle errors and exceptions in a real application.
+//
+require_once 'core/import/PHPMailer/init.php';
+require_once 'core/functions/PHP/getEnvValue.php';
+require_once 'core/functions/Mail.php';
+
+$mail = new Mail();
+
+$mail->addRecipient('test@example.com', 'Test User');
+$mail->setSubject('Test Email');
+$mail->setBody('This is a test email.');
+$mail->isHTML(false);
+
+if ($mail->send()) {
+    echo 'Email sent successfully.';
+} else {
+    echo 'Failed to send email: ' . $mail->errorInfo;
+}
+
+```
