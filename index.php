@@ -107,6 +107,13 @@ if (getEnvValue('USE_LOGGING') == 'true') {
 if (getEnvValue('USE_WEBHOOK') == 'true') {
     require_once 'core/functions/PHP/classes/Webhook.php';
 }
+if (getEnvValue('USE_FETCH') == 'true') {
+    require_once 'core/functions/PHP/classes/Fetch.php';
+    function useFetch($url, $options = [])
+    {
+        return Fetch::fetch($url, $options);
+    }
+}
 
 $packagesJsonPath = __DIR__.'/core/import/package.json';
 if (file_exists($packagesJsonPath)) {
