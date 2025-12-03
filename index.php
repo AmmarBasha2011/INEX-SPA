@@ -109,9 +109,11 @@ if (getEnvValue('USE_WEBHOOK') == 'true') {
 }
 if (getEnvValue('USE_FETCH') == 'true') {
     require_once 'core/functions/PHP/classes/Fetch.php';
-    function useFetch($url, $options = [])
-    {
-        return Fetch::fetch($url, $options);
+    if (!function_exists('useFetch')) {
+        function useFetch($url, $options = [])
+        {
+            return Fetch::fetch($url, $options);
+        }
     }
 }
 
@@ -128,4 +130,6 @@ if (file_exists($packagesJsonPath)) {
 }
 require_once 'functions.php';
 require_once 'core/functions/PHP/getPage.php';
-getPage($_GET['page'] ?? '');
+if (!defined('TESTING')) {
+    echo getPage($_GET['page'] ?? '');
+}

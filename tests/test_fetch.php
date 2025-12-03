@@ -1,7 +1,7 @@
 <?php
 
 // To run this test, make sure USE_FETCH is true in your .env file.
-
+define('TESTING', true);
 require_once __DIR__.'/../index.php';
 
 function testFetchFunctionExists()
