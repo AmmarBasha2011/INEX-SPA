@@ -13,6 +13,7 @@ class MockAhmed
     {
         ob_start();
         include $filePath;
+
         return ob_get_clean();
     }
 }
