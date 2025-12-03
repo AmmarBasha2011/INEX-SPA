@@ -3,5 +3,5 @@
 require_once 'getPage.php';
 
 if (isset($_GET['route'])) {
-    getPage($_GET['route']);
+    echo getPage($_GET['route']);
 }
