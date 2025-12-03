@@ -22,8 +22,8 @@ class ComponentMemoryProfiler
     {
         self::$componentMemory[$componentName] = [
             'start' => memory_get_usage(),
-            'end' => 0,
-            'usage' => 0
+            'end'   => 0,
+            'usage' => 0,
         ];
     }
 
@@ -45,7 +45,7 @@ class ComponentMemoryProfiler
         $warnings = [];
         foreach (self::$componentMemory as $componentName => $memory) {
             if ($memory['usage'] > self::$memoryThreshold) {
-                $warnings[] = "Component '{$componentName}' is using a lot of memory: " . round($memory['usage'] / 1024, 2) . " KB";
+                $warnings[] = "Component '{$componentName}' is using a lot of memory: ".round($memory['usage'] / 1024, 2).' KB';
             }
         }
 
