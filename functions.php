@@ -4,6 +4,10 @@ function component($name, $data = [])
 {
     $componentPath = "components/{$name}.php";
     if (file_exists($componentPath)) {
+        if (getEnvValue('DEV_MODE') == 'true') {
+            ComponentMemoryProfiler::startComponent($name);
+        }
+
         // Extract the data array into variables for the component file
         extract($data);
 
@@ -14,7 +18,13 @@ function component($name, $data = [])
         include $componentPath;
 
         // Get the contents of the buffer and clean it
-        return ob_get_clean();
+        $output = ob_get_clean();
+
+        if (getEnvValue('DEV_MODE') == 'true') {
+            ComponentMemoryProfiler::endComponent($name);
+        }
+
+        return $output;
     }
 
     // Return an error message if the component file is not found
