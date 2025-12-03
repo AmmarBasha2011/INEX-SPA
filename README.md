@@ -1898,3 +1898,81 @@ if ($mail->send()) {
 }
 
 ```
+
+## 🧪 Testing Tools
+
+INEX SPA now includes a set of testing tools powered by PHPUnit to help you write robust and reliable applications. You can run unit, component, and snapshot tests using the `ammar` CLI.
+
+### Running Tests
+
+You can run tests using the following commands:
+
+-   `php ammar test`: Run all tests (unit, component, and snapshot).
+-   `php ammar test:unit`: Run only the unit tests.
+-   `php ammar test:component`: Run only the component tests.
+-   `php ammar test:snapshot`: Run only the snapshot tests.
+
+### Writing Tests
+
+Tests are located in the `tests/` directory, with subdirectories for `Unit`, `Component`, and `Snapshot` tests.
+
+#### Unit Tests
+
+Unit tests are used to test individual units of code, such as a single function or method. Here's an example of a unit test in `tests/Unit/ExampleUnitTest.php`:
+
+```php
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class ExampleUnitTest extends TestCase
+{
+    public function test_true_is_true()
+    {
+        $this->assertTrue(true);
+    }
+}
+```
+
+#### Component Tests
+
+Component tests are used to test individual components of your application, such as a view component. Here's an example of a component test in `tests/Component/ExampleComponentTest.php`:
+
+```php
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class ExampleComponentTest extends TestCase
+{
+    public function test_component_loads()
+    {
+        // This is a placeholder for a real component test.
+        // In a real-world scenario, you would render a component
+        // and assert that it contains the expected HTML.
+        $this->assertTrue(true);
+    }
+}
+```
+
+#### Snapshot Tests
+
+Snapshot tests are used to test that the output of a function or component has not changed unexpectedly. Here's an example of a snapshot test in `tests/Snapshot/ExampleSnapshotTest.php`:
+
+```php
+<?php
+
+use PHPUnit\Framework\TestCase;
+
+class ExampleSnapshotTest extends TestCase
+{
+    public function test_snapshot_matches()
+    {
+        // This is a placeholder for a real snapshot test.
+        // In a real-world scenario, you would use a snapshot
+        // testing library to compare the output of a function
+        // or component to a stored snapshot.
+        $this->assertTrue(true);
+    }
+}
+```
