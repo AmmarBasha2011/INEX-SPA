@@ -13,7 +13,7 @@ class FormKit
         }
     }
 
-    public function validate($data, callable $callback = null)
+    public function validate($data, ?callable $callback = null)
     {
         $asyncQueue = [];
         foreach ($this->fields as $fieldName => $rules) {
@@ -40,7 +40,7 @@ class FormKit
             }
 
             if (isset($rules['async'])) {
-                $asyncQueue[] = function() use ($fieldName, $value, $rules) {
+                $asyncQueue[] = function () use ($fieldName, $value, $rules) {
                     $this->asyncValidate($fieldName, $value, $rules['async'], $rules['messages']);
                 };
             }
@@ -69,7 +69,7 @@ class FormKit
             if (!isset($this->errors[$fieldName])) {
                 $this->errors[$fieldName] = [];
             }
-            $this->errors[$fieldName][] = $messages['async'] ?? 'Invalid ' . $fieldName;
+            $this->errors[$fieldName][] = $messages['async'] ?? 'Invalid '.$fieldName;
         }
     }
 
@@ -95,10 +95,9 @@ class FormKit
             if (!isset($this->errors[$fieldName])) {
                 $this->errors[$fieldName] = [];
             }
-            $this->errors[$fieldName][] = $messages[$rule] ?? 'Invalid ' . $fieldName;
+            $this->errors[$fieldName][] = $messages[$rule] ?? 'Invalid '.$fieldName;
         }
     }
-
 
     private function applySanitization($value, $sanitizationRule)
     {

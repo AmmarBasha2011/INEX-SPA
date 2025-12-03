@@ -13,8 +13,8 @@ class FormKitTest extends TestCase
         $config = [
             'name' => [
                 'required' => true,
-                'messages' => ['required' => 'Name is required.']
-            ]
+                'messages' => ['required' => 'Name is required.'],
+            ],
         ];
         $form = new FormKit($config);
         $this->assertFalse($form->validate(['name' => '']));
@@ -26,8 +26,8 @@ class FormKitTest extends TestCase
         $config = [
             'email' => [
                 'validate' => ['email' => true],
-                'messages' => ['email' => 'Invalid email.']
-            ]
+                'messages' => ['email' => 'Invalid email.'],
+            ],
         ];
         $form = new FormKit($config);
         $this->assertFalse($form->validate(['email' => 'invalid']));
@@ -42,8 +42,8 @@ class FormKitTest extends TestCase
         $config = [
             'password' => [
                 'validate' => ['minLength' => 8],
-                'messages' => ['minLength' => 'Password too short.']
-            ]
+                'messages' => ['minLength' => 'Password too short.'],
+            ],
         ];
         $form = new FormKit($config);
         $this->assertFalse($form->validate(['password' => 'short']));
@@ -55,8 +55,8 @@ class FormKitTest extends TestCase
         $config = [
             'username' => [
                 'validate' => ['maxLength' => 10],
-                'messages' => ['maxLength' => 'Username too long.']
-            ]
+                'messages' => ['maxLength' => 'Username too long.'],
+            ],
         ];
         $form = new FormKit($config);
         $this->assertFalse($form->validate(['username' => 'thisusernameistoolong']));
@@ -68,8 +68,8 @@ class FormKitTest extends TestCase
         $config = [
             'age' => [
                 'validate' => ['numeric' => true],
-                'messages' => ['numeric' => 'Age must be a number.']
-            ]
+                'messages' => ['numeric' => 'Age must be a number.'],
+            ],
         ];
         $form = new FormKit($config);
         $this->assertFalse($form->validate(['age' => 'not-a-number']));
@@ -111,8 +111,8 @@ class FormKitTest extends TestCase
     public function testSuccessfulValidation()
     {
         $config = [
-            'name' => ['required' => true],
-            'email' => ['validate' => ['email' => true]]
+            'name'  => ['required' => true],
+            'email' => ['validate' => ['email' => true]],
         ];
         $form = new FormKit($config);
         $this->assertTrue($form->validate(['name' => 'John Doe', 'email' => 'john@example.com']));
@@ -124,8 +124,8 @@ class FormKitTest extends TestCase
         $config = [
             'comment' => [
                 'sanitize' => 'string',
-                'validate' => ['maxLength' => 5]
-            ]
+                'validate' => ['maxLength' => 5],
+            ],
         ];
         $form = new FormKit($config);
         $form->validate(['comment' => '  <p>Hello World</p>  ']);
@@ -138,13 +138,13 @@ class FormKitTest extends TestCase
             'username' => [
                 'validate' => [
                     'minLength' => 5,
-                    'maxLength' => 10
+                    'maxLength' => 10,
                 ],
                 'messages' => [
                     'minLength' => 'Username too short.',
-                    'maxLength' => 'Username too long.'
-                ]
-            ]
+                    'maxLength' => 'Username too long.',
+                ],
+            ],
         ];
         $form = new FormKit($config);
         $form->validate(['username' => 'four']);
@@ -167,18 +167,18 @@ class FormKitTest extends TestCase
                     return $value === 'valid';
                 },
                 'messages' => [
-                    'async' => 'Username is already taken.'
-                ]
-            ]
+                    'async' => 'Username is already taken.',
+                ],
+            ],
         ];
         $form = new FormKit($config);
-        $form->validate(['username' => 'invalid'], function($isValid) {
+        $form->validate(['username' => 'invalid'], function ($isValid) {
             $this->assertFalse($isValid);
         });
         $this->assertEquals('Username is already taken.', $form->getError('username'));
 
         $form = new FormKit($config);
-        $form->validate(['username' => 'valid'], function($isValid) {
+        $form->validate(['username' => 'valid'], function ($isValid) {
             $this->assertTrue($isValid);
         });
     }
