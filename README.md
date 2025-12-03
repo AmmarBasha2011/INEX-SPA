@@ -450,6 +450,100 @@ $response = useFetch('https://api.example.com/public-endpoint', [
 ]);
 ```
 
+## 🎛️ FormKit System
+
+The INEX SPA framework includes a powerful FormKit system to handle form validation, sanitization, and data binding seamlessly.
+
+### Enabling FormKit
+
+To enable the FormKit system, set the `USE_FORMKIT` variable to `true` in your `.env` file:
+
+```
+USE_FORMKIT=true
+```
+
+### Using the `useFormKit` function
+
+Once enabled, you can use the `useFormKit` function to create a new `FormKit` instance.
+
+**Syntax:**
+`useFormKit(array $config): FormKit`
+
+- `$config`: An associative array defining the form fields and their validation rules.
+
+### Example
+
+```php
+$formConfig = [
+    'username' => [
+        'required' => true,
+        'validate' => [
+            'minLength' => 3,
+            'maxLength' => 20,
+        ],
+        'sanitize' => 'string',
+        'messages' => [
+            'required' => 'Username is required.',
+            'minLength' => 'Username must be at least 3 characters.',
+            'maxLength' => 'Username cannot exceed 20 characters.',
+        ],
+    ],
+    'email' => [
+        'required' => true,
+        'validate' => [
+            'email' => true,
+        ],
+        'sanitize' => 'email',
+        'messages' => [
+            'required' => 'Email is required.',
+            'email' => 'Please enter a valid email address.',
+        ],
+    ],
+];
+
+$form = useFormKit($formConfig);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($form->validate($_POST)) {
+        $sanitizedData = $form->getSanitizedData();
+        // Process the sanitized data
+    } else {
+        $errors = $form->getErrors();
+        // Display errors to the user
+    }
+}
+```
+
+### Async Validation
+
+FormKit also supports asynchronous validation, which is useful for tasks like checking if a username is already taken. To use async validation, add an `async` rule to your field configuration. The value of the `async` rule should be a function that takes the field's value as an argument and returns `true` if the value is valid, and `false` otherwise.
+
+```php
+$formConfig = [
+    'username' => [
+        'async' => function ($value) {
+            // In a real application, you would query your database here
+            return $value !== 'existinguser';
+        },
+        'messages' => [
+            'async' => 'Username is already taken.',
+        ],
+    ],
+];
+
+$form = useFormKit($formConfig);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $form->validate($_POST, function ($isValid) {
+        if ($isValid) {
+            // Form is valid
+        } else {
+            // Form is invalid
+        }
+    });
+}
+```
+
 ## 🛡️ SecurityV2 Class Reference
 
 The `SecurityV2` class provides a comprehensive set of static methods to enhance the security of your INEX SPA application. To use it, ensure `USE_SECURITY=true` is set in your `.env` file.

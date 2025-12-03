@@ -115,6 +115,14 @@ if (getEnvValue('USE_FETCH') == 'true') {
     }
 }
 
+if (getEnvValue('USE_FORMKIT') == 'true') {
+    require_once 'core/functions/PHP/classes/FormKit.php';
+    function useFormKit($config)
+    {
+        return new FormKit($config);
+    }
+}
+
 $packagesJsonPath = __DIR__.'/core/import/package.json';
 if (file_exists($packagesJsonPath)) {
     $packagesJson = json_decode(file_get_contents($packagesJsonPath), true);
