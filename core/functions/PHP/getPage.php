@@ -6,6 +6,7 @@ function loadBootstrap()
         return '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">'.
                '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
     }
+
     return '';
 }
 
@@ -13,9 +14,11 @@ function loadPWA()
 {
     if (getEnvValue('USE_PWA') == 'true') {
         $manifest_config = file_get_contents(__DIR__.'/../../../public/manifest_config.html');
+
         return $manifest_config.
                '<script src="'.getEnvValue('WEBSITE_URL').'JS/pwa.js"></script>';
     }
+
     return '';
 }
 
@@ -66,6 +69,7 @@ function loadScripts()
 
         $cachedScripts = ob_get_clean();
     }
+
     return $cachedScripts;
 }
 
@@ -80,12 +84,14 @@ function handleRequestMethod($methods)
                 ob_start();
                 loadScripts();
                 include 'core/errors/405.php';
+
                 return ob_get_clean();
             }
             ob_start();
             loadBootstrap();
             loadScripts();
             echo $Ahmed->render($filePath);
+
             return ob_get_clean();
         }
         $filePath = "web/{$_GET['page']}_request_{$method}_api.ahmed.php";
@@ -94,8 +100,10 @@ function handleRequestMethod($methods)
                 ob_start();
                 loadScripts();
                 include 'core/errors/405.php';
+
                 return ob_get_clean();
             }
+
             return $Ahmed->render($filePath);
         }
     }
