@@ -19,6 +19,7 @@ if ($devMode) {
     error_reporting(E_ALL);
 
     require_once 'core/functions/PHP/classes/DevTools.php';
+    require_once 'core/functions/PHP/classes/ComponentMemoryProfiler.php';
     DevTools::start();
     register_shutdown_function(['DevTools', 'render']);
 }

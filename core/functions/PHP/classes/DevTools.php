@@ -63,6 +63,7 @@ class DevTools
         $output .= '<button class="inex-tab-button" onclick="openTab(event, \'server\')">Server</button>';
         $output .= '<button class="inex-tab-button" onclick="openTab(event, \'session\')">Session</button>';
         $output .= '<button class="inex-tab-button" onclick="openTab(event, \'request\')">Request</button>';
+        $output .= '<button class="inex-tab-button" onclick="openTab(event, \'memory\')">Memory</button>';
         $output .= '</div>';
 
         // Performance Tab
@@ -138,6 +139,21 @@ class DevTools
         $output .= '<tr><td>POST</td><td>'.htmlspecialchars(print_r($_POST, true)).'</td></tr>';
         $output .= '<tr><td>COOKIE</td><td>'.htmlspecialchars(print_r($_COOKIE, true)).'</td></tr>';
         $output .= '</table>';
+        $output .= '</div>';
+
+        // Memory Tab
+        $output .= '<div id="memory" class="inex-tab-content">';
+        $output .= '<h3>Memory & Subscription Warnings</h3>';
+        $warnings = ComponentMemoryProfiler::getWarnings();
+        if (empty($warnings)) {
+            $output .= '<p>No memory warnings.</p>';
+        } else {
+            $output .= '<ul>';
+            foreach ($warnings as $warning) {
+                $output .= '<li>'.htmlspecialchars($warning).'</li>';
+            }
+            $output .= '</ul>';
+        }
         $output .= '</div>';
 
         $output .= '</div>';

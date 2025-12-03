@@ -351,6 +351,15 @@ Once enabled, the DevTools bar will appear at the bottom of your screen. You can
 
 You can click on the tabs to navigate between different panels.
 
+### Component Profiler & Subscription Tracker
+
+The DevTools includes a profiler to help identify performance issues during development. It is automatically enabled when `DEV_MODE` is set to `true`.
+
+To use it, open the DevTools by pressing `Ctrl + D` and click on the "Memory & Subscription Warnings" tab. The tool provides two types of warnings:
+
+*   **High Memory Usage:** If any component uses more than 1MB of memory during its rendering lifecycle, a warning will be displayed.
+*   **Unclosed Subscriptions:** The tool can track custom subscriptions (like WebSocket connections or event listeners). If a subscription is registered but not unregistered by the end of the request, a warning will be shown. To use this, you would call `ComponentMemoryProfiler::addSubscription('my_event');` when you start the subscription and `ComponentMemoryProfiler::removeSubscription('my_event');` when you close it.
+
 ## 🌐 Built-in Fetch Layer
 
 The INEX SPA framework includes a powerful and convenient fetch layer for making HTTP requests to external APIs. It's built on top of cURL and provides a simple interface with advanced features like auto-retry, caching, and automatic authorization headers.
