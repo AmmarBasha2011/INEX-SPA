@@ -1,0 +1,915 @@
+#!/usr/bin/env php
+<?php
+require_once 'core/functions/PHP/executeSQLFilePDO.php';
+require_once 'core/functions/PHP/getEnvValue.php';
+require_once 'core/functions/PHP/classes/Cache.php';
+require_once 'core/functions/PHP/useGemini.php';
+require_once 'core/functions/PHP/classes/Database.php';
+require_once 'core/functions/PHP/classes/SitemapGenerator.php';
+require_once 'core/functions/PHP/getSlashData.php';
+require_once 'core/functions/PHP/classes/Session.php';
+require_once 'core/functions/PHP/classes/Validation.php';
+require_once 'core/functions/PHP/classes/UserAuth.php';
+function executeStatement($sql, $params = [], $is_return = true) {
+    $DB = new Database();
+    return $DB->query($sql, $params, $is_return);
+}
+
+define('DB_FOLDER', __DIR__ . '/db');
+define('WEB_FOLDER', __DIR__ . '/web');
+define('CACHE_FOLDER', __DIR__ . '/core/cache');
+define('LANG_FOLDER', __DIR__ . '/lang');
+define('LAYOUT_FOLDER', __DIR__ . '/layouts');
+define('PUBLIC_FOLDER', __DIR__ . '/public');
+define('CRON_TASKS_DIR', __DIR__ . '/core/cron/tasks/');
+
+// تأكد من وجود المجلدات المطلوبة
+if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
+if (!is_dir(WEB_FOLDER)) mkdir(WEB_FOLDER);
+if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
+if (!is_dir(LANG_FOLDER)) mkdir(LANG_FOLDER);
+if (!is_dir(LAYOUT_FOLDER)) mkdir(LAYOUT_FOLDER);
+if (!is_dir(PUBLIC_FOLDER)) mkdir(PUBLIC_FOLDER);
+if (!is_dir(CRON_TASKS_DIR)) mkdir(CRON_TASKS_DIR, 0755, true);
+
+// أوامر Ammar CLI
+$commands = [
+    'list' => 'List all commands',
+    'list:routes' => 'List all route files',
+    'list:db' => 'List all database files',
+    'list:import' => 'List all libraries',
+    'list:lang' => 'List all languages',
+    'list:cron' => 'List all available cron tasks',
+    'make:db' => 'Create a new DB File',
+    'make:route' => 'Create a new Route File',
+    'make:cache' => 'Create a new cache entry',
+    'make:sitemap' => 'Generate sitemap.xml',
+    'make:session' => "Create a new session",
+    'make:lang' => "Create a new language file",
+    'make:layout' => "Create a new layout file",
+    'make:auth' => "Create an auth db file",
+    'make:cron' => 'Create a new cron task file',
+    'get:cache' => 'Retrieve a cache entry',
+    'get:session' => 'Retrieve a session entry',
+    'install:import' => 'Install a new library',
+    'update:cache' => 'Update an existing cache entry',
+    'delete:route' => 'Delete an existing Route File',
+    'delete:db' => 'Delete an existing DB File',
+    'delete:cache' => 'Delete a cache entry',
+    'delete:import' => 'Delete an import',
+    'delete:session' => 'Delete a session',
+    'delete:lang' => "Delete a language file",
+    'delete:cron' => 'Delete an existing cron task file',
+    'ask:gemini' => "Ask Gemini",
+    'clear:cache' => 'Clear all cache files',
+    'clear:db' => 'Clear all DB files',
+    'clear:db:tables' => 'Clear all DB tables',
+    'clear:routes' => 'Clear all route files',
+    'clear:cron' => 'Delete ALL cron task files',
+    'clear:start' => 'Clear all startup files',
+    'clear:docs' => 'Clear all docs',
+    'run:db' => 'Run all .sql files in db folder',
+    'run:cron' => 'Manually run a specific cron task',
+    'serve' => 'Serve the application',
+];
+
+$command = $argv[1] ?? null;
+$args = [];
+for ($i = 2; $i < count($argv); $i += 2) {
+    if (isset($argv[$i + 1]) && str_starts_with($argv[$i], '-')) {
+        $args[str_replace('-', '', $argv[$i])] = $argv[$i + 1];
+    }
+}
+
+if (!$command || $command === 'list') {
+    echo "Available commands:\n";
+    foreach ($commands as $cmd => $desc) {
+        echo "  php ammar $cmd - $desc\n";
+    }
+    exit(0);
+}
+
+if ($command === 'list:cron') {
+    if (!is_dir(CRON_TASKS_DIR)) {
+        echo "Cron tasks directory 'core/cron/tasks/' not found.\n";
+        // Attempt to create it, as other commands do, for consistency, though list should ideally not modify state.
+        // However, if make:cron hasn't been run, it might not exist.
+        if (!mkdir(CRON_TASKS_DIR, 0755, true) && !is_dir(CRON_TASKS_DIR)) {
+             echo "Failed to create cron tasks directory.\n";
+             exit(1);
+        }
+         echo "Created cron tasks directory. No tasks found yet.\n";
+         exit(0);
+    }
+
+    $taskFiles = glob(CRON_TASKS_DIR . '*.php');
+
+    if (empty($taskFiles)) {
+        echo "No cron tasks found in 'core/cron/tasks/'.\n";
+        exit(0);
+    }
+
+    echo "Available cron tasks:\n";
+    foreach ($taskFiles as $taskFile) {
+        $taskName = basename($taskFile, '.php');
+        echo "  - {$taskName}\n";
+    }
+    exit(0);
+}
+
+if ($command === 'delete:cron') {
+    if (!isset($argv[2])) {
+        echo "Error: Task name is required.\n";
+        echo "Usage: php ammar delete:cron <TaskName>\n";
+        exit(1);
+    }
+
+    $taskNameInput = $argv[2];
+    // Sanitize the input task name similar to make:cron to match the filename
+    $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
+
+    if (empty($taskName)) {
+        echo "Error: Invalid task name provided after sanitization.\n";
+        exit(1);
+    }
+
+    $filePath = CRON_TASKS_DIR . $taskName . '.php';
+
+    if (!file_exists($filePath)) {
+        echo "Error: Cron task file '{$filePath}' not found.\n";
+        exit(1);
+    }
+
+    // Confirmation prompt
+    $confirmation = strtolower(readline("Are you sure you want to delete '{$filePath}'? (yes/no): "));
+
+    if ($confirmation !== 'yes') {
+        echo "Deletion cancelled.\n";
+        exit(0);
+    }
+
+    if (unlink($filePath)) {
+        echo "Cron task file '{$filePath}' deleted successfully.\n";
+    } else {
+        echo "Error: Could not delete file '{$filePath}'. Check permissions.\n";
+        exit(1);
+    }
+    exit(0);
+}
+
+if ($command === 'make:cron') {
+    if (!isset($argv[2])) {
+        echo "Error: Task name is required.\n";
+        echo "Usage: php ammar make:cron <TaskName>\n";
+        exit(1);
+    }
+
+    $taskNameInput = $argv[2];
+    // Basic sanitization: Capitalize first letter, remove non-alphanumeric chars.
+    // Allows underscores as they are valid in class names.
+    $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
+
+    if (empty($taskName)) {
+        echo "Error: Invalid task name provided after sanitization. Task name cannot be empty.\n";
+        exit(1);
+    }
+
+    // Check if task name starts with a letter (PHP class name requirement)
+    if (!preg_match('/^[a-zA-Z]/', $taskName)) {
+        echo "Error: Task name must start with a letter.\n";
+        exit(1);
+    }
+
+    $filePath = CRON_TASKS_DIR . $taskName . '.php';
+
+    if (file_exists($filePath)) {
+        echo "Error: Cron task file '{$filePath}' already exists.\n";
+        exit(1);
+    }
+
+    // Note: The log_cron_message path inside the template is adjusted to dirname(__DIR__, 3)
+    // assuming ammar is in root, tasks are in core/cron/tasks, and logs are in core/logs.
+    // If cron_runner.php defines log_cron_message globally, this fallback might only be for standalone testing.
+    $fileContent = <<<PHP
+<?php
+
+class {$taskName} {
+    public function handle() {
+        // Ensure log_cron_message is available
+        if (!function_exists('log_cron_message') && file_exists(dirname(__DIR__, 3) . '/core/cron/cron_runner.php')) {
+            // Attempt to load cron_runner.php's functions if not already loaded,
+            // this is a simple way, might need refinement based on cron_runner.php structure
+            // require_once dirname(__DIR__, 3) . '/core/cron/cron_runner.php';
+            // More robust: define a local fallback if global is not present.
+             function log_cron_message(\$message, \$task = '{$taskName}') {
+                \$logFile = dirname(__DIR__, 3) . '/logs/cron.log';
+                \$timestamp = date('Y-m-d H:i:s');
+                \$formattedMessage = "[\{\$timestamp}] [{\$task}] {\$message}" . PHP_EOL;
+                file_put_contents(\$logFile, \$formattedMessage, FILE_APPEND);
+            }
+        } elseif (!function_exists('log_cron_message')) {
+            // Absolute fallback if cron_runner.php also couldn't be sourced or doesn't define it globally
+             function log_cron_message(\$message, \$task = '{$taskName}') {
+                \$logFile = dirname(__DIR__, 3) . '/logs/cron.log';
+                \$timestamp = date('Y-m-d H:i:s');
+                \$formattedMessage = "[\{\$timestamp}] [{\$task}] {\$message}" . PHP_EOL;
+                file_put_contents(\$logFile, \$formattedMessage, FILE_APPEND);
+            }
+        }
+
+        \$timestamp = date('Y-m-d H:i:s');
+        \$outputMessage = "{$taskName} executed successfully at {\$timestamp}.";
+
+        echo \$outputMessage . PHP_EOL; // Output to console
+
+        // Use the available log_cron_message
+        if (function_exists('log_cron_message')) {
+            log_cron_message(\$outputMessage, '{$taskName}');
+        }
+
+
+        // TODO: Implement your cron task logic here.
+        // Example: Log environment variable
+        // if (function_exists('getEnvValue')) {
+        //     \$appName = getEnvValue('APP_NAME', 'MyApplication');
+        //     if (function_exists('log_cron_message')) {
+        //         log_cron_message("Application name is '{\$appName}'.", '{$taskName}');
+        //     }
+        // } else {
+        //     if (function_exists('log_cron_message')) {
+        //         log_cron_message("getEnvValue function not available.", '{$taskName}');
+        //     }
+        // }
+
+        if (function_exists('log_cron_message')) {
+            log_cron_message("{$taskName} finished.", '{$taskName}');
+        }
+    }
+}
+
+?>
+PHP;
+
+    if (file_put_contents($filePath, $fileContent)) {
+        chmod($filePath, 0664); // Set reasonable permissions
+        echo "Cron task file created: {$filePath}\n";
+    } else {
+        echo "Error: Could not write to file: {$filePath}\n";
+        exit(1);
+    }
+    exit(0);
+}
+
+if ($command === 'make:db') {
+    $action = $args['1'] ?? readline("1- What's the DB file for (create, delete, addFieldTo, truncate, rename, modify, removeColumn): ");
+    if (!in_array($action, ['create', 'delete', 'addFieldTo', 'truncate', 'rename', 'modify', 'removeColumn'])) {
+        exit("Invalid action!\n");
+    }
+
+    $table = $args['2'] ?? readline("2- What's table name? ");
+    if (!$table) exit("Table name is required!\n");
+
+    $timestamp = date('Y_m_d_H_i_s');
+    $filename = "{$action}{$table}Table_{$timestamp}.sql";
+    $filePath = DB_FOLDER . '/' . $filename;
+    
+    $sqlTemplate = match ($action) {
+        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'delete' => "DROP TABLE IF EXISTS $table;\n",
+        'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
+        'truncate' => "TRUNCATE TABLE $table;\n",
+        'rename' => "RENAME TABLE $table TO new_name;\n",
+        'modify' => "ALTER TABLE $table MODIFY COLUMN column_name VARCHAR(255);\n",
+        'removeColumn' => "ALTER TABLE $table DROP COLUMN column_name;\n",
+        default => ''
+    };
+    
+    file_put_contents($filePath, $sqlTemplate);
+    echo "DB file created: $filename\n";
+    exit(0);
+}
+
+if ($command === 'make:route') {
+    $route = $args['1'] ?? readline("1- What's route name? ");
+    if (!$route) exit("Route name is required!\n");
+    $filedata = "<?php\n// Route handler for $route\n";
+    if ($route == "index") {
+        $filedata .= "// This is the default route handler.\n";
+        $filePath = WEB_FOLDER . '/' . $filename;
+        file_put_contents($filePath, $filedata);
+        echo "Route file created: $filename\n";
+        exit(0);
+    } else {
+        $filedata .= "// This route handles requests for $route.\n";
+    }
+    
+    $isDynamic = strtolower($args['2'] ?? readline("2- Is this route dynamic? (yes/no): ")) === 'yes';
+    
+    if ($isDynamic) {
+        $filename = "{$route}_dynamic";
+    } else {
+        $method = strtoupper($args['3'] ?? readline("3- What's available Type of request (GET, POST, PUT, PATCH, DELETE): "));
+        if (!in_array($method, ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])) {
+            exit("Invalid request type!\n");
+        }
+        if ($method == 'POST' || $method == 'PUT' || $method == 'PATCH' || $method == 'DELETE') {
+            $filedata .= "validateCsrfToken();\n";
+        }
+        $filename = "{$route}_request_{$method}";
+    }
+
+    $isAPI = strtolower($args['3'] ?? readline("3- Is this API? (yes,no): ")) === "yes";
+
+    if ($isAPI) {
+        $filename .= "_api.ahmed.php";
+        if ($method != 'POST') {
+            $filedata .= "validateCsrfToken();\n";
+        }
+    } else {
+        $filename .= ".ahmed.php";
+    }
+
+    $filePath = WEB_FOLDER . '/' . $filename;
+
+    if (getSlashData($filename) != "Not Found") {
+        $parentDirectory = dirname($filePath);
+        if (!is_dir($parentDirectory)) {
+            mkdir($parentDirectory, 0777, true);
+        }
+    }
+    
+    file_put_contents($filePath, $filedata);
+    echo "Route file created: $filename\n";
+    exit(0);
+}
+
+if ($command === 'delete:route') {
+    $route = $args['1'] ?? readline("1- What's route name? ");
+    if (!$route) exit("Route name is required!\n");
+    
+    $patterns = [
+        "$route.ahmed.php",
+        "{$route}_dynamic.ahmed.php",
+        "{$route}_request_GET.ahmed.php",
+        "{$route}_request_POST.ahmed.php",
+        "{$route}_request_PUT.ahmed.php",
+        "{$route}_request_PATCH.ahmed.php",
+        "{$route}_request_DELETE.ahmed.php",
+        "{$route}_request_GET_api.ahmed.php",
+        "{$route}_request_POST_api.ahmed.php",
+        "{$route}_request_PUT_api.ahmed.php",
+        "{$route}_request_PATCH_api.ahmed.php",
+        "{$route}_request_DELETE_api.ahmed.php",
+        "{$route}_dynamic_api.ahmed.php"
+    ];
+    
+    $deleted = false;
+    foreach ($patterns as $pattern) {
+        $filePath = WEB_FOLDER . '/' . $pattern;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            echo "Deleted: $pattern\n";
+            $deleted = true;
+        }
+    }
+    
+    if (!$deleted) {
+        echo "No matching route files found!\n";
+    }
+    exit(0);
+}
+
+if ($command === 'delete:db') {
+    $action = $args['1'] ?? readline("1- What's the DB file for (create, delete, addFieldTo): ");
+    $table = $args['2'] ?? readline("2- What's table name? ");
+    if (!$action || !$table) exit("Action and table name are required!\n");
+    
+    $files = glob(DB_FOLDER . "/{$action}{$table}Table_*.sql");
+    if (empty($files)) {
+        echo "No matching DB files found!\n";
+    } else {
+        foreach ($files as $file) {
+            unlink($file);
+            echo "Deleted: " . basename($file) . "\n";
+        }
+    }
+    exit(0);
+}
+
+if ($command === 'list:routes') {
+    $files = array_merge(
+        glob(WEB_FOLDER . '/*.ahmed.php'),
+        glob(WEB_FOLDER . '/**/*.ahmed.php')
+    );
+    echo "Available routes:\n";
+    foreach ($files as $file) {
+        $relativePath = str_replace(WEB_FOLDER . '/', '', $file);
+        echo "  " . $relativePath . "\n";
+    }
+    exit(0);
+}
+
+if ($command === 'list:db') {
+    $files = array_merge(
+        glob(DB_FOLDER . '/*.sql'),
+        glob(DB_FOLDER . '/**/*.sql')
+    );
+    echo "Available DB files:\n";
+    foreach ($files as $file) {
+        $relativePath = str_replace(DB_FOLDER . '/', '', $file);
+        echo "  " . $relativePath . "\n";
+    }
+    exit(0);
+}
+
+if ($command === 'run:db') {
+    $files = array_merge(
+        glob(DB_FOLDER . '/*.sql'),
+        glob(DB_FOLDER . '/**/*.sql')
+    );
+    foreach ($files as $file) {
+        $relativePath = str_replace(DB_FOLDER . '/', '', $file);
+        echo "Running: " . $relativePath . "\n";
+        executeSQLFilePDO(
+            getEnvValue('DB_HOST'), 
+            getEnvValue('DB_USER'), 
+            getEnvValue("DB_PASS"), 
+            getEnvValue('DB_NAME'), 
+            $file
+        );
+    }
+    exit(0);
+}
+
+if ($command === 'make:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    $value = $args['2'] ?? readline("2- Enter cache value: ");
+    $expiration = $args['3'] ?? readline("3- Enter expiration time (in seconds): ");
+    Cache::set($key, $value, $expiration);
+    echo "Cache entry created for key: $key\n";
+    exit(0);
+}
+
+if ($command === 'get:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    $value = Cache::get($key);
+    if ($value === false) {
+        echo "Cache entry not found for key: $key\n";
+    } else {
+        echo "Cache value: $value\n";
+    }
+    exit(0);
+}
+
+if ($command === 'update:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    $newValue = $args['2'] ?? readline("2- Enter new cache value: ");
+    if (Cache::update($key, $newValue)) {
+        echo "Cache updated for key: $key\n";
+    } else {
+        echo "Cache key not found: $key\n";
+    }
+    exit(0);
+}
+
+if ($command === 'delete:cache') {
+    $key = $args['1'] ?? readline("1- Enter cache key: ");
+    Cache::delete($key);
+    echo "Cache deleted for key: $key\n";
+    exit(0);
+}
+
+if ($command === 'ask:gemini') {
+    $question = $args['1'] ?? readline("1- What's your question? ");
+    $gemini = json_decode(useGemini($question), true);
+    if ($gemini['success'] == true) {
+        echo "Response: " . $gemini['message'];
+    } else {
+        echo "Error: " . $gemini['error'];
+    }
+    exit(0);
+}
+
+if ($command === "serve") {
+    $port = $args['1'] ?? 8000;
+    echo "Serving on http://localhost:$port\n";
+    exec("php -S localhost:$port -t web");
+    exit(0);
+}
+
+if ($command === 'run:cron') {
+    if (!isset($argv[2])) {
+        echo "Error: Task name is required.\n";
+        echo "Usage: php ammar run:cron <TaskName>\n";
+        exit(1);
+    }
+
+    $taskNameInput = $argv[2];
+    // Sanitize the input task name similar to make:cron/delete:cron
+    $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
+
+    if (empty($taskName)) {
+        echo "Error: Invalid task name provided after sanitization.\n";
+        exit(1);
+    }
+
+    $taskFilePath = CRON_TASKS_DIR . $taskName . '.php';
+
+    if (!file_exists($taskFilePath)) {
+        echo "Error: Cron task file '{$taskFilePath}' does not exist.\n";
+        exit(1);
+    }
+
+    // Construct the command to execute cron_runner.php
+    // Ensuring PROJECT_ROOT is available or defining it locally for this command block
+    // If ammar is always run from project root, __DIR__ is fine.
+    // Otherwise, a more robust way to find cron_runner.php might be needed.
+    // For now, assuming ammar is in the project root.
+    $projectRoot = __DIR__;
+    $cronRunnerPath = $projectRoot . '/core/cron/cron_runner.php';
+
+    if (!file_exists($cronRunnerPath)) {
+        echo "Error: Main cron runner script '{$cronRunnerPath}' not found.\n";
+        exit(1);
+    }
+
+    // Get PHP executable path
+    $phpExecutable = PHP_BINARY ?: 'php'; // PHP_BINARY is available PHP 5.4+
+
+    $execCommand = escapeshellcmd($phpExecutable) . ' ' . escapeshellarg($cronRunnerPath) . ' ' . escapeshellarg($taskName);
+
+    echo "Executing cron task: {$taskName}\n";
+    echo "Command: $execCommand\n";
+
+    // Execute the command and pass through output
+    passthru($execCommand, $return_var);
+
+    if ($return_var !== 0) {
+        echo "Cron task '{$taskName}' may have encountered an error (exit code: $return_var).\n";
+        // Specific error messages should be logged by cron_runner.php or the task itself
+    } else {
+        echo "Cron task '{$taskName}' finished.\n";
+    }
+    exit($return_var);
+}
+
+if ($command === 'clear:cache') {
+    array_map("unlink", glob("cache/*"));
+    echo "Cache cleared!\n";
+    exit(0);
+}
+
+if ($command === 'clear:db') {
+    array_map("unlink", glob("db/*"));
+    echo "DB files cleared!\n";
+    exit(0);
+}
+
+if ($command === 'clear:db:tables') {
+    require_once 'core/functions/PHP/classes/ClearDBTables.php';
+    exit(0);
+}
+
+if ($command === "clear:routes") {
+    array_map("unlink", glob("web/*"));
+    echo "Route files cleared!\n";
+    exit(0);
+}
+
+if ($command === 'clear:cron') {
+    if (!is_dir(CRON_TASKS_DIR)) {
+        echo "Cron tasks directory 'core/cron/tasks/' not found. Nothing to clear.\n";
+        exit(0);
+    }
+
+    $taskFiles = glob(CRON_TASKS_DIR . '*.php');
+
+    if (empty($taskFiles)) {
+        echo "No cron tasks found in 'core/cron/tasks/' to clear.\n";
+        exit(0);
+    }
+
+    echo "WARNING: This will delete ALL cron task files in 'core/cron/tasks/'.\n";
+
+    $confirmation1 = strtolower(readline("Are you sure you want to proceed? (yes/no): "));
+    if ($confirmation1 !== 'yes') {
+        echo "Operation cancelled.\n";
+        exit(0);
+    }
+
+    $confirmation2 = strtolower(readline("This is a destructive action. Please type 'yes' again to confirm deletion of all cron tasks: "));
+    if ($confirmation2 !== 'yes') {
+        echo "Operation cancelled. Deletion not confirmed.\n";
+        exit(0);
+    }
+
+    $deletedCount = 0;
+    $errorCount = 0;
+
+    foreach ($taskFiles as $taskFile) {
+        if (unlink($taskFile)) {
+            echo "Deleted: " . basename($taskFile) . "\n";
+            $deletedCount++;
+        } else {
+            echo "Error deleting: " . basename($taskFile) . "\n";
+            $errorCount++;
+        }
+    }
+
+    echo "\nCron tasks clearing complete.\n";
+    echo "Successfully deleted: {$deletedCount} file(s).\n";
+    if ($errorCount > 0) {
+        echo "Failed to delete: {$errorCount} file(s). Check permissions.\n";
+        exit(1);
+    }
+    exit(0);
+}
+
+if ($command === 'make:sitemap') {
+    SitemapGenerator::generate();
+    echo "Sitemap generated!\n";
+    exit(0);
+}
+
+if ($command === 'install:import') {
+    $link = $args['1'] ?? readline("1- Enter Git repository URL: ");
+    if (!filter_var($link, FILTER_VALIDATE_URL)) {
+        exit("Invalid URL provided!\n");
+    }
+
+    // Extract repo name from URL
+    $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+    
+    $importDir = __DIR__ . '/core/import';
+    $repoDir = $importDir . '/' . $repoName;
+    
+    if (!is_dir($importDir)) {
+        mkdir($importDir, 0777, true);
+    }
+
+    echo "Cloning repository...\n";
+    $command = "git clone $link $repoDir";
+    exec($command, $output, $returnVar);
+
+    if ($returnVar !== 0) {
+        echo "Error cloning repository!\n";
+        exit(1);
+    }
+
+    // Update package.json
+    $packageJsonPath = $importDir . '/package.json';
+    $packageData = [];
+    
+    if (file_exists($packageJsonPath)) {
+        $packageData = json_decode(file_get_contents($packageJsonPath), true) ?? [];
+    }
+
+    $packageData['dependencies'][$repoName] = $link;
+    
+    file_put_contents($packageJsonPath, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+
+    echo "Repository cloned successfully to core/import/$repoName!\n";
+    echo "Package.json updated with new dependency.\n";
+    exit(0);
+}
+
+if ($command === 'list:import') {
+    $importDir = __DIR__ . '/core/import';
+    if (!is_dir($importDir)) {
+        echo "No imports found!\n";
+        exit(0);
+    }
+    $imports = array_diff(scandir($importDir), ['.', '..']);
+    if (empty($imports)) {
+        echo "No imports found!\n";
+    } else {
+        echo "Available imports:\n";
+        foreach ($imports as $import) {
+            if ($import === "package.json") {
+                continue;
+            }
+            echo "  $import\n";
+        }
+    }
+    exit(0);
+}
+
+if ($command === 'delete:import') {
+    $name = $args['1'] ?? readline("1- Enter import name to delete: ");
+    $importDir = __DIR__ . '/core/import/' . $name;
+    
+    if (!is_dir($importDir)) {
+        exit("Import not found: $name\n");
+    }
+
+    // Remove directory recursively
+    $files = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($importDir, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::CHILD_FIRST
+    );
+    
+    foreach ($files as $file) {
+        if ($file->isDir()) {
+            rmdir($file->getRealPath());
+        } else {
+            unlink($file->getRealPath());
+        }
+    }
+    rmdir($importDir);
+
+    // Update package.json
+    $packageJsonPath = __DIR__ . '/core/import/package.json';
+    if (file_exists($packageJsonPath)) {
+        $packageData = json_decode(file_get_contents($packageJsonPath), true) ?? [];
+        if (isset($packageData['dependencies'][$name])) {
+            unset($packageData['dependencies'][$name]);
+            file_put_contents($packageJsonPath, json_encode($packageData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        }
+    }
+
+    echo "Import deleted: $name\n";
+    exit(0);
+}
+
+if ($command === "make:session") {
+    $key = $args['1'] ?? readline("1- What's key? ");
+    $value = $args['2'] ?? readline("2- What's value? ");
+    Session::make($key, $value);
+    echo "Session Created!!!\n";
+    exit(0);
+}
+
+if ($command === "get:session") {
+    $key = $args['1'] ?? readline("1- What's key? ");
+    echo "Session Value: " . Session::get($key) . "\n";
+    exit(0);
+}
+
+if ($command === "delete:session") {
+    $key = $args['1'] ?? readline("1- What's key? ");
+    Session::delete($key);
+    echo "Session Deleted!!!\n";
+    exit(0);
+}
+
+if ($command === "make:lang") {
+    $langName = $args['1'] ?? readline("1- What's Language Name? ");
+    $file = LANG_FOLDER . "/$langName.json";
+    if (file_exists($file)) {
+        echo "Language file already exists!\n";
+    } else {
+        file_put_contents($file, "{}\n");
+        echo "Language file created: $file\n";
+    }
+    exit(0);
+}
+
+if ($command === "delete:lang") {
+    $langName = $args['1'] ?? readline("1- What's Language Name? ");
+    $file = LANG_FOLDER . "/$langName.json";
+    if (file_exists($file)) {
+        unlink($file);
+        echo "Deleted language file: $file\n";
+    } else {
+        echo "Language file not found!\n";
+    }
+    exit(0);
+}
+
+if ($command === "list:lang") {
+    $files = glob(LANG_FOLDER . "/*.json");
+    if (!$files) {
+        echo "No language files found!\n";
+        return;
+    }
+    echo "Available languages:\n";
+    foreach ($files as $file) {
+        echo "- " . basename($file, ".json") . "\n";
+    }
+    exit(0);
+}
+
+if ($command === "make:layout") {
+    $layoutName = $args['1'] ?? readline("1- What's Layout Name? ");
+    $file = LAYOUT_FOLDER . "/$layoutName.ahmed.php";
+    if (file_exists($file)) {
+        echo "Layout file already exists!\n";
+    } else {
+        file_put_contents($file, "{}\n");
+        echo "Layout file created: $file\n";
+    }
+    exit(0);
+}
+
+if ($command == "make:auth") {
+    $action = "create";
+    $table = "users";
+    $timestamp = date('Y_m_d_H_i_s');
+    $filename = "{$action}{$table}Table_{$timestamp}.sql";
+    $filePath = DB_FOLDER . '/' . $filename;
+    $sqlTemplate = UserAuth::generateSQL();
+    
+    file_put_contents($filePath, $sqlTemplate);
+    echo "DB file created: $filename\n";
+    exit(0);
+}
+
+if ($command == "clear:start") {
+    $fileslist = [
+        WEB_FOLDER . '/index.ahmed.php',
+        PUBLIC_FOLDER . '/script.js',
+        PUBLIC_FOLDER . '/style.css',
+        PUBLIC_FOLDER . '/sitemap.xml',
+        LAYOUT_FOLDER . '/main.ahmed.php',
+        LANG_FOLDER . '/ar.json',
+        LANG_FOLDER . '/en.json',
+        DB_FOLDER . '/createusersTable_2025_03_16_08_47_56.sql',
+        CACHE_FOLDER . '/14c4b06b824ec593239362517f538b29.cache'
+    ];
+
+    foreach ($fileslist as $file) {
+        if (file_exists($file)) {
+            unlink($file);
+            echo "🗑️ Deleted file: $file\n";
+        } else {
+            echo "❌ Not found file: $file\n";
+        }
+    }
+
+    echo "🔥 All startup files have been deleted!\n";
+    exit(0);
+}
+
+if ($command == 'clear:docs') {
+    $folderlist = [
+        __DIR__ . '/about-me',
+        __DIR__ . '/changelog',
+        __DIR__ . '/inex-spa',
+        __DIR__ . '/.gitbook'
+    ];
+    $filelist = [
+        __DIR__ . '/README (1).md',
+        __DIR__ . '/README.md',
+        __DIR__ . '/SUMMARY.md',
+        __DIR__ . '/LICENSE'
+    ];
+
+    // حذف الملفات المفردة
+    foreach ($filelist as $file) {
+        if (file_exists($file)) {
+            if (unlink($file)) {
+                echo "🗑️ Deleted file: $file\n";
+            } else {
+                echo "❌ Failed to delete file: $file\n";
+            }
+        } else {
+            echo "❌ File not found: $file\n";
+        }
+    }
+
+    // دالة لحذف المجلدات وما بداخلها مهما كان العمق
+    function deleteFolderRecursively($folderPath) {
+        if (!is_dir($folderPath)) return;
+
+        $items = scandir($folderPath);
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') continue;
+            $path = $folderPath . DIRECTORY_SEPARATOR . $item;
+
+            if (is_dir($path)) {
+                deleteFolderRecursively($path); // 🔁 نداء ذاتي للحذف العميق
+                if (rmdir($path)) {
+                    echo "📁 Deleted folder: $path\n";
+                } else {
+                    echo "❌ Failed to delete folder: $path\n";
+                }
+            } else {
+                if (unlink($path)) {
+                    echo "🗑️ Deleted file: $path\n";
+                } else {
+                    echo "❌ Failed to delete file: $path\n";
+                }
+            }
+        }
+    }
+
+    // تنفيذ الحذف للمجلدات الرئيسية
+    foreach ($folderlist as $folder) {
+        if (is_dir($folder)) {
+            echo "🔍 Cleaning folder: $folder\n";
+            deleteFolderRecursively($folder);
+            if (rmdir($folder)) {
+                echo "✅ Deleted root folder: $folder\n";
+            } else {
+                echo "❌ Failed to delete root folder: $folder (maybe not empty)\n";
+            }
+        } else {
+            echo "❌ Not found folder: $folder\n";
+        }
+    }
+
+    echo "🔥 All docs have been deleted!\n";
+    exit(0);
+}
+
+exit("Unknown command: $command\n");

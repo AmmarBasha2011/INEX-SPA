@@ -1,0 +1,11 @@
+{
+    "name": {"type": "text", "required": true, "maxLength": 60},
+    "username": {"type": "text", "unique": true, "required": true, "maxLength": 60, "minLength": 10},
+    "email": {"type": "email", "unique": true, "required": true, "shouldEnd": ["gmail.com", "outlook.com"], "shouldNotStart": ["inex.own", "ammarelkhteb"], "shouldNotEnd": ["localhost", "127.0.0.1"], "notEqual": ["inex.own@gmail.com", "ammarelkhteb@gmail.com"] , "maxLength": 100, "minLength": 10},
+    "phoneNumber": {"type": "text", "unique": true, "shouldStart": ["+20", "+1"], "notEqual": ["+201096730619"]},
+    "age": {"type": "number", "min": 18, "max": 60},
+    "isCompany": {"type": "bool", "required": true, "default": false},
+    "domain": {"type": "domain", "maxLength": 50, "subDomain": true, "subDir": true, "shouldEnd": [".com", ".org"], "notEqual": ["https://inexteam.blogspot.com", "https://github.com/AmmarBasha2011/INEX-SPA"]},
+    "password": {"type": "text", "required": true, "default": "0123456789", "maxLength": 60, "minLength": 8},
+    "inviteCode": {"type": "number", "required": true, "minLength": 6, "maxLength": 6, "equal": ["012345", "123456", "234567", "345678", "456789"]}
+}

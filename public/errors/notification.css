@@ -1,0 +1,93 @@
+.notification {
+    padding: 16px 20px;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 15px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    min-width: 220px;
+    max-width: 300px;
+    pointer-events: none;
+    position: relative;
+  }
+
+  .notification.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .notification.hide {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    pointer-events: none;
+  }
+
+  .notification.success {
+    background: linear-gradient(135deg, #006400, #00cc66);
+    box-shadow: 0 12px 24px rgba(0, 204, 102, 0.4);
+  }
+
+  .notification.info {
+    background: linear-gradient(135deg, #007bff, #00cfff);
+    box-shadow: 0 12px 24px rgba(0, 191, 255, 0.4);
+  }
+
+  .notification.danger {
+    background: linear-gradient(135deg, #8B0000, #ff4444);
+    box-shadow: 0 12px 24px rgba(255, 68, 68, 0.4);
+  }
+
+  .notification.primary {
+    background: linear-gradient(135deg, #001f4d, #007bff);
+    box-shadow: 0 12px 24px rgba(0, 123, 255, 0.4);
+  }
+
+  .notification.secondary {
+    background: linear-gradient(135deg, #444, #888);
+    box-shadow: 0 12px 24px rgba(136, 136, 136, 0.4);
+  }
+
+  .notification-wrapper {
+    position: fixed;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+    padding: 20px;
+  }
+
+  .notification-wrapper.top-left {
+    top: 0;
+    left: 0;
+    align-items: flex-start;
+  }
+
+  .notification-wrapper.top-right {
+    top: 0;
+    right: 0;
+    align-items: flex-end;
+  }
+
+  .notification-wrapper.bottom-left {
+    bottom: 0;
+    left: 0;
+    align-items: flex-start;
+  }
+
+  .notification-wrapper.bottom-right {
+    bottom: 0;
+    right: 0;
+    align-items: flex-end;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    cursor: pointer;
+    font-size: 16px;
+  }
