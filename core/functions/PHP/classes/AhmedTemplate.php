@@ -1,7 +1,20 @@
 <?php
 
+/**
+ * A simple template engine for rendering PHP templates.
+ */
 class AhmedTemplate
 {
+    /**
+     * Renders a template file with the given data.
+     *
+     * @param string $template The path to the template file.
+     * @param array  $data     An associative array of data to be extracted and used in the template.
+     *
+     * @return string The rendered content.
+     *
+     * @throws Exception If the template file is not found.
+     */
     public function render($template, $data = [])
     {
         $templateFile = $template;
@@ -19,6 +32,13 @@ class AhmedTemplate
         return ob_get_clean();
     }
 
+    /**
+     * Parses the template content, replacing custom template tags with PHP code.
+     *
+     * @param string $content The template content to be parsed.
+     *
+     * @return string The parsed content with PHP code.
+     */
     protected function parse($content)
     {
         $patterns = [

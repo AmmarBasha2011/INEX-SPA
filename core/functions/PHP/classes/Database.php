@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * A database connection and query class using PDO.
+ */
 class Database
 {
+    /**
+     * The PDO instance.
+     *
+     * @var PDO
+     */
     private $pdo;
 
+    /**
+     * Creates a new Database instance.
+     *
+     * @param string $charset The character set to use for the connection.
+     */
     public function __construct($charset = 'utf8mb4')
     {
         $host = getEnvValue('DB_HOST');
@@ -25,6 +38,15 @@ class Database
         }
     }
 
+    /**
+     * Executes a SQL query.
+     *
+     * @param string $sql       The SQL query to execute.
+     * @param array  $params    The parameters to bind to the query.
+     * @param bool   $is_return Whether to return the result set.
+     *
+     * @return mixed The result set if $is_return is true, otherwise true.
+     */
     public function query($sql, $params = [], $is_return = true)
     {
         $startTime = microtime(true);
@@ -42,8 +64,3 @@ class Database
         return $is_return ? $stmt->fetchAll() : true;
     }
 }
-
-// Usage example:
-// $db = new Database('localhost', 'test_db', 'root', '');
-// $result = $db->query("SELECT * FROM users WHERE id = ?", [1]);
-// print_r($result);

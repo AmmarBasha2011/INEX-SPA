@@ -28,6 +28,15 @@ require_once 'core/functions/PHP/getSlashData.php';
 
 if ($dbUse) {
     require_once 'core/functions/PHP/classes/Database.php';
+    /**
+     * Executes a SQL statement.
+     *
+     * @param string $sql       The SQL statement to execute.
+     * @param array  $params    The parameters to bind to the statement.
+     * @param bool   $is_return Whether to return the result set.
+     *
+     * @return mixed The result set if $is_return is true, otherwise true.
+     */
     function executeStatement($sql, $params = [], $is_return = true)
     {
         $DB = new Database();
@@ -56,18 +65,45 @@ if ($dbCheck && $dbUse) {
 
 if ($useCache) {
     require_once 'core/functions/PHP/classes/Cache.php';
+    /**
+     * Sets a value in the cache.
+     *
+     * @param string $key        The cache key.
+     * @param mixed  $data       The data to cache.
+     * @param int    $expiration The cache expiration time in seconds.
+     */
     function setCache($key, $data, $expiration = 3600)
     {
         Cache::set($key, $data, $expiration);
     }
+    /**
+     * Gets a value from the cache.
+     *
+     * @param string $key The cache key.
+     *
+     * @return mixed The cached data, or null if the key is not found.
+     */
     function getCache($key)
     {
         return Cache::get($key);
     }
+    /**
+     * Deletes a value from the cache.
+     *
+     * @param string $key The cache key.
+     */
     function deleteCache($key)
     {
         Cache::delete($key);
     }
+    /**
+     * Updates a value in the cache.
+     *
+     * @param string $key     The cache key.
+     * @param mixed  $newData The new data to cache.
+     *
+     * @return bool True on success, false on failure.
+     */
     function updateCache($key, $newData)
     {
         return Cache::update($key, $newData);
@@ -109,6 +145,14 @@ if (getEnvValue('USE_WEBHOOK') == 'true') {
 }
 if (getEnvValue('USE_FETCH') == 'true') {
     require_once 'core/functions/PHP/classes/Fetch.php';
+    /**
+     * Makes an HTTP request.
+     *
+     * @param string $url     The URL to make the request to.
+     * @param array  $options An array of options for the request.
+     *
+     * @return array The response from the request.
+     */
     function useFetch($url, $options = [])
     {
         return Fetch::fetch($url, $options);

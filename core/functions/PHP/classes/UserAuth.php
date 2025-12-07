@@ -1,24 +1,29 @@
 <?php
 
+/**
+ * A class for user authentication and management.
+ */
 define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
 class UserAuth
 {
+    /**
+     * Generates the SQL query to create the users table based on the JSON configuration.
+     *
+     * @return string The generated SQL query.
+     */
     public static function generateSQL()
     {
         $jsonString = file_get_contents(JSON_FOLDER);
 
         $data = json_decode($jsonString, true);
 
-        // Check if JSON decoding was successful
         if ($data === null) {
             exit('Error decoding JSON.');
         }
 
-        // Initialize the SQL query
         $sql = "CREATE TABLE IF NOT EXISTS users (\n";
-        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n"; // Auto-increment ID
+        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n";
 
-        // Mapping JSON data types to SQL types
         $typeMapping = [
             'text'   => 'VARCHAR',
             'email'  => 'VARCHAR',
@@ -29,42 +34,38 @@ class UserAuth
 
         foreach ($data as $field => $attributes) {
             $type = $attributes['type'];
-            $sqlType = $typeMapping[$type] ?? 'TEXT'; // Default to TEXT if type not found
+            $sqlType = $typeMapping[$type] ?? 'TEXT';
 
-            // Handle VARCHAR length
             $maxLength = $attributes['maxLength'] ?? 255;
             if ($sqlType === 'VARCHAR') {
                 $sqlType .= "($maxLength)";
             }
 
-            // Required field
             $required = isset($attributes['required']) ? 'NOT NULL' : '';
-
-            // Unique constraint
             $unique = isset($attributes['unique']) ? 'UNIQUE' : '';
-
-            // Default value
             $default = isset($attributes['default']) ? "DEFAULT '".addslashes($attributes['default'])."'" : '';
 
-            // Construct column definition
             $sql .= "  `$field` $sqlType $required $unique $default,\n";
         }
 
-        // Remove last comma and add closing bracket
         $sql .= "  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);";
 
-        // Print generated SQL
         return $sql;
     }
 
+    /**
+     * Signs in a user.
+     *
+     * @param array $details The user's login details.
+     *
+     * @return string|false The result of the sign-in attempt.
+     */
     public static function signIn($details)
     {
-        // Ensure $details is a non-empty array
         if (!is_array($details) || empty($details)) {
             return false;
         }
 
-        // Extract values dynamically
         $params = [];
         $conditions = [];
 
@@ -85,6 +86,13 @@ class UserAuth
         }
     }
 
+    /**
+     * Signs up a new user.
+     *
+     * @param array $details The user's registration details.
+     *
+     * @return string The result of the sign-up attempt.
+     */
     public static function signUp($details)
     {
         $jsonString = file_get_contents(JSON_FOLDER);
@@ -98,14 +106,12 @@ class UserAuth
             return 'Error decoding JSON.';
         }
 
-        // Validate required fields
         foreach ($data as $key => $value) {
             if (!empty($value['required']) && $value['required'] === true && !isset($details[$key])) {
                 return "Missing required parameter: $key";
             }
         }
 
-        // Validate fields based on JSON rules
         foreach ($details as $key => $value) {
             if (!isset($data[$key])) {
                 return "Invalid parameter: $key";
@@ -190,14 +196,12 @@ class UserAuth
             }
         }
 
-        // Check if user already exists
         $placeholders = implode(' AND ', array_map(fn ($k) => "$k = ?", array_keys($details)));
         $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values($details));
         if (!empty($existingUser)) {
             return 'User already exists.';
         }
 
-        // Insert new user
         $columns = implode(', ', array_keys($details));
         $placeholders = implode(', ', array_fill(0, count($details), '?'));
         $sql = "INSERT INTO users ($columns) VALUES ($placeholders)";
@@ -215,11 +219,21 @@ class UserAuth
         }
     }
 
+    /**
+     * Checks if a user is logged in.
+     *
+     * @return bool True if the user is logged in, false otherwise.
+     */
     public static function checkUser()
     {
         return isset($_SESSION['user_id']) && $_SESSION['user_id'] != '';
     }
 
+    /**
+     * Logs out the current user.
+     *
+     * @return string The result of the logout attempt.
+     */
     public static function logout()
     {
         $_SESSION['user_id'] = '';

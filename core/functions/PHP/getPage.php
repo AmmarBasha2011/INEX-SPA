@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Loads the Bootstrap CSS and JS files if enabled in the .env file.
+ */
 function loadBootstrap()
 {
     if (getEnvValue('USE_BOOTSTRAP') == 'true') {
@@ -8,6 +11,9 @@ function loadBootstrap()
     }
 }
 
+/**
+ * Loads the PWA manifest and service worker if enabled in the .env file.
+ */
 function loadPWA()
 {
     if (getEnvValue('USE_PWA') == 'true') {
@@ -17,6 +23,9 @@ function loadPWA()
     }
 }
 
+/**
+ * Loads the necessary JavaScript files.
+ */
 function loadScripts()
 {
     static $cachedScripts = null;
@@ -33,17 +42,16 @@ function loadScripts()
         ];
 
         if (getEnvValue('USE_COOKIE') == 'true') {
-            $scripts[] = 'JS/classes/CookieManager.js'; // Correct way to append an element to an array
+            $scripts[] = 'JS/classes/CookieManager.js';
         }
 
         if (getEnvValue('USE_APP_NAME_IN_TITLE') == 'true') {
             $scripts[] = 'JS/addAppNametoHTML.js';
         }
 
-        // Add this new block for motion engine assets
         if (getEnvValue('USE_ANIMATE') == 'true') {
             echo "<link rel='stylesheet' href='".getEnvValue('WEBSITE_URL')."css/motion-animations.css'>";
-            $scripts[] = 'JS/motion_engine.js'; // Add to the array of scripts
+            $scripts[] = 'JS/motion_engine.js';
         }
 
         if (getEnvValue('USE_NOTIFICATION') == 'true') {
@@ -67,6 +75,13 @@ function loadScripts()
     echo $cachedScripts;
 }
 
+/**
+ * Handles the request method for a given page.
+ *
+ * @param array $methods An array of allowed HTTP methods.
+ *
+ * @return bool True if the request method was handled, false otherwise.
+ */
 function handleRequestMethod($methods)
 {
     global $Ahmed;
@@ -103,6 +118,11 @@ function handleRequestMethod($methods)
     return false;
 }
 
+/**
+ * Loads the requested page.
+ *
+ * @param string $RouteName The name of the route to load.
+ */
 function getPage($RouteName)
 {
     global $Ahmed;
@@ -146,7 +166,7 @@ function getPage($RouteName)
     if ($_GET['page'] == 'setLanguage' && getEnvValue('DETECT_LANGUAGE') == 'true') {
         if (isset($_POST['lang'])) {
             $lang = $_POST['lang'];
-            setcookie('lang', $lang, time() + (86400 * 30), '/'); // Store for 30 days
+            setcookie('lang', $lang, time() + (86400 * 30), '/');
 
             return;
         }
@@ -196,7 +216,5 @@ function getPage($RouteName)
     if (file_exists('core/errors/404.php')) {
         loadScripts();
         include 'core/errors/404.php';
-
-        return;
     }
 }

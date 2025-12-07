@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Sends a request to the Gemini API and returns the response.
+ *
+ * @param string $userMessage           The user's message to send to the API.
+ * @param string $geminiKnowledge       Optional knowledge to provide to the API.
+ * @param string $geminiInstrcutions    Optional instructions for the API.
+ * @param float  $geminiTemperature     The temperature for the generation.
+ * @param int    $geminiTopK            The top-k value for the generation.
+ * @param float  $geminiTopP            The top-p value for the generation.
+ * @param int    $geminiMaxOutPutTokens The maximum number of output tokens.
+ *
+ * @return string A JSON-encoded string containing the API response.
+ */
 function useGemini(
     $userMessage,
     $geminiKnowledge = '',
@@ -14,7 +27,6 @@ function useGemini(
     $geminiModelId = getEnvValue('GEMINI_MODEL_ID');
 
     try {
-        // Prepare the request data
         $data = [
             'contents' => [
                 'role'  => 'user',
@@ -34,20 +46,16 @@ function useGemini(
             ],
         ];
 
-        // Add context if provided
         if (!empty($geminiKnowledge)) {
             $data['contents']['parts'][0]['text'] = $geminiKnowledge."\n".$userMessage;
         }
 
-        // Add instructions if provided
         if (!empty($geminiInstrcutions)) {
             $data['contents']['parts'][0]['text'] = $geminiInstrcutions."\n".$data['contents']['parts'][0]['text'];
         }
 
-        // Initialize cURL session
         $ch = curl_init();
 
-        // Set cURL options
         curl_setopt($ch, CURLOPT_URL, $geminiEndPoint.$geminiModelId.':generateContent?key='.$geminiApiKey);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -56,20 +64,16 @@ function useGemini(
             'Content-Type: application/json',
         ]);
 
-        // Execute cURL request
         $response = curl_exec($ch);
 
-        // Check for cURL errors
         if (curl_errno($ch)) {
             throw new Exception(curl_error($ch));
         }
 
         curl_close($ch);
 
-        // Decode response
         $responseData = json_decode($response, true);
 
-        // Check if response contains candidates
         if (isset($responseData['candidates'][0]['content']['parts'][0]['text'])) {
             return json_encode([
                 'success' => true,

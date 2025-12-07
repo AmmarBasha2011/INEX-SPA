@@ -1,45 +1,68 @@
 <?php
 
+/**
+ * A simple rate limiter class.
+ */
 class RateLimiter
 {
+    /**
+     * The maximum number of requests allowed per hour.
+     *
+     * @var int
+     */
     private static $limit;
-    private static $timeFrame = 3600; // Time window (1 hour)
-    private static $storageFile = __DIR__.'/../../../storage/rate_limit.json'; // Store request counts
 
+    /**
+     * The time frame for the rate limit in seconds.
+     *
+     * @var int
+     */
+    private static $timeFrame = 3600;
+
+    /**
+     * The path to the storage file for rate limit data.
+     *
+     * @var string
+     */
+    private static $storageFile = __DIR__.'/../../../storage/rate_limit.json';
+
+    /**
+     * Initializes the rate limiter, loading the request limit from the environment.
+     */
     public static function init()
     {
-        self::$limit = getEnvValue('REQUESTS_PER_HOUR'); // Load from environment
+        self::$limit = getEnvValue('REQUESTS_PER_HOUR');
     }
 
+    /**
+     * Checks the rate limit for a given IP address.
+     *
+     * @param string $userIP The IP address to check.
+     */
     public static function check($userIP)
     {
-        // Ensure init() is called
         if (!isset(self::$limit)) {
             self::init();
         }
 
-        // Read existing data
         $data = file_exists(self::$storageFile) ? json_decode(file_get_contents(self::$storageFile), true) : [];
 
-        // Cleanup expired entries
         foreach ($data as $ip => $entry) {
             if ($entry['timestamp'] + self::$timeFrame < time()) {
                 unset($data[$ip]);
             }
         }
 
-        // Check user request count
         if (!isset($data[$userIP])) {
             $data[$userIP] = ['count' => 1, 'timestamp' => time()];
         } else {
             if ($data[$userIP]['count'] >= self::$limit) {
-                http_response_code(429); // Too Many Requests
+                http_response_code(429);
                 exit(json_encode(['error' => 'Rate limit exceeded. Try again later.']));
             }
             $data[$userIP]['count']++;
         }
 
-        // Save updated data
         file_put_contents(self::$storageFile, json_encode($data));
     }
 }

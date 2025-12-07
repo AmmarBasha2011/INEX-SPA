@@ -1,17 +1,47 @@
 <?php
 
+/**
+ * A class for providing development tools and a debug bar.
+ */
 class DevTools
 {
+    /**
+     * The start time of the request.
+     *
+     * @var float
+     */
     private static $startTime;
+
+    /**
+     * The initial memory usage.
+     *
+     * @var int
+     */
     private static $startMemory;
+
+    /**
+     * An array of executed database queries.
+     *
+     * @var array
+     */
     private static $queries = [];
 
+    /**
+     * Starts the development tools, recording the start time and memory usage.
+     */
     public static function start()
     {
         self::$startTime = microtime(true);
         self::$startMemory = memory_get_usage();
     }
 
+    /**
+     * Adds a database query to the list of executed queries.
+     *
+     * @param string $query  The SQL query.
+     * @param array  $params The query parameters.
+     * @param float  $time   The execution time of the query in milliseconds.
+     */
     public static function addQuery($query, $params, $time)
     {
         self::$queries[] = [
@@ -21,6 +51,9 @@ class DevTools
         ];
     }
 
+    /**
+     * Renders the development tools bar.
+     */
     public static function render()
     {
         $endTime = microtime(true);

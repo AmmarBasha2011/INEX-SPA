@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * An advanced security class providing a wide range of security functions.
+ */
 class SecurityV2
 {
     /**
@@ -228,8 +231,6 @@ class SecurityV2
      */
     public static function logSecurityEvent(string $message): void
     {
-        // Assumes a Logger class or a log file path is configured
-        // For example: Logger::log('SECURITY: ' . $message);
         error_log('SECURITY EVENT: '.$message);
     }
 
@@ -335,7 +336,6 @@ class SecurityV2
     public static function preventDirectoryTraversal(string $path): ?string
     {
         $realPath = realpath($path);
-        // Define the base directory relative to this file's location
         $baseDir = realpath(__DIR__.'/../../../../');
         if ($realPath === false || strpos($realPath, $baseDir) !== 0) {
             return null;
@@ -359,12 +359,11 @@ class SecurityV2
             $_SESSION['rate_limit'] = [];
         }
         $currentTime = time();
-        // Clean up old timestamps
         $_SESSION['rate_limit'][$key] = array_filter($_SESSION['rate_limit'][$key] ?? [], function ($timestamp) use ($currentTime, $period) {
             return ($currentTime - $timestamp) < $period;
         });
         if (count($_SESSION['rate_limit'][$key]) >= $limit) {
-            return true; // Limit exceeded
+            return true;
         }
         $_SESSION['rate_limit'][$key][] = $currentTime;
 
@@ -384,7 +383,7 @@ class SecurityV2
             return $origin === $_SERVER['HTTP_HOST'];
         }
 
-        return true; // No origin header present
+        return true;
     }
 
     /**
@@ -472,7 +471,6 @@ class SecurityV2
      */
     public static function comprehensiveXssFilter(string $input): string
     {
-        // This is a simplified example. A library like HTML Purifier is recommended for production.
         $input = self::escapeHtml($input);
         $input = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $input);
         $input = preg_replace('#(on[a-z]+)=([\'"])(.*?)\\2#i', '', $input);
@@ -520,13 +518,13 @@ class SecurityV2
     public static function validateFileUpload(array $file, array $allowedMimeTypes, int $maxSize): bool
     {
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            return false; // Handle upload error
+            return false;
         }
         if ($file['size'] > $maxSize) {
-            return false; // File too large
+            return false;
         }
         if (!in_array(mime_content_type($file['tmp_name']), $allowedMimeTypes)) {
-            return false; // Invalid file type
+            return false;
         }
 
         return true;
@@ -808,9 +806,9 @@ class SecurityV2
      */
     public static function validateDomain(string $domain): bool
     {
-        return preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain) //valid chars
-                && preg_match('/^.{1,253}$/', $domain) //overall length
-                && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain); //length of each label
+        return preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain)
+                && preg_match('/^.{1,253}$/', $domain)
+                && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain);
     }
 
     /**
@@ -842,7 +840,7 @@ class SecurityV2
             return true;
         }
         if (time() - $attempts['time'] > $lockoutTime) {
-            $attempts = ['count' => 0, 'time' => time()]; // Reset on new attempt after lockout
+            $attempts = ['count' => 0, 'time' => time()];
         }
         $attempts['count']++;
         $_SESSION['login_attempts'][$key] = $attempts;
@@ -1025,7 +1023,6 @@ class SecurityV2
      */
     public static function validateIban(string $iban): bool
     {
-        // Basic IBAN validation, for more robust validation a library might be needed
         $iban = strtolower(str_replace(' ', '', $iban));
         $countries = ['al', 'ad', 'at', 'az', 'bh', 'by', 'be', 'ba', 'br', 'bg', 'cr', 'hr', 'cy', 'cz', 'dk', 'do', 'sv', 'ee', 'fo', 'fi', 'fr', 'ge', 'de', 'gi', 'gr', 'gt', 'hu', 'is', 'ie', 'il', 'it', 'jo', 'kz', 'kw', 'lv', 'lb', 'li', 'lt', 'lu', 'mk', 'mt', 'mr', 'mu', 'mc', 'md', 'me', 'nl', 'no', 'pk', 'ps', 'pl', 'pt', 'qa', 'ro', 'sm', 'sa', 'rs', 'sk', 'si', 'es', 'se', 'ch', 'tn', 'tr', 'ae', 'gb', 'vg'];
         if (!in_array(substr($iban, 0, 2), $countries)) {
@@ -1094,7 +1091,6 @@ class SecurityV2
 
     /**
      * Check if a password has been exposed in a data breach (requires an API like Have I Been Pwned).
-     * This is a conceptual example.
      *
      * @param string $password
      *
@@ -1108,7 +1104,7 @@ class SecurityV2
 
         $response = @file_get_contents('https://api.pwnedpasswords.com/range/'.$prefix);
         if ($response === false) {
-            return false; // Could not check
+            return false;
         }
 
         return strpos($response, $suffix) !== false;
@@ -1388,7 +1384,7 @@ class SecurityV2
         }
         if (isset($policy['requireSymbol']) && !preg_match('/[\W_]/', $password)) {
             return false;
-        } // \W is any non-word character
+        }
 
         return true;
     }

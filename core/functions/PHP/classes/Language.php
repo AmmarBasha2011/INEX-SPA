@@ -1,10 +1,29 @@
 <?php
 
+/**
+ * A class for handling language translations.
+ */
 class Language
 {
+    /**
+     * The current language.
+     *
+     * @var string
+     */
     private static $lang = 'en';
+
+    /**
+     * The translations for the current language.
+     *
+     * @var array
+     */
     private static $translations = [];
 
+    /**
+     * Sets the current language.
+     *
+     * @param string $lang The language to set.
+     */
     public static function setLanguage($lang)
     {
         $langFile = __DIR__."/../../../../lang/$lang.json";
@@ -14,6 +33,14 @@ class Language
         }
     }
 
+    /**
+     * Gets a translation for a given key.
+     *
+     * @param string $key          The translation key.
+     * @param array  $placeholders An array of placeholders to replace in the translation.
+     *
+     * @return string The translated text.
+     */
     public static function get($key, $placeholders = [])
     {
         $text = self::$translations[$key] ?? $key;
@@ -24,7 +51,3 @@ class Language
         return $text;
     }
 }
-
-// Detect language from cookie or default to English
-// $selectedLang = $_COOKIE['lang'] ?? 'en';
-// Language::setLanguage($selectedLang);

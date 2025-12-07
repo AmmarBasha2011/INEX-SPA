@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * A utility class to clear all tables from the database.
+ */
 class ClearDBTables
 {
+    /**
+     * Executes the process of dropping all tables in the database.
+     */
     public static function run()
     {
         $dbName = getEnvValue('DB_NAME');

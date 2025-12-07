@@ -1,9 +1,23 @@
 <?php
 
+/**
+ * A simple logging class.
+ */
 class Logger
 {
+    /**
+     * The path to the log directory.
+     *
+     * @var string
+     */
     private static $logPath = __DIR__.'/../../../logs/';
 
+    /**
+     * Logs a message to the appropriate log file.
+     *
+     * @param string $type    The type of log message (e.g., 'error', 'security', 'api').
+     * @param string $message The message to log.
+     */
     public static function log($type, $message)
     {
         $date = date('Y-m-d H:i:s');
@@ -24,13 +38,16 @@ class Logger
         }
     }
 
+    /**
+     * Clears all log files.
+     */
     public static function clearLogs()
     {
         $files = ['system.log', 'errors.log', 'security.log', 'api.log'];
         foreach ($files as $file) {
             $path = self::$logPath.$file;
             if (file_exists($path)) {
-                file_put_contents($path, ''); // Empty the file
+                file_put_contents($path, '');
             }
         }
     }

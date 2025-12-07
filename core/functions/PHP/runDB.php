@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Executes all SQL files in the db directory.
+ */
 function runDB()
 {
     $files = glob(__DIR__.'/../../../db/*.sql');
