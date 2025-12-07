@@ -48,10 +48,10 @@ class Layout
     /**
      * Renders a layout with a content file.
      *
-     * @param string $layoutName    The name of the layout file.
-     * @param string $contentFile   The name of the content file.
-     * @param string $requestType   The request type (e.g., 'GET', 'POST').
-     * @param array  $data          An array of data to be extracted and used in the layout and content files.
+     * @param string $layoutName  The name of the layout file.
+     * @param string $contentFile The name of the content file.
+     * @param string $requestType The request type (e.g., 'GET', 'POST').
+     * @param array  $data        An array of data to be extracted and used in the layout and content files.
      */
     public static function render($layoutName, $contentFile, $requestType = 'GET', $data = [])
     {

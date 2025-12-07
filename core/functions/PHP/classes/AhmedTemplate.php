@@ -11,9 +11,9 @@ class AhmedTemplate
      * @param string $template The path to the template file.
      * @param array  $data     An associative array of data to be extracted and used in the template.
      *
-     * @return string The rendered content.
-     *
      * @throws Exception If the template file is not found.
+     *
+     * @return string The rendered content.
      */
     public function render($template, $data = [])
     {
