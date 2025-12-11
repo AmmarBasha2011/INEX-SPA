@@ -76,6 +76,7 @@ class UserAuth
      * Signs in a user based on the provided details.
      *
      * @param array $details An associative array where keys are column names and values are the user's credentials.
+     *
      * @return string|false 'User Found' on success, 'User Not Found' on failure, or false if input is invalid.
      */
     public static function signIn($details)
@@ -110,6 +111,7 @@ class UserAuth
      * Registers a new user after validating their details against the JSON configuration.
      *
      * @param array $details An associative array of the new user's details.
+     *
      * @return string A message indicating the result of the registration attempt.
      */
     public static function signUp($details)
