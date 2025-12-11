@@ -10,12 +10,14 @@ class Language
 {
     /**
      * The currently active language code (e.g., 'en').
+     *
      * @var string
      */
     private static $lang = 'en';
 
     /**
      * An associative array of translations for the active language.
+     *
      * @var array
      */
     private static $translations = [];
@@ -24,6 +26,7 @@ class Language
      * Sets the active language and loads the corresponding translation file.
      *
      * @param string $lang The language code (e.g., 'en', 'fr').
+     *
      * @return void
      */
     public static function setLanguage($lang)
@@ -41,8 +44,9 @@ class Language
      * If the key is not found in the translations, the key itself is returned.
      * Supports replacing placeholders in the format `{placeholder}`.
      *
-     * @param string $key The translation key.
-     * @param array $placeholders An associative array of placeholders and their values.
+     * @param string $key          The translation key.
+     * @param array  $placeholders An associative array of placeholders and their values.
+     *
      * @return string The translated string.
      */
     public static function get($key, $placeholders = [])

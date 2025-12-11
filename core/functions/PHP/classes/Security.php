@@ -15,6 +15,7 @@ class Security
      * removes any `<script>` tags from the input string.
      *
      * @param string $data The input data to be sanitized.
+     *
      * @return string The sanitized data.
      */
     public static function sanitizeInput($data)
@@ -34,7 +35,8 @@ class Security
      * Currently, this function only supports 'xss' sanitization.
      *
      * @param string $input The input data to be processed.
-     * @param string $type The type of validation/sanitization to perform.
+     * @param string $type  The type of validation/sanitization to perform.
+     *
      * @return string The processed input.
      */
     public static function validateAndSanitize($input, $type)
