@@ -5,7 +5,7 @@
  *
  * This function retrieves the 'WEBSITE_URL' and 'APP_NAME' values from the
  * environment configuration and returns a string of JavaScript code that
-
+ *
  * sets these values on the client-side `window` object.
  *
  * @return string A string of JavaScript code.
