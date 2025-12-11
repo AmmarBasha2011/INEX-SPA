@@ -61,7 +61,7 @@ ammar
 
 The framework comes with a powerful command-line tool called **Ammar CLI**.
 
-### Available Commands
+### Some Commands
 
 ```bash
 php ammar list:cron
@@ -144,34 +144,6 @@ public/css/motion-animations.css
 ## 🧩 Plugin System
 
 INEX SPA supports modular development using plugins to extend core features.
-
----
-
-## 🧪 Logging & Debugging
-
-* Error logs
-* Cron logs
-* System debug output
-
-All available inside:
-
-```
-core/logs/
-```
-
----
-
-## 🗺 Roadmap
-
-* ✅ Core Framework
-* ✅ CLI Tools
-* ✅ Routing & Database
-* ✅ Cron System
-* ✅ Motion Engine
-* ⏳ Advanced Security Layer
-* ⏳ Performance Profiler
-* ⏳ Plugin Marketplace
-* ⏳ Cloud Integration
 
 ---
 
