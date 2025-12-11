@@ -10,6 +10,7 @@ class Database
 {
     /**
      * The PDO instance.
+     *
      * @var PDO
      */
     private $pdo;
@@ -47,10 +48,11 @@ class Database
     /**
      * Prepares and executes an SQL query.
      *
-     * @param string $sql The SQL query to execute. Can contain placeholders (e.g., ?).
-     * @param array $params An array of parameters to bind to the placeholders in the SQL query.
-     * @param bool $is_return If true, returns the result set as an array of associative arrays.
-     *                        If false, returns true on success.
+     * @param string $sql       The SQL query to execute. Can contain placeholders (e.g., ?).
+     * @param array  $params    An array of parameters to bind to the placeholders in the SQL query.
+     * @param bool   $is_return If true, returns the result set as an array of associative arrays.
+     *                          If false, returns true on success.
+     *
      * @return array|bool The result set or true, depending on the value of $is_return.
      */
     public function query($sql, $params = [], $is_return = true)

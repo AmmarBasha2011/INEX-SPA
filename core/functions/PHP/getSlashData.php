@@ -8,6 +8,7 @@
  * an associative array with the parts before and after the slash.
  *
  * @param string $text The input string to parse.
+ *
  * @return array|string An associative array `['before' => string, 'after' => string]`
  *                      if the split is successful, or the string 'Not Found' otherwise.
  */

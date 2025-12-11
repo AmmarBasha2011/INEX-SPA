@@ -23,9 +23,11 @@ The old function code is preserved below for reference but should not be used in
  * Applies a CSS animation to a given element by injecting a JavaScript snippet.
  *
  * @param string $elementSelectorOrId The CSS selector or ID of the element to animate.
- * @param string $animationName The name of the animation (e.g., 'fade-in').
- * @param int $durationMs The duration of the animation in milliseconds.
+ * @param string $animationName       The name of the animation (e.g., 'fade-in').
+ * @param int    $durationMs          The duration of the animation in milliseconds.
+ *
  * @return void
+ *
  * @deprecated 2024-07-11 Use the JavaScript Motion Engine (`public/JS/motion_engine.js`).
  */
 function animate(string $elementSelectorOrId, string $animationName, int $durationMs): void
