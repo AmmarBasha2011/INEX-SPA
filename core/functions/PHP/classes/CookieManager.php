@@ -11,10 +11,9 @@ class CookieManager
     /**
      * Sets a cookie.
      *
-     * @param string $name  The name of the cookie.
+     * @param string $name The name of the cookie.
      * @param string $value The value of the cookie.
-     * @param int    $days  The number of days until the cookie expires. Defaults to 7.
-     *
+     * @param int $days The number of days until the cookie expires. Defaults to 7.
      * @return void
      */
     public static function set($name, $value, $days = 7)
@@ -27,7 +26,6 @@ class CookieManager
      * Gets the value of a cookie.
      *
      * @param string $name The name of the cookie.
-     *
      * @return string|null The value of the cookie, or null if it does not exist.
      */
     public static function get($name)
@@ -41,7 +39,6 @@ class CookieManager
      * This is done by setting the cookie with an expiration date in the past.
      *
      * @param string $name The name of the cookie to delete.
-     *
      * @return void
      */
     public static function delete($name)
@@ -53,7 +50,6 @@ class CookieManager
      * Checks if a cookie exists.
      *
      * @param string $name The name of the cookie.
-     *
      * @return bool True if the cookie exists, false otherwise.
      */
     public static function exists($name)

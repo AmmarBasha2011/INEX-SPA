@@ -11,9 +11,8 @@ class Webhook
     /**
      * Sends a JSON payload to a specified webhook URL.
      *
-     * @param string $url  The URL to send the webhook request to.
-     * @param array  $data An associative array of data to be sent as the JSON payload.
-     *
+     * @param string $url The URL to send the webhook request to.
+     * @param array $data An associative array of data to be sent as the JSON payload.
      * @return bool|string The response from the server, or false if the URL is invalid or an error occurs.
      */
     public static function send($url, $data = [])

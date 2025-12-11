@@ -3,6 +3,7 @@
 /**
  * Contains the function for validating CSRF tokens.
  */
+
 session_start();
 
 /**

@@ -95,7 +95,6 @@ function loadScripts()
  * it returns a 405 Method Not Allowed error.
  *
  * @param array $methods An array of HTTP methods to check for (e.g., ['GET', 'POST']).
- *
  * @return bool Returns true if a request was handled, false otherwise.
  */
 function handleRequestMethod($methods)
@@ -142,7 +141,6 @@ function handleRequestMethod($methods)
  * (like CSRF token fetching), and error pages.
  *
  * @param string $RouteName The name of the route to be processed, usually from `$_GET['page']`.
- *
  * @return void
  */
 function getPage($RouteName)

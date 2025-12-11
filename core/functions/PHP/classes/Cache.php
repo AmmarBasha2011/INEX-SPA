@@ -10,7 +10,6 @@ class Cache
 {
     /**
      * The directory where cache files are stored.
-     *
      * @var string
      */
     private static $cacheDir = __DIR__.'/../../../cache/';
@@ -18,10 +17,9 @@ class Cache
     /**
      * Stores data in the cache.
      *
-     * @param string $key        The unique identifier for the cache item.
-     * @param mixed  $data       The data to be cached. Must be serializable.
-     * @param int    $expiration The cache lifetime in seconds. Defaults to 3600 (1 hour).
-     *
+     * @param string $key The unique identifier for the cache item.
+     * @param mixed $data The data to be cached. Must be serializable.
+     * @param int $expiration The cache lifetime in seconds. Defaults to 3600 (1 hour).
      * @return void
      */
     public static function set($key, $data, $expiration = 3600)
@@ -38,7 +36,6 @@ class Cache
      * Retrieves data from the cache.
      *
      * @param string $key The unique identifier for the cache item.
-     *
      * @return mixed The cached data, or false if the cache is expired or not found.
      */
     public static function get($key)
@@ -61,9 +58,8 @@ class Cache
     /**
      * Updates existing data in the cache without changing the expiration time.
      *
-     * @param string $key     The unique identifier for the cache item.
-     * @param mixed  $newData The new data to be stored.
-     *
+     * @param string $key The unique identifier for the cache item.
+     * @param mixed $newData The new data to be stored.
      * @return bool True on successful update, false if the cache item does not exist.
      */
     public static function update($key, $newData)
@@ -85,7 +81,6 @@ class Cache
      * Deletes a cache item.
      *
      * @param string $key The unique identifier for the cache item.
-     *
      * @return void
      */
     public static function delete($key)

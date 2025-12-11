@@ -10,21 +10,18 @@ class RateLimiter
 {
     /**
      * The maximum number of requests allowed per user per time frame.
-     *
      * @var int
      */
     private static $limit;
 
     /**
      * The time frame for rate limiting in seconds (e.g., 3600 for 1 hour).
-     *
      * @var int
      */
     private static $timeFrame = 3600; // Time window (1 hour)
 
     /**
      * The file used to store request counts.
-     *
      * @var string
      */
     private static $storageFile = __DIR__.'/../../../storage/rate_limit.json'; // Store request counts
@@ -48,7 +45,6 @@ class RateLimiter
      * and terminates the script. Otherwise, it logs the current request.
      *
      * @param string $userIP The IP address of the user making the request.
-     *
      * @return void
      */
     public static function check($userIP)

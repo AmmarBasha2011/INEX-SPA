@@ -51,7 +51,6 @@ class Firewall
      * the user to the page specified in the firewall configuration.
      *
      * @param array $config The firewall configuration array.
-     *
      * @return void
      */
     private static function block($config)

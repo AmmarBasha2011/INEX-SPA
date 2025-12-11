@@ -44,9 +44,8 @@ class SitemapGenerator
      * It interprets different file naming conventions to identify standard, dynamic,
      * API, and request-specific routes.
      *
-     * @param string $dir      The directory to scan.
+     * @param string $dir The directory to scan.
      * @param string $basePath The base path for building the route URL.
-     *
      * @return array An array of unique route strings.
      */
     private static function getRoutes($dir, $basePath = '')

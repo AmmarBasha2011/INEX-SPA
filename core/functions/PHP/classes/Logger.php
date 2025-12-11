@@ -10,7 +10,6 @@ class Logger
 {
     /**
      * The path to the directory where log files are stored.
-     *
      * @var string
      */
     private static $logPath = __DIR__.'/../../../logs/';
@@ -18,10 +17,9 @@ class Logger
     /**
      * Logs a message to the appropriate log file.
      *
-     * @param string $type    The type of the log message. Determines the log file used.
-     *                        Can be 'error', 'security', 'api', or a default 'system'.
+     * @param string $type The type of the log message. Determines the log file used.
+     *                     Can be 'error', 'security', 'api', or a default 'system'.
      * @param string $message The message to be logged.
-     *
      * @return void
      */
     public static function log($type, $message)

@@ -7,7 +7,6 @@
  * and returns the value associated with the specified key.
  *
  * @param string $key The name of the environment variable to retrieve.
- *
  * @return string|null The value of the environment variable, or null if the key is not found or an error occurs.
  */
 function getEnvValue($key)

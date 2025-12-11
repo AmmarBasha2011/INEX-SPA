@@ -6,6 +6,8 @@
  * This script will connect to the database specified in the .env file and
  * drop all existing tables. It is intended for development and testing
  * purposes only. Use with extreme caution.
+ *
+ * @package Core\Database
  */
 class ClearDBTables
 {
