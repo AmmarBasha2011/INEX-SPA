@@ -11,12 +11,14 @@ class Layout
 {
     /**
      * An associative array to store the content of captured sections.
+     *
      * @var array
      */
     private static $sections = [];
 
     /**
      * The name of the section currently being captured.
+     *
      * @var string|null
      */
     private static $currentSection = null;
@@ -25,6 +27,7 @@ class Layout
      * Starts capturing content for a named section.
      *
      * @param string $section The name of the section to start.
+     *
      * @return void
      */
     public static function start($section)
@@ -57,10 +60,11 @@ class Layout
      * (standard, dynamic, request-specific) and then renders it within the
      * specified layout file.
      *
-     * @param string $layoutName The name of the layout file (without extension).
+     * @param string $layoutName  The name of the layout file (without extension).
      * @param string $contentFile The name of the content file to be included.
      * @param string $requestType The HTTP request type (e.g., 'GET', 'POST').
-     * @param array $data Data to be extracted into variables for the layout and content.
+     * @param array  $data        Data to be extracted into variables for the layout and content.
+     *
      * @return void
      */
     public static function render($layoutName, $contentFile, $requestType = 'GET', $data = [])
@@ -101,6 +105,7 @@ class Layout
      * Retrieves the content of a named section.
      *
      * @param string $section The name of the section.
+     *
      * @return string The content of the section, or an error message if not found.
      */
     public static function section($section)

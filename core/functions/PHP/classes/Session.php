@@ -11,6 +11,7 @@ class Session
 {
     /**
      * The path to the directory where session files are stored.
+     *
      * @var string
      */
     private static $storagePath = __DIR__.'/../../../storage/sessions/';
@@ -18,8 +19,9 @@ class Session
     /**
      * Creates or overwrites a session variable.
      *
-     * @param string $key The key for the session variable.
-     * @param mixed $value The value to be stored.
+     * @param string $key   The key for the session variable.
+     * @param mixed  $value The value to be stored.
+     *
      * @return void
      */
     public static function make($key, $value)
@@ -32,6 +34,7 @@ class Session
      * Retrieves a session variable.
      *
      * @param string $key The key of the session variable to retrieve.
+     *
      * @return mixed|null The value of the session variable, or null if not found.
      */
     public static function get($key)
@@ -48,6 +51,7 @@ class Session
      * Deletes a session variable.
      *
      * @param string $key The key of the session variable to delete.
+     *
      * @return void
      */
     public static function delete($key)
@@ -61,6 +65,7 @@ class Session
      * Note: This is not a secure method of encryption.
      *
      * @param string $data The data to be encoded.
+     *
      * @return string The base64-encoded data.
      */
     private static function encrypt($data)
@@ -72,6 +77,7 @@ class Session
      * Decrypts data from base64 encoding.
      *
      * @param string $data The base64-encoded data.
+     *
      * @return string The decoded data.
      */
     private static function decrypt($data)
