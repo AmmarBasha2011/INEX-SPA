@@ -1,9 +1,27 @@
 <?php
 
+/**
+ * A simple file-based logger.
+ *
+ * This class provides static methods to log messages to different files based
+ * on their type (e.g., 'error', 'security') and to clear all log files.
+ */
 class Logger
 {
+    /**
+     * The path to the directory where log files are stored.
+     * @var string
+     */
     private static $logPath = __DIR__.'/../../../logs/';
 
+    /**
+     * Logs a message to the appropriate log file.
+     *
+     * @param string $type The type of the log message. Determines the log file used.
+     *                     Can be 'error', 'security', 'api', or a default 'system'.
+     * @param string $message The message to be logged.
+     * @return void
+     */
     public static function log($type, $message)
     {
         $date = date('Y-m-d H:i:s');
@@ -24,6 +42,13 @@ class Logger
         }
     }
 
+    /**
+     * Clears all log files.
+     *
+     * This method empties the contents of all standard log files.
+     *
+     * @return void
+     */
     public static function clearLogs()
     {
         $files = ['system.log', 'errors.log', 'security.log', 'api.log'];

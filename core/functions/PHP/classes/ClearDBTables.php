@@ -1,7 +1,24 @@
 <?php
 
+/**
+ * A destructive script to clear all tables from the database.
+ *
+ * This script will connect to the database specified in the .env file and
+ * drop all existing tables. It is intended for development and testing
+ * purposes only. Use with extreme caution.
+ *
+ * @package Core\Database
+ */
 class ClearDBTables
 {
+    /**
+     * Executes the process of dropping all tables.
+     *
+     * Connects to the database, disables foreign key checks, retrieves all
+     * table names, drops them one by one, and then re-enables foreign key checks.
+     *
+     * @return void
+     */
     public static function run()
     {
         $dbName = getEnvValue('DB_NAME');

@@ -1,3 +1,12 @@
+<?php
+/**
+ * Main landing page template for the INEX SPA Framework.
+ *
+ * This file contains the HTML structure and content for the default
+ * home page, showcasing the framework's features and providing links
+ * to documentation and the repository.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
