@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * DEPRECATED: Provides a legacy animation function.
+ *
+ * This file contains the `animate()` function, which is part of a deprecated animation system.
+ * It is recommended to use the new JavaScript-based Motion Engine instead.
+ *
+ * @deprecated 2024-07-11 Use the JavaScript Motion Engine (`public/JS/motion_engine.js`).
+ */
+
 /*
 DEPRECATED: This PHP animate() function is deprecated as of 2024-07-11.
 Please use the new JavaScript-based motion engine.
@@ -8,13 +17,16 @@ The new `animate(elementOrSelector, animationName, durationMs)` function is avai
 Ensure the Motion Engine is enabled by setting `USE_ANIMATE=true` in your .env file, which will load the necessary JS and CSS files.
 
 The old function code is preserved below for reference but should not be used in new development.
+*/
 
 /**
- * Applies a CSS animation to a given element.
+ * Applies a CSS animation to a given element by injecting a JavaScript snippet.
  *
  * @param string $elementSelectorOrId The CSS selector or ID of the element to animate.
  * @param string $animationName The name of the animation (e.g., 'fade-in').
  * @param int $durationMs The duration of the animation in milliseconds.
+ * @return void
+ * @deprecated 2024-07-11 Use the JavaScript Motion Engine (`public/JS/motion_engine.js`).
  */
 function animate(string $elementSelectorOrId, string $animationName, int $durationMs): void
 {

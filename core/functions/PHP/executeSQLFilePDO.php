@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * Executes SQL queries from a file using PDO.
+ *
+ * This function connects to a MySQL database, reads an SQL file,
+ * and executes the queries within it. The script will terminate on failure.
+ *
+ * @param string $host     The database host name or IP address.
+ * @param string $user     The database user name.
+ * @param string $password The database password.
+ * @param string $database The name of the database.
+ * @param string $filePath The file path to the SQL file to be executed.
+ * @return void
+ */
 function executeSQLFilePDO($host, $user, $password, $database, $filePath)
 {
     try {

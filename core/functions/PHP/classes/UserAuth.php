@@ -1,8 +1,23 @@
 <?php
 
+/**
+ * The path to the JSON file defining the user authentication parameters.
+ */
 define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
+
+/**
+ * A class for handling user authentication, including sign-up, sign-in, and session management.
+ *
+ * This class dynamically generates the users table schema, validates user input based on
+ * a JSON configuration file, and manages the user's logged-in state.
+ */
 class UserAuth
 {
+    /**
+     * Generates a 'CREATE TABLE' SQL statement for the 'users' table based on a JSON config.
+     *
+     * @return string The generated SQL 'CREATE TABLE' query.
+     */
     public static function generateSQL()
     {
         $jsonString = file_get_contents(JSON_FOLDER);
@@ -57,6 +72,12 @@ class UserAuth
         return $sql;
     }
 
+    /**
+     * Signs in a user based on the provided details.
+     *
+     * @param array $details An associative array where keys are column names and values are the user's credentials.
+     * @return string|false 'User Found' on success, 'User Not Found' on failure, or false if input is invalid.
+     */
     public static function signIn($details)
     {
         // Ensure $details is a non-empty array
@@ -85,6 +106,12 @@ class UserAuth
         }
     }
 
+    /**
+     * Registers a new user after validating their details against the JSON configuration.
+     *
+     * @param array $details An associative array of the new user's details.
+     * @return string A message indicating the result of the registration attempt.
+     */
     public static function signUp($details)
     {
         $jsonString = file_get_contents(JSON_FOLDER);
@@ -215,11 +242,21 @@ class UserAuth
         }
     }
 
+    /**
+     * Checks if a user is currently logged in.
+     *
+     * @return bool True if a user is logged in, false otherwise.
+     */
     public static function checkUser()
     {
         return isset($_SESSION['user_id']) && $_SESSION['user_id'] != '';
     }
 
+    /**
+     * Logs out the current user.
+     *
+     * @return string A confirmation message.
+     */
     public static function logout()
     {
         $_SESSION['user_id'] = '';

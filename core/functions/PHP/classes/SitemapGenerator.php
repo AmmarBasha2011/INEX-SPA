@@ -1,7 +1,22 @@
 <?php
 
+/**
+ * A class to automatically generate a sitemap.xml file.
+ *
+ * This class scans the 'web' directory for template files (`.ahmed.php`) to
+ * build a list of application routes and generates a `sitemap.xml` file
+ * in the 'public' directory.
+ */
 class SitemapGenerator
 {
+    /**
+     * Generates the sitemap.xml file.
+     *
+     * This method orchestrates the process of finding routes and writing the
+     * final XML file to the public directory.
+     *
+     * @return void
+     */
     public static function generate()
     {
         $routesDir = realpath(__DIR__.'/../../../../web/'); // Set correct path
@@ -23,6 +38,16 @@ class SitemapGenerator
         file_put_contents(__DIR__.'/../../../../public/sitemap.xml', $xml); // Save to public
     }
 
+    /**
+     * Recursively scans a directory to find all application routes.
+     *
+     * It interprets different file naming conventions to identify standard, dynamic,
+     * API, and request-specific routes.
+     *
+     * @param string $dir The directory to scan.
+     * @param string $basePath The base path for building the route URL.
+     * @return array An array of unique route strings.
+     */
     private static function getRoutes($dir, $basePath = '')
     {
         $files = scandir($dir);

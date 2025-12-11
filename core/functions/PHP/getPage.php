@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Conditionally loads Bootstrap CSS and JavaScript.
+ *
+ * Checks the 'USE_BOOTSTRAP' environment variable. If it's set to 'true',
+ * this function echoes the necessary <link> and <script> tags for Bootstrap.
+ *
+ * @return void
+ */
 function loadBootstrap()
 {
     if (getEnvValue('USE_BOOTSTRAP') == 'true') {
@@ -8,6 +16,14 @@ function loadBootstrap()
     }
 }
 
+/**
+ * Conditionally loads Progressive Web App (PWA) assets.
+ *
+ * Checks the 'USE_PWA' environment variable. If 'true', it includes the manifest
+ * configuration and the PWA JavaScript file.
+ *
+ * @return void
+ */
 function loadPWA()
 {
     if (getEnvValue('USE_PWA') == 'true') {
@@ -17,6 +33,15 @@ function loadPWA()
     }
 }
 
+/**
+ * Loads all necessary JavaScript files and CSS assets for the application.
+ *
+ * This function handles the inclusion of core JavaScript files, as well as optional
+ * assets like the Motion Engine, CookieManager, and notification styles, based on
+ * environment settings. It uses output buffering to cache the script block for efficiency.
+ *
+ * @return void
+ */
 function loadScripts()
 {
     static $cachedScripts = null;
@@ -62,6 +87,16 @@ function loadScripts()
     echo $cachedScripts;
 }
 
+/**
+ * Handles incoming requests based on the HTTP request method.
+ *
+ * It checks for method-specific files (e.g., `pagename_request_POST.ahmed.php`)
+ * and renders them if the current request method matches. If the method does not match,
+ * it returns a 405 Method Not Allowed error.
+ *
+ * @param array $methods An array of HTTP methods to check for (e.g., ['GET', 'POST']).
+ * @return bool Returns true if a request was handled, false otherwise.
+ */
 function handleRequestMethod($methods)
 {
     global $Ahmed;
@@ -98,6 +133,16 @@ function handleRequestMethod($methods)
     return false;
 }
 
+/**
+ * Main routing function to render the appropriate page.
+ *
+ * This function processes the incoming route name and determines which content to display.
+ * It handles static pages, dynamic routes, API endpoints, special internal routes
+ * (like CSRF token fetching), and error pages.
+ *
+ * @param string $RouteName The name of the route to be processed, usually from `$_GET['page']`.
+ * @return void
+ */
 function getPage($RouteName)
 {
     global $Ahmed;
