@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Cookie Management Utility
+ * Cookie Management Utility.
  *
  * This file provides a static utility class for handling browser cookies,
  * simplifying the process of setting, retrieving, and deleting them.
@@ -12,8 +13,6 @@
  * Provides a simple, consistent, and testable interface for common cookie
  * operations like setting, getting, deleting, and checking for existence.
  * All methods are static, so no instantiation is required.
- *
- * @package INEX\Http
  */
 class CookieManager
 {

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Sitemap Generation Utility
+ * Sitemap Generation Utility.
  *
  * This file contains the SitemapGenerator class, a static utility for
  * automatically creating a `sitemap.xml` file by scanning the application's
@@ -13,8 +14,6 @@
  * This class scans the 'web' directory for template files (`.ahmed.php`) to
  * build a list of application routes. It then generates a compliant `sitemap.xml`
  * file and saves it in the 'public' directory, making it accessible to search engines.
- *
- * @package INEX\Core
  */
 class SitemapGenerator
 {

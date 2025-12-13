@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Webhook Utility
+ * Webhook Utility.
  *
  * This file contains the Webhook class, a static utility for sending POST
  * requests with JSON payloads to external URLs.
@@ -12,8 +13,6 @@
  * This class provides a static method to send a POST request with a JSON
  * payload to a given URL using cURL. It's designed for simple integrations
  * and notifications to external services.
- *
- * @package INEX\Http
  */
 class Webhook
 {

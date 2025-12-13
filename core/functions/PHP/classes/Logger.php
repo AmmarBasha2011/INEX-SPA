@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Simple File-Based Logging System
+ * Simple File-Based Logging System.
  *
  * This file contains the Logger class, a static utility for writing log messages
  * to various files within the application's log directory.
@@ -12,8 +13,6 @@
  * This class provides static methods to log messages to different files based
  * on their type (e.g., 'error', 'security', 'api', 'system'). It also includes
  * a utility method to clear all log files. All methods are static.
- *
- * @package INEX\Logging
  */
 class Logger
 {
