@@ -1,5 +1,18 @@
 #!/usr/bin/env php
 <?php
+/**
+ * Ammar CLI - The Command Line Interface for INEX SPA Framework
+ *
+ * This script provides a suite of commands for managing the application,
+ * including scaffolding, cache management, database operations, and serving
+ * the application.
+ *
+ * It is designed to be run from the command line: `php ammar <command>`
+ *
+ * @package INEX\CLI
+ */
+
+// Core framework dependencies
 require_once 'core/functions/PHP/executeSQLFilePDO.php';
 require_once 'core/functions/PHP/getEnvValue.php';
 require_once 'core/functions/PHP/classes/Cache.php';
@@ -10,11 +23,23 @@ require_once 'core/functions/PHP/getSlashData.php';
 require_once 'core/functions/PHP/classes/Session.php';
 require_once 'core/functions/PHP/classes/Validation.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
+
+/**
+ * Global helper function to execute a database query.
+ *
+ * This function is a convenient wrapper around the Database class query method.
+ *
+ * @param string $sql       The SQL query to execute.
+ * @param array  $params    Parameters to bind to the query.
+ * @param bool   $is_return Whether to return a result set.
+ * @return array|bool The result set or success status.
+ */
 function executeStatement($sql, $params = [], $is_return = true) {
     $DB = new Database();
     return $DB->query($sql, $params, $is_return);
 }
 
+// Define core directory constants
 define('DB_FOLDER', __DIR__ . '/db');
 define('WEB_FOLDER', __DIR__ . '/web');
 define('CACHE_FOLDER', __DIR__ . '/core/cache');
@@ -23,7 +48,7 @@ define('LAYOUT_FOLDER', __DIR__ . '/layouts');
 define('PUBLIC_FOLDER', __DIR__ . '/public');
 define('CRON_TASKS_DIR', __DIR__ . '/core/cron/tasks/');
 
-// تأكد من وجود المجلدات المطلوبة
+// Ensure required directories exist
 if (!is_dir(DB_FOLDER)) mkdir(DB_FOLDER);
 if (!is_dir(WEB_FOLDER)) mkdir(WEB_FOLDER);
 if (!is_dir(CACHE_FOLDER)) mkdir(CACHE_FOLDER);
@@ -32,7 +57,7 @@ if (!is_dir(LAYOUT_FOLDER)) mkdir(LAYOUT_FOLDER);
 if (!is_dir(PUBLIC_FOLDER)) mkdir(PUBLIC_FOLDER);
 if (!is_dir(CRON_TASKS_DIR)) mkdir(CRON_TASKS_DIR, 0755, true);
 
-// أوامر Ammar CLI
+// Ammar CLI command definitions
 $commands = [
     'list' => 'List all commands',
     'list:routes' => 'List all route files',
@@ -73,6 +98,7 @@ $commands = [
     'serve' => 'Serve the application',
 ];
 
+// Parse command line arguments
 $command = $argv[1] ?? null;
 $args = [];
 for ($i = 2; $i < count($argv); $i += 2) {
@@ -81,6 +107,7 @@ for ($i = 2; $i < count($argv); $i += 2) {
     }
 }
 
+// Main command dispatcher
 if (!$command || $command === 'list') {
     echo "Available commands:\n";
     foreach ($commands as $cmd => $desc) {
@@ -92,8 +119,6 @@ if (!$command || $command === 'list') {
 if ($command === 'list:cron') {
     if (!is_dir(CRON_TASKS_DIR)) {
         echo "Cron tasks directory 'core/cron/tasks/' not found.\n";
-        // Attempt to create it, as other commands do, for consistency, though list should ideally not modify state.
-        // However, if make:cron hasn't been run, it might not exist.
         if (!mkdir(CRON_TASKS_DIR, 0755, true) && !is_dir(CRON_TASKS_DIR)) {
              echo "Failed to create cron tasks directory.\n";
              exit(1);
@@ -125,7 +150,6 @@ if ($command === 'delete:cron') {
     }
 
     $taskNameInput = $argv[2];
-    // Sanitize the input task name similar to make:cron to match the filename
     $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
 
     if (empty($taskName)) {
@@ -140,7 +164,6 @@ if ($command === 'delete:cron') {
         exit(1);
     }
 
-    // Confirmation prompt
     $confirmation = strtolower(readline("Are you sure you want to delete '{$filePath}'? (yes/no): "));
 
     if ($confirmation !== 'yes') {
@@ -165,8 +188,6 @@ if ($command === 'make:cron') {
     }
 
     $taskNameInput = $argv[2];
-    // Basic sanitization: Capitalize first letter, remove non-alphanumeric chars.
-    // Allows underscores as they are valid in class names.
     $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
 
     if (empty($taskName)) {
@@ -174,7 +195,6 @@ if ($command === 'make:cron') {
         exit(1);
     }
 
-    // Check if task name starts with a letter (PHP class name requirement)
     if (!preg_match('/^[a-zA-Z]/', $taskName)) {
         echo "Error: Task name must start with a letter.\n";
         exit(1);
@@ -187,20 +207,12 @@ if ($command === 'make:cron') {
         exit(1);
     }
 
-    // Note: The log_cron_message path inside the template is adjusted to dirname(__DIR__, 3)
-    // assuming ammar is in root, tasks are in core/cron/tasks, and logs are in core/logs.
-    // If cron_runner.php defines log_cron_message globally, this fallback might only be for standalone testing.
     $fileContent = <<<PHP
 <?php
 
 class {$taskName} {
     public function handle() {
-        // Ensure log_cron_message is available
         if (!function_exists('log_cron_message') && file_exists(dirname(__DIR__, 3) . '/core/cron/cron_runner.php')) {
-            // Attempt to load cron_runner.php's functions if not already loaded,
-            // this is a simple way, might need refinement based on cron_runner.php structure
-            // require_once dirname(__DIR__, 3) . '/core/cron/cron_runner.php';
-            // More robust: define a local fallback if global is not present.
              function log_cron_message(\$message, \$task = '{$taskName}') {
                 \$logFile = dirname(__DIR__, 3) . '/logs/cron.log';
                 \$timestamp = date('Y-m-d H:i:s');
@@ -208,7 +220,6 @@ class {$taskName} {
                 file_put_contents(\$logFile, \$formattedMessage, FILE_APPEND);
             }
         } elseif (!function_exists('log_cron_message')) {
-            // Absolute fallback if cron_runner.php also couldn't be sourced or doesn't define it globally
              function log_cron_message(\$message, \$task = '{$taskName}') {
                 \$logFile = dirname(__DIR__, 3) . '/logs/cron.log';
                 \$timestamp = date('Y-m-d H:i:s');
@@ -251,7 +262,7 @@ class {$taskName} {
 PHP;
 
     if (file_put_contents($filePath, $fileContent)) {
-        chmod($filePath, 0664); // Set reasonable permissions
+        chmod($filePath, 0664);
         echo "Cron task file created: {$filePath}\n";
     } else {
         echo "Error: Could not write to file: {$filePath}\n";
@@ -505,7 +516,6 @@ if ($command === 'run:cron') {
     }
 
     $taskNameInput = $argv[2];
-    // Sanitize the input task name similar to make:cron/delete:cron
     $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
 
     if (empty($taskName)) {
@@ -520,11 +530,6 @@ if ($command === 'run:cron') {
         exit(1);
     }
 
-    // Construct the command to execute cron_runner.php
-    // Ensuring PROJECT_ROOT is available or defining it locally for this command block
-    // If ammar is always run from project root, __DIR__ is fine.
-    // Otherwise, a more robust way to find cron_runner.php might be needed.
-    // For now, assuming ammar is in the project root.
     $projectRoot = __DIR__;
     $cronRunnerPath = $projectRoot . '/core/cron/cron_runner.php';
 
@@ -533,20 +538,17 @@ if ($command === 'run:cron') {
         exit(1);
     }
 
-    // Get PHP executable path
-    $phpExecutable = PHP_BINARY ?: 'php'; // PHP_BINARY is available PHP 5.4+
+    $phpExecutable = PHP_BINARY ?: 'php';
 
     $execCommand = escapeshellcmd($phpExecutable) . ' ' . escapeshellarg($cronRunnerPath) . ' ' . escapeshellarg($taskName);
 
     echo "Executing cron task: {$taskName}\n";
     echo "Command: $execCommand\n";
 
-    // Execute the command and pass through output
     passthru($execCommand, $return_var);
 
     if ($return_var !== 0) {
         echo "Cron task '{$taskName}' may have encountered an error (exit code: $return_var).\n";
-        // Specific error messages should be logged by cron_runner.php or the task itself
     } else {
         echo "Cron task '{$taskName}' finished.\n";
     }
@@ -637,7 +639,6 @@ if ($command === 'install:import') {
         exit("Invalid URL provided!\n");
     }
 
-    // Extract repo name from URL
     $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
     
     $importDir = __DIR__ . '/core/import';
@@ -656,7 +657,6 @@ if ($command === 'install:import') {
         exit(1);
     }
 
-    // Update package.json
     $packageJsonPath = $importDir . '/package.json';
     $packageData = [];
     
@@ -702,7 +702,6 @@ if ($command === 'delete:import') {
         exit("Import not found: $name\n");
     }
 
-    // Remove directory recursively
     $files = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($importDir, RecursiveDirectoryIterator::SKIP_DOTS),
         RecursiveIteratorIterator::CHILD_FIRST
@@ -717,7 +716,6 @@ if ($command === 'delete:import') {
     }
     rmdir($importDir);
 
-    // Update package.json
     $packageJsonPath = __DIR__ . '/core/import/package.json';
     if (file_exists($packageJsonPath)) {
         $packageData = json_decode(file_get_contents($packageJsonPath), true) ?? [];
@@ -854,7 +852,6 @@ if ($command == 'clear:docs') {
         __DIR__ . '/LICENSE'
     ];
 
-    // حذف الملفات المفردة
     foreach ($filelist as $file) {
         if (file_exists($file)) {
             if (unlink($file)) {
@@ -867,7 +864,6 @@ if ($command == 'clear:docs') {
         }
     }
 
-    // دالة لحذف المجلدات وما بداخلها مهما كان العمق
     function deleteFolderRecursively($folderPath) {
         if (!is_dir($folderPath)) return;
 
@@ -877,7 +873,7 @@ if ($command == 'clear:docs') {
             $path = $folderPath . DIRECTORY_SEPARATOR . $item;
 
             if (is_dir($path)) {
-                deleteFolderRecursively($path); // 🔁 نداء ذاتي للحذف العميق
+                deleteFolderRecursively($path);
                 if (rmdir($path)) {
                     echo "📁 Deleted folder: $path\n";
                 } else {
@@ -893,7 +889,6 @@ if ($command == 'clear:docs') {
         }
     }
 
-    // تنفيذ الحذف للمجلدات الرئيسية
     foreach ($folderlist as $folder) {
         if (is_dir($folder)) {
             echo "🔍 Cleaning folder: $folder\n";

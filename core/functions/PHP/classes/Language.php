@@ -1,22 +1,32 @@
 <?php
+/**
+ * Language and Translation Management
+ *
+ * This file provides the Language class, a static utility for managing
+ * multilingual support in the application.
+ */
 
 /**
- * A class for handling language translations.
+ * A static class for handling language translations.
  *
- * This class manages loading language files and retrieving translated strings.
- * It supports placeholders in translation strings for dynamic content.
+ * This class manages loading language files (in JSON format) and retrieving
+ * translated strings by a given key. It supports dynamic placeholders in
+ * translation strings for variable content. All methods are static.
+ *
+ * @package INEX\Localization
  */
 class Language
 {
     /**
-     * The currently active language code (e.g., 'en').
+     * The code for the currently active language (e.g., 'en', 'ar').
      *
      * @var string
      */
     private static $lang = 'en';
 
     /**
-     * An associative array of translations for the active language.
+     * An associative array holding the translations for the active language.
+     * The keys are the translation keys and the values are the translated strings.
      *
      * @var array
      */
@@ -25,7 +35,11 @@ class Language
     /**
      * Sets the active language and loads the corresponding translation file.
      *
-     * @param string $lang The language code (e.g., 'en', 'fr').
+     * If a language file for the given code exists in the `lang/` directory,
+     * it is loaded and parsed. If the file does not exist, the currently
+     * loaded language remains unchanged.
+     *
+     * @param string $lang The language code to activate (e.g., 'en', 'fr').
      *
      * @return void
      */
@@ -39,15 +53,18 @@ class Language
     }
 
     /**
-     * Gets a translated string for the given key.
+     * Gets a translated string for a given key, with optional placeholders.
      *
-     * If the key is not found in the translations, the key itself is returned.
-     * Supports replacing placeholders in the format `{placeholder}`.
+     * Retrieves the translation for the specified key from the currently loaded
+     * language file. If the key is not found, the key itself is returned as a fallback.
+     * Placeholders in the format `{placeholder}` will be replaced with their
+     * corresponding values from the `$placeholders` array.
      *
-     * @param string $key          The translation key.
-     * @param array  $placeholders An associative array of placeholders and their values.
+     * @param string $key          The translation key (e.g., 'welcome_message').
+     * @param array  $placeholders An associative array of placeholders and their values
+     *                             (e.g., ['username' => 'John']).
      *
-     * @return string The translated string.
+     * @return string The translated and formatted string.
      */
     public static function get($key, $placeholders = [])
     {

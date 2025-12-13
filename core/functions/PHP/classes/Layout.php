@@ -1,23 +1,33 @@
 <?php
+/**
+ * Layout and Section Management
+ *
+ * This file contains the Layout class, a static utility for creating and
+ * managing template inheritance and content sections.
+ */
 
 /**
  * A class for managing layouts and content sections.
  *
  * This class provides a simple system for defining reusable layouts and injecting
  * content into them from different template files. It supports capturing content
- * for named sections and rendering them within a master layout file.
+ * for named sections using output buffering and rendering them within a master
+ * layout file. All methods are static.
+ *
+ * @package INEX\Core
  */
 class Layout
 {
     /**
-     * An associative array to store the content of captured sections.
+     * An associative array to store the captured content of named sections.
+     * Keys are section names, values are the captured HTML content.
      *
      * @var array
      */
     private static $sections = [];
 
     /**
-     * The name of the section currently being captured.
+     * The name of the section that is currently being captured by output buffering.
      *
      * @var string|null
      */
@@ -26,7 +36,10 @@ class Layout
     /**
      * Starts capturing content for a named section.
      *
-     * @param string $section The name of the section to start.
+     * Begins output buffering and sets the current section name. All output
+     * after this call will be captured until `end()` is called.
+     *
+     * @param string $section The name of the section to start capturing.
      *
      * @return void
      */
@@ -40,7 +53,10 @@ class Layout
     }
 
     /**
-     * Stops capturing content for the current section.
+     * Stops capturing content for the current section and stores it.
+     *
+     * Ends the output buffering for the current section, retrieves the captured
+     * content, and stores it in the `$sections` array.
      *
      * @return void
      */
@@ -58,12 +74,12 @@ class Layout
      *
      * This method searches for the content file in various possible locations
      * (standard, dynamic, request-specific) and then renders it within the
-     * specified layout file.
+     * specified layout file, making the provided data available to both.
      *
-     * @param string $layoutName  The name of the layout file (without extension).
-     * @param string $contentFile The name of the content file to be included.
-     * @param string $requestType The HTTP request type (e.g., 'GET', 'POST').
-     * @param array  $data        Data to be extracted into variables for the layout and content.
+     * @param string $layoutName  The name of the layout file (without extension) in the `layouts/` directory.
+     * @param string $contentFile The name of the content file (without extension) in the `web/` directory.
+     * @param string $requestType The HTTP request type (e.g., 'GET', 'POST') used for locating request-specific files.
+     * @param array  $data        An associative array of data to be extracted into variables for the layout and content files.
      *
      * @return void
      */
@@ -73,7 +89,7 @@ class Layout
 
         $layoutPath = __DIR__."/../../../../layouts/$layoutName.ahmed.php";
 
-        // Support for dynamic paths and request types
+        // Define potential paths for the content file to support various routing conventions.
         $contentPaths = [
             __DIR__."/../../../../web/$contentFile.ahmed.php", // Standard path
             __DIR__."/../../../../web/{$contentFile}_dynamic.ahmed.php", // Dynamic path
@@ -98,15 +114,19 @@ class Layout
         }
 
         extract($data);
+        // The AhmedTemplate instance will render the layout, which in turn will call section()
         echo $Ahmed->render($layoutPath);
     }
 
     /**
-     * Retrieves the content of a named section.
+     * Retrieves and outputs the content of a named section.
      *
-     * @param string $section The name of the section.
+     * This method is intended to be called from within a layout file to inject
+     * the content that was captured in a content file.
      *
-     * @return string The content of the section, or an error message if not found.
+     * @param string $section The name of the section to retrieve.
+     *
+     * @return string The captured HTML content of the section, or an error message if the section was not found.
      */
     public static function section($section)
     {

@@ -1,39 +1,49 @@
 <?php
+/**
+ * User Authentication and Management
+ *
+ * This file contains the UserAuth class, which provides a comprehensive set of
+ * static methods for user registration, login, session management, and database
+ * schema generation based on a JSON configuration.
+ */
 
 /**
  * The path to the JSON file defining the user authentication parameters.
+ * This constant makes it easier to reference the configuration file.
  */
 define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
 
 /**
  * A class for handling user authentication, including sign-up, sign-in, and session management.
  *
- * This class dynamically generates the users table schema, validates user input based on
- * a JSON configuration file, and manages the user's logged-in state.
+ * This class dynamically generates the users table schema based on a JSON configuration,
+ * validates user input against the defined rules, and manages the user's logged-in
+ * state through the session. All methods are static.
+ *
+ * @package INEX\Authentication
  */
 class UserAuth
 {
     /**
      * Generates a 'CREATE TABLE' SQL statement for the 'users' table based on a JSON config.
      *
+     * This method reads the structure and constraints for the users table from
+     * `Json/AuthParams.json` and dynamically constructs a corresponding SQL query.
+     *
      * @return string The generated SQL 'CREATE TABLE' query.
      */
     public static function generateSQL()
     {
         $jsonString = file_get_contents(JSON_FOLDER);
-
         $data = json_decode($jsonString, true);
 
-        // Check if JSON decoding was successful
         if ($data === null) {
-            exit('Error decoding JSON.');
+            exit('Error decoding JSON for SQL generation.');
         }
 
-        // Initialize the SQL query
         $sql = "CREATE TABLE IF NOT EXISTS users (\n";
-        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n"; // Auto-increment ID
+        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n";
 
-        // Mapping JSON data types to SQL types
         $typeMapping = [
             'text'   => 'VARCHAR',
             'email'  => 'VARCHAR',
@@ -44,63 +54,45 @@ class UserAuth
 
         foreach ($data as $field => $attributes) {
             $type = $attributes['type'];
-            $sqlType = $typeMapping[$type] ?? 'TEXT'; // Default to TEXT if type not found
-
-            // Handle VARCHAR length
+            $sqlType = $typeMapping[$type] ?? 'TEXT';
             $maxLength = $attributes['maxLength'] ?? 255;
             if ($sqlType === 'VARCHAR') {
                 $sqlType .= "($maxLength)";
             }
 
-            // Required field
             $required = isset($attributes['required']) ? 'NOT NULL' : '';
-
-            // Unique constraint
             $unique = isset($attributes['unique']) ? 'UNIQUE' : '';
-
-            // Default value
             $default = isset($attributes['default']) ? "DEFAULT '".addslashes($attributes['default'])."'" : '';
 
-            // Construct column definition
             $sql .= "  `$field` $sqlType $required $unique $default,\n";
         }
 
-        // Remove last comma and add closing bracket
         $sql .= "  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);";
 
-        // Print generated SQL
         return $sql;
     }
 
     /**
-     * Signs in a user based on the provided details.
+     * Signs in a user based on the provided credentials.
      *
-     * @param array $details An associative array where keys are column names and values are the user's credentials.
+     * @param array $details An associative array where keys are column names (e.g., 'username', 'password')
+     *                       and values are the credentials to be matched.
      *
-     * @return string|false 'User Found' on success, 'User Not Found' on failure, or false if input is invalid.
+     * @return string|false 'User Found' on successful login, 'User Not Found' on failure,
+     *                      or false if the input details are invalid.
      */
     public static function signIn($details)
     {
-        // Ensure $details is a non-empty array
         if (!is_array($details) || empty($details)) {
             return false;
         }
 
-        // Extract values dynamically
-        $params = [];
-        $conditions = [];
-
-        foreach ($details as $key => $value) {
-            $conditions[] = "$key = ?";
-            $params[] = $value;
-        }
-
         $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($details)));
         $sql = "SELECT * FROM users WHERE $placeholders";
-        $newUser = executeStatement($sql, array_values($details));
-        if (count($newUser) > 0) {
-            $_SESSION['user_id'] = $newUser[0]['id'];
+        $user = executeStatement($sql, array_values($details));
 
+        if (count($user) > 0) {
+            $_SESSION['user_id'] = $user[0]['id'];
             return 'User Found';
         } else {
             return 'User Not Found';
@@ -110,14 +102,16 @@ class UserAuth
     /**
      * Registers a new user after validating their details against the JSON configuration.
      *
-     * @param array $details An associative array of the new user's details.
+     * This method performs a comprehensive validation of the provided details against
+     * the rules defined in `Json/AuthParams.json` before attempting to create a new user.
      *
-     * @return string A message indicating the result of the registration attempt.
+     * @param array $details An associative array of the new user's details to be validated and stored.
+     *
+     * @return string A message indicating the success or failure of the registration attempt.
      */
     public static function signUp($details)
     {
         $jsonString = file_get_contents(JSON_FOLDER);
-
         if ($jsonString === false) {
             return 'Error reading JSON file.';
         }
@@ -127,14 +121,14 @@ class UserAuth
             return 'Error decoding JSON.';
         }
 
-        // Validate required fields
+        // Validate that all required fields are present.
         foreach ($data as $key => $value) {
             if (!empty($value['required']) && $value['required'] === 'true' && (empty($details[$key]) || !isset($details[$key]))) {
                 return "Missing required parameter: $key";
             }
         }
 
-        // Validate fields based on JSON rules
+        // Validate each provided detail against its rules in the JSON config.
         foreach ($details as $key => $value) {
             if (!isset($data[$key])) {
                 return "Invalid parameter: $key";
@@ -219,25 +213,24 @@ class UserAuth
             }
         }
 
-        // Check if user already exists
+        // Check if a user with the same details already exists.
         $placeholders = implode(' AND ', array_map(fn ($k) => "$k = ?", array_keys($details)));
         $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values($details));
         if (!empty($existingUser)) {
             return 'User already exists.';
         }
 
-        // Insert new user
+        // Insert the new user into the database.
         $columns = implode(', ', array_keys($details));
-        $placeholders = implode(', ', array_fill(0, count($details), '?'));
-        $sql = "INSERT INTO users ($columns) VALUES ($placeholders)";
+        $valuePlaceholders = implode(', ', array_fill(0, count($details), '?'));
+        $sql = "INSERT INTO users ($columns) VALUES ($valuePlaceholders)";
 
         try {
             executeStatement($sql, array_values($details));
-            $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($details)));
+            // After successful insertion, log the new user in.
             $sql = "SELECT id FROM users WHERE $placeholders";
             $newUser = executeStatement($sql, array_values($details))[0];
             $_SESSION['user_id'] = $newUser['id'];
-
             return 'User successfully registered.';
         } catch (Exception $e) {
             return 'Error inserting user: '.$e->getMessage();
@@ -245,9 +238,9 @@ class UserAuth
     }
 
     /**
-     * Checks if a user is currently logged in.
+     * Checks if a user is currently logged in by verifying the session.
      *
-     * @return bool True if a user is logged in, false otherwise.
+     * @return bool True if a user is logged in (i.e., `$_SESSION['user_id']` is set and not empty), false otherwise.
      */
     public static function checkUser()
     {
@@ -255,14 +248,13 @@ class UserAuth
     }
 
     /**
-     * Logs out the current user.
+     * Logs out the current user by clearing their user ID from the session.
      *
-     * @return string A confirmation message.
+     * @return string A confirmation message indicating the user has been logged out.
      */
     public static function logout()
     {
         $_SESSION['user_id'] = '';
-
         return 'User logged out.';
     }
 }
