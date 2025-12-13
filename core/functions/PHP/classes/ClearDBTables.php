@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Clear Database Tables Script
+ * Clear Database Tables Script.
  *
  * This file defines and executes a utility to clear all tables from the
  * application's database. It is designed to be run from the command line,
@@ -10,14 +11,13 @@
  */
 
 /**
- * Database Table Clearing Utility
+ * Database Table Clearing Utility.
  *
  * A destructive utility class designed to drop all tables from the database
  * configured in the .env file. This script is intended for development,
  * testing, or reset scenarios and should be used with extreme caution.
  * It is typically executed from the command line via the 'ammar' CLI tool.
  *
- * @package INEX\Database\Utils
  * @warning This script will cause irreversible data loss in the target database.
  */
 class ClearDBTables

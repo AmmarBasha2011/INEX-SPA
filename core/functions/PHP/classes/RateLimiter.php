@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Simple IP-Based Rate Limiter
+ * Simple IP-Based Rate Limiter.
  *
  * This file contains the RateLimiter class, a static utility for preventing
  * abuse by limiting the number of requests an IP address can make in a given time.
@@ -12,8 +13,6 @@
  * This class tracks the number of requests made by a user's IP address within
  * a specific time frame (e.g., one hour) and blocks requests that exceed a
  * configurable limit. It uses a JSON file for storage. All methods are static.
- *
- * @package INEX\Security
  */
 class RateLimiter
 {

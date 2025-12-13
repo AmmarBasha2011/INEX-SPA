@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Layout and Section Management
+ * Layout and Section Management.
  *
  * This file contains the Layout class, a static utility for creating and
  * managing template inheritance and content sections.
@@ -13,8 +14,6 @@
  * content into them from different template files. It supports capturing content
  * for named sections using output buffering and rendering them within a master
  * layout file. All methods are static.
- *
- * @package INEX\Core
  */
 class Layout
 {

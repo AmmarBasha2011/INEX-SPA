@@ -1,6 +1,7 @@
 <?php
+
 /**
- * INEX SPA Framework - Main Entry Point
+ * INEX SPA Framework - Main Entry Point.
  *
  * This file serves as the central entry point and bootstrap for the entire
  * INEX SPA application. It handles configuration, initializes core components,
@@ -17,8 +18,6 @@
  * - Loading any third-party packages.
  * - Including custom user functions.
  * - Passing the request to the main `getPage` routing function.
- *
- * @package INEX
  */
 
 // Core component loading
@@ -53,14 +52,16 @@ if ($dbUse) {
     /**
      * A global helper function to execute a database query.
      *
-     * @param string $sql The SQL query to execute.
-     * @param array $params Parameters to bind to the query.
-     * @param bool $is_return Whether to return a result set.
+     * @param string $sql       The SQL query to execute.
+     * @param array  $params    Parameters to bind to the query.
+     * @param bool   $is_return Whether to return a result set.
+     *
      * @return array|bool The result set or success status.
      */
     function executeStatement($sql, $params = [], $is_return = true)
     {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
     require_once 'core/functions/PHP/runDB.php';
@@ -90,29 +91,47 @@ if ($useCache) {
     require_once 'core/functions/PHP/classes/Cache.php';
     /**
      * Global helper to store an item in the cache.
-     * @param string $key The unique identifier for the cache item.
-     * @param mixed $data The data to be cached.
-     * @param int $expiration The cache lifetime in seconds. Defaults to 3600.
+     *
+     * @param string $key        The unique identifier for the cache item.
+     * @param mixed  $data       The data to be cached.
+     * @param int    $expiration The cache lifetime in seconds. Defaults to 3600.
      */
-    function setCache($key, $data, $expiration = 3600) { Cache::set($key, $data, $expiration); }
+    function setCache($key, $data, $expiration = 3600)
+    {
+        Cache::set($key, $data, $expiration);
+    }
     /**
      * Global helper to retrieve an item from the cache.
+     *
      * @param string $key The unique identifier for the cache item.
+     *
      * @return mixed The cached data or false if not found/expired.
      */
-    function getCache($key) { return Cache::get($key); }
+    function getCache($key)
+    {
+        return Cache::get($key);
+    }
     /**
      * Global helper to delete an item from the cache.
+     *
      * @param string $key The unique identifier for the cache item.
      */
-    function deleteCache($key) { Cache::delete($key); }
+    function deleteCache($key)
+    {
+        Cache::delete($key);
+    }
     /**
      * Global helper to update an existing cache item.
-     * @param string $key The unique identifier for the cache item.
-     * @param mixed $newData The new data to store.
+     *
+     * @param string $key     The unique identifier for the cache item.
+     * @param mixed  $newData The new data to store.
+     *
      * @return bool True on success, false if the item does not exist.
      */
-    function updateCache($key, $newData) { return Cache::update($key, $newData); }
+    function updateCache($key, $newData)
+    {
+        return Cache::update($key, $newData);
+    }
 }
 
 // Load other core classes and utilities

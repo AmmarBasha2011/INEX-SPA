@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Ahmed Template Engine
+ * Ahmed Template Engine.
  *
  * A lightweight yet powerful template engine for PHP that compiles custom template
  * syntax into plain PHP code. It supports variables, control structures, includes,
  * layouts, and more, making template creation clean and efficient.
- *
- * @package INEX\Core
  */
 class AhmedTemplate
 {
@@ -22,9 +20,9 @@ class AhmedTemplate
      * @param array  $data     An associative array of data to be made available to the template.
      *                         Keys become variable names.
      *
-     * @return string The fully rendered HTML or text content.
-     *
      * @throws \Exception If the specified template file does not exist.
+     *
+     * @return string The fully rendered HTML or text content.
      */
     public function render($template, $data = [])
     {

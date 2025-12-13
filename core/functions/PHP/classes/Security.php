@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Basic Input Sanitization
+ * Basic Input Sanitization.
  *
  * This file contains the Security class, a static utility for performing
  * basic security-related input filtering.
@@ -11,8 +12,6 @@
  *
  * This class provides simple, static methods for sanitizing user input to
  * prevent common vulnerabilities like Cross-Site Scripting (XSS).
- *
- * @package INEX\Security
  */
 class Security
 {

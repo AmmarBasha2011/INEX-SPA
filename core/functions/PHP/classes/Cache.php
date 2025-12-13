@@ -1,13 +1,11 @@
 <?php
 
 /**
- * File-Based Caching System
+ * File-Based Caching System.
  *
  * Provides a simple and efficient way to store, retrieve, and manage cached
  * data using the local filesystem. Cache items are stored as serialized JSON
  * files and have a defined expiration time. This class is entirely static.
- *
- * @package INEX\Core
  */
 class Cache
 {

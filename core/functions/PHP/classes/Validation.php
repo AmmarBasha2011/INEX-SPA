@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Data Validation Utility
+ * Data Validation Utility.
  *
  * This file provides the Validation class, a static utility for performing
  * common data validation checks such as email format, string length, and numeric types.
@@ -11,8 +12,6 @@
  *
  * This class provides a collection of static methods for common validation
  * tasks. All methods are static and return a boolean result.
- *
- * @package INEX\Validation
  */
 class Validation
 {
@@ -77,6 +76,7 @@ class Validation
     public static function isSubDir($domain)
     {
         $path = parse_url($domain, PHP_URL_PATH);
+
         return $path && trim($path, '/') !== '';
     }
 
@@ -108,6 +108,7 @@ class Validation
                 return true;
             }
         }
+
         return false;
     }
 
@@ -127,6 +128,7 @@ class Validation
                 return true;
             }
         }
+
         return false;
     }
 

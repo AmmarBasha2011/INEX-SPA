@@ -1,6 +1,7 @@
 <?php
+
 /**
- * User Authentication and Management
+ * User Authentication and Management.
  *
  * This file contains the UserAuth class, which provides a comprehensive set of
  * static methods for user registration, login, session management, and database
@@ -19,8 +20,6 @@ define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
  * This class dynamically generates the users table schema based on a JSON configuration,
  * validates user input against the defined rules, and manages the user's logged-in
  * state through the session. All methods are static.
- *
- * @package INEX\Authentication
  */
 class UserAuth
 {
@@ -93,6 +92,7 @@ class UserAuth
 
         if (count($user) > 0) {
             $_SESSION['user_id'] = $user[0]['id'];
+
             return 'User Found';
         } else {
             return 'User Not Found';
@@ -231,6 +231,7 @@ class UserAuth
             $sql = "SELECT id FROM users WHERE $placeholders";
             $newUser = executeStatement($sql, array_values($details))[0];
             $_SESSION['user_id'] = $newUser['id'];
+
             return 'User successfully registered.';
         } catch (Exception $e) {
             return 'Error inserting user: '.$e->getMessage();
@@ -255,6 +256,7 @@ class UserAuth
     public static function logout()
     {
         $_SESSION['user_id'] = '';
+
         return 'User logged out.';
     }
 }

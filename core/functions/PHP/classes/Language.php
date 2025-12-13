@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Language and Translation Management
+ * Language and Translation Management.
  *
  * This file provides the Language class, a static utility for managing
  * multilingual support in the application.
@@ -12,8 +13,6 @@
  * This class manages loading language files (in JSON format) and retrieving
  * translated strings by a given key. It supports dynamic placeholders in
  * translation strings for variable content. All methods are static.
- *
- * @package INEX\Localization
  */
 class Language
 {

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Simple File-Based Session Management
+ * Simple File-Based Session Management.
  *
  * This file provides the Session class, a static utility for managing session
  * data using the local filesystem.
@@ -15,8 +16,6 @@
  * This class provides a basic mechanism for storing session-like data in files.
  * It uses simple base64 encoding, which is **not secure** and should be
  * replaced with a proper encryption method for production use. All methods are static.
- *
- * @package INEX\Http
  */
 class Session
 {
@@ -71,12 +70,11 @@ class Session
      */
     public static function delete($key)
     {
-        $file = self::$storagePath . $key;
+        $file = self::$storagePath.$key;
         if (file_exists($file)) {
             unlink($file);
         }
     }
-
 
     /**
      * Encodes data using base64.
@@ -84,8 +82,8 @@ class Session
      * @param string $data The data to be encoded.
      *
      * @return string The base64-encoded data.
-     * @warning This is not a secure method of encryption.
      *
+     * @warning This is not a secure method of encryption.
      */
     private static function encrypt($data)
     {
