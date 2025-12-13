@@ -1,22 +1,30 @@
 <?php
 
 /**
- * A simple template engine for rendering PHP templates.
+ * Ahmed Template Engine
  *
- * This class provides a basic but powerful template engine that replaces custom
- * syntax (e.g., `{{ $variable }}`, `@if(...)`) with standard PHP code.
+ * A lightweight yet powerful template engine for PHP that compiles custom template
+ * syntax into plain PHP code. It supports variables, control structures, includes,
+ * layouts, and more, making template creation clean and efficient.
+ *
+ * @package INEX\Core
  */
 class AhmedTemplate
 {
     /**
-     * Renders a template file with the given data.
+     * Renders a template file with the provided data.
      *
-     * @param string $template The path to the template file.
-     * @param array  $data     Associative array of data to be extracted into variables for the template.
+     * This method reads a template file, parses its custom syntax into executable
+     * PHP code, and then evaluates it, capturing the output. It extracts the
+     * provided data array into variables accessible within the template.
      *
-     * @throws Exception If the template file is not found.
+     * @param string $template The file path to the template to be rendered.
+     * @param array  $data     An associative array of data to be made available to the template.
+     *                         Keys become variable names.
      *
-     * @return string The rendered content.
+     * @return string The fully rendered HTML or text content.
+     *
+     * @throws \Exception If the specified template file does not exist.
      */
     public function render($template, $data = [])
     {
@@ -28,27 +36,36 @@ class AhmedTemplate
         $content = file_get_contents($templateFile);
         $parsedContent = $this->parse($content);
 
+        // Extract the data array into the current symbol table
         extract($data);
+
+        // Start output buffering to capture the evaluated template
         ob_start();
+        // Evaluate the parsed PHP code
         eval('?>'.$parsedContent);
 
+        // Return the captured output
         return ob_get_clean();
     }
 
     /**
-     * Parses the template content, replacing custom syntax with PHP code.
+     * Parses the raw template content into executable PHP code.
      *
-     * @param string $content The raw content of the template.
+     * This method uses a series of regular expressions to find and replace the
+     * custom Ahmed Template syntax (e.g., {{ $variable }}, @if, @foreach) with
+     * their corresponding native PHP code constructs.
      *
-     * @return string The parsed content with PHP code.
+     * @param string $content The raw string content of the template file.
+     *
+     * @return string The template content with all custom syntax compiled into PHP.
      */
     protected function parse($content)
     {
         $patterns = [
-            // Variable output
+            // {{ $variable }} for safe HTML output
             '/{{\s*(.+?)\s*}}/' => '<?= htmlentities($1) ?>',
 
-            // Control structures
+            // Control structures: @if, @foreach, etc.
             '/@if\s*\((.+?)\)/'      => '<?php if ($1): ?>',
             '/@elseif\s*\((.+?)\)/'  => '<?php elseif ($1): ?>',
             '/@else/'                => '<?php else: ?>',
@@ -68,7 +85,7 @@ class AhmedTemplate
             '/@break/'               => '<?php break; ?>',
             '/@continue/'            => '<?php continue; ?>',
 
-            // Conditional checks
+            // Conditional checks: @isset, @empty
             '/@isset\((.+?)\)/'  => '<?php if (isset($1)): ?>',
             '/@endisset/'        => '<?php endif; ?>',
             '/@empty\((.+?)\)/'  => '<?php if (empty($1)): ?>',
@@ -76,7 +93,7 @@ class AhmedTemplate
             '/@unless\((.+?)\)/' => '<?php if (!($1)): ?>',
             '/@endunless/'       => '<?php endif; ?>',
 
-            // Functions and helpers
+            // Built-in framework function helpers
             '/@getLang\("(.+?)"\)/'      => '<?= Language::get("$1") ?>',
             '/@getEnv\("(.+?)"\)/'       => '<?php echo getEnvValue("$1"); ?>',
             '/@include\("(.+?)"\)/'      => '<?php include "$1"; ?>',
@@ -86,13 +103,13 @@ class AhmedTemplate
             '/@checkRateLimit\((.+?)\)/' => '<?php RateLimiter::check($1); ?>',
             '/@validateCsrf()/'          => '<?php validateCsrfToken(); ?>',
 
-            // Layout and sections
+            // Layout and section directives
             '/@section\("(.+?)"\)/'                               => '<?php Layout::start("$1"); ?>',
             '/@endSection/'                                       => '<?php Layout::end(); ?>',
             '/@render\("(.+?)",\s*"(.+?)",\s*"(.+?)",\s*(.*?)\)/' => '<?php Layout::render("$1", "$2", "$3", $4); ?>',
             '/@getSection\("(.+?)"\)/'                            => '<?= Layout::section("$1") ?>',
 
-            // Variables and data manipulation
+            // Variable and data handling
             '/@set\("(.+?)",\s*(.+?)\)/'    => '<?php $$1 = $2; ?>',
             '/@define\("(.+?)",\s*(.+?)\)/' => '<?php $1 = $2; ?>',
             '/@var\("(.+?)"\)/'             => '<?= $$1 ?>',
@@ -102,7 +119,7 @@ class AhmedTemplate
             '/@fromJson\((.+?)\)/'          => '<?= json_decode($1, true) ?>',
             '/@jsonFile\("(.+?)"\)/'        => '<?= json_decode(file_get_contents("$1"), true) ?>',
 
-            // String and number functions
+            // String and number formatting functions
             '/@strtoupper\("(.+?)"\)/'             => '<?= strtoupper("$1") ?>',
             '/@strtolower\("(.+?)"\)/'             => '<?= strtolower("$1") ?>',
             '/@ucfirst\("(.+?)"\)/'                => '<?= ucfirst("$1") ?>',
@@ -113,41 +130,41 @@ class AhmedTemplate
             '/@number_format\((.+?),\s*(.+?)\)/'   => '<?= number_format($1, $2) ?>',
             '/@date\("(.+?)",\s*(.+?)\)/'          => '<?= date("$1", $2) ?>',
 
-            // Debugging
+            // Debugging helpers
             '/@dump\((.+?)\)/' => '<?php var_dump($1); ?>',
             '/@dd\((.+?)\)/'   => '<?php die(var_dump($1)); ?>',
 
-            // Raw PHP
+            // Raw PHP execution blocks
             '/@php/'               => '<?php ',
             '/@endphp/'            => ' ?>',
             '/@phpCode\((.*?)\)/s' => '<?php $1 ?>',
 
-            // Comments
+            // Template comments
             '/{{--(.*?)--}}/s' => '<?php /* $1 */ ?>',
 
-            // Language and session
+            // Language and session management
             '/@setLang\("(.+?)"\)/'                => '<?php Language::set("$1"); ?>',
             '/@makeSession\("(.+?)",\s*"(.+?)"\)/' => '<?php Session::make("$1", "$2"); ?>',
             '/@getSession\("(.+?)"\)/'             => '<?= Session::get("$1") ?>',
             '/@deleteSession\("(.+?)"\)/'          => '<?php Session::delete("$1"); ?>',
 
-            // Cookies
+            // Cookie management
             '/@setCookie\("(.+?)",\s*"(.+?)",\s*(.+?)\)/' => '<?php CookieManager::set("$1", "$2", $3); ?>',
             '/@getCookie\("(.+?)"\)/'                     => '<?= CookieManager::get("$1") ?>',
             '/@existsCookie\("(.+?)"\)/'                  => '<?= CookieManager::exists("$1") ? "true" : "false" ?>',
             '/@deleteCookie\("(.+?)"\)/'                  => '<?php CookieManager::delete("$1"); ?>',
             '/@getAllCookies()/'                          => '<?= json_encode(CookieManager::getAll()) ?>',
 
-            // Cache
+            // Cache management
             '/@setCache\("(.+?)",\s*"(.+?)",\s*(.+?)\)/' => '<?php setCache("$1", "$2", $3); ?>',
             '/@getCache\("(.+?)"\)/'                     => '<?php getCache("$1") ?>',
             '/@updateCache\("(.+?)",\s*"(.+?)"\)/'       => '<?php updateCache("$1", "$2"); ?>',
             '/@deleteCache\("(.+?)"\)/'                  => '<?php deleteCache("$1"); ?>',
 
-            // AI
+            // AI integration
             '/@useGemini\((.+?),\s*(.*?),\s*(.*?),\s*(.+?),\s*(.+?),\s*(.+?),\s*(.+?)\)/' => '<?= json_encode(useGemini($1, $2, $3, $4, $5, $6, $7)) ?>',
 
-            // Generic function calls (must be last)
+            // Generic function calls (should be last to avoid conflicts)
             '/@([a-zA-Z_][a-zA-Z0-9_]*)\((.*?)\)/' => '<?= $1($2) ?>',
             '/@([a-zA-Z_][a-zA-Z0-9_]*)/'          => '<?= $1() ?>',
         ];

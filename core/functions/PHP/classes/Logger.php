@@ -1,10 +1,19 @@
 <?php
+/**
+ * Simple File-Based Logging System
+ *
+ * This file contains the Logger class, a static utility for writing log messages
+ * to various files within the application's log directory.
+ */
 
 /**
  * A simple file-based logger.
  *
  * This class provides static methods to log messages to different files based
- * on their type (e.g., 'error', 'security') and to clear all log files.
+ * on their type (e.g., 'error', 'security', 'api', 'system'). It also includes
+ * a utility method to clear all log files. All methods are static.
+ *
+ * @package INEX\Logging
  */
 class Logger
 {
@@ -16,10 +25,13 @@ class Logger
     private static $logPath = __DIR__.'/../../../logs/';
 
     /**
-     * Logs a message to the appropriate log file.
+     * Logs a message to the appropriate log file based on its type.
      *
-     * @param string $type    The type of the log message. Determines the log file used.
-     *                        Can be 'error', 'security', 'api', or a default 'system'.
+     * Each log entry is prepended with a timestamp and the log type.
+     *
+     * @param string $type    The type of the log message, which determines the log file.
+     *                        Valid types are 'error', 'security', and 'api'.
+     *                        Any other type will default to 'system.log'.
      * @param string $message The message to be logged.
      *
      * @return void
@@ -45,9 +57,10 @@ class Logger
     }
 
     /**
-     * Clears all log files.
+     * Clears the contents of all standard log files.
      *
-     * This method empties the contents of all standard log files.
+     * This method truncates the 'system.log', 'errors.log', 'security.log',
+     * and 'api.log' files.
      *
      * @return void
      */

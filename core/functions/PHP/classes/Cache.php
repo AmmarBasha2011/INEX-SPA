@@ -1,26 +1,36 @@
 <?php
 
 /**
- * A simple file-based caching class.
+ * File-Based Caching System
  *
- * This class provides basic functionality to set, get, update, and delete
- * cached data. Caches are stored as serialized JSON files on the filesystem.
+ * Provides a simple and efficient way to store, retrieve, and manage cached
+ * data using the local filesystem. Cache items are stored as serialized JSON
+ * files and have a defined expiration time. This class is entirely static.
+ *
+ * @package INEX\Core
  */
 class Cache
 {
     /**
      * The directory where cache files are stored.
      *
+     * This path is relative to the current file's directory. It points to the
+     * `cache` folder in the project's `core` directory.
+     *
      * @var string
      */
     private static $cacheDir = __DIR__.'/../../../cache/';
 
     /**
-     * Stores data in the cache.
+     * Stores an item in the cache.
+     *
+     * Creates a cache file with the specified key, storing the provided data
+     * along with an expiration timestamp. The data will be JSON encoded.
      *
      * @param string $key        The unique identifier for the cache item.
      * @param mixed  $data       The data to be cached. Must be serializable.
-     * @param int    $expiration The cache lifetime in seconds. Defaults to 3600 (1 hour).
+     * @param int    $expiration The cache lifetime in seconds from the current time.
+     *                           Defaults to 3600 seconds (1 hour).
      *
      * @return void
      */
@@ -35,11 +45,14 @@ class Cache
     }
 
     /**
-     * Retrieves data from the cache.
+     * Retrieves an item from the cache.
+     *
+     * Fetches the cache item corresponding to the key. If the item does not exist
+     * or has expired, it will be deleted and this method will return false.
      *
      * @param string $key The unique identifier for the cache item.
      *
-     * @return mixed The cached data, or false if the cache is expired or not found.
+     * @return mixed The cached data on success, or false if the cache is expired or not found.
      */
     public static function get($key)
     {
@@ -50,7 +63,7 @@ class Cache
 
         $content = json_decode(file_get_contents($file), true);
         if (time() > $content['expires']) {
-            unlink($file);
+            unlink($file); // The cache has expired, so we delete it.
 
             return false;
         }
@@ -59,22 +72,25 @@ class Cache
     }
 
     /**
-     * Updates existing data in the cache without changing the expiration time.
+     * Updates an existing cache item without altering its expiration time.
      *
-     * @param string $key     The unique identifier for the cache item.
-     * @param mixed  $newData The new data to be stored.
+     * If a cache item with the given key exists, this method replaces its data
+     * with the new data provided. The original expiration time is preserved.
      *
-     * @return bool True on successful update, false if the cache item does not exist.
+     * @param string $key     The unique identifier for the cache item to update.
+     * @param mixed  $newData The new data to store in the cache. Must be serializable.
+     *
+     * @return bool True on successful update, or false if the cache item does not exist.
      */
     public static function update($key, $newData)
     {
         $file = self::$cacheDir.md5($key).'.cache';
         if (!file_exists($file)) {
-            return false; // No cache to update
+            return false; // Cannot update a non-existent cache item.
         }
 
         $content = json_decode(file_get_contents($file), true);
-        $content['data'] = $newData; // Update data only
+        $content['data'] = $newData; // Only update the data portion.
 
         file_put_contents($file, json_encode($content));
 
@@ -82,9 +98,11 @@ class Cache
     }
 
     /**
-     * Deletes a cache item.
+     * Deletes an item from the cache.
      *
-     * @param string $key The unique identifier for the cache item.
+     * Removes the cache file associated with the given key if it exists.
+     *
+     * @param string $key The unique identifier for the cache item to delete.
      *
      * @return void
      */

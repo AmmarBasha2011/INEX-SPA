@@ -1,11 +1,22 @@
 <?php
+/**
+ * Simple File-Based Session Management
+ *
+ * This file provides the Session class, a static utility for managing session
+ * data using the local filesystem.
+ *
+ * @warning This implementation uses base64 for encoding, which is not secure encryption.
+ *          It is not suitable for storing sensitive information in production.
+ */
 
 /**
  * A simple file-based session management class.
  *
- * This class provides a basic mechanism for storing session data in files.
- * It uses simple base64 encoding for "encryption," which is not secure
- * and should be improved for production use.
+ * This class provides a basic mechanism for storing session-like data in files.
+ * It uses simple base64 encoding, which is **not secure** and should be
+ * replaced with a proper encryption method for production use. All methods are static.
+ *
+ * @package INEX\Http
  */
 class Session
 {
@@ -19,8 +30,10 @@ class Session
     /**
      * Creates or overwrites a session variable.
      *
-     * @param string $key   The key for the session variable.
-     * @param mixed  $value The value to be stored.
+     * The value is JSON encoded and then base64 encoded before being written to a file.
+     *
+     * @param string $key   The key for the session variable. This will be the filename.
+     * @param mixed  $value The value to be stored. Must be serializable.
      *
      * @return void
      */
@@ -33,9 +46,11 @@ class Session
     /**
      * Retrieves a session variable.
      *
+     * Reads the corresponding file, decodes the base64 and JSON, and returns the value.
+     *
      * @param string $key The key of the session variable to retrieve.
      *
-     * @return mixed|null The value of the session variable, or null if not found.
+     * @return mixed|null The value of the session variable, or null if the file does not exist.
      */
     public static function get($key)
     {
@@ -48,7 +63,7 @@ class Session
     }
 
     /**
-     * Deletes a session variable.
+     * Deletes a session variable by deleting its corresponding file.
      *
      * @param string $key The key of the session variable to delete.
      *
@@ -56,25 +71,29 @@ class Session
      */
     public static function delete($key)
     {
-        unlink(self::$storagePath.$key);
+        $file = self::$storagePath . $key;
+        if (file_exists($file)) {
+            unlink($file);
+        }
     }
 
+
     /**
-     * "Encrypts" data using base64 encoding.
-     *
-     * Note: This is not a secure method of encryption.
+     * Encodes data using base64.
      *
      * @param string $data The data to be encoded.
      *
      * @return string The base64-encoded data.
+     * @warning This is not a secure method of encryption.
+     *
      */
     private static function encrypt($data)
     {
-        return base64_encode($data); // Simple encryption (can be improved)
+        return base64_encode($data);
     }
 
     /**
-     * Decrypts data from base64 encoding.
+     * Decodes data from base64 encoding.
      *
      * @param string $data The base64-encoded data.
      *
