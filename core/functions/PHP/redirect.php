@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Handles URL routing for the application.
+ * Main entry point for client-side navigation and routing requests.
  *
- * This script checks for a 'route' parameter in the GET request and,
- * if present, passes it to the `getPage()` function to render the
- * appropriate page.
+ * This script is responsible for capturing client-side routing requests, which are
+ * typically sent with a `route` parameter in the query string. It includes the
+ * main page rendering logic from `getPage.php` and invokes the `getPage()` function
+ * to handle the actual rendering of the requested route.
  */
 require_once 'getPage.php';
 

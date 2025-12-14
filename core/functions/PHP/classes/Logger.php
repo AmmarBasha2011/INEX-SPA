@@ -1,27 +1,31 @@
 <?php
 
 /**
- * A simple file-based logger.
+ * A simple, file-based logging utility for recording application events.
  *
- * This class provides static methods to log messages to different files based
- * on their type (e.g., 'error', 'security') and to clear all log files.
+ * This class provides static methods to write log messages to different files
+ * based on their type (e.g., 'error', 'security', 'api', 'system'). It also
+ * includes a method to clear all log files, useful for development or maintenance.
  */
 class Logger
 {
     /**
-     * The path to the directory where log files are stored.
+     * The absolute path to the directory where log files are stored.
      *
      * @var string
      */
     private static $logPath = __DIR__.'/../../../logs/';
 
     /**
-     * Logs a message to the appropriate log file.
+     * Writes a message to a log file determined by its type.
      *
-     * @param string $type    The type of the log message. Determines the log file used.
-     *                        Can be 'error', 'security', 'api', or a default 'system'.
-     * @param string $message The message to be logged.
+     * Each log entry is timestamped and formatted before being appended to the
+     * corresponding log file (e.g., `errors.log`, `security.log`).
      *
+     * @param string $type    The category of the log message. This determines which file
+     *                        the message will be written to. Accepted values are 'error',
+     *                        'security', and 'api'. Any other value will default to 'system'.
+     * @param string $message The descriptive message to be logged.
      * @return void
      */
     public static function log($type, $message)
@@ -45,9 +49,10 @@ class Logger
     }
 
     /**
-     * Clears all log files.
+     * Clears the content of all predefined log files.
      *
-     * This method empties the contents of all standard log files.
+     * This method truncates the `system.log`, `errors.log`, `security.log`,
+     * and `api.log` files, effectively deleting all their logged messages.
      *
      * @return void
      */

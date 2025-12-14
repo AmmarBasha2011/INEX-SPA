@@ -1,38 +1,42 @@
 <?php
 
 /**
- * A simple file-based rate limiter.
+ * Implements a simple, file-based rate limiter to prevent abuse of application endpoints.
  *
- * This class tracks the number of requests made by a user's IP address within
- * a specific time frame and blocks requests that exceed a configurable limit.
+ * This class tracks the number of requests from individual IP addresses over a defined
+ * time window. If an IP exceeds a configured request limit, subsequent requests are
+ * blocked with a 429 "Too Many Requests" status.
  */
 class RateLimiter
 {
     /**
-     * The maximum number of requests allowed per user per time frame.
+     * The maximum number of requests allowed from a single IP address within the time frame.
+     * This value is loaded from the `REQUESTS_PER_HOUR` environment variable.
      *
      * @var int
      */
     private static $limit;
 
     /**
-     * The time frame for rate limiting in seconds (e.g., 3600 for 1 hour).
+     * The duration of the rate-limiting window in seconds.
+     * Defaults to 3600 seconds (1 hour).
      *
      * @var int
      */
     private static $timeFrame = 3600; // Time window (1 hour)
 
     /**
-     * The file used to store request counts.
+     * The path to the JSON file used for storing request timestamps and counts for each IP.
      *
      * @var string
      */
     private static $storageFile = __DIR__.'/../../../storage/rate_limit.json'; // Store request counts
 
     /**
-     * Initializes the rate limiter settings.
+     * Initializes the rate limiter's configuration settings.
      *
-     * This method loads the request limit from the environment configuration.
+     * This method reads the `REQUESTS_PER_HOUR` value from the .env file to set
+     * the request limit. It should be called before using the `check` method.
      *
      * @return void
      */
@@ -42,13 +46,18 @@ class RateLimiter
     }
 
     /**
-     * Checks if the user has exceeded the rate limit.
+     * Checks the request rate for a given IP address and blocks it if the limit is exceeded.
      *
-     * If the limit is exceeded, it sends a 429 "Too Many Requests" response
-     * and terminates the script. Otherwise, it logs the current request.
+     * This method performs the following actions:
+     * 1. Initializes settings if they haven't been loaded.
+     * 2. Reads the request data from the storage file.
+     * 3. Cleans up any expired entries from the data.
+     * 4. Checks the request count for the provided IP. If it exceeds the limit,
+     *    it terminates the script with a 429 HTTP status and an error message.
+     * 5. If the limit is not exceeded, it increments the request count for the IP.
+     * 6. Writes the updated data back to the storage file.
      *
-     * @param string $userIP The IP address of the user making the request.
-     *
+     * @param string $userIP The IP address of the client making the request.
      * @return void
      */
     public static function check($userIP)

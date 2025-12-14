@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * The main entry point and bootstrap file for the INEX SPA application.
+ *
+ * This file is responsible for initializing the application environment. It handles:
+ * - Loading essential classes and functions.
+ * - Reading environment variables from the .env file.
+ * - Conditionally including features based on the environment configuration (e.g., database, caching, security).
+ * - Setting up error reporting for development mode.
+ * - Dynamically loading third-party packages and custom user functions.
+ * - Initiating the routing process by calling the `getPage()` function to handle the incoming request.
+ */
+
 require_once 'core/functions/PHP/classes/AhmedTemplate.php';
 $Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';

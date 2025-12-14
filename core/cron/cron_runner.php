@@ -1,7 +1,21 @@
 <?php
 
+/**
+ * A command-line script for executing scheduled cron tasks.
+ *
+ * This script acts as the main entry point for running cron jobs. It is designed
+ * to be called from the command line (or a crontab entry) with the name of a
+ * task class as an argument. It handles the loading of the necessary environment,
+ * locating and instantiating the specified task class, and executing its `handle`
+ * method. It also includes basic logging for monitoring task execution.
+ *
+ * @usage php cron_runner.php <TaskName>
+ * @example php /path/to/project/core/cron/cron_runner.php MyDailyReport
+ */
+
 // Ensure script is run from CLI
 if (php_sapi_name() !== 'cli') {
+    http_response_code(403);
     exit('This script can only be run from the command line.');
 }
 
@@ -42,9 +56,19 @@ if (file_exists(PROJECT_ROOT.'/core/functions/PHP/getEnvValue.php')) {
 $logFile = LOGS_DIR.'cron.log';
 
 if (!is_dir(LOGS_DIR)) {
-    mkdir(LOGS_DIR, 0755, true); // Try to create if not exists
+    // Try to create the logs directory if it doesn't exist.
+    mkdir(LOGS_DIR, 0755, true);
 }
 
+/**
+ * Appends a message to the cron log file.
+ *
+ * This function adds a timestamp to the given message and writes it to the
+ * `cron.log` file, providing a simple logging mechanism for cron job execution.
+ *
+ * @param string $message The message to be logged.
+ * @return void
+ */
 function log_cron_message($message)
 {
     global $logFile;

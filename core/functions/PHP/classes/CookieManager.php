@@ -1,20 +1,20 @@
 <?php
 
 /**
- * A utility class for managing browser cookies.
+ * Provides a simplified, static interface for managing browser cookies.
  *
- * This class provides a simple, static interface for setting, getting, deleting,
- * and checking for the existence of cookies.
+ * This utility class wraps PHP's native cookie functions, offering a straightforward
+ * way to set, get, delete, and check for the existence of cookies within the application.
  */
 class CookieManager
 {
     /**
-     * Sets a cookie.
+     * Sets a cookie with a specified name, value, and expiration period.
      *
      * @param string $name  The name of the cookie.
-     * @param string $value The value of the cookie.
-     * @param int    $days  The number of days until the cookie expires. Defaults to 7.
-     *
+     * @param string $value The value to be stored in the cookie.
+     * @param int    $days  The number of days from the current time that the cookie
+     *                      should expire. Defaults to 7 days.
      * @return void
      */
     public static function set($name, $value, $days = 7)
@@ -24,11 +24,10 @@ class CookieManager
     }
 
     /**
-     * Gets the value of a cookie.
+     * Retrieves the value of a cookie by its name.
      *
-     * @param string $name The name of the cookie.
-     *
-     * @return string|null The value of the cookie, or null if it does not exist.
+     * @param string $name The name of the cookie to retrieve.
+     * @return string|null The value of the cookie if it is set, otherwise `null`.
      */
     public static function get($name)
     {
@@ -36,12 +35,12 @@ class CookieManager
     }
 
     /**
-     * Deletes a cookie.
+     * Deletes a cookie from the browser.
      *
-     * This is done by setting the cookie with an expiration date in the past.
+     * This is achieved by setting the cookie with an expiration date in the past,
+     * which instructs the browser to remove it.
      *
      * @param string $name The name of the cookie to delete.
-     *
      * @return void
      */
     public static function delete($name)
@@ -50,11 +49,10 @@ class CookieManager
     }
 
     /**
-     * Checks if a cookie exists.
+     * Checks whether a cookie with the specified name exists.
      *
-     * @param string $name The name of the cookie.
-     *
-     * @return bool True if the cookie exists, false otherwise.
+     * @param string $name The name of the cookie to check.
+     * @return bool `true` if the cookie exists, `false` otherwise.
      */
     public static function exists($name)
     {
@@ -62,9 +60,10 @@ class CookieManager
     }
 
     /**
-     * Gets all cookies.
+     * Retrieves all currently available cookies.
      *
-     * @return array An associative array of all cookies.
+     * @return array An associative array containing all cookies, where keys are
+     *               the cookie names.
      */
     public static function getAll()
     {

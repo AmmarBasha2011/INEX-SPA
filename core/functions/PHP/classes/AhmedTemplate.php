@@ -1,22 +1,27 @@
 <?php
 
 /**
- * A simple template engine for rendering PHP templates.
+ * A simple, lightweight template engine for rendering PHP templates with custom syntax.
  *
- * This class provides a basic but powerful template engine that replaces custom
- * syntax (e.g., `{{ $variable }}`, `@if(...)`) with standard PHP code.
+ * This class provides a basic but powerful template engine that parses template files,
+ * replacing custom directives (e.g., `{{ $variable }}`, `@if(...)`, `@foreach(...)`)
+ * with standard PHP code, which is then executed to generate the final HTML output.
  */
 class AhmedTemplate
 {
     /**
-     * Renders a template file with the given data.
+     * Renders a template file with the given data and returns the output.
      *
-     * @param string $template The path to the template file.
-     * @param array  $data     Associative array of data to be extracted into variables for the template.
+     * This method reads a template file, parses its content to replace custom
+     * template syntax with executable PHP, and then evaluates the result,
+     * making the provided data available as local variables within the template.
      *
-     * @throws Exception If the template file is not found.
+     * @param string $template The path to the template file to be rendered.
+     * @param array  $data     An associative array of data to be extracted into variables
+     *                         for use within the template.
      *
-     * @return string The rendered content.
+     * @return string The rendered HTML content.
+     * @throws Exception If the specified template file does not exist.
      */
     public function render($template, $data = [])
     {

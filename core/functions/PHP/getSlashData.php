@@ -1,16 +1,18 @@
 <?php
 
 /**
- * Splits a string by a slash and returns the two parts.
+ * Parses a string containing a single slash to extract the parts before and after it.
  *
- * This function is used for parsing simple routes. It splits the input string
- * by the '/' character. If the string contains exactly one slash, it returns
- * an associative array with the parts before and after the slash.
+ * This function is primarily used for simple dynamic routing, where a URL segment might
+ * be in the format `resource/id`. It splits the input string by the `/` character.
+ * If the string contains exactly one slash, it returns an associative array with the
+ * parts labeled 'before' and 'after'.
  *
- * @param string $text The input string to parse.
+ * @param string $text The input string to parse, typically a URL segment.
  *
- * @return array|string An associative array `['before' => string, 'after' => string]`
- *                      if the split is successful, or the string 'Not Found' otherwise.
+ * @return array|string Returns an associative array `['before' => string, 'after' => string]`
+ *                      if the string is successfully split. Otherwise, it returns the
+ *                      string 'Not Found'.
  */
 function getSlashData($text)
 {

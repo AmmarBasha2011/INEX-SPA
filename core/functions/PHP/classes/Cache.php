@@ -1,10 +1,11 @@
 <?php
 
 /**
- * A simple file-based caching class.
+ * Manages a simple file-based cache for storing and retrieving serializable data.
  *
- * This class provides basic functionality to set, get, update, and delete
- * cached data. Caches are stored as serialized JSON files on the filesystem.
+ * This class provides static methods to set, get, update, and delete cache entries.
+ * Each cache item is stored as a JSON-encoded file on the filesystem, containing the
+ * data and its expiration timestamp.
  */
 class Cache
 {
@@ -16,12 +17,16 @@ class Cache
     private static $cacheDir = __DIR__.'/../../../cache/';
 
     /**
-     * Stores data in the cache.
+     * Stores a piece of data in the cache for a specified duration.
      *
-     * @param string $key        The unique identifier for the cache item.
-     * @param mixed  $data       The data to be cached. Must be serializable.
-     * @param int    $expiration The cache lifetime in seconds. Defaults to 3600 (1 hour).
+     * Creates a cache file containing the data and its expiration time. The data
+     * will be JSON-encoded, so it must be serializable.
      *
+     * @param string $key        The unique key used to identify the cache item.
+     * @param mixed  $data       The data to be cached. This can be any type that is
+     *                           serializable to JSON (e.g., string, array, object).
+     * @param int    $expiration The lifetime of the cache in seconds from the current time.
+     *                           Defaults to 3600 seconds (1 hour).
      * @return void
      */
     public static function set($key, $data, $expiration = 3600)
@@ -35,11 +40,15 @@ class Cache
     }
 
     /**
-     * Retrieves data from the cache.
+     * Retrieves an item from the cache by its key.
      *
-     * @param string $key The unique identifier for the cache item.
+     * Checks if a cache file exists and has not expired. If the cache is valid,
+     * it returns the stored data. Otherwise, it deletes the expired file and
+     * returns false.
      *
-     * @return mixed The cached data, or false if the cache is expired or not found.
+     * @param string $key The unique key of the cache item to retrieve.
+     * @return mixed The cached data on success, or `false` if the cache item
+     *               does not exist or has expired.
      */
     public static function get($key)
     {
@@ -59,12 +68,15 @@ class Cache
     }
 
     /**
-     * Updates existing data in the cache without changing the expiration time.
+     * Updates the data of an existing cache item without altering its expiration time.
      *
-     * @param string $key     The unique identifier for the cache item.
-     * @param mixed  $newData The new data to be stored.
+     * If the cache item exists, this method replaces its current data with the new
+     * data provided. The original expiration timestamp is preserved.
      *
-     * @return bool True on successful update, false if the cache item does not exist.
+     * @param string $key     The unique key of the cache item to update.
+     * @param mixed  $newData The new data to store in the cache. Must be serializable.
+     * @return bool `true` if the update was successful, or `false` if the cache
+     *              item does not exist.
      */
     public static function update($key, $newData)
     {
@@ -82,10 +94,12 @@ class Cache
     }
 
     /**
-     * Deletes a cache item.
+     * Deletes a specific item from the cache.
      *
-     * @param string $key The unique identifier for the cache item.
+     * If a cache file corresponding to the key exists, it will be removed from
+     * the filesystem.
      *
+     * @param string $key The unique key of the cache item to delete.
      * @return void
      */
     public static function delete($key)

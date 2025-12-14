@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Generates and stores a CSRF token in the session.
+ * Generates and retrieves a Cross-Site Request Forgery (CSRF) token for the current session.
  *
- * If a CSRF token is not already present in the current session, this function
- * creates a cryptographically secure random token and stores it in `$_SESSION['csrf_token']`.
- * It then returns the token.
+ * This function ensures that a unique, cryptographically secure token is associated with the
+ * user's session. If a token does not already exist in the session, a new one is generated
+ * using `random_bytes`. This token should be included in forms and AJAX requests to prevent
+ * CSRF attacks, where it can be validated by the `validateCsrfToken` function.
  *
- * @return string The CSRF token for the current session.
+ * @return string The CSRF token stored in the session.
  */
 function generateCsrfToken()
 {

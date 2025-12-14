@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Conditionally loads Bootstrap CSS and JavaScript.
+ * Conditionally loads Bootstrap CSS and JavaScript assets from a CDN.
  *
- * Checks the 'USE_BOOTSTRAP' environment variable. If it's set to 'true',
- * this function echoes the necessary <link> and <script> tags for Bootstrap.
+ * This function checks the 'USE_BOOTSTRAP' environment variable. If it is set to 'true',
+ * it echoes the necessary `<link>` and `<script>` tags to include Bootstrap 5 in the page.
  *
  * @return void
  */
@@ -17,10 +17,11 @@ function loadBootstrap()
 }
 
 /**
- * Conditionally loads Progressive Web App (PWA) assets.
+ * Conditionally loads assets required for Progressive Web App (PWA) functionality.
  *
- * Checks the 'USE_PWA' environment variable. If 'true', it includes the manifest
- * configuration and the PWA JavaScript file.
+ * This function checks the 'USE_PWA' environment variable. If it is set to 'true', it
+ * injects the content of the PWA manifest configuration file and includes the main
+ * PWA JavaScript file.
  *
  * @return void
  */
@@ -34,11 +35,13 @@ function loadPWA()
 }
 
 /**
- * Loads all necessary JavaScript files and CSS assets for the application.
+ * Loads all necessary JavaScript files and CSS assets for the application's front-end.
  *
- * This function handles the inclusion of core JavaScript files, as well as optional
- * assets like the Motion Engine, CookieManager, and notification styles, based on
- * environment settings. It uses output buffering to cache the script block for efficiency.
+ * This function is responsible for injecting all core and conditionally-loaded scripts and
+ * stylesheets into the page. It includes base scripts for routing and data submission,
+ * as well as optional assets for features like cookie management, animations, and
+ * notifications, based on settings in the .env file. It uses static caching to
+ * avoid redundant processing on subsequent calls.
  *
  * @return void
  */
@@ -88,15 +91,16 @@ function loadScripts()
 }
 
 /**
- * Handles incoming requests based on the HTTP request method.
+ * Handles routing for requests that are specific to a certain HTTP method.
  *
- * It checks for method-specific files (e.g., `pagename_request_POST.ahmed.php`)
- * and renders them if the current request method matches. If the method does not match,
- * it returns a 405 Method Not Allowed error.
+ * It checks for the existence of convention-based filenames (e.g., `pagename_request_POST.ahmed.php`)
+ * for a list of provided methods. If a file exists but the current request method does not
+ * match, it serves a 405 Method Not Allowed error. If it matches, the corresponding
+ * template is rendered.
  *
- * @param array $methods An array of HTTP methods to check for (e.g., ['GET', 'POST']).
- *
- * @return bool Returns true if a request was handled, false otherwise.
+ * @param array $methods An array of uppercase HTTP method names to check for (e.g., ['GET', 'POST']).
+ * @return bool Returns `true` if a request was handled (either by rendering a page or an error),
+ *              otherwise returns `false`.
  */
 function handleRequestMethod($methods)
 {
@@ -135,14 +139,18 @@ function handleRequestMethod($methods)
 }
 
 /**
- * Main routing function to render the appropriate page.
+ * The main routing function for the application; it directs requests to the appropriate page or handler.
  *
- * This function processes the incoming route name and determines which content to display.
- * It handles static pages, dynamic routes, API endpoints, special internal routes
- * (like CSRF token fetching), and error pages.
+ * This function acts as the central router. It inspects the `RouteName` (typically from `$_GET['page']`)
+ * to determine which content to render. It handles various cases including:
+ * - The homepage (when `RouteName` is empty).
+ * - Special internal routes like 'fetchCsrfToken' and 'setLanguage'.
+ * - Static pages in the `web` directory.
+ * - Dynamic routes with parameters (e.g., `product/123`).
+ * - API endpoints.
+ * - 404 Not Found errors for unmatched routes.
  *
- * @param string $RouteName The name of the route to be processed, usually from `$_GET['page']`.
- *
+ * @param string $RouteName The name of the route to process.
  * @return void
  */
 function getPage($RouteName)

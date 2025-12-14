@@ -1,22 +1,28 @@
 <?php
 
 /**
- * Sends a request to the Google Gemini API and returns the response.
+ * Interacts with the Google Gemini API to get a generative model response.
  *
- * This function constructs a request to the Gemini API with the provided message,
- * knowledge, instructions, and generation parameters. It handles the API call
- * via cURL and returns a JSON-encoded string containing either the successful
- * response or an error message.
+ * This function constructs and sends a request to the Google Gemini API's `generateContent`
+ * endpoint. It takes a user message and optional parameters for context, instructions,
+ * and generation configuration (like temperature, topK, etc.). The function handles
+ * the cURL request and returns a JSON-encoded string indicating the outcome.
  *
- * @param string $userMessage           The primary message or prompt from the user.
- * @param string $geminiKnowledge       Optional. Contextual information or knowledge to provide to the model.
- * @param string $geminiInstrcutions    Optional. Specific instructions for the model on how to behave or process the prompt.
- * @param float  $geminiTemperature     Optional. Controls the randomness of the output. Value from 0.0 to 1.0.
- * @param int    $geminiTopK            Optional. The number of highest probability vocabulary tokens to keep for Top-K sampling.
- * @param float  $geminiTopP            Optional. The cumulative probability of tokens to consider for nucleus sampling.
- * @param int    $geminiMaxOutPutTokens Optional. The maximum number of tokens to generate in the response.
+ * @param string $userMessage           The primary text prompt or question for the model.
+ * @param string $geminiKnowledge       (Optional) Additional context or knowledge to prepend to the user message,
+ *                                      guiding the model's response.
+ * @param string $geminiInstrcutions    (Optional) Specific instructions on how the model should process the request,
+ *                                      prepended before knowledge and the user message.
+ * @param float  $geminiTemperature     (Optional) Controls the randomness of the output. Accepts values between 0.0 and 1.0.
+ *                                      Higher values produce more creative responses. Defaults to 0.7.
+ * @param int    $geminiTopK            (Optional) The number of highest-probability tokens to consider at each step.
+ *                                      Defaults to 40.
+ * @param float  $geminiTopP            (Optional) The cumulative probability threshold for nucleus sampling. Defaults to 0.95.
+ * @param int    $geminiMaxOutPutTokens (Optional) The maximum number of tokens to generate in the response. Defaults to 2048.
  *
- * @return string A JSON-encoded string with a 'success' status and either a 'message' or 'error' key.
+ * @return string A JSON-encoded string representing the result. On success, it will contain
+ *                `['success' => true, 'message' => 'The generated text']`. On failure, it will
+ *                contain `['success' => 'error', 'error' => 'Error message']`.
  */
 function useGemini(
     $userMessage,

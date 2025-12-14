@@ -1,28 +1,31 @@
 <?php
 
 /**
- * A wrapper class for PDO to simplify database interactions.
+ * A PDO wrapper class for simplifying database connections and queries.
  *
- * This class handles the database connection using credentials from the .env file
- * and provides a simple method for executing prepared SQL queries.
+ * This class provides a convenient way to connect to a MySQL database using
+ * credentials stored in the .env file. It encapsulates a PDO instance and offers
+ * a streamlined method for executing prepared SQL statements.
  */
 class Database
 {
     /**
-     * The PDO instance.
+     * Holds the active PDO database connection instance.
      *
-     * @var PDO
+     * @var PDO|null
      */
     private $pdo;
 
     /**
-     * Establishes a database connection.
+     * Initializes the database connection.
      *
-     * The constructor retrieves database credentials from the .env file,
-     * creates a new PDO instance, and sets it up with default options.
-     * The script will terminate on a connection failure.
+     * The constructor reads the database host, name, user, and password from
+     * environment variables, then establishes a PDO connection. It sets default
+     * error handling and fetch modes for all subsequent queries. If the connection
+     * fails, the script will terminate with an error message.
      *
-     * @param string $charset The character set to use for the connection. Defaults to 'utf8mb4'.
+     * @param string $charset The character set for the database connection.
+     *                        Defaults to 'utf8mb4'.
      */
     public function __construct($charset = 'utf8mb4')
     {
@@ -46,14 +49,20 @@ class Database
     }
 
     /**
-     * Prepares and executes an SQL query.
+     * Prepares and executes an SQL statement with optional parameters.
      *
-     * @param string $sql       The SQL query to execute. Can contain placeholders (e.g., ?).
-     * @param array  $params    An array of parameters to bind to the placeholders in the SQL query.
-     * @param bool   $is_return If true, returns the result set as an array of associative arrays.
-     *                          If false, returns true on success.
+     * This method can be used for both queries that return data (e.g., SELECT)
+     * and those that do not (e.g., INSERT, UPDATE, DELETE).
      *
-     * @return array|bool The result set or true, depending on the value of $is_return.
+     * @param string $sql       The SQL query to execute. This can contain positional
+     *                          placeholders (`?`) for parameter binding.
+     * @param array  $params    An array of values to bind to the placeholders in the SQL query.
+     * @param bool   $is_return If `true`, the method will fetch and return all rows from
+     *                          the result set as an array of associative arrays.
+     *                          If `false`, it will return `true` on successful execution.
+     *
+     * @return array|bool If `$is_return` is `true`, returns an array of results.
+     *                    If `$is_return` is `false`, returns `true` on success.
      */
     public function query($sql, $params = [], $is_return = true)
     {

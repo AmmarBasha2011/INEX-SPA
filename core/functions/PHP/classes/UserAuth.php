@@ -1,22 +1,29 @@
 <?php
 
 /**
- * The path to the JSON file defining the user authentication parameters.
+ * Defines the path to the JSON file that configures user authentication parameters.
  */
 define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
 
 /**
- * A class for handling user authentication, including sign-up, sign-in, and session management.
+ * Handles user authentication processes like sign-up, sign-in, session management,
+ * and dynamic database schema generation.
  *
- * This class dynamically generates the users table schema, validates user input based on
- * a JSON configuration file, and manages the user's logged-in state.
+ * This class uses a JSON configuration file (`Json/AuthParams.json`) to define the
+ * structure and validation rules for the `users` table, allowing for flexible and
+ * configurable user authentication logic.
  */
 class UserAuth
 {
     /**
-     * Generates a 'CREATE TABLE' SQL statement for the 'users' table based on a JSON config.
+     * Generates a `CREATE TABLE` SQL statement for the `users` table based on the JSON configuration.
      *
-     * @return string The generated SQL 'CREATE TABLE' query.
+     * This method reads the structure and constraints from `Json/AuthParams.json` and
+     * dynamically constructs an SQL query to create the `users` table. It maps JSON
+     * data types to corresponding SQL types and includes constraints like `NOT NULL`,
+     * `UNIQUE`, and `DEFAULT`.
+     *
+     * @return string The generated SQL `CREATE TABLE` query as a string.
      */
     public static function generateSQL()
     {
@@ -73,11 +80,14 @@ class UserAuth
     }
 
     /**
-     * Signs in a user based on the provided details.
+     * Authenticates a user and starts a session upon successful sign-in.
      *
-     * @param array $details An associative array where keys are column names and values are the user's credentials.
-     *
-     * @return string|false 'User Found' on success, 'User Not Found' on failure, or false if input is invalid.
+     * @param array $details An associative array where keys are database column names
+     *                       (e.g., 'username', 'password') and values are the credentials
+     *                       to be verified.
+     * @return string|false Returns 'User Found' on successful authentication, 'User Not Found'
+     *                      if the credentials do not match any user, or `false` if the
+     *                      input details are invalid or empty.
      */
     public static function signIn($details)
     {
@@ -108,11 +118,17 @@ class UserAuth
     }
 
     /**
-     * Registers a new user after validating their details against the JSON configuration.
+     * Registers a new user after validating their details against the rules in the JSON configuration.
      *
-     * @param array $details An associative array of the new user's details.
+     * This method performs comprehensive validation on the provided user details based
+     * on the rules defined in `Json/AuthParams.json`. If validation passes and the
+     * user does not already exist, it inserts a new record into the `users` table
+     * and starts a new session for the user.
      *
-     * @return string A message indicating the result of the registration attempt.
+     * @param array $details An associative array containing the new user's details,
+     *                       where keys correspond to the `users` table columns.
+     * @return string A message indicating the result of the registration attempt,
+     *                such as success, a specific validation error, or a database error.
      */
     public static function signUp($details)
     {
@@ -245,9 +261,10 @@ class UserAuth
     }
 
     /**
-     * Checks if a user is currently logged in.
+     * Checks if a user is currently authenticated by verifying the session.
      *
-     * @return bool True if a user is logged in, false otherwise.
+     * @return bool Returns `true` if a `user_id` is set and not empty in the
+     *              current session, otherwise returns `false`.
      */
     public static function checkUser()
     {
@@ -255,9 +272,9 @@ class UserAuth
     }
 
     /**
-     * Logs out the current user.
+     * Logs out the currently authenticated user by clearing their session identifier.
      *
-     * @return string A confirmation message.
+     * @return string A confirmation message indicating that the user has been logged out.
      */
     public static function logout()
     {
