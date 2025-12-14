@@ -99,6 +99,7 @@ function loadScripts()
  * template is rendered.
  *
  * @param array $methods An array of uppercase HTTP method names to check for (e.g., ['GET', 'POST']).
+ *
  * @return bool Returns `true` if a request was handled (either by rendering a page or an error),
  *              otherwise returns `false`.
  */
@@ -151,6 +152,7 @@ function handleRequestMethod($methods)
  * - 404 Not Found errors for unmatched routes.
  *
  * @param string $RouteName The name of the route to process.
+ *
  * @return void
  */
 function getPage($RouteName)

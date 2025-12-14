@@ -18,6 +18,7 @@ class Security
      * 2. It strips out any `<script>` tags and their content from the string.
      *
      * @param string $data The raw input string to be sanitized.
+     *
      * @return string The sanitized string, safe for outputting in an HTML context.
      */
     public static function sanitizeInput($data)
@@ -41,6 +42,7 @@ class Security
      * @param string $input The input data to be processed.
      * @param string $type  The type of sanitization to perform. Currently, only
      *                      'xss' is implemented.
+     *
      * @return string The processed and sanitized input string. If the type is
      *                not recognized, the original input is returned.
      */

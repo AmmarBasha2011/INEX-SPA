@@ -52,6 +52,7 @@ class SitemapGenerator
      * @param string $dir      The absolute path of the directory to scan.
      * @param string $basePath The current path relative to the `web` root, used for
      *                         building nested route URLs.
+     *
      * @return array An array of unique, formatted route strings.
      */
     private static function getRoutes($dir, $basePath = '')

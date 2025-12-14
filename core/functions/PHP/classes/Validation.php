@@ -12,6 +12,7 @@ class Validation
      * Validates whether a given string is a well-formed email address.
      *
      * @param string $text The string to be validated as an email.
+     *
      * @return bool `true` if the string is a valid email, `false` otherwise.
      */
     public static function isEmail($text)
@@ -24,6 +25,7 @@ class Validation
      *
      * @param string $text      The string to be checked.
      * @param int    $maxLength The maximum number of characters allowed.
+     *
      * @return bool `true` if the string's length is less than or equal to `$maxLength`,
      *              `false` otherwise.
      */
@@ -37,6 +39,7 @@ class Validation
      *
      * @param string $text      The string to be checked.
      * @param int    $minLength The minimum number of characters required.
+     *
      * @return bool `true` if the string's length is greater than or equal to `$minLength`,
      *              `false` otherwise.
      */
@@ -49,6 +52,7 @@ class Validation
      * Determines if a given domain string is a subdomain (contains more than one dot).
      *
      * @param string $domain The domain string to check.
+     *
      * @return bool `true` if the domain appears to be a subdomain, `false` otherwise.
      */
     public static function isSubDomain($domain)
@@ -60,6 +64,7 @@ class Validation
      * Checks if a given URL string contains a path component, indicating a subdirectory.
      *
      * @param string $domain The URL to check.
+     *
      * @return bool `true` if the URL has a non-root path, `false` otherwise.
      */
     public static function isSubDir($domain)
@@ -71,6 +76,7 @@ class Validation
      * Validates whether a given string is a well-formed domain name.
      *
      * @param string $text The string to be validated as a domain.
+     *
      * @return bool `true` if the string is a valid domain name, `false` otherwise.
      */
     public static function isDomain($text)
@@ -83,6 +89,7 @@ class Validation
      *
      * @param string $text    The string to check.
      * @param array  $endList An array of substrings to check for at the end of the string.
+     *
      * @return bool `true` if the string ends with any of the substrings in the list,
      *              `false` otherwise.
      */
@@ -102,6 +109,7 @@ class Validation
      *
      * @param string $text      The string to check.
      * @param array  $startList An array of substrings to check for at the beginning of the string.
+     *
      * @return bool `true` if the string starts with any of the substrings in the list,
      *              `false` otherwise.
      */
@@ -120,6 +128,7 @@ class Validation
      * Validates whether a given value is numeric.
      *
      * @param mixed $text The value to be checked.
+     *
      * @return bool `true` if the value is a number or a numeric string, `false` otherwise.
      */
     public static function isNumber($text)
@@ -134,6 +143,7 @@ class Validation
      * as valid boolean representations.
      *
      * @param mixed $text The value to be checked.
+     *
      * @return bool `true` if the value is a valid boolean representation, `false` otherwise.
      */
     public static function isBool($text)

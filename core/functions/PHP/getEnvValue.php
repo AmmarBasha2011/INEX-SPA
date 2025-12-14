@@ -9,6 +9,7 @@
  * read or the key is not found, it returns `null`.
  *
  * @param string $key The name of the environment variable (key) to look for.
+ *
  * @return string|null The value of the environment variable as a string, or `null` if the
  *                     key is not found, the file doesn't exist, or an error occurs.
  */
