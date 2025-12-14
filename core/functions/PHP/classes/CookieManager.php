@@ -15,6 +15,7 @@ class CookieManager
      * @param string $value The value to be stored in the cookie.
      * @param int    $days  The number of days from the current time that the cookie
      *                      should expire. Defaults to 7 days.
+     *
      * @return void
      */
     public static function set($name, $value, $days = 7)
@@ -27,6 +28,7 @@ class CookieManager
      * Retrieves the value of a cookie by its name.
      *
      * @param string $name The name of the cookie to retrieve.
+     *
      * @return string|null The value of the cookie if it is set, otherwise `null`.
      */
     public static function get($name)
@@ -41,6 +43,7 @@ class CookieManager
      * which instructs the browser to remove it.
      *
      * @param string $name The name of the cookie to delete.
+     *
      * @return void
      */
     public static function delete($name)
@@ -52,6 +55,7 @@ class CookieManager
      * Checks whether a cookie with the specified name exists.
      *
      * @param string $name The name of the cookie to check.
+     *
      * @return bool `true` if the cookie exists, `false` otherwise.
      */
     public static function exists($name)

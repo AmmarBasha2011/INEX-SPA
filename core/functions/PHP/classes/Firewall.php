@@ -56,6 +56,7 @@ class Firewall
      * and then terminates the script.
      *
      * @param array $config The associative array of firewall configuration settings.
+     *
      * @return void
      */
     private static function block($config)

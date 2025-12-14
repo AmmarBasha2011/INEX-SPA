@@ -10,6 +10,7 @@
  * method. It also includes basic logging for monitoring task execution.
  *
  * @usage php cron_runner.php <TaskName>
+ *
  * @example php /path/to/project/core/cron/cron_runner.php MyDailyReport
  */
 
@@ -67,6 +68,7 @@ if (!is_dir(LOGS_DIR)) {
  * `cron.log` file, providing a simple logging mechanism for cron job execution.
  *
  * @param string $message The message to be logged.
+ *
  * @return void
  */
 function log_cron_message($message)

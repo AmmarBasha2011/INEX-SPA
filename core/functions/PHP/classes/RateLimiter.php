@@ -58,6 +58,7 @@ class RateLimiter
      * 6. Writes the updated data back to the storage file.
      *
      * @param string $userIP The IP address of the client making the request.
+     *
      * @return void
      */
     public static function check($userIP)

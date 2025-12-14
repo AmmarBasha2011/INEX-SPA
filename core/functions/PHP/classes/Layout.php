@@ -32,6 +32,7 @@ class Layout
      * stored in a buffer associated with the given section name.
      *
      * @param string $section The name of the section to start capturing.
+     *
      * @return void
      */
     public static function start($section)
@@ -75,6 +76,7 @@ class Layout
      *                            to locate request-specific content files.
      * @param array  $data        An associative array of data to be extracted into variables,
      *                            making them available to both the layout and content files.
+     *
      * @return void
      */
     public static function render($layoutName, $contentFile, $requestType = 'GET', $data = [])
@@ -118,6 +120,7 @@ class Layout
      * from a view file at a specific location.
      *
      * @param string $section The name of the section whose content is to be retrieved.
+     *
      * @return string The captured HTML content of the section, or an error message if
      *                the section was not found.
      */
