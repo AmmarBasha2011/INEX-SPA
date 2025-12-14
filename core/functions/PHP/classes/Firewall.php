@@ -1,18 +1,21 @@
 <?php
 
 /**
- * A simple firewall to block requests based on IP and User-Agent.
+ * A basic firewall for blocking requests based on IP addresses and User-Agent strings.
  *
- * This class reads a configuration file (`Json/firewall.json`) to check
- * incoming requests against a list of blocked IPs and User-Agent strings.
+ * This class provides a simple security layer by checking incoming requests against
+ * a deny-list defined in a JSON configuration file. If a request matches any of
+ * the defined rules, it is blocked and redirected.
  */
 class Firewall
 {
     /**
-     * Checks the current request against the firewall rules.
+     * Inspects the current request and blocks it if it matches any firewall rules.
      *
-     * If the client's IP address or User-Agent matches a rule in the
-     * configuration, the request will be blocked.
+     * This method reads the firewall configuration from `Json/firewall.json`,
+     * which should contain lists of blocked IP addresses and User-Agent strings.
+     * It compares the current request's IP and User-Agent against these lists.
+     * If a match is found, the `block()` method is called to halt execution.
      *
      * @return void
      */
@@ -45,13 +48,14 @@ class Firewall
     }
 
     /**
-     * Blocks the request and redirects the user.
+     * Halts the current request and redirects the user to a blocked page.
      *
-     * This method is called when a firewall rule is triggered. It redirects
-     * the user to the page specified in the firewall configuration.
+     * This private helper method is triggered when a firewall rule is matched.
+     * It sends a redirect header to the user, pointing them to the URL
+     * specified in the `redirect_blocked_to` setting in the firewall config,
+     * and then terminates the script.
      *
-     * @param array $config The firewall configuration array.
-     *
+     * @param array $config The associative array of firewall configuration settings.
      * @return void
      */
     private static function block($config)

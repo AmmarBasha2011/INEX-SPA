@@ -1,20 +1,28 @@
 <?php
 
 /**
- * A simple class for sending webhook requests.
+ * A utility class for sending outbound webhook requests.
  *
- * This class provides a static method to send a POST request with a JSON
- * payload to a given URL.
+ * This class provides a simple, static method to send a POST request with a
+ * JSON payload to a specified URL, which is useful for notifying external
+ * services about events in the application.
  */
 class Webhook
 {
     /**
-     * Sends a JSON payload to a specified webhook URL.
+     * Sends a JSON payload via a POST request to a specified webhook URL.
      *
-     * @param string $url  The URL to send the webhook request to.
-     * @param array  $data An associative array of data to be sent as the JSON payload.
+     * This method first validates the provided URL. It then encodes the given data
+     * array into a JSON string and sends it as the body of a POST request, with
+     * the appropriate `Content-Type` and `Content-Length` headers.
      *
-     * @return bool|string The response from the server, or false if the URL is invalid or an error occurs.
+     * @param string $url  The destination URL for the webhook request.
+     * @param array  $data An associative array of data that will be JSON-encoded
+     *                     and sent as the request payload.
+     *
+     * @return bool|string Returns the response body from the server on success.
+     *                     Returns `false` if the URL is invalid or if a cURL
+     *                     error occurs during the request.
      */
     public static function send($url, $data = [])
     {

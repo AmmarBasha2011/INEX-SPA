@@ -1,14 +1,16 @@
 <?php
 
 /**
- * Retrieves a value from the .env file.
+ * Retrieves the value of a specific key from the application's .env file.
  *
- * This function reads the .env file from the project root, parses it,
- * and returns the value associated with the specified key.
+ * This function reads the `.env` file located at the project root, parses it line by line,
+ * and returns the value associated with the specified key. It correctly handles
+ * comments (lines starting with '#') and ignores empty lines. If the file cannot be
+ * read or the key is not found, it returns `null`.
  *
- * @param string $key The name of the environment variable to retrieve.
- *
- * @return string|null The value of the environment variable, or null if the key is not found or an error occurs.
+ * @param string $key The name of the environment variable (key) to look for.
+ * @return string|null The value of the environment variable as a string, or `null` if the
+ *                     key is not found, the file doesn't exist, or an error occurs.
  */
 function getEnvValue($key)
 {

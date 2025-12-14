@@ -1,19 +1,23 @@
 <?php
 
 /**
- * A class to automatically generate a sitemap.xml file.
+ * Automatically generates a `sitemap.xml` file for the application.
  *
- * This class scans the 'web' directory for template files (`.ahmed.php`) to
- * build a list of application routes and generates a `sitemap.xml` file
- * in the 'public' directory.
+ * This utility class scans the `web` directory to discover all public routes based
+ * on the filenames of the `.ahmed.php` templates. It then compiles these routes
+ * into a `sitemap.xml` file and saves it in the `public` directory, making it
+ * accessible to search engine crawlers.
  */
 class SitemapGenerator
 {
     /**
-     * Generates the sitemap.xml file.
+     * The main method to generate and save the `sitemap.xml` file.
      *
-     * This method orchestrates the process of finding routes and writing the
-     * final XML file to the public directory.
+     * This method orchestrates the sitemap generation process by:
+     * 1. Locating the application's routes directory.
+     * 2. Calling a helper method to recursively find all routes.
+     * 3. Building the XML structure compliant with the sitemap protocol.
+     * 4. Writing the final XML content to `public/sitemap.xml`.
      *
      * @return void
      */
@@ -39,15 +43,16 @@ class SitemapGenerator
     }
 
     /**
-     * Recursively scans a directory to find all application routes.
+     * Recursively scans the routes directory to discover all unique URL paths.
      *
-     * It interprets different file naming conventions to identify standard, dynamic,
-     * API, and request-specific routes.
+     * This private helper method navigates the file structure of the `web` directory.
+     * It interprets specific filename conventions (e.g., `_dynamic.ahmed.php`,
+     * `_request_GET.ahmed.php`) to correctly format the route URLs for the sitemap.
      *
-     * @param string $dir      The directory to scan.
-     * @param string $basePath The base path for building the route URL.
-     *
-     * @return array An array of unique route strings.
+     * @param string $dir      The absolute path of the directory to scan.
+     * @param string $basePath The current path relative to the `web` root, used for
+     *                         building nested route URLs.
+     * @return array An array of unique, formatted route strings.
      */
     private static function getRoutes($dir, $basePath = '')
     {

@@ -1,17 +1,18 @@
 <?php
 
 /**
- * Executes SQL queries from a file using PDO.
+ * Connects to a MySQL database and executes a series of SQL queries from a specified file.
  *
- * This function connects to a MySQL database, reads an SQL file,
- * and executes the queries within it. The script will terminate on failure.
+ * This function is typically used for running database migrations or seeding the database.
+ * It reads an SQL file, splits its content into individual queries (delimited by semicolons),
+ * and executes each one. The script will terminate and display an error message if the
+ * database connection, file reading, or a query execution fails.
  *
- * @param string $host     The database host name or IP address.
- * @param string $user     The database user name.
- * @param string $password The database password.
- * @param string $database The name of the database.
- * @param string $filePath The file path to the SQL file to be executed.
- *
+ * @param string $host     The hostname or IP address of the database server.
+ * @param string $user     The username for the database connection.
+ * @param string $password The password for the database connection.
+ * @param string $database The name of the database to connect to.
+ * @param string $filePath The full path to the .sql file containing the queries to be executed.
  * @return void
  */
 function executeSQLFilePDO($host, $user, $password, $database, $filePath)

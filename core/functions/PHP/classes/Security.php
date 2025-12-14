@@ -1,22 +1,24 @@
 <?php
 
 /**
- * A class for handling basic security measures.
+ * Provides basic security utilities for input sanitization.
  *
- * This class provides simple methods for sanitizing user input to prevent
- * common vulnerabilities like Cross-Site Scripting (XSS).
+ * This class offers simple, static methods to help protect against common web
+ * vulnerabilities, primarily focusing on Cross-Site Scripting (XSS) by
+ * cleaning user-provided data.
  */
 class Security
 {
     /**
-     * Sanitizes input to protect against XSS attacks.
+     * Sanitizes a string to mitigate Cross-Site Scripting (XSS) attacks.
      *
-     * This method uses `htmlspecialchars` to escape HTML entities and also
-     * removes any `<script>` tags from the input string.
+     * This method applies two main sanitization techniques:
+     * 1. It converts special HTML characters (like `<`, `>`, `"`) into their
+     *    corresponding HTML entities.
+     * 2. It strips out any `<script>` tags and their content from the string.
      *
-     * @param string $data The input data to be sanitized.
-     *
-     * @return string The sanitized data.
+     * @param string $data The raw input string to be sanitized.
+     * @return string The sanitized string, safe for outputting in an HTML context.
      */
     public static function sanitizeInput($data)
     {
@@ -30,14 +32,17 @@ class Security
     }
 
     /**
-     * Validates and sanitizes input based on the specified type.
+     * A flexible validation and sanitization dispatcher.
      *
-     * Currently, this function only supports 'xss' sanitization.
+     * This method acts as a wrapper that can be extended to support various types
+     * of validation and sanitization. Currently, it only supports 'xss' sanitization,
+     * for which it calls the `sanitizeInput` method.
      *
      * @param string $input The input data to be processed.
-     * @param string $type  The type of validation/sanitization to perform.
-     *
-     * @return string The processed input.
+     * @param string $type  The type of sanitization to perform. Currently, only
+     *                      'xss' is implemented.
+     * @return string The processed and sanitized input string. If the type is
+     *                not recognized, the original input is returned.
      */
     public static function validateAndSanitize($input, $type)
     {

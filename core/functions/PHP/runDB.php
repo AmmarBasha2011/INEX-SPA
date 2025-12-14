@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Executes all SQL files in the 'db' directory.
+ * Executes all SQL migration files located in the `db` directory.
  *
- * This function scans the 'db' directory for `.sql` files and executes them
- * against the database using the credentials from the environment configuration.
- * It outputs the name of each file as it is executed.
+ * This function serves as a simple database migration runner. It scans the `db`
+ * directory for all files with a `.sql` extension and executes each one sequentially.
+ * It retrieves the necessary database credentials from the environment configuration
+ * and outputs the name of each file as it is being processed.
  *
  * @return void
  */
