@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CSRF Token Validation
+ * CSRF Token Validation.
  *
  * This file contains the function for validating CSRF tokens to protect
  * against Cross-Site Request Forgery attacks. It ensures that incoming

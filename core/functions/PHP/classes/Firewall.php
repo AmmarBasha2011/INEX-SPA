@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Simple IP and User-Agent Firewall
+ * Simple IP and User-Agent Firewall.
  *
  * This file contains the Firewall class, a static utility for blocking incoming
  * web requests based on a predefined set of rules.
@@ -13,8 +14,6 @@
  * incoming requests against a list of blocked IP addresses and User-Agent strings.
  * If a match is found, the request is blocked and redirected. This class is
  * entirely static.
- *
- * @package INEX\Security
  */
 class Firewall
 {

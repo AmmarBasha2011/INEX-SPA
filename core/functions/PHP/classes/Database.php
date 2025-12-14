@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Database Connection and Query Handler
+ * Database Connection and Query Handler.
  *
  * This file contains the Database class, a PDO wrapper designed to simplify
  * database connections and query execution for the application.
@@ -12,8 +13,6 @@
  * This class handles the database connection using credentials from the .env file
  * and provides a simple method for executing prepared SQL queries. An instance
  * of this class represents a single connection to the database.
- *
- * @package INEX\Database
  */
 class Database
 {
