@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INEX SPA Framework Test Report</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
+        h1, h2, h3 { color: #333; }
+        .summary, .results, .suggestions { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; }
+        .pass { color: green; }
+        .fail { color: red; }
+        .blocked { color: orange; }
+        pre { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>INEX SPA Framework Test Report</h1>
+    <div class="summary">
+        <h2>Summary</h2>
+        <p>This report details the results of a comprehensive test of the INEX SPA framework. The tests covered the CLI, routing, template engine, database, caching, and CSRF security. While some tests were successful, a significant portion of the testing was blocked due to a persistent issue with the PHP executable not being found in the environment's path.</p>
+    </div>
+
+    <div class="results">
+        <h2>Test Results</h2>
+
+        <h3>CLI (`ammar`)</h3>
+        <p><strong class="pass">PASS:</strong> The `ammar` CLI tool is working correctly.
+        <ul>
+            <li>`make:route`: Successfully created a new route.</li>
+            <li>`make:db`: Successfully created a new database migration.</li>
+            <li>`list:routes`: Successfully listed the available routes.</li>
+            <li>`list:db`: Successfully listed the available database migrations.</li>
+        </ul>
+        </p>
+
+        <h3>Routing and Ahmed Template Engine</h3>
+        <p><strong class="blocked">PARTIAL/BLOCKED:</strong> The Ahmed Template Engine was tested in isolation and is working correctly. However, the routing system could not be fully tested.
+        <ul>
+            <li><strong>Ahmed Template Engine:</strong> Successfully rendered a simple template file when called directly from a PHP script.</li>
+            <li><strong>Routing:</strong> The routing system appears to be tightly coupled with Apache's `mod_rewrite`. Attempts to test routing using the PHP built-in server were unsuccessful, as the server could not correctly resolve the routes. This is a significant limitation for developers who do not use Apache.</li>
+        </ul>
+        </p>
+
+        <h3>Database Functionality</h3>
+        <p><strong class="pass">PASS:</strong> The database functionality is working correctly.
+        <ul>
+            <li>Successfully ran database migrations.</li>
+            <li>Successfully created routes to write and read data from the database.</li>
+            <li>Confirmed that data can be inserted and retrieved from the database.</li>
+        </ul>
+        </p>
+
+        <h3>Caching System</h3>
+        <p><strong class="pass">PASS:</strong> The caching system is working correctly.
+        <ul>
+            <li>Successfully set and retrieved a cache value.</li>
+            <li>Successfully cleared the cache using the `clear:cache` command.</li>
+        </ul>
+        </p>
+
+        <h3>CSRF Security</h3>
+        <p><strong class="blocked">BLOCKED:</strong> This test could not be performed due to the inability to run the PHP server and test web-based functionality.</p>
+    </div>
+
+    <div class="suggestions">
+        <h2>Improvements and Suggestions</h2>
+        <ul>
+            <li><strong>Improve Server Compatibility:</strong> The framework should be made less dependent on Apache's `mod_rewrite`. The routing system should be updated to work with other servers, such as the PHP built-in server and Nginx. This would greatly improve the developer experience.</li>
+            <li><strong>Improve Path Resolution:</strong> The file path resolution in the `getPage.php` and `AhmedTemplate.php` files is fragile and prone to errors. The framework should establish a reliable absolute path to the project root and use it consistently for all file operations.</li>
+            <li><strong>Improve Error Handling:</strong> The framework should provide more informative error messages. For example, when a database connection fails, the error message should include more details about the cause of the failure.</li>
+            <li><strong>Improve Documentation:</strong> The documentation should be updated to include instructions for setting up the framework on different servers (Apache, Nginx, PHP built-in server).</li>
+        </ul>
+    </div>
+</body>
+</html>
