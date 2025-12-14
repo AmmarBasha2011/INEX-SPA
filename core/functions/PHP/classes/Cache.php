@@ -27,6 +27,7 @@ class Cache
      *                           serializable to JSON (e.g., string, array, object).
      * @param int    $expiration The lifetime of the cache in seconds from the current time.
      *                           Defaults to 3600 seconds (1 hour).
+     *
      * @return void
      */
     public static function set($key, $data, $expiration = 3600)
@@ -47,6 +48,7 @@ class Cache
      * returns false.
      *
      * @param string $key The unique key of the cache item to retrieve.
+     *
      * @return mixed The cached data on success, or `false` if the cache item
      *               does not exist or has expired.
      */
@@ -75,6 +77,7 @@ class Cache
      *
      * @param string $key     The unique key of the cache item to update.
      * @param mixed  $newData The new data to store in the cache. Must be serializable.
+     *
      * @return bool `true` if the update was successful, or `false` if the cache
      *              item does not exist.
      */
@@ -100,6 +103,7 @@ class Cache
      * the filesystem.
      *
      * @param string $key The unique key of the cache item to delete.
+     *
      * @return void
      */
     public static function delete($key)

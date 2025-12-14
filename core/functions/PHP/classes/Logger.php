@@ -26,6 +26,7 @@ class Logger
      *                        the message will be written to. Accepted values are 'error',
      *                        'security', and 'api'. Any other value will default to 'system'.
      * @param string $message The descriptive message to be logged.
+     *
      * @return void
      */
     public static function log($type, $message)
