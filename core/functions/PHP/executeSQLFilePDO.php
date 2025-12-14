@@ -13,6 +13,7 @@
  * @param string $password The password for the database connection.
  * @param string $database The name of the database to connect to.
  * @param string $filePath The full path to the .sql file containing the queries to be executed.
+ *
  * @return void
  */
 function executeSQLFilePDO($host, $user, $password, $database, $filePath)

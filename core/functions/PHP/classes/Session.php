@@ -29,6 +29,7 @@ class Session
      * @param string $key   The unique identifier for the session variable.
      * @param mixed  $value The data to be stored. This should be a type that can
      *                      be serialized by `json_encode`.
+     *
      * @return void
      */
     public static function make($key, $value)
@@ -44,6 +45,7 @@ class Session
      * it from JSON back into its original PHP data type.
      *
      * @param string $key The key of the session variable to retrieve.
+     *
      * @return mixed|null The stored session data, or `null` if the session
      *                    file does not exist.
      */
@@ -61,6 +63,7 @@ class Session
      * Deletes a session variable by removing its corresponding file.
      *
      * @param string $key The key of the session variable to delete.
+     *
      * @return void
      */
     public static function delete($key)
@@ -75,6 +78,7 @@ class Session
      *          with a strong cryptographic function for any sensitive data.
      *
      * @param string $data The plain data to be encoded.
+     *
      * @return string The base64-encoded data.
      */
     private static function encrypt($data)
@@ -86,6 +90,7 @@ class Session
      * Decodes data from a base64 encoded string.
      *
      * @param string $data The base64-encoded string.
+     *
      * @return string The decoded, original data.
      */
     private static function decrypt($data)

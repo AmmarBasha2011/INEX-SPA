@@ -20,8 +20,9 @@ class AhmedTemplate
      * @param array  $data     An associative array of data to be extracted into variables
      *                         for use within the template.
      *
-     * @return string The rendered HTML content.
      * @throws Exception If the specified template file does not exist.
+     *
+     * @return string The rendered HTML content.
      */
     public function render($template, $data = [])
     {

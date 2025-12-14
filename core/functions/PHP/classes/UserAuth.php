@@ -85,6 +85,7 @@ class UserAuth
      * @param array $details An associative array where keys are database column names
      *                       (e.g., 'username', 'password') and values are the credentials
      *                       to be verified.
+     *
      * @return string|false Returns 'User Found' on successful authentication, 'User Not Found'
      *                      if the credentials do not match any user, or `false` if the
      *                      input details are invalid or empty.
@@ -127,6 +128,7 @@ class UserAuth
      *
      * @param array $details An associative array containing the new user's details,
      *                       where keys correspond to the `users` table columns.
+     *
      * @return string A message indicating the result of the registration attempt,
      *                such as success, a specific validation error, or a database error.
      */

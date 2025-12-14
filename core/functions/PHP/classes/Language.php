@@ -33,6 +33,7 @@ class Language
      * language and translation set.
      *
      * @param string $lang The two-letter language code (e.g., 'en', 'de', 'fr').
+     *
      * @return void
      */
     public static function setLanguage($lang)
@@ -56,6 +57,7 @@ class Language
      * @param array  $placeholders An associative array where keys are placeholder names
      *                             (without curly braces) and values are the strings to
      *                             be injected.
+     *
      * @return string The translated and formatted string, or the key if not found.
      */
     public static function get($key, $placeholders = [])
