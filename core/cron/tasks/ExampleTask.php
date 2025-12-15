@@ -1,7 +1,22 @@
 <?php
 
+/**
+ * An example cron task to demonstrate the basic structure of a scheduled job.
+ *
+ * This class serves as a template for creating new cron tasks. It is designed to be
+ * executed by the `cron_runner.php` script, which calls the `handle()` method.
+ */
 class ExampleTask
 {
+    /**
+     * The main execution method for the cron task.
+     *
+     * This method contains the logic that will be performed when the cron job is run.
+     * In this example, it logs messages to the console and the cron log file,
+     * simulates a workflow, and demonstrates how to access environment variables.
+     *
+     * @return void
+     */
     public function handle()
     {
         // Access the global log_cron_message function if it's available

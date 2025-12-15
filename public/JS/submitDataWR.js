@@ -1,3 +1,19 @@
+/**
+ * Submits form data to a server endpoint via AJAX and returns the server's response.
+ *
+ * This function is similar to `submitData` but does not perform a client-side redirect.
+ * Instead, it returns a Promise that resolves with the JSON response from the server,
+ * allowing for custom handling of the response in the calling script.
+ *
+ * @param {string} route - The server-side route for the data submission.
+ * @param {string[]} [inputIds=[]] - An array of element IDs for the input fields
+ *   to be included in the submission.
+ * @param {string} [requestType='POST'] - The HTTP method for the request.
+ * @param {Object[]} [custom_values=[]] - An array of objects with custom key-value
+ *   pairs to be added to the data payload.
+ * @returns {Promise<Object>} A Promise that resolves with the JSON response from the
+ *   server on success, or rejects with an error on failure.
+ */
 function submitDataWR(route, inputIds=[], requestType="POST", custom_values=[]) {
     return new Promise((resolve, reject) => {
         var data = {};

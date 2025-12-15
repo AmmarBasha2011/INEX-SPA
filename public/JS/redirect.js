@@ -1,3 +1,17 @@
+/**
+ * Handles client-side navigation for the single-page application.
+ *
+ * This function fetches the content of a new page via an AJAX request and then
+ * dynamically updates the current page's content, styles, and scripts. It also
+ * manages the browser's history using `pushState` to ensure that the URL reflects
+ * the current view and that browser navigation (back/forward) works as expected.
+ *
+ * @param {string} [route=''] - The route or path of the page to load.
+ * @param {string} [requestType='GET'] - The HTTP method to use for the request.
+ * @param {string} [dynamic=''] - An optional dynamic segment to be appended to the route,
+ *   often used for resource IDs.
+ * @returns {void}
+ */
 function redirect(route='', requestType="GET", dynamic="") {
     let redirecturl = window.WEBSITE_URL + route;
     if (dynamic != "") {
