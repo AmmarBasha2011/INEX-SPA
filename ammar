@@ -1,5 +1,14 @@
 #!/usr/bin/env php
 <?php
+/**
+ * INEX SPA CLI Tool - "ammar"
+ *
+ * This script provides a command-line interface for managing the INEX SPA framework.
+ * It allows developers to perform various tasks such as creating routes, managing
+ * the database, clearing caches, and serving the application.
+ *
+ * @package INEX_SPA_CLI
+ */
 require_once 'core/functions/PHP/executeSQLFilePDO.php';
 require_once 'core/functions/PHP/getEnvValue.php';
 require_once 'core/functions/PHP/classes/Cache.php';

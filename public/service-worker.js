@@ -1,4 +1,20 @@
+/**
+ * @file The service worker for the Progressive Web App (PWA).
+ *
+ * This script is responsible for caching application assets, intercepting network
+ * requests to serve cached content when offline, and managing the cache lifecycle.
+ */
+
+/**
+ * The name of the current cache version.
+ * @type {string}
+ */
 const CACHE_NAME = 'myapp-v1';
+
+/**
+ * An array of URLs to be pre-cached during the service worker's installation.
+ * @type {string[]}
+ */
 const URLS_TO_CACHE = [
   '/',
   '/index.php',
@@ -10,6 +26,14 @@ const URLS_TO_CACHE = [
   // add other static assets
 ];
 
+/**
+ * Handles the 'install' event of the service worker.
+ *
+ * This event is triggered when the service worker is first installed. It opens the cache
+ * and pre-caches all the URLs specified in the `URLS_TO_CACHE` array.
+ *
+ * @param {ExtendableEvent} event - The install event object.
+ */
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -17,6 +41,14 @@ self.addEventListener('install', event => {
   );
 });
 
+/**
+ * Handles the 'activate' event of the service worker.
+ *
+ * This event is triggered when the service worker becomes active. It is used to clean up
+ * old, unused caches, ensuring that only the current version of the cache is retained.
+ *
+ * @param {ExtendableEvent} event - The activate event object.
+ */
 self.addEventListener('activate', event => {
   // Optional: cleanup old caches
   event.waitUntil(
@@ -29,6 +61,19 @@ self.addEventListener('activate', event => {
   );
 });
 
+/**
+ * Handles the 'fetch' event to intercept network requests.
+ *
+ * This event listener allows the service worker to act as a proxy between the
+ * application and the network. It implements a cache-first strategy:
+ * 1. It checks if the requested resource is already in the cache.
+ * 2. If found, it returns the cached response.
+ * 3. If not found, it fetches the resource from the network.
+ * 4. As a fallback, if the network request fails (e.g., the user is offline),
+ *    it provides a predefined offline page for navigation requests.
+ *
+ * @param {FetchEvent} event - The fetch event object.
+ */
 self.addEventListener('fetch', event => {
   // For navigation requests, you might want an offline fallback page
   event.respondWith(

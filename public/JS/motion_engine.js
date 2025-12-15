@@ -1,3 +1,17 @@
+/**
+ * Applies a CSS animation to a specified HTML element.
+ *
+ * This function dynamically applies an animation by adding the necessary CSS classes
+ * and setting the animation duration. It also handles the cleanup of these classes
+ * and styles once the animation has completed.
+ *
+ * @param {string|HTMLElement} elementOrSelector - The HTML element or a CSS selector string
+ *   for the element to be animated.
+ * @param {string} animationName - The name of the animation to apply. This should correspond
+ *   to a `motion-{animationName}` class defined in the CSS.
+ * @param {number} durationMs - The duration of the animation in milliseconds.
+ * @returns {void}
+ */
 function animate(elementOrSelector, animationName, durationMs) {
   // 1. Element Resolution
   let element;
