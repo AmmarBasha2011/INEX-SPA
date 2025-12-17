@@ -36,6 +36,19 @@ require_once 'core/functions/PHP/getSlashData.php';
 
 if ($dbUse) {
     require_once 'core/functions/PHP/classes/Database.php';
+    /**
+     * Executes a prepared SQL statement using the database connection.
+     *
+     * This function is a global wrapper around the `Database::query` method. It instantiates
+     * the Database class (which handles the connection) and executes the given query.
+     *
+     * @param string $sql       The SQL query to execute, possibly with placeholders.
+     * @param array  $params    An array of parameters to bind to the query.
+     * @param bool   $is_return If true, fetches and returns the result set. If false,
+     *                          returns a boolean indicating success.
+     *
+     * @return array|bool The result set as an array of associative arrays, or a boolean for success.
+     */
     function executeStatement($sql, $params = [], $is_return = true)
     {
         $DB = new Database();
@@ -64,18 +77,57 @@ if ($dbCheck && $dbUse) {
 
 if ($useCache) {
     require_once 'core/functions/PHP/classes/Cache.php';
+    /**
+     * Stores an item in the cache.
+     *
+     * A global wrapper for the `Cache::set` method.
+     *
+     * @param string $key        The key to store the data under.
+     * @param mixed  $data       The data to be cached.
+     * @param int    $expiration The cache lifetime in seconds.
+     *
+     * @return void
+     */
     function setCache($key, $data, $expiration = 3600)
     {
         Cache::set($key, $data, $expiration);
     }
+    /**
+     * Retrieves an item from the cache.
+     *
+     * A global wrapper for the `Cache::get` method.
+     *
+     * @param string $key The key of the item to retrieve.
+     *
+     * @return mixed The cached data or false on failure.
+     */
     function getCache($key)
     {
         return Cache::get($key);
     }
+    /**
+     * Deletes an item from the cache.
+     *
+     * A global wrapper for the `Cache::delete` method.
+     *
+     * @param string $key The key of the item to delete.
+     *
+     * @return void
+     */
     function deleteCache($key)
     {
         Cache::delete($key);
     }
+    /**
+     * Updates an existing item in the cache.
+     *
+     * A global wrapper for the `Cache::update` method.
+     *
+     * @param string $key     The key of the item to update.
+     * @param mixed  $newData The new data to store.
+     *
+     * @return bool True on success, false if the item doesn't exist.
+     */
     function updateCache($key, $newData)
     {
         return Cache::update($key, $newData);
