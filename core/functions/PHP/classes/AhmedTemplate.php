@@ -6,23 +6,25 @@
  * This class provides a basic but powerful template engine that parses template files,
  * replacing custom directives (e.g., `{{ $variable }}`, `@if(...)`, `@foreach(...)`)
  * with standard PHP code, which is then executed to generate the final HTML output.
+ * It is the core of the view rendering system in the INEX SPA framework.
  */
 class AhmedTemplate
 {
     /**
-     * Renders a template file with the given data and returns the output.
+     * Renders a template file with the given data and returns the output as a string.
      *
      * This method reads a template file, parses its content to replace custom
-     * template syntax with executable PHP, and then evaluates the result,
-     * making the provided data available as local variables within the template.
+     * template syntax with executable PHP, and then evaluates the result using
+     * output buffering. The provided data array is extracted into local variables
+     * that are accessible within the template's scope.
      *
-     * @param string $template The path to the template file to be rendered.
+     * @param string $template The full path to the template file to be rendered.
      * @param array  $data     An associative array of data to be extracted into variables
-     *                         for use within the template.
+     *                         (e.g., `['name' => 'John']` becomes `$name`).
      *
      * @throws Exception If the specified template file does not exist.
      *
-     * @return string The rendered HTML content.
+     * @return string The fully rendered HTML content.
      */
     public function render($template, $data = [])
     {

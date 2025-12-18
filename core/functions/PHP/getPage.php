@@ -4,7 +4,8 @@
  * Conditionally loads Bootstrap CSS and JavaScript assets from a CDN.
  *
  * This function checks the 'USE_BOOTSTRAP' environment variable. If it is set to 'true',
- * it echoes the necessary `<link>` and `<script>` tags to include Bootstrap 5 in the page.
+ * it echoes the necessary `<link>` and `<script>` tags to include Bootstrap 5,
+ * a popular front-end framework, in the page.
  *
  * @return void
  */
@@ -19,9 +20,10 @@ function loadBootstrap()
 /**
  * Conditionally loads assets required for Progressive Web App (PWA) functionality.
  *
- * This function checks the 'USE_PWA' environment variable. If it is set to 'true', it
- * injects the content of the PWA manifest configuration file and includes the main
- * PWA JavaScript file.
+ * This function checks the 'USE_PWA' environment variable. If set to 'true', it
+ * injects the PWA manifest configuration from `public/manifest_config.html` and
+ * includes the main PWA JavaScript file (`JS/pwa.js`), enabling offline capabilities
+ * and app-like features.
  *
  * @return void
  */
@@ -35,13 +37,11 @@ function loadPWA()
 }
 
 /**
- * Loads all necessary JavaScript files and CSS assets for the application's front-end.
+ * Loads all necessary JavaScript and CSS assets for the application's front-end.
  *
- * This function is responsible for injecting all core and conditionally-loaded scripts and
- * stylesheets into the page. It includes base scripts for routing and data submission,
- * as well as optional assets for features like cookie management, animations, and
- * notifications, based on settings in the .env file. It uses static caching to
- * avoid redundant processing on subsequent calls.
+ * This function injects core scripts for routing and data submission, as well as optional
+ * assets for features like cookie management, animations, and notifications, based on
+ * `.env` settings. It uses static caching to avoid redundant processing.
  *
  * @return void
  */
@@ -61,17 +61,16 @@ function loadScripts()
         ];
 
         if (getEnvValue('USE_COOKIE') == 'true') {
-            $scripts[] = 'JS/classes/CookieManager.js'; // Correct way to append an element to an array
+            $scripts[] = 'JS/classes/CookieManager.js';
         }
 
         if (getEnvValue('USE_APP_NAME_IN_TITLE') == 'true') {
             $scripts[] = 'JS/addAppNametoHTML.js';
         }
 
-        // Add this new block for motion engine assets
         if (getEnvValue('USE_ANIMATE') == 'true') {
             echo "<link rel='stylesheet' href='".getEnvValue('WEBSITE_URL')."css/motion-animations.css'>";
-            $scripts[] = 'JS/motion_engine.js'; // Add to the array of scripts
+            $scripts[] = 'JS/motion_engine.js';
         }
 
         if (getEnvValue('USE_NOTIFICATION') == 'true') {
@@ -91,17 +90,14 @@ function loadScripts()
 }
 
 /**
- * Handles routing for requests that are specific to a certain HTTP method.
+ * Handles routing for requests specific to a certain HTTP method.
  *
- * It checks for the existence of convention-based filenames (e.g., `pagename_request_POST.ahmed.php`)
- * for a list of provided methods. If a file exists but the current request method does not
- * match, it serves a 405 Method Not Allowed error. If it matches, the corresponding
- * template is rendered.
+ * Checks for files named `[page]_request_[METHOD].ahmed.php`. If a file exists but the
+ * request method doesn't match, it returns a 405 error. Distinguishes between
+ * standard and API routes.
  *
- * @param array $methods An array of uppercase HTTP method names to check for (e.g., ['GET', 'POST']).
- *
- * @return bool Returns `true` if a request was handled (either by rendering a page or an error),
- *              otherwise returns `false`.
+ * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
+ * @return bool True if a request was handled, false otherwise.
  */
 function handleRequestMethod($methods)
 {
@@ -113,13 +109,11 @@ function handleRequestMethod($methods)
             if ($_SERVER['REQUEST_METHOD'] !== $method) {
                 loadScripts();
                 include 'core/errors/405.php';
-
                 return true;
             }
             loadBootstrap();
             loadScripts();
             echo $Ahmed->render($filePath);
-
             return true;
         }
         $filePath = "web/{$_GET['page']}_request_{$method}_api.ahmed.php";
@@ -127,11 +121,9 @@ function handleRequestMethod($methods)
             if ($_SERVER['REQUEST_METHOD'] !== $method) {
                 loadScripts();
                 include 'core/errors/405.php';
-
                 return true;
             }
             echo $Ahmed->render($filePath);
-
             return true;
         }
     }
@@ -140,19 +132,12 @@ function handleRequestMethod($methods)
 }
 
 /**
- * The main routing function for the application; it directs requests to the appropriate page or handler.
+ * Main routing function for the application.
  *
- * This function acts as the central router. It inspects the `RouteName` (typically from `$_GET['page']`)
- * to determine which content to render. It handles various cases including:
- * - The homepage (when `RouteName` is empty).
- * - Special internal routes like 'fetchCsrfToken' and 'setLanguage'.
- * - Static pages in the `web` directory.
- * - Dynamic routes with parameters (e.g., `product/123`).
- * - API endpoints.
- * - 404 Not Found errors for unmatched routes.
+ * Directs requests to the appropriate page or handler based on the `RouteName`. Handles
+ * homepage, internal routes, static pages, dynamic routes, API endpoints, and 404 errors.
  *
  * @param string $RouteName The name of the route to process.
- *
  * @return void
  */
 function getPage($RouteName)

@@ -3,9 +3,17 @@
 /**
  * INEX SPA CLI Tool - "ammar"
  *
- * This script provides a command-line interface for managing the INEX SPA framework.
- * It allows developers to perform various tasks such as creating routes, managing
- * the database, clearing caches, and serving the application.
+ * This script provides a command-line interface (CLI) for managing and interacting
+ * with the INEX SPA framework. It simplifies common development tasks such as
+ * creating routes, managing database migrations, clearing caches, and running the
+ * development server.
+ *
+ * Usage:
+ * php ammar <command> [options]
+ *
+ * Example:
+ * php ammar make:route -1 my_new_page -2 no -3 GET -4 no
+ * php ammar list
  *
  * @package INEX_SPA_CLI
  */
