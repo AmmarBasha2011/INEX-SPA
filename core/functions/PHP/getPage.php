@@ -97,6 +97,7 @@ function loadScripts()
  * standard and API routes.
  *
  * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
+ *
  * @return bool True if a request was handled, false otherwise.
  */
 function handleRequestMethod($methods)
@@ -109,11 +110,13 @@ function handleRequestMethod($methods)
             if ($_SERVER['REQUEST_METHOD'] !== $method) {
                 loadScripts();
                 include 'core/errors/405.php';
+
                 return true;
             }
             loadBootstrap();
             loadScripts();
             echo $Ahmed->render($filePath);
+
             return true;
         }
         $filePath = "web/{$_GET['page']}_request_{$method}_api.ahmed.php";
@@ -121,9 +124,11 @@ function handleRequestMethod($methods)
             if ($_SERVER['REQUEST_METHOD'] !== $method) {
                 loadScripts();
                 include 'core/errors/405.php';
+
                 return true;
             }
             echo $Ahmed->render($filePath);
+
             return true;
         }
     }
@@ -138,6 +143,7 @@ function handleRequestMethod($methods)
  * homepage, internal routes, static pages, dynamic routes, API endpoints, and 404 errors.
  *
  * @param string $RouteName The name of the route to process.
+ *
  * @return void
  */
 function getPage($RouteName)
