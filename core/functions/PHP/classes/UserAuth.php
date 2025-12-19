@@ -184,18 +184,21 @@ class UserAuth
                         }
                         break;
                     case 'shouldEnd':
-                        if (!Validation::isEndWith($value, $constraint)) {
-                            return "$key must end with $constraint.";
+                        if (!Validation::isEndWith($value, (array) $constraint)) {
+                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                            return "$key must end with $constraintStr.";
                         }
                         break;
                     case 'shouldNotStart':
-                        if (Validation::isStartWith($value, $constraint)) {
-                            return "$key should not start with $constraint.";
+                        if (Validation::isStartWith($value, (array) $constraint)) {
+                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                            return "$key should not start with $constraintStr.";
                         }
                         break;
                     case 'shouldNotEnd':
-                        if (Validation::isEndWith($value, $constraint)) {
-                            return "$key should not end with $constraint.";
+                        if (Validation::isEndWith($value, (array) $constraint)) {
+                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                            return "$key should not end with $constraintStr.";
                         }
                         break;
                     case 'notEqual':
@@ -204,8 +207,9 @@ class UserAuth
                         }
                         break;
                     case 'shouldStart':
-                        if (!Validation::isStartWith($value, $constraint)) {
-                            return "$key must start with $constraint.";
+                        if (!Validation::isStartWith($value, (array) $constraint)) {
+                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                            return "$key must start with $constraintStr.";
                         }
                         break;
                     case 'min':
