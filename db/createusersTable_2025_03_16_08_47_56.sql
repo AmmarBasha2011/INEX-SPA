@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
   `email` VARCHAR(100) NOT NULL UNIQUE,
   `phoneNumber` VARCHAR(255) UNIQUE,
   `age` INT,
-  `isCompany` TINYINT(1) NOT NULL DEFAULT 'false',
+  `isCompany` TINYINT(1) NOT NULL DEFAULT 0,
   `domain` VARCHAR(50),
   `password` VARCHAR(60) NOT NULL DEFAULT '0123456789',
   `inviteCode` INT NOT NULL
