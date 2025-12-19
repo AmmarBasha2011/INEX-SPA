@@ -39,15 +39,19 @@ if ($dbUse) {
     /**
      * Executes a prepared SQL statement using the database connection.
      *
-     * This function is a global wrapper around the `Database::query` method. It instantiates
-     * the Database class (which handles the connection) and executes the given query.
+     * This function is a global wrapper for the `Database::query` method. It provides a
+     * convenient way to execute SQL queries without needing to manage the Database
+     * object instance directly.
      *
-     * @param string $sql       The SQL query to execute, possibly with placeholders.
-     * @param array  $params    An array of parameters to bind to the query.
-     * @param bool   $is_return If true, fetches and returns the result set. If false,
-     *                          returns a boolean indicating success.
+     * @param string $sql       The SQL query to execute, with '?' placeholders for parameters.
+     * @param array  $params    An array of values to bind to the placeholders in the SQL query.
+     * @param bool   $is_return If `true`, the method will fetch and return all rows from the
+     *                          result set. If `false`, it will return a boolean indicating
+     *                          the success of the operation (e.g., for INSERT, UPDATE, DELETE).
      *
-     * @return array|bool The result set as an array of associative arrays, or a boolean for success.
+     * @return array|bool If `$is_return` is `true`, returns an array of associative arrays
+     *                    representing the result set. If `$is_return` is `false`, returns
+     *                    `true` on successful execution.
      */
     function executeStatement($sql, $params = [], $is_return = true)
     {
@@ -80,11 +84,12 @@ if ($useCache) {
     /**
      * Stores an item in the cache.
      *
-     * A global wrapper for the `Cache::set` method.
+     * A global wrapper for the `Cache::set` method, allowing for simple, direct
+     * caching of serializable data.
      *
-     * @param string $key        The key to store the data under.
-     * @param mixed  $data       The data to be cached.
-     * @param int    $expiration The cache lifetime in seconds.
+     * @param string $key        The unique key to store the data under.
+     * @param mixed  $data       The data to be cached (e.g., string, array, object).
+     * @param int    $expiration The cache lifetime in seconds. Defaults to 3600 (1 hour).
      *
      * @return void
      */
@@ -95,11 +100,13 @@ if ($useCache) {
     /**
      * Retrieves an item from the cache.
      *
-     * A global wrapper for the `Cache::get` method.
+     * A global wrapper for the `Cache::get` method. Returns the stored data if the
+     * cache item is valid and not expired.
      *
      * @param string $key The key of the item to retrieve.
      *
-     * @return mixed The cached data or false on failure.
+     * @return mixed The cached data on success, or `false` if the item does not
+     *               exist or has expired.
      */
     function getCache($key)
     {
@@ -108,7 +115,8 @@ if ($useCache) {
     /**
      * Deletes an item from the cache.
      *
-     * A global wrapper for the `Cache::delete` method.
+     * A global wrapper for the `Cache::delete` method, providing a simple way
+     * to invalidate and remove a cached item.
      *
      * @param string $key The key of the item to delete.
      *
@@ -121,12 +129,13 @@ if ($useCache) {
     /**
      * Updates an existing item in the cache.
      *
-     * A global wrapper for the `Cache::update` method.
+     * A global wrapper for the `Cache::update` method. This replaces the data of an
+     * existing cache item without changing its original expiration time.
      *
      * @param string $key     The key of the item to update.
-     * @param mixed  $newData The new data to store.
+     * @param mixed  $newData The new data to store, which must be serializable.
      *
-     * @return bool True on success, false if the item doesn't exist.
+     * @return bool `true` on success, or `false` if the cache item does not exist.
      */
     function updateCache($key, $newData)
     {
