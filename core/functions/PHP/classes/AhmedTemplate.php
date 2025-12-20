@@ -44,11 +44,21 @@ class AhmedTemplate
     }
 
     /**
-     * Parses the template content, replacing custom syntax with PHP code.
+     * Parses a raw template string, replacing custom Ahmed Template directives with executable PHP code.
      *
-     * @param string $content The raw content of the template.
+     * This method uses a series of regular expressions to find and replace all supported
+     * template tags. This includes:
+     * - Variable echoing (e.g., `{{ $name }}`)
+     * - Control structures (e.g., `@if`, `@foreach`, `@for`, `@while`)
+     * - Conditional checks (e.g., `@isset`, `@empty`)
+     * - Layout and section directives (e.g., `@section`, `@render`)
+     * - Helper function calls (e.g., `@getLang`, `@getEnv`)
+     * - Raw PHP execution blocks (e.g., `@php ... @endphp`)
      *
-     * @return string The parsed content with PHP code.
+     * @param string $content The raw string content of the template file.
+     *
+     * @return string The template content with all custom syntax converted into
+     *                standard PHP, ready for evaluation.
      */
     protected function parse($content)
     {
