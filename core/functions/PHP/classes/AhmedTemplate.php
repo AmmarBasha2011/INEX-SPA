@@ -5,8 +5,9 @@
  *
  * This class provides a basic but powerful template engine that parses template files,
  * replacing custom directives (e.g., `{{ $variable }}`, `@if(...)`, `@foreach(...)`)
- * with standard PHP code, which is then executed to generate the final HTML output.
- * It is the core of the view rendering system in the INEX SPA framework.
+ * with standard PHP code. This parsed code is then executed to generate the final
+ * HTML output. It is the core of the view rendering system in the INEX SPA framework,
+ * enabling dynamic content generation with a clean, readable syntax.
  */
 class AhmedTemplate
 {
@@ -20,11 +21,11 @@ class AhmedTemplate
      *
      * @param string $template The full path to the template file to be rendered.
      * @param array  $data     An associative array of data to be extracted into variables
-     *                         (e.g., `['name' => 'John']` becomes `$name`).
+     *                         (e.g., `['name' => 'John']` becomes `$name` in the template).
      *
      * @throws Exception If the specified template file does not exist.
      *
-     * @return string The fully rendered HTML content.
+     * @return string The fully rendered HTML content as a string.
      */
     public function render($template, $data = [])
     {
@@ -58,7 +59,7 @@ class AhmedTemplate
      * @param string $content The raw string content of the template file.
      *
      * @return string The template content with all custom syntax converted into
-     *                standard PHP, ready for evaluation.
+     *                standard PHP, making it ready for evaluation by the `render` method.
      */
     protected function parse($content)
     {

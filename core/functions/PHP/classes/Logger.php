@@ -3,9 +3,11 @@
 /**
  * A simple, file-based logging utility for recording application events.
  *
- * This class provides static methods to write log messages to different files
- * based on their type (e.g., 'error', 'security', 'api', 'system'). It also
- * includes a method to clear all log files, useful for development or maintenance.
+ * This class provides static methods to write log messages to different, categorized
+ * log files (e.g., 'error', 'security', 'api', 'system'). This separation helps in
+ * organizing log data for easier debugging and monitoring. The class also includes a
+ * utility method to clear all log files, which can be useful during development or
+ * for maintenance tasks.
  */
 class Logger
 {
@@ -19,13 +21,14 @@ class Logger
     /**
      * Writes a message to a log file determined by its type.
      *
-     * Each log entry is timestamped and formatted before being appended to the
-     * corresponding log file (e.g., `errors.log`, `security.log`).
+     * Each log entry is automatically timestamped and formatted before being appended to the
+     * corresponding log file (e.g., `errors.log`, `security.log`). If an invalid type
+     * is provided, the message will be written to the default `system.log`.
      *
      * @param string $type    The category of the log message. This determines which file
      *                        the message will be written to. Accepted values are 'error',
      *                        'security', and 'api'. Any other value will default to 'system'.
-     * @param string $message The descriptive message to be logged.
+     * @param string $message The descriptive message or data to be logged.
      *
      * @return void
      */
@@ -53,7 +56,8 @@ class Logger
      * Clears the content of all predefined log files.
      *
      * This method truncates the `system.log`, `errors.log`, `security.log`,
-     * and `api.log` files, effectively deleting all their logged messages.
+     * and `api.log` files by overwriting them with an empty string, effectively
+     * deleting all their logged messages.
      *
      * @return void
      */

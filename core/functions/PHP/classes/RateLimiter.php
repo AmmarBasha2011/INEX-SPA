@@ -3,15 +3,16 @@
 /**
  * Implements a simple, file-based rate limiter to prevent abuse of application endpoints.
  *
- * This class tracks the number of requests from individual IP addresses over a defined
- * time window. If an IP exceeds a configured request limit, subsequent requests are
- * blocked with a 429 "Too Many Requests" status.
+ * This class tracks the number of requests from individual IP addresses over a configured
+ * time window. It uses a JSON file for storage, making it a dependency-free solution.
+ * If an IP exceeds the request limit, subsequent requests are blocked with a
+ * 429 "Too Many Requests" HTTP status code, and the script terminates.
  */
 class RateLimiter
 {
     /**
-     * The maximum number of requests allowed from a single IP address within the time frame.
-     * This value is loaded from the `REQUESTS_PER_HOUR` environment variable.
+     * The maximum number of requests allowed from a single IP within the time frame.
+     * This value is loaded from the `REQUESTS_PER_HOUR` environment variable via the `init()` method.
      *
      * @var int
      */
@@ -23,20 +24,21 @@ class RateLimiter
      *
      * @var int
      */
-    private static $timeFrame = 3600; // Time window (1 hour)
+    private static $timeFrame = 3600;
 
     /**
      * The path to the JSON file used for storing request timestamps and counts for each IP.
      *
      * @var string
      */
-    private static $storageFile = __DIR__.'/../../../storage/rate_limit.json'; // Store request counts
+    private static $storageFile = __DIR__.'/../../../storage/rate_limit.json';
 
     /**
-     * Initializes the rate limiter's configuration settings.
+     * Initializes the rate limiter's configuration settings from the environment.
      *
      * This method reads the `REQUESTS_PER_HOUR` value from the .env file to set
-     * the request limit. It should be called before using the `check` method.
+     * the request limit. It is called automatically by the `check()` method if not
+     * previously initialized.
      *
      * @return void
      */
@@ -46,39 +48,38 @@ class RateLimiter
     }
 
     /**
-     * Checks the request rate for a given IP address and blocks it if the limit is exceeded.
+     * Enforces the rate limit for a given IP address.
      *
-     * This method performs the following actions:
-     * 1. Initializes settings if they haven't been loaded.
-     * 2. Reads the request data from the storage file.
-     * 3. Cleans up any expired entries from the data.
-     * 4. Checks the request count for the provided IP. If it exceeds the limit,
-     *    it terminates the script with a 429 HTTP status and an error message.
-     * 5. If the limit is not exceeded, it increments the request count for the IP.
-     * 6. Writes the updated data back to the storage file.
+     * This is the main method of the rate limiter. It performs the following actions:
+     * 1. Reads the request data from the storage file.
+     * 2. Cleans up any entries that have expired from the time window.
+     * 3. Checks the request count for the provided IP. If the count exceeds the limit,
+     *    it sends a 429 HTTP status code and terminates the script with an error message.
+     * 4. If the limit is not exceeded, it increments the request count for the IP or initializes it.
+     * 5. Writes the updated request data back to the storage file.
      *
      * @param string $userIP The IP address of the client making the request.
      *
-     * @return void
+     * @return void This method either returns nothing or terminates the script execution.
      */
     public static function check($userIP)
     {
-        // Ensure init() is called
+        // Ensure settings are initialized.
         if (!isset(self::$limit)) {
             self::init();
         }
 
-        // Read existing data
+        // Read existing request data.
         $data = file_exists(self::$storageFile) ? json_decode(file_get_contents(self::$storageFile), true) : [];
 
-        // Cleanup expired entries
+        // Cleanup expired entries to keep the storage file tidy.
         foreach ($data as $ip => $entry) {
             if ($entry['timestamp'] + self::$timeFrame < time()) {
                 unset($data[$ip]);
             }
         }
 
-        // Check user request count
+        // Check the request count for the current user's IP.
         if (!isset($data[$userIP])) {
             $data[$userIP] = ['count' => 1, 'timestamp' => time()];
         } else {
@@ -89,7 +90,7 @@ class RateLimiter
             $data[$userIP]['count']++;
         }
 
-        // Save updated data
+        // Save the updated request data.
         file_put_contents(self::$storageFile, json_encode($data));
     }
 }

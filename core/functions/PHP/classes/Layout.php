@@ -4,22 +4,23 @@
  * Manages view layouts and content sections for building reusable template structures.
  *
  * This class provides a simple yet effective system for defining a master layout
- * and injecting content into it from various view files. It allows for capturing
- * blocks of content in named "sections" which can then be rendered in the layout.
+ * (e.g., header, footer, sidebar) and injecting dynamic content into it from
+ * various view files. It allows for capturing blocks of content in named "sections"
+ * which can then be rendered at specified points within the main layout.
  */
 class Layout
 {
     /**
      * Stores the captured content for each named section.
-     * The keys are section names, and the values are their buffered content.
+     * The keys of the array are the section names, and the values are their buffered HTML content.
      *
      * @var array
      */
     private static $sections = [];
 
     /**
-     * Tracks the name of the section that is currently being captured.
-     * This is `null` when no section is active.
+     * Tracks the name of the section that is currently being captured via output buffering.
+     * This property is `null` when no section capturing is active.
      *
      * @var string|null
      */
@@ -28,10 +29,11 @@ class Layout
     /**
      * Begins capturing output for a named content section.
      *
-     * All output generated after this call (until `end()` is called) will be
-     * stored in a buffer associated with the given section name.
+     * All output generated in a template after this call (until `end()` is called) will be
+     * stored in an output buffer associated with the given section name. It prevents
+     * nested section capturing.
      *
-     * @param string $section The name of the section to start capturing.
+     * @param string $section The name of the section to start capturing (e.g., 'content', 'sidebar').
      *
      * @return void
      */
@@ -47,8 +49,9 @@ class Layout
     /**
      * Stops capturing output for the current section and stores its content.
      *
-     * This method retrieves the contents of the output buffer, assigns it to the
-     * current section, and then clears the current section state.
+     * This method retrieves the contents of the active output buffer, assigns it to the
+     * current section in the `$sections` array, and then resets the state to indicate
+     * that no section is currently being captured.
      *
      * @return void
      */
@@ -65,19 +68,19 @@ class Layout
      * Renders a final view by embedding a content file within a layout file.
      *
      * This method orchestrates the assembly of the final page. It dynamically
-     * locates the correct content file based on routing conventions (standard,
-     * dynamic, API, etc.) and then renders the main layout, which in turn will
-     * display the captured sections.
+     * locates the correct content file from the `/web` directory based on various
+     * routing conventions (standard, dynamic, API, etc.). It then renders the specified
+     * master layout, which in turn will display the captured sections.
      *
      * @param string $layoutName  The name of the master layout file (without the .ahmed.php extension)
      *                            located in the `/layouts` directory.
      * @param string $contentFile The base name of the content file from the `/web` directory.
-     * @param string $requestType The current HTTP request type (e.g., 'GET', 'POST'), used
-     *                            to locate request-specific content files.
-     * @param array  $data        An associative array of data to be extracted into variables,
-     *                            making them available to both the layout and content files.
+     * @param string $requestType (Optional) The current HTTP request type (e.g., 'GET', 'POST'), used
+     *                            to locate request-specific content files. Defaults to 'GET'.
+     * @param array  $data        (Optional) An associative array of data to be extracted into variables,
+     *                            making them available within the scope of both the layout and content files.
      *
-     * @return void
+     * @return void This method outputs the rendered content directly.
      */
     public static function render($layoutName, $contentFile, $requestType = 'GET', $data = [])
     {
@@ -85,7 +88,7 @@ class Layout
 
         $layoutPath = __DIR__."/../../../../layouts/$layoutName.ahmed.php";
 
-        // Support for dynamic paths and request types
+        // Define potential paths for the content file based on framework conventions.
         $contentPaths = [
             __DIR__."/../../../../web/$contentFile.ahmed.php", // Standard path
             __DIR__."/../../../../web/{$contentFile}_dynamic.ahmed.php", // Dynamic path
@@ -116,13 +119,13 @@ class Layout
     /**
      * Retrieves and returns the captured content for a named section.
      *
-     * This method is typically called within a layout file to inject the content
-     * from a view file at a specific location.
+     * This method is intended to be called from within a layout file to inject the content
+     * that was captured in a view file (using `start()` and `end()`) at a specific location.
      *
      * @param string $section The name of the section whose content is to be retrieved.
      *
-     * @return string The captured HTML content of the section, or an error message if
-     *                the section was not found.
+     * @return string The captured HTML content of the section, or an error message string if
+     *                the specified section was not found in the `$sections` array.
      */
     public static function section($section)
     {

@@ -3,8 +3,9 @@
 /**
  * Provides a collection of static methods for common data validation tasks.
  *
- * This utility class includes methods for validating various data formats such as
- * email addresses, string lengths, domains, and numeric types.
+ * This utility class includes a suite of methods for validating various data formats
+ * such as email addresses, string lengths, domains, numeric types, and more. These
+ * helpers can be used throughout the application to ensure data integrity.
  */
 class Validation
 {
@@ -13,7 +14,8 @@ class Validation
      *
      * @param string $text The string to be validated as an email.
      *
-     * @return bool `true` if the string is a valid email, `false` otherwise.
+     * @return bool Returns `true` if the string is a valid email address according to
+     *              `filter_var`, otherwise returns `false`.
      */
     public static function isEmail($text)
     {
@@ -26,8 +28,8 @@ class Validation
      * @param string $text      The string to be checked.
      * @param int    $maxLength The maximum number of characters allowed.
      *
-     * @return bool `true` if the string's length is less than or equal to `$maxLength`,
-     *              `false` otherwise.
+     * @return bool Returns `true` if the string's length is less than or equal to `$maxLength`,
+     *              otherwise returns `false`.
      */
     public static function isTextLength($text, $maxLength)
     {
@@ -35,13 +37,13 @@ class Validation
     }
 
     /**
-     * Checks if a string's length meets a minimum length requirement.
+     * Checks if a string's length meets a specified minimum length requirement.
      *
      * @param string $text      The string to be checked.
      * @param int    $minLength The minimum number of characters required.
      *
-     * @return bool `true` if the string's length is greater than or equal to `$minLength`,
-     *              `false` otherwise.
+     * @return bool Returns `true` if the string's length is greater than or equal to `$minLength`,
+     *              otherwise returns `false`.
      */
     public static function isMinTextLength($text, $minLength)
     {
@@ -49,11 +51,15 @@ class Validation
     }
 
     /**
-     * Determines if a given domain string is a subdomain (contains more than one dot).
+     * Determines if a given domain string appears to be a subdomain.
+     *
+     * This check is a simple heuristic that returns true if the string contains
+     * more than one dot (`.`), which is a common characteristic of subdomains
+     * (e.g., `blog.example.com`).
      *
      * @param string $domain The domain string to check.
      *
-     * @return bool `true` if the domain appears to be a subdomain, `false` otherwise.
+     * @return bool Returns `true` if the domain contains more than one dot, `false` otherwise.
      */
     public static function isSubDomain($domain)
     {
@@ -65,11 +71,13 @@ class Validation
      *
      * @param string $domain The URL to check.
      *
-     * @return bool `true` if the URL has a non-root path, `false` otherwise.
+     * @return bool Returns `true` if the URL has a non-root path (e.g., `example.com/blog`),
+     *              `false` otherwise.
      */
     public static function isSubDir($domain)
     {
-        return parse_url($domain, PHP_URL_PATH) && trim(parse_url($domain, PHP_URL_PATH), '/') !== '';
+        $path = parse_url($domain, PHP_URL_PATH);
+        return $path && trim($path, '/') !== '';
     }
 
     /**
@@ -77,7 +85,7 @@ class Validation
      *
      * @param string $text The string to be validated as a domain.
      *
-     * @return bool `true` if the string is a valid domain name, `false` otherwise.
+     * @return bool Returns `true` if the string is a valid domain name, `false` otherwise.
      */
     public static function isDomain($text)
     {
@@ -86,11 +94,12 @@ class Validation
 
     /**
      * Checks if a string ends with one of the provided substrings.
+     * The comparison is case-sensitive.
      *
      * @param string $text    The string to check.
      * @param array  $endList An array of substrings to check for at the end of the string.
      *
-     * @return bool `true` if the string ends with any of the substrings in the list,
+     * @return bool Returns `true` if the string ends with any of the substrings in the list,
      *              `false` otherwise.
      */
     public static function isEndWith($text, $endList)
@@ -100,17 +109,17 @@ class Validation
                 return true;
             }
         }
-
         return false;
     }
 
     /**
      * Checks if a string starts with one of the provided substrings.
+     * The comparison is case-sensitive.
      *
      * @param string $text      The string to check.
      * @param array  $startList An array of substrings to check for at the beginning of the string.
      *
-     * @return bool `true` if the string starts with any of the substrings in the list,
+     * @return bool Returns `true` if the string starts with any of the substrings in the list,
      *              `false` otherwise.
      */
     public static function isStartWith($text, $startList)
@@ -120,7 +129,6 @@ class Validation
                 return true;
             }
         }
-
         return false;
     }
 
@@ -129,7 +137,8 @@ class Validation
      *
      * @param mixed $text The value to be checked.
      *
-     * @return bool `true` if the value is a number or a numeric string, `false` otherwise.
+     * @return bool Returns `true` if the value is a number or a numeric string (e.g., "123"),
+     *              `false` otherwise.
      */
     public static function isNumber($text)
     {
@@ -140,14 +149,15 @@ class Validation
      * Checks if a value can be interpreted as a boolean.
      *
      * This method considers `true`, `false`, 'true', 'false', 1, 0, '1', and '0'
-     * as valid boolean representations.
+     * as valid boolean representations, accommodating various forms of input.
      *
-     * @param mixed $text The value to be checked.
+     * @param mixed $value The value to be checked.
      *
-     * @return bool `true` if the value is a valid boolean representation, `false` otherwise.
+     * @return bool Returns `true` if the value is a valid boolean representation,
+     *              `false` otherwise.
      */
-    public static function isBool($text)
+    public static function isBool($value)
     {
-        return $text === true || $text === false || $text === 'true' || $text === 'false' || $text === 1 || $text === 0 || $text === '1' || $text === '0';
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null;
     }
 }

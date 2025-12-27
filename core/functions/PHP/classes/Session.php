@@ -3,13 +3,15 @@
 /**
  * Provides a simple, file-based session management system.
  *
- * This class allows for the storage, retrieval, and deletion of session data,
- * with each session key corresponding to a separate file in the designated
- * storage directory.
+ * This class allows for the storage, retrieval, and deletion of session data.
+ * Each session key corresponds to a separate file in the designated storage directory,
+ * offering a persistent session mechanism that does not rely on PHP's native
+ * session handling.
  *
  * @warning The "encryption" used in this class is simple base64 encoding, which
- *          is not secure and only provides obfuscation. This should be replaced
- *          with a proper encryption mechanism for production environments.
+ *          is **not secure** and only provides obfuscation. This should be replaced
+ *          with a proper encryption mechanism (e.g., using OpenSSL) for any
+ *          production environment handling sensitive data.
  */
 class Session
 {
@@ -23,10 +25,11 @@ class Session
     /**
      * Creates or overwrites a session variable with the given value.
      *
-     * The value is JSON-encoded to support various data types and then "encrypted"
-     * before being written to a file named after the key.
+     * The value is JSON-encoded to support various data types (arrays, objects, etc.)
+     * and then obfuscated using base64 encoding. The result is written to a file
+     * named after the session key in the storage directory.
      *
-     * @param string $key   The unique identifier for the session variable.
+     * @param string $key   The unique identifier for the session variable. This will be the filename.
      * @param mixed  $value The data to be stored. This should be a type that can
      *                      be serialized by `json_encode`.
      *
@@ -41,8 +44,9 @@ class Session
     /**
      * Retrieves the value of a session variable by its key.
      *
-     * Reads the corresponding session file, "decrypts" its content, and decodes
-     * it from JSON back into its original PHP data type.
+     * This method reads the corresponding session file from the storage directory,
+     * decodes its content from base64, and then decodes it from JSON back into
+     * its original PHP data type.
      *
      * @param string $key The key of the session variable to retrieve.
      *
@@ -60,7 +64,7 @@ class Session
     }
 
     /**
-     * Deletes a session variable by removing its corresponding file.
+     * Deletes a session variable by removing its corresponding file from storage.
      *
      * @param string $key The key of the session variable to delete.
      *
@@ -68,14 +72,19 @@ class Session
      */
     public static function delete($key)
     {
-        unlink(self::$storagePath.$key);
+        $filePath = self::$storagePath . $key;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
     }
 
+
     /**
-     * Obfuscates data using base64 encoding.
+     * Obfuscates data using base64 encoding for storage.
      *
-     * @warning This is not a secure method of encryption. It should be replaced
-     *          with a strong cryptographic function for any sensitive data.
+     * @warning This method **does not provide secure encryption**. It is only for simple
+     *          obfuscation. It should be replaced with a strong cryptographic function
+     *          (like `openssl_encrypt`) for any sensitive data.
      *
      * @param string $data The plain data to be encoded.
      *
@@ -83,15 +92,17 @@ class Session
      */
     private static function encrypt($data)
     {
-        return base64_encode($data); // Simple encryption (can be improved)
+        return base64_encode($data); // This is NOT secure encryption.
     }
 
     /**
      * Decodes data from a base64 encoded string.
      *
-     * @param string $data The base64-encoded string.
+     * This method reverses the obfuscation performed by the `encrypt` method.
      *
-     * @return string The decoded, original data.
+     * @param string $data The base64-encoded string to be decoded.
+     *
+     * @return string The decoded, original data. Returns `false` on failure.
      */
     private static function decrypt($data)
     {

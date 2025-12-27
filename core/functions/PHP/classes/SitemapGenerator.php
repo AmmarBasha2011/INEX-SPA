@@ -3,27 +3,28 @@
 /**
  * Automatically generates a `sitemap.xml` file for the application.
  *
- * This utility class scans the `web` directory to discover all public routes based
+ * This utility class scans the `/web` directory to discover all public routes based
  * on the filenames of the `.ahmed.php` templates. It then compiles these routes
- * into a `sitemap.xml` file and saves it in the `public` directory, making it
- * accessible to search engine crawlers.
+ * into a standard `sitemap.xml` file and saves it in the `/public` directory,
+ * making it accessible to search engine crawlers to improve SEO.
  */
 class SitemapGenerator
 {
     /**
      * The main method to generate and save the `sitemap.xml` file.
      *
-     * This method orchestrates the sitemap generation process by:
-     * 1. Locating the application's routes directory.
-     * 2. Calling a helper method to recursively find all routes.
-     * 3. Building the XML structure compliant with the sitemap protocol.
-     * 4. Writing the final XML content to `public/sitemap.xml`.
+     * This method orchestrates the entire sitemap generation process. It:
+     * 1. Locates the application's routes directory (`/web`).
+     * 2. Calls a helper method (`getRoutes`) to recursively find all routes.
+     * 3. Builds the XML content in a string, compliant with the sitemap protocol v0.9.
+     * 4. Writes the final XML content to `public/sitemap.xml`, overwriting any
+     *    existing file.
      *
-     * @return void
+     * @return void This method outputs status messages and writes to a file but does not return a value.
      */
     public static function generate()
     {
-        $routesDir = realpath(__DIR__.'/../../../../web/'); // Set correct path
+        $routesDir = realpath(__DIR__.'/../../../../web/');
         if (!$routesDir) {
             exit('Error: Routes directory not found.');
         }
@@ -32,6 +33,7 @@ class SitemapGenerator
         $xml .= "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n";
 
         foreach (self::getRoutes($routesDir) as $route) {
+            // The 'index' route should correspond to the root URL.
             if ($route === 'index') {
                 $route = '';
             }
@@ -39,19 +41,22 @@ class SitemapGenerator
         }
 
         $xml .= '</urlset>';
-        file_put_contents(__DIR__.'/../../../../public/sitemap.xml', $xml); // Save to public
+        file_put_contents(__DIR__.'/../../../../public/sitemap.xml', $xml);
     }
 
     /**
      * Recursively scans the routes directory to discover all unique URL paths.
      *
-     * This private helper method navigates the file structure of the `web` directory.
-     * It interprets specific filename conventions (e.g., `_dynamic.ahmed.php`,
-     * `_request_GET.ahmed.php`) to correctly format the route URLs for the sitemap.
+     * This private helper method navigates the file structure of the `/web` directory.
+     * It interprets specific filename conventions to correctly format the route URLs
+     * for the sitemap. For example:
+     * - `about.ahmed.php` becomes `/about`
+     * - `post_dynamic.ahmed.php` becomes `/post/{id}`
+     * - `contact_request_GET.ahmed.php` becomes `/contact_request_GET`
      *
      * @param string $dir      The absolute path of the directory to scan.
-     * @param string $basePath The current path relative to the `web` root, used for
-     *                         building nested route URLs.
+     * @param string $basePath (Internal) The current path relative to the `/web` root, used for
+     *                         building nested route URLs during recursion.
      *
      * @return array An array of unique, formatted route strings.
      */
@@ -69,29 +74,25 @@ class SitemapGenerator
             $routePath = $basePath.$file;
 
             if (is_dir($fullPath)) {
-                // Recursively scan subfolders
+                // Recursively scan subfolders.
                 $routes = array_merge($routes, self::getRoutes($fullPath, $routePath.'/'));
             } else {
-                // Extract the route name
+                // Extract the route name based on file naming conventions.
                 if (preg_match('/^(.+)_dynamic\.ahmed\.php$/', $file, $matches)) {
-                    // Dynamic route: [route]_dynamic.ahmed.php -> /route/{id}
                     $routes[] = str_replace('.ahmed.php', '', $routePath).'/{id}';
                 } elseif (preg_match('/^(.+)_request_(GET|POST|PUT|DELETE)\.ahmed\.php$/', $file, $matches)) {
-                    // Request type route: [route]_request_[requestType].ahmed.php -> /route
                     $routes[] = str_replace('.ahmed.php', '', $routePath);
                 } elseif (preg_match('/^(.+)_api\.ahmed\.php$/', $file, $matches)) {
-                    // API route: [route]_api.ahmed.php -> /route/api
                     $routes[] = str_replace('.ahmed.php', '', $routePath).'/api';
                 } elseif (preg_match('/^(.+)_dynamic_api\.ahmed\.php$/', $file, $matches)) {
-                    // Dynamic API route: [route]_dynamic_api.ahmed.php -> /route/api/{id}
                     $routes[] = str_replace('.ahmed.php', '', $routePath).'/api/{id}';
                 } else {
-                    // Normal route: [route].ahmed.php
+                    // Standard route.
                     $routes[] = str_replace('.ahmed.php', '', $routePath);
                 }
             }
         }
 
-        return array_unique($routes); // Remove duplicates
+        return array_unique($routes); // Ensure no duplicate routes are returned.
     }
 }
