@@ -77,6 +77,7 @@ class Validation
     public static function isSubDir($domain)
     {
         $path = parse_url($domain, PHP_URL_PATH);
+
         return $path && trim($path, '/') !== '';
     }
 
@@ -109,6 +110,7 @@ class Validation
                 return true;
             }
         }
+
         return false;
     }
 
@@ -129,6 +131,7 @@ class Validation
                 return true;
             }
         }
+
         return false;
     }
 

@@ -72,12 +72,11 @@ class Session
      */
     public static function delete($key)
     {
-        $filePath = self::$storagePath . $key;
+        $filePath = self::$storagePath.$key;
         if (file_exists($filePath)) {
             unlink($filePath);
         }
     }
-
 
     /**
      * Obfuscates data using base64 encoding for storage.

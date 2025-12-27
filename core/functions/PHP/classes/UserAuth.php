@@ -94,6 +94,7 @@ class UserAuth
 
         if (!empty($user) && count($user) > 0) {
             $_SESSION['user_id'] = $user[0]['id'];
+
             return 'User Found';
         } else {
             return 'User Not Found';
@@ -227,7 +228,6 @@ class UserAuth
             }
         }
 
-
         // --- Existence Check ---
         $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", array_keys($details)));
         $existingUser = executeStatement("SELECT id FROM users WHERE $placeholders", array_values($details));
@@ -236,7 +236,7 @@ class UserAuth
         }
 
         // --- Insertion Phase ---
-        $columns = '`' . implode('`, `', array_keys($details)) . '`';
+        $columns = '`'.implode('`, `', array_keys($details)).'`';
         $placeholders = implode(', ', array_fill(0, count($details), '?'));
         $sql = "INSERT INTO users ($columns) VALUES ($placeholders)";
 
@@ -250,6 +250,7 @@ class UserAuth
 
             if (!empty($newUser)) {
                 $_SESSION['user_id'] = $newUser[0]['id'];
+
                 return 'User successfully registered.';
             } else {
                 return 'User registered, but failed to start session.';
@@ -281,6 +282,7 @@ class UserAuth
         if (isset($_SESSION['user_id'])) {
             unset($_SESSION['user_id']);
         }
+
         return 'User logged out.';
     }
 }

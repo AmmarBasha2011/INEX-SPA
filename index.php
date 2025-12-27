@@ -63,6 +63,7 @@ if ($dbUse) {
     function executeStatement($sql, $params = [], $is_return = true)
     {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
     require_once 'core/functions/PHP/runDB.php';
@@ -92,36 +93,58 @@ if ($useCache) {
     require_once 'core/functions/PHP/classes/Cache.php';
     /**
      * Stores an item in the cache. A global wrapper for `Cache::set`.
-     * @param string $key The key for the cache item.
-     * @param mixed $data The data to cache.
-     * @param int $expiration The cache lifetime in seconds.
+     *
+     * @param string $key        The key for the cache item.
+     * @param mixed  $data       The data to cache.
+     * @param int    $expiration The cache lifetime in seconds.
      */
-    function setCache($key, $data, $expiration = 3600) { Cache::set($key, $data, $expiration); }
+    function setCache($key, $data, $expiration = 3600)
+    {
+        Cache::set($key, $data, $expiration);
+    }
     /**
      * Retrieves an item from the cache. A global wrapper for `Cache::get`.
+     *
      * @param string $key The key of the item to retrieve.
+     *
      * @return mixed The cached data or `false` on failure.
      */
-    function getCache($key) { return Cache::get($key); }
+    function getCache($key)
+    {
+        return Cache::get($key);
+    }
     /**
      * Deletes an item from the cache. A global wrapper for `Cache::delete`.
+     *
      * @param string $key The key of the item to delete.
      */
-    function deleteCache($key) { Cache::delete($key); }
+    function deleteCache($key)
+    {
+        Cache::delete($key);
+    }
     /**
      * Updates an item in the cache. A global wrapper for `Cache::update`.
-     * @param string $key The key of the item to update.
-     * @param mixed $newData The new data.
+     *
+     * @param string $key     The key of the item to update.
+     * @param mixed  $newData The new data.
+     *
      * @return bool `true` on success, `false` otherwise.
      */
-    function updateCache($key, $newData) { return Cache::update($key, $newData); }
+    function updateCache($key, $newData)
+    {
+        return Cache::update($key, $newData);
+    }
 }
 
 // Load remaining core and optional classes based on .env configuration
 require_once 'core/functions/PHP/useGemini.php';
-if ($useRateLimiter) require_once 'core/functions/PHP/classes/RateLimiter.php';
+if ($useRateLimiter) {
+    require_once 'core/functions/PHP/classes/RateLimiter.php';
+}
 require_once 'core/functions/PHP/classes/SitemapGenerator.php';
-if ($useCookie) require_once 'core/functions/PHP/classes/CookieManager.php';
+if ($useCookie) {
+    require_once 'core/functions/PHP/classes/CookieManager.php';
+}
 require_once 'core/functions/PHP/classes/Layout.php';
 require_once 'core/functions/PHP/classes/Session.php';
 if ($detectLanguage) {
@@ -130,11 +153,21 @@ if ($detectLanguage) {
     Language::setLanguage($selectedLang);
 }
 require_once 'core/functions/PHP/classes/Validation.php';
-if (getEnvValue('USE_AUTH') == 'true') require_once 'core/functions/PHP/classes/UserAuth.php';
-if (getEnvValue('USE_FIREWALL') == 'true') require_once 'core/functions/PHP/classes/Firewall.php';
-if (getEnvValue('USE_SECURITY') == 'true') require_once 'core/functions/PHP/classes/Security.php';
-if (getEnvValue('USE_LOGGING') == 'true') require_once 'core/functions/PHP/classes/Logger.php';
-if (getEnvValue('USE_WEBHOOK') == 'true') require_once 'core/functions/PHP/classes/Webhook.php';
+if (getEnvValue('USE_AUTH') == 'true') {
+    require_once 'core/functions/PHP/classes/UserAuth.php';
+}
+if (getEnvValue('USE_FIREWALL') == 'true') {
+    require_once 'core/functions/PHP/classes/Firewall.php';
+}
+if (getEnvValue('USE_SECURITY') == 'true') {
+    require_once 'core/functions/PHP/classes/Security.php';
+}
+if (getEnvValue('USE_LOGGING') == 'true') {
+    require_once 'core/functions/PHP/classes/Logger.php';
+}
+if (getEnvValue('USE_WEBHOOK') == 'true') {
+    require_once 'core/functions/PHP/classes/Webhook.php';
+}
 
 // Dynamic package loader for third-party libraries
 $packagesJsonPath = __DIR__.'/core/import/package.json';

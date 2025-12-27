@@ -48,6 +48,7 @@ class Webhook
             // In a real application, you might want to log this error.
             // error_log('cURL error in Webhook::send: ' . curl_error($ch));
             curl_close($ch);
+
             return false;
         }
 
