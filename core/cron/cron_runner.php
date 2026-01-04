@@ -48,8 +48,9 @@ if (file_exists(PROJECT_ROOT.'/core/functions/PHP/getEnvValue.php')) {
          * It is not intended for general use but as a safeguard for cron tasks
          * that might run in a minimal environment.
          *
-         * @param string      $key     The name of the environment variable.
-         * @param mixed|null  $default The default value to return if the variable is not found.
+         * @param string     $key     The name of the environment variable.
+         * @param mixed|null $default The default value to return if the variable is not found.
+         *
          * @return mixed|null The value of the environment variable or the default value.
          */
         function getEnvValue($key, $default = null)
