@@ -32,17 +32,21 @@ require_once 'core/functions/PHP/classes/UserAuth.php';
  *
  * This function is a global wrapper for the `Database::query` method. It provides a
  * convenient way to execute SQL queries without needing to manage the Database
- * object instance directly.
+ * object instance directly. It simplifies database interactions within the CLI tool
+ * by handling the instantiation of the Database class.
  *
  * @param string $sql       The SQL query to execute, with '?' placeholders for parameters.
  * @param array  $params    An array of values to bind to the placeholders in the SQL query.
+ *                          Defaults to an empty array if no parameters are needed.
  * @param bool   $is_return If `true`, the method will fetch and return all rows from the
- *                          result set. If `false`, it will return a boolean indicating
- *                          the success of the operation (e.g., for INSERT, UPDATE, DELETE).
+ *                          result set as an array of associative arrays. If `false`, it will
+ *                          return a boolean indicating the success of a non-query operation
+ *                          (e.g., for INSERT, UPDATE, DELETE). Defaults to `true`.
  *
  * @return array|bool If `$is_return` is `true`, returns an array of associative arrays
- *                    representing the result set. If `$is_return` is `false`, returns
- *                    `true` on successful execution.
+ *                    representing the result set. If the query returns no rows, an empty
+ *                    array is returned. If `$is_return` is `false`, returns `true` on
+ *                    successful execution of the statement.
  */
 function executeStatement($sql, $params = [], $is_return = true) {
     $DB = new Database();

@@ -15,14 +15,11 @@ class ClearDBTables
     /**
      * Connects to the database and drops all existing tables.
      *
-     * The method performs the following steps:
-     * 1. Disables foreign key checks to avoid dependency errors.
-     * 2. Fetches a list of all table names from the database.
-     * 3. Iterates through the list and executes a `DROP TABLE` command for each one.
-     * 4. Re-enables foreign key checks.
-     *
-     * It outputs progress messages to the console for each table dropped and a final
-     * success or error message.
+     * This static method orchestrates the complete teardown of the database schema.
+     * It disables foreign key checks to prevent dependency errors, retrieves a list
+     * of all table names, and then iterates through them, executing a `DROP TABLE`
+     * command for each. Finally, it re-enables foreign key checks. Progress and
+     * completion messages are echoed to the console.
      *
      * @return void
      */

@@ -40,17 +40,19 @@ if ($dbUse) {
      *
      * This function is a global wrapper for the `Database::query` method. It provides a
      * convenient way to execute SQL queries without needing to manage the Database
-     * object instance directly.
+     * object instance directly, handling the instantiation of the Database class.
      *
      * @param string $sql       The SQL query to execute, with '?' placeholders for parameters.
      * @param array  $params    An array of values to bind to the placeholders in the SQL query.
+     *                          Defaults to an empty array.
      * @param bool   $is_return If `true`, the method will fetch and return all rows from the
      *                          result set. If `false`, it will return a boolean indicating
-     *                          the success of the operation (e.g., for INSERT, UPDATE, DELETE).
+     *                          the success of a non-query operation (e.g., INSERT, UPDATE, DELETE).
+     *                          Defaults to `true`.
      *
      * @return array|bool If `$is_return` is `true`, returns an array of associative arrays
-     *                    representing the result set. If `$is_return` is `false`, returns
-     *                    `true` on successful execution.
+     *                    representing the result set. If `$is_return` is `false`, returns `true`
+     *                    on successful execution. An empty array is returned for queries with no results.
      */
     function executeStatement($sql, $params = [], $is_return = true)
     {

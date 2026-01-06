@@ -82,6 +82,10 @@ class UserAuth
     /**
      * Authenticates a user and starts a session upon successful sign-in.
      *
+     * This method queries the `users` table to find a record that matches the
+     * provided credentials. If a match is found, it stores the user's ID in the
+     * session, effectively logging them in.
+     *
      * @param array $details An associative array where keys are database column names
      *                       (e.g., 'username', 'password') and values are the credentials
      *                       to be verified.
