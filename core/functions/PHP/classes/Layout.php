@@ -7,7 +7,7 @@
  * and injecting content into it from various view files. It allows developers to
  * define a consistent structure (like headers and footers) in one place and then
  * fill in the dynamic parts from other, more specific view files. This promotes
-_ D_on't _R_epeat _Y_ourself (DRY) principles.
+ * _ D_on't _R_epeat _Y_ourself (DRY) principles.
  */
 class Layout
 {
