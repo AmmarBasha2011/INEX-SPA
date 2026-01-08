@@ -3,9 +3,10 @@
 /**
  * Manages a simple file-based cache for storing and retrieving serializable data.
  *
- * This class provides static methods to set, get, update, and delete cache entries.
- * Each cache item is stored as a JSON-encoded file on the filesystem, containing the
- * data and its expiration timestamp.
+ * This class provides a static interface for common cache operations (set, get, update, delete).
+ * Each cache item is stored in its own file in a dedicated cache directory. The data is
+ * JSON-encoded, allowing for storage of various data types, and includes an expiration
+ * timestamp to handle cache invalidation automatically.
  */
 class Cache
 {
@@ -19,8 +20,9 @@ class Cache
     /**
      * Stores a piece of data in the cache for a specified duration.
      *
-     * Creates a cache file containing the data and its expiration time. The data
-     * will be JSON-encoded, so it must be serializable.
+     * Creates a cache file named with an MD5 hash of the key. The file contains a
+     * JSON object with the data and its expiration timestamp. The data provided
+     * must be serializable by `json_encode`.
      *
      * @param string $key        The unique key used to identify the cache item.
      * @param mixed  $data       The data to be cached. This can be any type that is
@@ -43,14 +45,15 @@ class Cache
     /**
      * Retrieves an item from the cache by its key.
      *
-     * Checks if a cache file exists and has not expired. If the cache is valid,
-     * it returns the stored data. Otherwise, it deletes the expired file and
-     * returns false.
+     * Checks if a cache file for the given key exists and has not expired. If the
+     * cache is valid, it decodes the JSON and returns the stored data. If the file
+     * does not exist or the expiration time has passed, it deletes the expired file
+     * and returns false.
      *
      * @param string $key The unique key of the cache item to retrieve.
      *
      * @return mixed The cached data on success, or `false` if the cache item
-     *               does not exist or has expired.
+     *               does not exist, is invalid, or has expired.
      */
     public static function get($key)
     {
@@ -72,8 +75,9 @@ class Cache
     /**
      * Updates the data of an existing cache item without altering its expiration time.
      *
-     * If the cache item exists, this method replaces its current data with the new
-     * data provided. The original expiration timestamp is preserved.
+     * If a cache item with the specified key exists, this method replaces its current
+     * data with the new data provided. The original expiration timestamp is preserved.
+     * This is useful for refreshing data without changing its cache lifetime.
      *
      * @param string $key     The unique key of the cache item to update.
      * @param mixed  $newData The new data to store in the cache. Must be serializable.
@@ -97,10 +101,10 @@ class Cache
     }
 
     /**
-     * Deletes a specific item from the cache.
+     * Deletes a specific item from the cache by its key.
      *
      * If a cache file corresponding to the key exists, it will be removed from
-     * the filesystem.
+     * the filesystem. This is the primary method for manual cache invalidation.
      *
      * @param string $key The unique key of the cache item to delete.
      *

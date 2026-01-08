@@ -9,19 +9,22 @@ define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
  * Handles user authentication processes like sign-up, sign-in, session management,
  * and dynamic database schema generation.
  *
- * This class uses a JSON configuration file (`Json/AuthParams.json`) to define the
- * structure and validation rules for the `users` table, allowing for flexible and
- * configurable user authentication logic.
+ * This class provides a comprehensive suite of static methods for managing user
+ * authentication. It uniquely uses a JSON configuration file (`Json/AuthParams.json`)
+ * to dynamically define the structure and validation rules for the `users` table,
+ * allowing for flexible and easily configurable user authentication logic without
+ * altering the class code.
  */
 class UserAuth
 {
     /**
      * Generates a `CREATE TABLE` SQL statement for the `users` table based on the JSON configuration.
      *
-     * This method reads the structure and constraints from `Json/AuthParams.json` and
+     * This method reads the structure and constraints defined in `Json/AuthParams.json` and
      * dynamically constructs an SQL query to create the `users` table. It maps JSON
-     * data types to corresponding SQL types and includes constraints like `NOT NULL`,
-     * `UNIQUE`, and `DEFAULT`.
+     * data types (e.g., 'text', 'email', 'number') to corresponding SQL data types and
+     * includes constraints like `NOT NULL`, `UNIQUE`, and `DEFAULT` as specified in the
+     * JSON file. This allows for easy modification of the user schema without writing SQL manually.
      *
      * @return string The generated SQL `CREATE TABLE` query as a string.
      */
@@ -82,13 +85,18 @@ class UserAuth
     /**
      * Authenticates a user and starts a session upon successful sign-in.
      *
+     * This method queries the `users` table to find a record that matches all
+     * of the key-value pairs provided in the `$details` array. If a matching
+     * user is found, their user ID is stored in the session, effectively
+     * logging them in.
+     *
      * @param array $details An associative array where keys are database column names
      *                       (e.g., 'username', 'password') and values are the credentials
      *                       to be verified.
      *
-     * @return string|false Returns 'User Found' on successful authentication, 'User Not Found'
-     *                      if the credentials do not match any user, or `false` if the
-     *                      input details are invalid or empty.
+     * @return string|false Returns 'User Found' on successful authentication.
+     *                      Returns 'User Not Found' if the credentials do not match any user.
+     *                      Returns `false` if the input `$details` array is invalid or empty.
      */
     public static function signIn($details)
     {
@@ -121,16 +129,17 @@ class UserAuth
     /**
      * Registers a new user after validating their details against the rules in the JSON configuration.
      *
-     * This method performs comprehensive validation on the provided user details based
-     * on the rules defined in `Json/AuthParams.json`. If validation passes and the
-     * user does not already exist, it inserts a new record into the `users` table
-     * and starts a new session for the user.
+     * This method performs comprehensive validation on the provided user details. It iterates
+     * through the rules defined in `Json/AuthParams.json` for each field, checking for
+     * requirements, data types, lengths, and other constraints. If validation passes and
+     * the user does not already exist, it inserts a new record into the `users` table and
+     * starts a new session for the user by storing their new ID.
      *
      * @param array $details An associative array containing the new user's details,
      *                       where keys correspond to the `users` table columns.
      *
-     * @return string A message indicating the result of the registration attempt,
-     *                such as success, a specific validation error, or a database error.
+     * @return string A message indicating the result of the registration attempt. This could be
+     *                a success message, a specific validation error, or a database error message.
      */
     public static function signUp($details)
     {
@@ -273,6 +282,10 @@ class UserAuth
     /**
      * Checks if a user is currently authenticated by verifying the session.
      *
+     * This method provides a quick way to determine the authentication status of the
+     * current user by checking for the presence of a non-empty `user_id` in the
+     * `$_SESSION` superglobal.
+     *
      * @return bool Returns `true` if a `user_id` is set and not empty in the
      *              current session, otherwise returns `false`.
      */
@@ -283,6 +296,9 @@ class UserAuth
 
     /**
      * Logs out the currently authenticated user by clearing their session identifier.
+     *
+     * This method effectively logs the user out by setting the `user_id` in the
+     * session to an empty string.
      *
      * @return string A confirmation message indicating that the user has been logged out.
      */

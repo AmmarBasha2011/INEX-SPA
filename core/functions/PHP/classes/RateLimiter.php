@@ -3,9 +3,10 @@
 /**
  * Implements a simple, file-based rate limiter to prevent abuse of application endpoints.
  *
- * This class tracks the number of requests from individual IP addresses over a defined
- * time window. If an IP exceeds a configured request limit, subsequent requests are
- * blocked with a 429 "Too Many Requests" status.
+ * This class provides a static interface to track the number of requests from individual
+ * IP addresses over a defined time window. If an IP exceeds a configured request limit,
+ * subsequent requests are blocked with a 429 "Too Many Requests" HTTP status code,
+ * helping to mitigate brute-force attacks and service abuse.
  */
 class RateLimiter
 {
@@ -35,8 +36,8 @@ class RateLimiter
     /**
      * Initializes the rate limiter's configuration settings.
      *
-     * This method reads the `REQUESTS_PER_HOUR` value from the .env file to set
-     * the request limit. It should be called before using the `check` method.
+     * This method reads the `REQUESTS_PER_HOUR` value from the .env file to set the request
+     * limit. It is called automatically by the `check` method if not previously initialized.
      *
      * @return void
      */
@@ -48,18 +49,19 @@ class RateLimiter
     /**
      * Checks the request rate for a given IP address and blocks it if the limit is exceeded.
      *
-     * This method performs the following actions:
-     * 1. Initializes settings if they haven't been loaded.
-     * 2. Reads the request data from the storage file.
-     * 3. Cleans up any expired entries from the data.
-     * 4. Checks the request count for the provided IP. If it exceeds the limit,
-     *    it terminates the script with a 429 HTTP status and an error message.
+     * This is the core method of the rate limiter. It performs the following actions:
+     * 1. Initializes settings from the .env file if they haven't been loaded.
+     * 2. Reads the request data (IPs, counts, timestamps) from the storage file.
+     * 3. Cleans up any entries that have expired (are older than the `timeFrame`).
+     * 4. Checks the current request count for the provided IP. If it exceeds the limit,
+     *    it terminates the script with a 429 HTTP status and a JSON error message.
      * 5. If the limit is not exceeded, it increments the request count for the IP.
-     * 6. Writes the updated data back to the storage file.
+     * 6. Writes the updated request data back to the storage file.
      *
-     * @param string $userIP The IP address of the client making the request.
+     * @param string $userIP The IP address of the client making the request, typically
+     *                       from `$_SERVER['REMOTE_ADDR']`.
      *
-     * @return void
+     * @return void This method either allows script execution to continue or terminates it.
      */
     public static function check($userIP)
     {

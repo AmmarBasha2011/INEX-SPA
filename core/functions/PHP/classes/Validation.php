@@ -3,13 +3,18 @@
 /**
  * Provides a collection of static methods for common data validation tasks.
  *
- * This utility class includes methods for validating various data formats such as
- * email addresses, string lengths, domains, and numeric types.
+ * This utility class offers a set of convenient, reusable methods for validating
+ * various data formats, such as email addresses, string lengths, domains, and
+ * numeric types. These checks are essential for ensuring data integrity and
+ * security throughout the application.
  */
 class Validation
 {
     /**
      * Validates whether a given string is a well-formed email address.
+     *
+     * This method uses PHP's built-in `filter_var` function with the `FILTER_VALIDATE_EMAIL`
+     * filter, which is a reliable way to check for standard email address syntax.
      *
      * @param string $text The string to be validated as an email.
      *
@@ -35,7 +40,7 @@ class Validation
     }
 
     /**
-     * Checks if a string's length meets a minimum length requirement.
+     * Checks if a string's length meets a specified minimum length requirement.
      *
      * @param string $text      The string to be checked.
      * @param int    $minLength The minimum number of characters required.
@@ -49,7 +54,10 @@ class Validation
     }
 
     /**
-     * Determines if a given domain string is a subdomain (contains more than one dot).
+     * Determines if a given domain string is a subdomain.
+     *
+     * This check is based on a simple heuristic: a domain is considered a subdomain
+     * if it contains more than one dot (e.g., 'sub.example.com').
      *
      * @param string $domain The domain string to check.
      *
@@ -65,7 +73,8 @@ class Validation
      *
      * @param string $domain The URL to check.
      *
-     * @return bool `true` if the URL has a non-root path, `false` otherwise.
+     * @return bool `true` if the URL has a non-root path (e.g., 'example.com/path'),
+     *              `false` otherwise.
      */
     public static function isSubDir($domain)
     {
@@ -74,6 +83,9 @@ class Validation
 
     /**
      * Validates whether a given string is a well-formed domain name.
+     *
+     * This uses PHP's `filter_var` with the `FILTER_VALIDATE_DOMAIN` flag for a
+     * robust and standards-compliant domain validation.
      *
      * @param string $text The string to be validated as a domain.
      *
@@ -86,6 +98,8 @@ class Validation
 
     /**
      * Checks if a string ends with one of the provided substrings.
+     *
+     * The comparison is case-sensitive.
      *
      * @param string $text    The string to check.
      * @param array  $endList An array of substrings to check for at the end of the string.
@@ -107,6 +121,8 @@ class Validation
     /**
      * Checks if a string starts with one of the provided substrings.
      *
+     * The comparison is case-sensitive.
+     *
      * @param string $text      The string to check.
      * @param array  $startList An array of substrings to check for at the beginning of the string.
      *
@@ -127,6 +143,9 @@ class Validation
     /**
      * Validates whether a given value is numeric.
      *
+     * This uses PHP's `is_numeric` function, which returns true for integers, floats,
+     * and numeric strings.
+     *
      * @param mixed $text The value to be checked.
      *
      * @return bool `true` if the value is a number or a numeric string, `false` otherwise.
@@ -139,7 +158,8 @@ class Validation
     /**
      * Checks if a value can be interpreted as a boolean.
      *
-     * This method considers `true`, `false`, 'true', 'false', 1, 0, '1', and '0'
+     * This method provides a flexible boolean check, considering `true`, `false`,
+     * the strings 'true' and 'false', the integers 1 and 0, and the strings '1' and '0'
      * as valid boolean representations.
      *
      * @param mixed $text The value to be checked.
@@ -148,6 +168,6 @@ class Validation
      */
     public static function isBool($text)
     {
-        return $text === true || $text === false || $text === 'true' || $text === 'false' || $text === 1 || $text === 0 || $text === '1' || $text === '0';
+        return in_array($text, [true, false, 'true', 'false', 1, 0, '1', '0'], true);
     }
 }

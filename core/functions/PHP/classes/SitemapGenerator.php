@@ -6,18 +6,21 @@
  * This utility class scans the `web` directory to discover all public routes based
  * on the filenames of the `.ahmed.php` templates. It then compiles these routes
  * into a `sitemap.xml` file and saves it in the `public` directory, making it
- * accessible to search engine crawlers.
+ * accessible to search engine crawlers for improved SEO.
  */
 class SitemapGenerator
 {
     /**
      * The main method to generate and save the `sitemap.xml` file.
      *
-     * This method orchestrates the sitemap generation process by:
-     * 1. Locating the application's routes directory.
-     * 2. Calling a helper method to recursively find all routes.
-     * 3. Building the XML structure compliant with the sitemap protocol.
-     * 4. Writing the final XML content to `public/sitemap.xml`.
+     * This method orchestrates the entire sitemap generation process. It performs
+     * the following steps:
+     * 1. Locates the application's main routes directory (`web`).
+     * 2. Calls the `getRoutes` helper method to recursively find all routable files.
+     * 3. Constructs the XML content, ensuring it is compliant with the sitemap protocol.
+     *    Each URL is prefixed with the `WEBSITE_URL` from the environment configuration.
+     * 4. Writes the final XML content to `public/sitemap.xml`, overwriting any
+     *    existing sitemap file.
      *
      * @return void
      */
@@ -46,12 +49,16 @@ class SitemapGenerator
      * Recursively scans the routes directory to discover all unique URL paths.
      *
      * This private helper method navigates the file structure of the `web` directory.
-     * It interprets specific filename conventions (e.g., `_dynamic.ahmed.php`,
-     * `_request_GET.ahmed.php`) to correctly format the route URLs for the sitemap.
+     * It interprets specific filename conventions to correctly format the route URLs for
+     * the sitemap. For example:
+     * - `index.ahmed.php` becomes the root URL.
+     * - `about.ahmed.php` becomes `/about`.
+     * - `post_dynamic.ahmed.php` becomes `/post/{id}`.
+     * - `user_request_GET.ahmed.php` becomes `/user`.
      *
      * @param string $dir      The absolute path of the directory to scan.
-     * @param string $basePath The current path relative to the `web` root, used for
-     *                         building nested route URLs.
+     * @param string $basePath (Internal) The current path relative to the `web` root, used for
+     *                         building nested route URLs during recursion.
      *
      * @return array An array of unique, formatted route strings.
      */
@@ -72,7 +79,7 @@ class SitemapGenerator
                 // Recursively scan subfolders
                 $routes = array_merge($routes, self::getRoutes($fullPath, $routePath.'/'));
             } else {
-                // Extract the route name
+                // Extract the route name based on file naming conventions
                 if (preg_match('/^(.+)_dynamic\.ahmed\.php$/', $file, $matches)) {
                     // Dynamic route: [route]_dynamic.ahmed.php -> /route/{id}
                     $routes[] = str_replace('.ahmed.php', '', $routePath).'/{id}';

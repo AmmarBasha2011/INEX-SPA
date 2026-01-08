@@ -6,23 +6,27 @@
  * This class provides a basic but powerful template engine that parses template files,
  * replacing custom directives (e.g., `{{ $variable }}`, `@if(...)`, `@foreach(...)`)
  * with standard PHP code, which is then executed to generate the final HTML output.
- * It is the core of the view rendering system in the INEX SPA framework.
+ * It is the core of the view rendering system in the INEX SPA framework, enabling
+ * clean separation of logic and presentation.
  */
 class AhmedTemplate
 {
     /**
      * Renders a template file with the given data and returns the output as a string.
      *
-     * This method reads a template file, parses its content to replace custom
-     * template syntax with executable PHP, and then evaluates the result using
-     * output buffering. The provided data array is extracted into local variables
-     * that are accessible within the template's scope.
+     * This method is the main entry point for rendering a view. It performs the following steps:
+     * 1. Verifies that the template file exists.
+     * 2. Reads the raw content of the template file.
+     * 3. Calls the `parse()` method to convert all custom template syntax into executable PHP code.
+     * 4. Extracts the provided data array into local variables (e.g., `['name' => 'John']` becomes `$name`).
+     * 5. Executes the parsed PHP code within an output buffer to capture the generated HTML.
+     * 6. Returns the captured HTML as a string.
      *
-     * @param string $template The full path to the template file to be rendered.
-     * @param array  $data     An associative array of data to be extracted into variables
-     *                         (e.g., `['name' => 'John']` becomes `$name`).
+     * @param string $template The full, absolute path to the template file to be rendered.
+     * @param array  $data     (Optional) An associative array of data to be extracted into variables
+     *                         that will be available within the template's scope.
      *
-     * @throws Exception If the specified template file does not exist.
+     * @throws Exception If the specified template file does not exist at the given path.
      *
      * @return string The fully rendered HTML content.
      */
@@ -44,21 +48,27 @@ class AhmedTemplate
     }
 
     /**
-     * Parses a raw template string, replacing custom Ahmed Template directives with executable PHP code.
+     * Parses a raw template string, replacing all custom Ahmed Template directives with executable PHP code.
      *
-     * This method uses a series of regular expressions to find and replace all supported
-     * template tags. This includes:
-     * - Variable echoing (e.g., `{{ $name }}`)
-     * - Control structures (e.g., `@if`, `@foreach`, `@for`, `@while`)
-     * - Conditional checks (e.g., `@isset`, `@empty`)
-     * - Layout and section directives (e.g., `@section`, `@render`)
-     * - Helper function calls (e.g., `@getLang`, `@getEnv`)
-     * - Raw PHP execution blocks (e.g., `@php ... @endphp`)
+     * This method is the core of the template engine's functionality. It uses a series of
+     * regular expressions to find and replace all supported template tags with their
+     * corresponding PHP equivalents. This transformation allows for a simple and clean
+     * template syntax while leveraging the full power of PHP for rendering.
+     *
+     * The supported directives include:
+     * - Variable echoing: `{{ $variable }}` -> `<?= htmlentities($variable) ?>`
+     * - Control structures: `@if`, `@foreach`, `@for`, `@while`, `@switch`
+     * - Conditional checks: `@isset`, `@empty`, `@unless`
+     * - Layout and section management: `@section`, `@endSection`, `@render`, `@getSection`
+     * - Including sub-templates: `@include`, `@require`
+     * - Helper function calls: `@getLang`, `@getEnv`, `@csrf`, etc.
+     * - Raw PHP execution blocks: `@php ... @endphp`
+     * - Session, Cookie, and Cache management directives.
      *
      * @param string $content The raw string content of the template file.
      *
      * @return string The template content with all custom syntax converted into
-     *                standard PHP, ready for evaluation.
+     *                standard PHP, making it ready for `eval()` execution.
      */
     protected function parse($content)
     {

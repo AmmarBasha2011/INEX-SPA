@@ -5,24 +5,24 @@
  *
  * This class is designed for development and testing environments to quickly reset
  * the database schema. It connects to the database specified in the .env file,
- * retrieves a list of all tables, and drops them.
+ * retrieves a list of all tables, and executes a `DROP TABLE` command for each one.
  *
- * @warning This is a highly destructive operation and will result in permanent data loss.
- *          Do not use in a production environment.
+ * @warning This is a highly destructive operation that results in permanent data loss.
+ *          It should never be used in a production environment. Use with extreme caution.
  */
 class ClearDBTables
 {
     /**
      * Connects to the database and drops all existing tables.
      *
-     * The method performs the following steps:
-     * 1. Disables foreign key checks to avoid dependency errors.
-     * 2. Fetches a list of all table names from the database.
-     * 3. Iterates through the list and executes a `DROP TABLE` command for each one.
-     * 4. Re-enables foreign key checks.
+     * The method performs the following critical steps:
+     * 1. Disables foreign key checks to prevent dependency errors during deletion.
+     * 2. Fetches a list of all table names from the current database.
+     * 3. Iterates through the list and executes a `DROP TABLE IF EXISTS` command for each one.
+     * 4. Re-enables foreign key checks to restore normal database constraints.
      *
-     * It outputs progress messages to the console for each table dropped and a final
-     * success or error message.
+     * It outputs progress messages to the console for each table dropped and concludes with
+     * a success or error message. If no tables are found, it reports this and exits gracefully.
      *
      * @return void
      */

@@ -1,22 +1,23 @@
 <?php
 
 /**
- * Provides the function for validating Cross-Site Request Forgery (CSRF) tokens.
+ * Validates a Cross-Site Request Forgery (CSRF) token submitted with a POST request.
  *
- * This file is a critical part of the application's defense against CSRF attacks,
- * ensuring that state-changing requests originate from the application's own forms.
- */
-
-/**
- * Validates a CSRF token submitted with a POST request against the one stored in the session.
+ * This function is a critical security measure to prevent CSRF attacks. It must be called
+ * at the beginning of any script that handles form submissions or performs state-changing
+ * actions.
  *
- * This function should be called at the beginning of any script that processes form
- * submissions or executes state-changing actions. It compares the `csrf_token` value
- * from the `$_POST` array with the token stored in `$_SESSION['csrf_token']`. If the
- * tokens are missing or do not match, it terminates the script execution with an
- * error message to prevent the malicious request from being processed.
+ * The function works by comparing the `csrf_token` value received in the `$_POST` data
+ * with the token stored in the user's session (`$_SESSION['csrf_token']`). To prevent
+ * timing attacks, the comparison is done using the constant-time `hash_equals` function.
  *
- * @return void
+ * If the token is missing from either `$_POST` or `$_SESSION`, or if the tokens do not
+ * match, the function will immediately terminate the script with a 403 Forbidden HTTP
+ * response code and an error message. This ensures that unauthorized or malicious
+ * requests are stopped before any sensitive operations can be performed.
+ *
+ * @return void This function does not return a value. It either allows the script to
+ *              continue execution upon successful validation or terminates it on failure.
  */
 function validateCsrfToken()
 {

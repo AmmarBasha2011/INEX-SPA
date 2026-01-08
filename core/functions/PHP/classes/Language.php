@@ -3,14 +3,16 @@
 /**
  * Handles language translations for internationalization (i18n).
  *
- * This static class manages loading language files from the `/lang` directory
- * and retrieving translated strings. It allows for dynamically switching the
- * active language and supports placeholder replacement in translation strings.
+ * This static class manages the loading of language files from the `/lang` directory
+ * and the retrieval of translated strings. It allows for the active language to be
+ * switched dynamically and supports the injection of placeholder values into
+ * translation strings for dynamic content.
  */
 class Language
 {
     /**
      * Stores the currently active language code (e.g., 'en', 'fr').
+     * Defaults to 'en'.
      *
      * @var string
      */
@@ -18,21 +20,24 @@ class Language
 
     /**
      * Holds the translations loaded from the current language's JSON file.
-     * The keys are the translation keys, and the values are the translated strings.
+     * This is an associative array where keys are the translation keys and values
+     * are the corresponding translated strings.
      *
      * @var array
      */
     private static $translations = [];
 
     /**
-     * Sets the active language for the application.
+     * Sets the active language for the application and loads its translation file.
      *
      * This method attempts to load a JSON translation file from the `/lang`
-     * directory that corresponds to the provided language code. If the file
-     * is found and successfully parsed, it updates the application's active
-     * language and translation set.
+     * directory that corresponds to the provided language code (e.g., `lang/en.json`).
+     * If the file is found and successfully parsed, it updates the application's active
+     * language and translation set. If the file is not found, the previously loaded
+     * language remains active.
      *
-     * @param string $lang The two-letter language code (e.g., 'en', 'de', 'fr').
+     * @param string $lang The two-letter language code (e.g., 'en', 'de', 'fr')
+     *                     for the desired language.
      *
      * @return void
      */
@@ -48,17 +53,19 @@ class Language
     /**
      * Retrieves a translated string by its key and replaces any placeholders.
      *
-     * Looks up the translation for the given key in the currently loaded language
-     * set. If the key is not found, the key itself is returned as a fallback.
-     * It also supports dynamic value injection by replacing placeholders in the
+     * This method looks up the translation for the given key in the currently loaded language
+     * set. If the key is not found, the key itself is returned as a fallback to aid in
+     * development. It also supports dynamic value injection by replacing placeholders in the
      * format `{placeholder_name}` with values from the `$placeholders` array.
      *
-     * @param string $key          The unique key for the translation string.
-     * @param array  $placeholders An associative array where keys are placeholder names
+     * Example: `Language::get('welcome_message', ['name' => 'John'])`
+     *
+     * @param string $key          The unique key for the translation string (e.g., 'welcome_message').
+     * @param array  $placeholders (Optional) An associative array where keys are placeholder names
      *                             (without curly braces) and values are the strings to
      *                             be injected.
      *
-     * @return string The translated and formatted string, or the key if not found.
+     * @return string The translated and formatted string, or the key itself if the translation is not found.
      */
     public static function get($key, $placeholders = [])
     {

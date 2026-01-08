@@ -3,9 +3,10 @@
 /**
  * A simple, file-based logging utility for recording application events.
  *
- * This class provides static methods to write log messages to different files
- * based on their type (e.g., 'error', 'security', 'api', 'system'). It also
- * includes a method to clear all log files, useful for development or maintenance.
+ * This class provides a static interface to write log messages to different files
+ * based on their type (e.g., 'error', 'security', 'api', 'system'). This separation
+ * helps in organizing logs and simplifies debugging and monitoring. It also includes
+ * a method to clear all log files, which is useful for development or maintenance.
  */
 class Logger
 {
@@ -19,8 +20,9 @@ class Logger
     /**
      * Writes a message to a log file determined by its type.
      *
-     * Each log entry is timestamped and formatted before being appended to the
-     * corresponding log file (e.g., `errors.log`, `security.log`).
+     * Each log entry is automatically timestamped and formatted before being appended to the
+     * corresponding log file (e.g., a 'security' type message goes to `security.log`).
+     * The operation is atomic due to the use of `FILE_APPEND`.
      *
      * @param string $type    The category of the log message. This determines which file
      *                        the message will be written to. Accepted values are 'error',
@@ -53,7 +55,9 @@ class Logger
      * Clears the content of all predefined log files.
      *
      * This method truncates the `system.log`, `errors.log`, `security.log`,
-     * and `api.log` files, effectively deleting all their logged messages.
+     * and `api.log` files by overwriting them with an empty string. This is a
+     * destructive operation and should be used with caution, primarily in
+     * development or testing environments.
      *
      * @return void
      */
