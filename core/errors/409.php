@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 409 Conflict error page.
+ *
+ * This script is displayed when a request could not be completed due to a
+ * conflict with the current state of the target resource. This can occur,
+ * for example, when two clients try to edit the same resource simultaneously.
+ * The page informs the user about this conflict.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

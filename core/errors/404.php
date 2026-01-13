@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 404 Not Found error page.
+ *
+ * This script is displayed when a user tries to access a URL that does not
+ * correspond to any existing resource on the server. It provides a standard
+ * "Not Found" message and a link to return to the homepage, guiding the user
+ * back to a valid part of the site.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

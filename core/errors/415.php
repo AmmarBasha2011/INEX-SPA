@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 415 Unsupported Media Type error page.
+ *
+ * This script is displayed when the server rejects a request because the
+ * payload is in a format that is not supported by the target resource for
+ * the requested method. For example, sending an XML payload to an endpoint
+ * that only accepts JSON.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

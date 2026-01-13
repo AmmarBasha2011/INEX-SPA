@@ -1,3 +1,15 @@
+<?php
+/**
+ * Renders the 408 Request Timeout error page.
+ *
+ * This script is displayed when the server did not receive a complete request
+ * from the client within the time that it was prepared to wait. It indicates
+ * a timeout on the server side and provides a user-friendly message.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

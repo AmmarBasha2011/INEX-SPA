@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 410 Gone error page.
+ *
+ * This script is displayed when the requested resource is no longer available
+ * at the origin server and this condition is likely to be permanent. It informs
+ * the user that the content has been intentionally removed and will not be
+ * available again.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

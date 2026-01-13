@@ -1,3 +1,15 @@
+<?php
+/**
+ * Renders the 503 Service Unavailable error page.
+ *
+ * This script is displayed when the server is temporarily unable to handle the
+ * request due to maintenance, overload, or other temporary conditions. It
+ * informs the user that the service is down for a short period.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

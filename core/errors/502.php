@@ -1,3 +1,15 @@
+<?php
+/**
+ * Renders the 502 Bad Gateway error page.
+ *
+ * This script is displayed when the server, while acting as a gateway or proxy,
+ * received an invalid response from an upstream server it accessed to fulfill
+ * the request. It indicates a problem in the server-to-server communication chain.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

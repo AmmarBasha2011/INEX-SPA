@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 412 Precondition Failed error page.
+ *
+ * This script is displayed when one or more conditions specified in the
+ * request headers (e.g., `If-Match`, `If-Unmodified-Since`) evaluate to false
+ * on the server. It indicates that the server is unable to process the
+ * request because a client-side precondition has not been met.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

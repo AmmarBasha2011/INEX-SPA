@@ -1,3 +1,15 @@
+<?php
+/**
+ * Renders the 504 Gateway Timeout error page.
+ *
+ * This script is displayed when the server, acting as a gateway or proxy,
+ * did not receive a timely response from an upstream server. This indicates
+ * a network timeout between servers, not between the client and the server.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

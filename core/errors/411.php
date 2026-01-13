@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 411 Length Required error page.
+ *
+ * This script is displayed when the server rejects a request because it
+ * requires a `Content-Length` header, which was not provided. This is
+ * common for POST or PUT requests that need to know the size of the
+ * incoming request body.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

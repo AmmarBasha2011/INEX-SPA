@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 406 Not Acceptable error page.
+ *
+ * This script is displayed when the server cannot generate a response that
+ * matches the list of acceptable values defined in the request's proactive
+ * content negotiation headers (e.g., Accept, Accept-Charset, Accept-Encoding).
+ * The page informs the user of this content negotiation failure.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

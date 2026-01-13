@@ -1,3 +1,15 @@
+<?php
+/**
+ * Renders the 413 Request Entity Too Large error page.
+ *
+ * This script is displayed when the request entity is larger than the server
+ * is willing or able to process. This typically occurs during file uploads
+ * when the file size exceeds the server's configured limits.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

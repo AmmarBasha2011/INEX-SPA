@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 405 Method Not Allowed error page.
+ *
+ * This script is displayed when a request is made to a resource using an HTTP
+ * method that is not supported by that resource. For example, using GET on a
+ * form that requires a POST request. The page informs the user of the issue
+ * and provides a way to return to the homepage.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

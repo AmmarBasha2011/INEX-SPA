@@ -1,3 +1,16 @@
+<?php
+/**
+ * Renders the 414 URI Too Long error page.
+ *
+ * This script is displayed when the URI (Uniform Resource Identifier)
+ * requested by the client is longer than the server is configured to handle.
+ * This can happen with overly complex GET requests that encode too much
+ * data into the URL.
+ *
+ * @var string $WEBSITE_URL The base URL of the website, used for linking
+ *                          to CSS files and the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
