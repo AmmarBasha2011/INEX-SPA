@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 500 Internal Server Error page.
+ *
+ * This page is a generic catch-all for unexpected server-side errors that prevent
+ * the fulfillment of a request. It indicates a problem with the server's
+ * configuration or application logic, rather than an issue with the client's
+ * request. The page provides a non-technical message and a link to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

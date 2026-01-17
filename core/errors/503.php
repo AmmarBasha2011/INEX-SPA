@@ -1,3 +1,12 @@
+<?php
+/**
+ * Renders the HTTP 503 Service Unavailable error page.
+ *
+ * This page indicates that the server is temporarily unable to handle the request
+ * due to maintenance or being overloaded. It suggests that the service will be
+ * available again later and provides a link for the user to return to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

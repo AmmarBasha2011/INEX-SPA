@@ -1,3 +1,12 @@
+<?php
+/**
+ * Renders the HTTP 408 Request Timeout error page.
+ *
+ * This page is displayed when the server did not receive a complete request from
+ * the client within the time that it was prepared to wait. It suggests a potential
+ * network issue and provides a link to return to the homepage and try again.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

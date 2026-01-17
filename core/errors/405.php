@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 405 Method Not Allowed error page.
+ *
+ * This page is displayed when a request is made to a resource using an HTTP method
+ * that it does not support. For example, using GET on a form that requires POST.
+ * It informs the user about the method mismatch and provides a link to return to
+ * the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

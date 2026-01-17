@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 407 Proxy Authentication Required error page.
+ *
+ * This page indicates that the client must first authenticate itself with the proxy
+ * server. It is similar to a 401 Unauthorized error but specifically for proxy
+ * authentication. The page informs the user of the requirement and provides a link
+ * back to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

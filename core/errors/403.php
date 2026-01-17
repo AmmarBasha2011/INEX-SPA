@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 403 Forbidden error page.
+ *
+ * This page is displayed when the server understands the request but refuses to
+ * authorize it. This may be due to insufficient permissions, even if the user is
+ * authenticated. The page informs the user that they are not allowed to access
+ * the resource and provides a link to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

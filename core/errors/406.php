@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 406 Not Acceptable error page.
+ *
+ * This page is served when the requested resource is capable of generating only
+ * content that is not acceptable according to the `Accept` headers sent in the
+ * request. It informs the user of this content negotiation failure and includes
+ * a link to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

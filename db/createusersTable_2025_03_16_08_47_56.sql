@@ -1,3 +1,21 @@
+--
+-- This script creates the `users` table, which is essential for the user
+-- authentication and management features of the application. It defines the
+-- core schema for storing user data, including personal information, credentials,
+-- and contact details.
+--
+-- The table includes the following columns:
+--   - `id`: A unique, auto-incrementing identifier for each user.
+--   - `Name`: The user's full name.
+--   - `username`: A unique identifier for logging in.
+--   - `email`: A unique email address for communication and recovery.
+--   - `phoneNumber`: The user's phone number.
+--   - `age`: The user's age.
+--   - `isCompany`: A boolean flag to indicate if the user represents a company.
+--   - `domain`: A domain associated with the user, if applicable.
+--   - `password`: The user's password.
+--   - `inviteCode`: A code used for registration or invitations.
+--
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   `Name` VARCHAR(60) NOT NULL,

@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 400 Bad Request error page.
+ *
+ * This page is displayed when the server cannot process a request due to a client
+ * error, such as malformed request syntax, invalid request message framing, or
+ * deceptive request routing. It provides a user-friendly message and a link
+ * to navigate back to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

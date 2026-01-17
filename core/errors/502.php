@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 502 Bad Gateway error page.
+ *
+ * This page is displayed when the server, while acting as a gateway or proxy,
+ * received an invalid response from an upstream server it accessed to fulfill the
+ * request. It informs the user about the gateway issue and provides a link to
+ * return to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

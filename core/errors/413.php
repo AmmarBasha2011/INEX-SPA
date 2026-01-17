@@ -1,3 +1,12 @@
+<?php
+/**
+ * Renders the HTTP 413 Request Entity Too Large error page.
+ *
+ * This page is displayed when the request entity is larger than the limits defined
+ * by the server. It informs the user that their request (e.g., a file upload) is
+ * too large and cannot be processed, providing a link back to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

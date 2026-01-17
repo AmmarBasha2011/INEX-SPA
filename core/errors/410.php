@@ -1,3 +1,13 @@
+<?php
+/**
+ * Renders the HTTP 410 Gone error page.
+ *
+ * This page indicates that the target resource is no longer available at the
+ * origin server and that this condition is likely to be permanent. It is used to
+ * inform clients that they should remove their links to this resource. The page
+ * provides a clear message and a link to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

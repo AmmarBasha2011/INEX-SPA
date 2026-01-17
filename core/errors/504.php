@@ -1,3 +1,12 @@
+<?php
+/**
+ * Renders the HTTP 504 Gateway Timeout error page.
+ *
+ * This page is shown when the server, acting as a gateway or proxy, did not receive
+ * a timely response from an upstream server. It informs the user about the timeout
+ * and includes a link to navigate back to the homepage.
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
