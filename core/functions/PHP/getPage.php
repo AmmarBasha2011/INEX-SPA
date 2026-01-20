@@ -102,6 +102,7 @@ function loadScripts()
  * 405 Method Not Allowed error.
  *
  * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']) to check for.
+ *
  * @return bool Returns `true` if a matching route file was found and the request was
  *              handled (either by rendering the page or by returning a 405 error).
  *              Returns `false` if no corresponding route files were found for any of
