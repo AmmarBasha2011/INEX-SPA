@@ -90,15 +90,22 @@ function loadScripts()
 }
 
 /**
- * Handles routing for requests specific to a certain HTTP method.
+ * Handles routing for pages that are specific to a certain HTTP method.
  *
- * Checks for files named `[page]_request_[METHOD].ahmed.php`. If a file exists but the
- * request method doesn't match, it returns a 405 error. Distinguishes between
- * standard and API routes.
+ * This function iterates through a list of provided HTTP methods (e.g., GET, POST)
+ * and checks for corresponding route files in the `web/` directory. The expected
+ * file naming conventions are `[page]_request_[METHOD].ahmed.php` for standard pages
+ * and `[page]_request_[METHOD]_api.ahmed.php` for API endpoints.
  *
- * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
+ * If a matching file is found for the current request's method, the function renders
+ * that page. If a file is found but the request method does not match, it serves a
+ * 405 Method Not Allowed error.
  *
- * @return bool True if a request was handled, false otherwise.
+ * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']) to check for.
+ * @return bool Returns `true` if a matching route file was found and the request was
+ *              handled (either by rendering the page or by returning a 405 error).
+ *              Returns `false` if no corresponding route files were found for any of
+ *              the specified methods, allowing the routing process to continue.
  */
 function handleRequestMethod($methods)
 {
@@ -143,6 +150,22 @@ function handleRequestMethod($methods)
  * homepage, internal routes, static pages, dynamic routes, API endpoints, and 404 errors.
  *
  * @param string $RouteName The name of the route to process.
+ *
+ * @return void
+ */
+/**
+ * Main routing function for the application.
+ *
+ * Directs incoming requests to the appropriate page, asset, or handler based on the route name.
+ * This function acts as the central controller, handling various types of routes:
+ * - Homepage (`/`)
+ * - Static pages (e.g., `/about`)
+ * - Dynamic routes with parameters (e.g., `/post/123`)
+ * - Method-specific routes (e.g., for POST or GET requests)
+ * - Special internal routes for functionality like CSRF tokens and language switching.
+ * If no matching route is found, it serves a 404 Not Found error page.
+ *
+ * @param string $RouteName The name of the route to process, typically derived from the URL.
  *
  * @return void
  */
