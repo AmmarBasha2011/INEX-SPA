@@ -1,13 +1,16 @@
 <?php
 
-class MakeSitemapCommand extends Command {
-    public function __construct() {
+class MakeSitemapCommand extends Command
+{
+    public function __construct()
+    {
         parent::__construct('make:sitemap', 'Generate sitemap.xml');
     }
 
-    public function execute($args) {
+    public function execute($args)
+    {
         SitemapGenerator::generate();
-        Terminal::success("Sitemap generated successfully!");
+        Terminal::success('Sitemap generated successfully!');
     }
 }
 
