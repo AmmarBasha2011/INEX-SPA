@@ -37,7 +37,7 @@ class Cache
             'expires' => time() + $expiration,
             'data'    => $data,
         ]);
-        file_put_contents($file, $content);
+        return file_put_contents($file, $content) !== false;
     }
 
     /**
@@ -110,7 +110,8 @@ class Cache
     {
         $file = self::$cacheDir.md5($key).'.cache';
         if (file_exists($file)) {
-            unlink($file);
+            return unlink($file);
         }
+        return true;
     }
 }
