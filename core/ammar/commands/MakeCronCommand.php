@@ -1,33 +1,40 @@
 <?php
 
-class MakeCronCommand extends Command {
-    public function __construct() {
+class MakeCronCommand extends Command
+{
+    public function __construct()
+    {
         parent::__construct('make:cron', 'Create a new cron task file');
     }
 
-    public function execute($args) {
+    public function execute($args)
+    {
         $taskNameInput = $args['1'] ?? readline("1- What's the Task Name? ");
         if (!$taskNameInput) {
-            Terminal::error("Task name is required!");
+            Terminal::error('Task name is required!');
+
             return;
         }
 
         $taskName = ucfirst(preg_replace('/[^a-zA-Z0-9_]/', '', $taskNameInput));
 
         if (empty($taskName)) {
-            Terminal::error("Invalid task name provided after sanitization.");
+            Terminal::error('Invalid task name provided after sanitization.');
+
             return;
         }
 
         if (!preg_match('/^[a-zA-Z]/', $taskName)) {
-            Terminal::error("Task name must start with a letter.");
+            Terminal::error('Task name must start with a letter.');
+
             return;
         }
 
-        $filePath = CRON_TASKS_DIR . $taskName . '.php';
+        $filePath = CRON_TASKS_DIR.$taskName.'.php';
 
         if (file_exists($filePath)) {
-            Terminal::warning("Cron task file already exists!");
+            Terminal::warning('Cron task file already exists!');
+
             return;
         }
 
@@ -66,9 +73,9 @@ PHP;
 
         if (file_put_contents($filePath, $fileContent)) {
             chmod($filePath, 0664);
-            Terminal::success("Cron task file created: " . Terminal::color($taskName . ".php", 'cyan'));
+            Terminal::success('Cron task file created: '.Terminal::color($taskName.'.php', 'cyan'));
         } else {
-            Terminal::error("Could not create cron task file!");
+            Terminal::error('Could not create cron task file!');
         }
     }
 }
