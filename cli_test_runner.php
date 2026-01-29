@@ -1,58 +1,59 @@
 <?php
 
-function strip_ansi($text) {
+function strip_ansi($text)
+{
     return preg_replace('/\x1b[[][^A-Za-z]*[A-Za-z]/', '', $text);
 }
 
 $commands = [
     'LIST' => [
-        'list' => [],
-        'list:cron' => [],
-        'list:db' => [],
+        'list'        => [],
+        'list:cron'   => [],
+        'list:db'     => [],
         'list:import' => [],
-        'list:lang' => [],
+        'list:lang'   => [],
         'list:routes' => [],
     ],
     'MAKE' => [
-        'make:route' => ['-1' => 'testroute', '-2' => 'no', '-3' => 'GET', '-4' => 'no'],
-        'make:cache' => ['-1' => 'testkey', '-2' => 'testvalue', '-3' => '3600'],
-        'make:db' => ['-1' => 'create', '-2' => 'testtable'],
-        'make:lang' => ['-1' => 'en'],
-        'make:layout' => ['-1' => 'main'],
+        'make:route'   => ['-1' => 'testroute', '-2' => 'no', '-3' => 'GET', '-4' => 'no'],
+        'make:cache'   => ['-1' => 'testkey', '-2' => 'testvalue', '-3' => '3600'],
+        'make:db'      => ['-1' => 'create', '-2' => 'testtable'],
+        'make:lang'    => ['-1' => 'en'],
+        'make:layout'  => ['-1' => 'main'],
         'make:session' => ['-1' => 'user', '-2' => 'ammar'],
-        'make:cron' => ['-1' => 'mytask'],
+        'make:cron'    => ['-1' => 'mytask'],
         'make:sitemap' => [],
-        'make:auth' => [],
+        'make:auth'    => [],
     ],
     'GET/UPDATE' => [
-        'get:cache' => ['-1' => 'testkey'],
+        'get:cache'    => ['-1' => 'testkey'],
         'update:cache' => ['-1' => 'testkey', '-2' => 'newvalue'],
-        'get:session' => ['-1' => 'user'],
+        'get:session'  => ['-1' => 'user'],
     ],
     'RUN' => [
         'run:cron' => ['-1' => 'mytask'],
-        'run:db' => [],
+        'run:db'   => [],
     ],
     'DELETE' => [
-        'delete:cache' => ['-1' => 'testkey'],
-        'delete:db' => ['-1' => 'create', '-2' => 'testtable'],
-        'delete:lang' => ['-1' => 'en'],
+        'delete:cache'   => ['-1' => 'testkey'],
+        'delete:db'      => ['-1' => 'create', '-2' => 'testtable'],
+        'delete:lang'    => ['-1' => 'en'],
         'delete:session' => ['-1' => 'user'],
-        'delete:cron' => ['-1' => 'mytask'],
-        'delete:import' => ['-1' => 'inex-spa-helper'],
+        'delete:cron'    => ['-1' => 'mytask'],
+        'delete:import'  => ['-1' => 'inex-spa-helper'],
     ],
     'CLEAR' => [
-        'clear:cache' => [],
+        'clear:cache'  => [],
         'clear:routes' => [],
-        'clear:db' => [],
-        'clear:cron' => [],
-        'clear:docs' => [],
-        'clear:start' => [],
+        'clear:db'     => [],
+        'clear:cron'   => [],
+        'clear:docs'   => [],
+        'clear:start'  => [],
     ],
     'OTHER' => [
-        'ask:gemini' => ['-1' => 'Hi'],
+        'ask:gemini'     => ['-1' => 'Hi'],
         'install:import' => ['-1' => 'https://github.com/AmmarBasha2011/inex-spa-helper.git'],
-        'serve' => ['-1' => '8081'],
+        'serve'          => ['-1' => '8081'],
     ],
 ];
 
@@ -62,7 +63,7 @@ $startTimeOverall = microtime(true);
 foreach ($commands as $category => $cmds) {
     foreach ($cmds as $cmd => $args) {
         echo "Running $cmd...\n";
-        $argString = "";
+        $argString = '';
         foreach ($args as $k => $v) {
             $argString .= " $k $v";
         }
@@ -71,20 +72,20 @@ foreach ($commands as $category => $cmds) {
         $timestamp = date('Y-m-d H:i:s');
 
         if ($cmd === 'serve') {
-            $descriptorspec = array(
-                0 => array("pipe", "r"),
-                1 => array("pipe", "w"),
-                2 => array("pipe", "w")
-            );
+            $descriptorspec = [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w'],
+            ];
             $process = proc_open("php ammar serve $argString", $descriptorspec, $pipes);
             if (is_resource($process)) {
                 sleep(2);
-                $output = "Server started on port 8081 (Terminated after 2s)";
+                $output = 'Server started on port 8081 (Terminated after 2s)';
                 $exitCode = 0;
                 proc_terminate($process);
                 proc_close($process);
             } else {
-                $output = "Failed to start server";
+                $output = 'Failed to start server';
                 $exitCode = 1;
             }
         } else {
@@ -100,13 +101,13 @@ foreach ($commands as $category => $cmds) {
         $duration = round($endTime - $startTime, 4);
 
         $results[] = [
-            'category' => $category,
-            'command' => $cmd,
-            'args' => $argString,
-            'output' => strip_ansi($output),
-            'status' => $exitCode === 0 ? 'Passed' : 'Failed',
+            'category'  => $category,
+            'command'   => $cmd,
+            'args'      => $argString,
+            'output'    => strip_ansi($output),
+            'status'    => $exitCode === 0 ? 'Passed' : 'Failed',
             'timestamp' => $timestamp,
-            'duration' => $duration
+            'duration'  => $duration,
         ];
     }
 }
@@ -116,7 +117,9 @@ $totalDuration = round($endTimeOverall - $startTimeOverall, 2);
 
 $passedCount = 0;
 foreach ($results as $res) {
-    if ($res['status'] === 'Passed') $passedCount++;
+    if ($res['status'] === 'Passed') {
+        $passedCount++;
+    }
 }
 $failedCount = count($results) - $passedCount;
 $totalCount = count($results);
@@ -187,24 +190,24 @@ $html = '<!DOCTYPE html>
     <div class="container">
         <header>
             <h1>🚀 Ammar CLI Detailed Report</h1>
-            <div class="report-meta">Generated on ' . date('F j, Y, g:i a') . ' | Framework Version: 5 Beta</div>
+            <div class="report-meta">Generated on '.date('F j, Y, g:i a').' | Framework Version: 5 Beta</div>
         </header>
 
         <div class="summary">
             <div class="summary-card total">
-                <span class="count">' . $totalCount . '</span>
+                <span class="count">'.$totalCount.'</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="summary-card passed">
-                <span class="count">' . $passedCount . '</span>
+                <span class="count">'.$passedCount.'</span>
                 <span class="label">Passed</span>
             </div>
             <div class="summary-card failed">
-                <span class="count">' . $failedCount . '</span>
+                <span class="count">'.$failedCount.'</span>
                 <span class="label">Failed</span>
             </div>
             <div class="summary-card duration">
-                <span class="count">' . $totalDuration . 's</span>
+                <span class="count">'.$totalDuration.'s</span>
                 <span class="label">Total Duration</span>
             </div>
         </div>
@@ -219,27 +222,27 @@ $currentCategory = '';
 foreach ($results as $index => $res) {
     if ($res['category'] !== $currentCategory) {
         $currentCategory = $res['category'];
-        $html .= '<div class="category-title">' . $currentCategory . '</div>';
+        $html .= '<div class="category-title">'.$currentCategory.'</div>';
     }
 
     $statusBadge = $res['status'] === 'Passed' ? 'badge-passed' : 'badge-failed';
 
     $html .= '
-        <div class="command-item" data-status="' . $res['status'] . '">
-            <div class="command-header" onclick="toggleDetails(' . $index . ')">
+        <div class="command-item" data-status="'.$res['status'].'">
+            <div class="command-header" onclick="toggleDetails('.$index.')">
                 <div class="command-info">
-                    <span class="badge ' . $statusBadge . '">' . $res['status'] . '</span>
-                    <span class="command-name">ammar ' . $res['command'] . '</span>
+                    <span class="badge '.$statusBadge.'">'.$res['status'].'</span>
+                    <span class="command-name">ammar '.$res['command'].'</span>
                 </div>
                 <div class="meta-tags">
-                    <span class="tag">⏱ ' . $res['duration'] . 's</span>
-                    <span class="tag">📅 ' . $res['timestamp'] . '</span>
+                    <span class="tag">⏱ '.$res['duration'].'s</span>
+                    <span class="tag">📅 '.$res['timestamp'].'</span>
                 </div>
             </div>
-            <div id="details-' . $index . '" class="command-details">
+            <div id="details-'.$index.'" class="command-details">
                 <div class="details-content">
-                    ' . ($res['args'] ? '<div class="args-box"><span class="args-label">Arguments:</span>' . htmlspecialchars($res['args']) . '</div>' : '') . '
-                    <pre>' . htmlspecialchars($res['output']) . '</pre>
+                    '.($res['args'] ? '<div class="args-box"><span class="args-label">Arguments:</span>'.htmlspecialchars($res['args']).'</div>' : '').'
+                    <pre>'.htmlspecialchars($res['output']).'</pre>
                 </div>
             </div>
         </div>';
@@ -247,7 +250,7 @@ foreach ($results as $index => $res) {
 
 $html .= '
         <footer>
-            INEX Team &copy; ' . date('Y') . ' | High-performance PHP Solutions
+            INEX Team &copy; '.date('Y').' | High-performance PHP Solutions
         </footer>
     </div>
 

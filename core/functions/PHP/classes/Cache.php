@@ -37,6 +37,7 @@ class Cache
             'expires' => time() + $expiration,
             'data'    => $data,
         ]);
+
         return file_put_contents($file, $content) !== false;
     }
 
@@ -112,6 +113,7 @@ class Cache
         if (file_exists($file)) {
             return unlink($file);
         }
+
         return true;
     }
 }
