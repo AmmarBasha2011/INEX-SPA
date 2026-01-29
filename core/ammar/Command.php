@@ -1,19 +1,23 @@
 <?php
 
-abstract class Command {
+abstract class Command
+{
     protected $name;
     protected $description;
 
-    public function __construct($name, $description) {
+    public function __construct($name, $description)
+    {
         $this->name = $name;
         $this->description = $description;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 

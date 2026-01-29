@@ -1,16 +1,19 @@
 <?php
 
-class ListCommand extends Command {
+class ListCommand extends Command
+{
     private $registry;
 
-    public function __construct($registry) {
+    public function __construct($registry)
+    {
         parent::__construct('list', 'List all commands');
         $this->registry = $registry;
     }
 
-    public function execute($args) {
-        Terminal::header("INEX SPA Framework - Ammar CLI");
-        echo " Usage: " . Terminal::color("php ammar <command> [options]", 'yellow') . PHP_EOL . PHP_EOL;
+    public function execute($args)
+    {
+        Terminal::header('INEX SPA Framework - Ammar CLI');
+        echo ' Usage: '.Terminal::color('php ammar <command> [options]', 'yellow').PHP_EOL.PHP_EOL;
 
         $commands = $this->registry->getCommands();
         ksort($commands);
@@ -22,7 +25,7 @@ class ListCommand extends Command {
             'delete' => [],
             'clear'  => [],
             'run'    => [],
-            'other'  => []
+            'other'  => [],
         ];
 
         foreach ($commands as $name => $cmd) {
@@ -41,12 +44,14 @@ class ListCommand extends Command {
         }
 
         foreach ($categories as $catName => $catCmds) {
-            if (empty($catCmds)) continue;
+            if (empty($catCmds)) {
+                continue;
+            }
 
-            echo Terminal::color(" " . strtoupper($catName), 'cyan') . PHP_EOL;
+            echo Terminal::color(' '.strtoupper($catName), 'cyan').PHP_EOL;
             foreach ($catCmds as $c) {
-                echo "  " . Terminal::color(str_pad($c['name'], $maxLen + 2), 'green');
-                echo $c['desc'] . PHP_EOL;
+                echo '  '.Terminal::color(str_pad($c['name'], $maxLen + 2), 'green');
+                echo $c['desc'].PHP_EOL;
             }
             echo PHP_EOL;
         }

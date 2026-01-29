@@ -1,16 +1,21 @@
 <?php
 
-class ClearRoutesCommand extends Command {
-    public function __construct() {
+class ClearRoutesCommand extends Command
+{
+    public function __construct()
+    {
         parent::__construct('clear:routes', 'Clear all route files');
     }
 
-    public function execute($args) {
-        $files = glob(WEB_FOLDER . "/*");
+    public function execute($args)
+    {
+        $files = glob(WEB_FOLDER.'/*');
         foreach ($files as $file) {
-            if (is_file($file)) unlink($file);
+            if (is_file($file)) {
+                unlink($file);
+            }
         }
-        Terminal::success("Route files cleared!");
+        Terminal::success('Route files cleared!');
     }
 }
 
