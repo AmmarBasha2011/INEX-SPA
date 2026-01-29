@@ -16,7 +16,7 @@ class AskGeminiCommand extends Command {
         $response = useGemini($question);
         $gemini = json_decode($response, true);
 
-        if (isset($gemini['success']) && $gemini['success'] == true) {
+        if (isset($gemini['success']) && $gemini['success'] === true) {
             Terminal::header("Gemini Response");
             echo $gemini['message'] . PHP_EOL . PHP_EOL;
         } else {
