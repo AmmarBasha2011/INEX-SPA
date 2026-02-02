@@ -1,7 +1,8 @@
 <?php
+
 // tester/generate_report.php
 
-$results = json_decode(file_get_contents(__DIR__ . '/results.json'), true);
+$results = json_decode(file_get_contents(__DIR__.'/results.json'), true);
 
 $html = '<!DOCTYPE html>
 <html lang="en">
@@ -38,15 +39,18 @@ $total = count($results);
 $passedCount = 0;
 $failedCount = 0;
 foreach ($results as $res) {
-    if ($res['status'] === 'passed') $passedCount++;
-    else $failedCount++;
+    if ($res['status'] === 'passed') {
+        $passedCount++;
+    } else {
+        $failedCount++;
+    }
 }
 
 $html .= '
         <div class="summary">
-            <div><div class="count">' . $total . '</div><div class="label">Total Tests</div></div>
-            <div><div class="count passed">' . $passedCount . '</div><div class="label">Passed</div></div>
-            <div><div class="count failed">' . $failedCount . '</div><div class="label">Failed</div></div>
+            <div><div class="count">'.$total.'</div><div class="label">Total Tests</div></div>
+            <div><div class="count passed">'.$passedCount.'</div><div class="label">Passed</div></div>
+            <div><div class="count failed">'.$failedCount.'</div><div class="label">Failed</div></div>
         </div>
 
         <table>
@@ -64,9 +68,9 @@ foreach ($results as $res) {
     $statusClass = ($res['status'] === 'passed') ? 'status-passed' : 'status-failed';
     $html .= '
                 <tr>
-                    <td><strong>' . htmlspecialchars($res['test']) . '</strong></td>
-                    <td><span class="status-badge ' . $statusClass . '">' . $res['status'] . '</span></td>
-                    <td class="reason">' . htmlspecialchars($res['message']) . '</td>
+                    <td><strong>'.htmlspecialchars($res['test']).'</strong></td>
+                    <td><span class="status-badge '.$statusClass.'">'.$res['status'].'</span></td>
+                    <td class="reason">'.htmlspecialchars($res['message']).'</td>
                 </tr>';
 }
 
@@ -74,11 +78,11 @@ $html .= '
             </tbody>
         </table>
         <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #999;">
-            Report generated on ' . date('Y-m-d H:i:s') . '
+            Report generated on '.date('Y-m-d H:i:s').'
         </div>
     </div>
 </body>
 </html>';
 
-file_put_contents(dirname(__DIR__) . '/test-report.html', $html);
+file_put_contents(dirname(__DIR__).'/test-report.html', $html);
 echo "Report generated: test-report.html\n";
