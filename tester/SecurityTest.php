@@ -1,7 +1,9 @@
 <?php
 
-class SecurityTest extends TestCase {
-    public function testSanitizeInput() {
+class SecurityTest extends TestCase
+{
+    public function testSanitizeInput()
+    {
         $input = '<script>alert("xss")</script><b>Hello</b>';
         $expected = '&lt;b&gt;Hello&lt;/b&gt;'; // Note: Security::sanitizeInput does htmlspecialchars FIRST, then preg_replace for script tags.
         // Wait, let's look at Security::sanitizeInput again.
@@ -17,7 +19,8 @@ class SecurityTest extends TestCase {
         $this->assertEquals('&lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;&lt;b&gt;Hello&lt;/b&gt;', $output);
     }
 
-    public function testValidateAndSanitize() {
+    public function testValidateAndSanitize()
+    {
         $input = '<b>Test</b>';
         $this->assertEquals('&lt;b&gt;Test&lt;/b&gt;', Security::validateAndSanitize($input, 'xss'));
         $this->assertEquals('<b>Test</b>', Security::validateAndSanitize($input, 'other'));

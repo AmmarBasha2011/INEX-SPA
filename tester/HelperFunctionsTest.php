@@ -1,18 +1,22 @@
 <?php
 
-class HelperFunctionsTest extends TestCase {
-    public function testGetEnvValue() {
+class HelperFunctionsTest extends TestCase
+{
+    public function testGetEnvValue()
+    {
         $this->assertEquals('INEXTest', getEnvValue('APP_NAME'));
         $this->assertNull(getEnvValue('NON_EXISTENT'));
     }
 
-    public function testGenerateCsrfToken() {
+    public function testGenerateCsrfToken()
+    {
         $token = generateCsrfToken();
         $this->assertTrue(strlen($token) > 0);
         $this->assertEquals($token, $_SESSION['csrf_token']);
     }
 
-    public function testValidateCsrfToken() {
+    public function testValidateCsrfToken()
+    {
         // Mock session and post
         $_SESSION['csrf_token'] = 'test_token';
         $_POST['csrf_token'] = 'test_token';
@@ -22,12 +26,14 @@ class HelperFunctionsTest extends TestCase {
         $this->assertTrue(true);
     }
 
-    public function testGetWebsiteUrl() {
+    public function testGetWebsiteUrl()
+    {
         // Mock getEnvValue for WEBSITE_URL
         $this->assertEquals('http://localhost:8000/', getWebsiteUrl());
     }
 
-    public function testGetSlashData() {
+    public function testGetSlashData()
+    {
         $data = getSlashData('page/123');
         $this->assertEquals(['before' => 'page', 'after' => '123'], $data);
 

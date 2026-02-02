@@ -1,10 +1,14 @@
 <?php
 
-class RateLimiterTest extends TestCase {
-    public function testRateLimiting() {
+class RateLimiterTest extends TestCase
+{
+    public function testRateLimiting()
+    {
         // Clean start
         $storageFile = __DIR__.'/../core/storage/rate_limit.json';
-        if (file_exists($storageFile)) unlink($storageFile);
+        if (file_exists($storageFile)) {
+            unlink($storageFile);
+        }
 
         $ip = '127.0.0.1';
         // Should work 5 times
