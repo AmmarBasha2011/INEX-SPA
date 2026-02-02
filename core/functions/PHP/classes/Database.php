@@ -34,7 +34,7 @@ class Database
         $username = getEnvValue('DB_USER');
         $password = getEnvValue('DB_PASS');
 
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+        $dsn = getEnvValue('DB_DSN') ?: "mysql:host=$host;dbname=$dbname;charset=$charset";
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

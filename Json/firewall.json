@@ -1,5 +1,1 @@
-{
-    "block_ips": ["192.168.1.1", "10.0.0.1"],
-    "block_user_agents": ["curl", "python", "httpie"],
-    "redirect_blocked_to": "blocked"
-}  
+{"block_ips":["1.2.3.4"],"block_user_agents":["BadBot"],"redirect_blocked_to":"blocked"}
