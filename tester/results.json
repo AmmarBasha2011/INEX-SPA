@@ -1,0 +1,217 @@
+[
+    {
+        "test": "AhmedTemplateTest::testVariableEcho",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "AhmedTemplateTest::testIfDirective",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "AhmedTemplateTest::testForeachDirective",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "AhmedTemplateTest::testRender",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CacheTest::testSetAndGet",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CacheTest::testUpdate",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CacheTest::testDelete",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CacheTest::testExpiration",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CookieManagerTest::testGet",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CookieManagerTest::testExists",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "CookieManagerTest::testGetAll",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "DatabaseTest::testQuery",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "FirewallTest::testFirewallAllowed",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "HelperFunctionsTest::testGetEnvValue",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "HelperFunctionsTest::testGenerateCsrfToken",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "HelperFunctionsTest::testValidateCsrfToken",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "HelperFunctionsTest::testGetWebsiteUrl",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "HelperFunctionsTest::testGetSlashData",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "LanguageTest::testSetAndGet",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "LanguageTest::testPlaceholders",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "LanguageTest::testFallback",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "LoggerTest::testLog",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "LoggerTest::testClearLogs",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "RateLimiterTest::testRateLimiting",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "SecurityTest::testSanitizeInput",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "SecurityTest::testValidateAndSanitize",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "SessionTest::testMakeAndGet",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "SessionTest::testDelete",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "SessionTest::testComplexData",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "SitemapGeneratorTest::testGenerate",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "UserAuthTest::testGenerateSQL",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "UserAuthTest::testSignUpAndSignIn",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsEmail",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsTextLength",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsMinTextLength",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsSubDomain",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsSubDir",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsDomain",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsEndWith",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsStartWith",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsNumber",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "ValidationTest::testIsBool",
+        "status": "passed",
+        "message": "Success"
+    },
+    {
+        "test": "WebhookTest::testInvalidUrl",
+        "status": "passed",
+        "message": "Success"
+    }
+]

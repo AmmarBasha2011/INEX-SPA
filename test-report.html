@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INEX SPA Test Report</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        .summary { display: flex; justify-content: space-around; margin-bottom: 20px; padding: 10px; border-bottom: 1px solid #ddd; }
+        .summary div { text-align: center; }
+        .summary .count { font-size: 24px; font-weight: bold; }
+        .summary .label { color: #666; }
+        .passed { color: #28a745; }
+        .failed { color: #dc3545; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; }
+        tr:hover { background-color: #f1f1f1; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .status-passed { background-color: #d4edda; color: #155724; }
+        .status-failed { background-color: #f8d7da; color: #721c24; }
+        .reason { font-size: 13px; color: #666; font-style: italic; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 INEX SPA Framework Test Report</h1>
+
+        <div class="summary">
+            <div><div class="count">43</div><div class="label">Total Tests</div></div>
+            <div><div class="count passed">43</div><div class="label">Passed</div></div>
+            <div><div class="count failed">0</div><div class="label">Failed</div></div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Status</th>
+                    <th>Message / Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td><strong>AhmedTemplateTest::testVariableEcho</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>AhmedTemplateTest::testIfDirective</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>AhmedTemplateTest::testForeachDirective</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>AhmedTemplateTest::testRender</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CacheTest::testSetAndGet</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CacheTest::testUpdate</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CacheTest::testDelete</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CacheTest::testExpiration</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CookieManagerTest::testGet</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CookieManagerTest::testExists</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>CookieManagerTest::testGetAll</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>DatabaseTest::testQuery</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>FirewallTest::testFirewallAllowed</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>HelperFunctionsTest::testGetEnvValue</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>HelperFunctionsTest::testGenerateCsrfToken</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>HelperFunctionsTest::testValidateCsrfToken</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>HelperFunctionsTest::testGetWebsiteUrl</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>HelperFunctionsTest::testGetSlashData</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>LanguageTest::testSetAndGet</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>LanguageTest::testPlaceholders</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>LanguageTest::testFallback</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>LoggerTest::testLog</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>LoggerTest::testClearLogs</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>RateLimiterTest::testRateLimiting</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>SecurityTest::testSanitizeInput</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>SecurityTest::testValidateAndSanitize</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>SessionTest::testMakeAndGet</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>SessionTest::testDelete</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>SessionTest::testComplexData</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>SitemapGeneratorTest::testGenerate</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>UserAuthTest::testGenerateSQL</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>UserAuthTest::testSignUpAndSignIn</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsEmail</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsTextLength</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsMinTextLength</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsSubDomain</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsSubDir</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsDomain</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsEndWith</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsStartWith</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsNumber</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>ValidationTest::testIsBool</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+                <tr>
+                    <td><strong>WebhookTest::testInvalidUrl</strong></td>
+                    <td><span class="status-badge status-passed">passed</span></td>
+                    <td class="reason">Success</td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #999;">
+            Report generated on 2026-02-02 17:24:37
+        </div>
+    </div>
+</body>
+</html>
