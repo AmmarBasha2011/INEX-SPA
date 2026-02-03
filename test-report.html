@@ -1,0 +1,3334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framework Test Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        h1 { color: #2c3e50; text-align: center; }
+        .summary { display: flex; justify-content: space-around; background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .summary-item { text-align: center; }
+        .summary-item .number { font-size: 2em; font-weight: bold; display: block; }
+        .passed { color: #27ae60; }
+        .failed { color: #c0392b; }
+        .total { color: #2980b9; }
+        .test-list { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .test-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .test-item:last-child { border-bottom: none; }
+        .test-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .test-name { font-weight: bold; }
+        .test-status { padding: 5px 10px; border-radius: 4px; font-size: 0.8em; text-transform: uppercase; color: #fff; }
+        .status-passed { background-color: #27ae60; }
+        .status-failed { background-color: #c0392b; }
+        .test-details { margin-top: 10px; padding: 10px; background: #f9f9f9; border-left: 4px solid #ddd; display: none; }
+        .test-item.open .test-details { display: block; }
+        .filter-buttons { margin-bottom: 10px; text-align: center; }
+        button { padding: 10px 20px; margin: 0 5px; cursor: pointer; border: none; border-radius: 4px; background: #2980b9; color: #fff; }
+        button:hover { background: #3498db; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Framework Test Report</h1>
+
+    <div class="summary">
+        <div class="summary-item">
+            <span class="number total">408</span>
+            <span>Total Tests</span>
+        </div>
+        <div class="summary-item">
+            <span class="number passed">408</span>
+            <span>Passed</span>
+        </div>
+        <div class="summary-item">
+            <span class="number failed">0</span>
+            <span>Failed</span>
+        </div>
+    </div>
+
+    <div class="filter-buttons">
+        <button onclick="filterTests('all')">Show All</button>
+        <button onclick="filterTests('passed')" style="background-color: #27ae60;">Show Passed</button>
+        <button onclick="filterTests('failed')" style="background-color: #c0392b;">Show Failed</button>
+    </div>
+
+    <div class="test-list">        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar list</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar make:db help</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar list:routes</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar list:db</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar list:import</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar list:lang</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar list:cron</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">ammar loop test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - variable output</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - if statement</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - foreach</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - switch</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - set and var</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - helper functions</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - json conversion</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - escape</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate - php block</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @isset($v)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @empty($v)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @unless($v)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @getLang(&quot;hi&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @getEnv(&quot;APP_NAME&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @include(&quot;file&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @require(&quot;file&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @runDB()</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @generateSitemap()</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @validateCsrf()</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @section(&quot;s&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @endSection</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @getSection(&quot;s&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @strlen(&quot;hi&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @trim(&quot; hi &quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @dump($v)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @setLang(&quot;ar&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @getSession(&quot;k&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @deleteSession(&quot;k&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate directive: @existsCookie(&quot;c&quot;)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 18</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">AhmedTemplate complex test 19</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set and Cache::get - basic string</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set and Cache::get - array</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::get - expired</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::get - non-existent</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::update - existing key</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::update - non-existing key</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::delete</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 18</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 19</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 20</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 21</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 22</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 23</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 24</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 25</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 26</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 27</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 28</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 29</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 30</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 31</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 32</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 33</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 34</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 35</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 36</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 37</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 38</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Cache::set/get loop test 39</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make and Session::get - basic string</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make and Session::get - array</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::get - non-existent</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::delete</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 18</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 19</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 20</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 21</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 22</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 23</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 24</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 25</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 26</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 27</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 28</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 29</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 30</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 31</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 32</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 33</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 34</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 35</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 36</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 37</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 38</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Session::make/get loop test 39</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager::set and get</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager::exists</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager::delete</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language::setLanguage and get</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language::get fallback</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout::start and end</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout::section non-existent</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">SitemapGenerator::generate</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CookieManager loop test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Language get loop test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Layout section loop test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - valid email</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - invalid email (no @)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - invalid email (no domain)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - empty string</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 0 (user0@domain0.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 1 (user1@domain1.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 2 (user2@domain2.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 3 (user3@domain3.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 4 (user4@domain4.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 5 (user5@domain5.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 6 (user6@domain6.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 7 (user7@domain7.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 8 (user8@domain8.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 9 (user9@domain9.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 10 (user10@domain10.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 11 (user11@domain11.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 12 (user12@domain12.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 13 (user13@domain13.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 14 (user14@domain14.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 15 (user15@domain15.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 16 (user16@domain16.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 17 (user17@domain17.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 18 (user18@domain18.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 19 (user19@domain19.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 20 (user20@domain20.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 21 (user21@domain21.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 22 (user22@domain22.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 23 (user23@domain23.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 24 (user24@domain24.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 25 (user25@domain25.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 26 (user26@domain26.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 27 (user27@domain27.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 28 (user28@domain28.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEmail - loop test 29 (user29@domain29.com)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - exact length</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - less than max</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - greater than max</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 1 (length 1, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 2 (length 2, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 3 (length 3, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 4 (length 4, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 5 (length 5, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 6 (length 6, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 7 (length 7, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 8 (length 8, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 9 (length 9, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isTextLength - loop test 10 (length 10, max 10)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isMinTextLength - exact length</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isMinTextLength - greater than min</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isMinTextLength - less than min</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isSubDomain - single dot (not subdomain)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isSubDomain - two dots (subdomain)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isSubDomain - three dots (nested subdomain)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isSubDir - root URL</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isSubDir - root URL with slash</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isSubDir - URL with path</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isDomain - valid domain</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isDomain - invalid domain</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEndWith - positive match</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isEndWith - negative match</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isStartWith - positive match</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isStartWith - negative match</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isNumber - integer</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isNumber - numeric string</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isNumber - non-numeric</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - true (bool)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - false (bool)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - &quot;true&quot; (string)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - &quot;false&quot; (string)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - 1 (int)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - 0 (int)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - &quot;1&quot; (string)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - &quot;0&quot; (string)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isBool - invalid bool</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isDomain - google.com</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isDomain - example.org</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isDomain - my-site.net</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Validation::isDomain - sub.domain.co.uk</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">UserAuth::checkUser - logged out</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">UserAuth::checkUser - logged in</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">UserAuth::logout</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">UserAuth::generateSQL basic check</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 18</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Auth Validation Rule Test 19</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall - no config file</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall IP Block Logic Test 0 (192.168.1.1)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall IP Block Logic Test 1 (10.0.0.1)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall IP Block Logic Test 2 (8.8.8.8)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall IP Block Logic Test 3 (172.16.0.1)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall IP Block Logic Test 4 (123.123.123.123)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 0 (curl)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 1 (wget)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 2 (python)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 3 (libwww-perl)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 4 (postman)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 5 (nmap)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall User-Agent Block Logic Test 6 (sqlmap)</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 18</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Firewall Rule Variation Test 19</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter - init</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF - generate and validate</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">CSRF Token Variation Test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">RateLimiter IP check 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Security::sanitizeInput - basic string</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Security::sanitizeInput - html entities</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Security::validateAndSanitize - xss</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization XSS Payload Test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 0</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 1</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 2</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 3</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 4</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 5</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 6</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 7</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 8</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 9</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 10</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 11</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 12</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 13</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 14</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 15</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 16</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 17</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 18</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>        <div class="test-item" data-status="passed">
+            <div class="test-header" onclick="this.parentElement.classList.toggle('open')">
+                <span class="test-name">Sanitization repetitive test 19</span>
+                <span class="test-status status-passed">passed</span>
+            </div>
+            <div class="test-details">
+                <strong>Why:</strong> Test passed successfully.
+            </div>
+        </div>    </div>
+
+    <script>
+        function filterTests(status) {
+            const items = document.querySelectorAll('.test-item');
+            items.forEach(item => {
+                if (status === 'all' || item.getAttribute('data-status') === status) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
