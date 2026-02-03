@@ -1,15 +1,16 @@
 <?php
+
 // tester/tests/security/SanitizationTest.php
 
-runTest('Security::sanitizeInput - basic string', function() {
+runTest('Security::sanitizeInput - basic string', function () {
     assertEquals('hello', Security::sanitizeInput('hello'));
 });
 
-runTest('Security::sanitizeInput - html entities', function() {
+runTest('Security::sanitizeInput - html entities', function () {
     assertEquals('&lt;b&gt;bold&lt;/b&gt;', Security::sanitizeInput('<b>bold</b>'));
 });
 
-runTest('Security::validateAndSanitize - xss', function() {
+runTest('Security::validateAndSanitize - xss', function () {
     $input = '<img src=x onerror=alert(1)>';
     $expected = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
     assertEquals($expected, Security::validateAndSanitize($input, 'xss'));
@@ -37,7 +38,7 @@ $payloads = [
 ];
 
 foreach ($payloads as $i => $payload) {
-    runTest("Sanitization XSS Payload Test $i", function() use ($payload, $i) {
+    runTest("Sanitization XSS Payload Test $i", function () use ($payload, $i) {
         $sanitized = Security::sanitizeInput($payload);
         assertFalse(strpos($sanitized, '<script') !== false && strpos($sanitized, '</script>') !== false, "Script tag not removed for payload $i");
         assertTrue(strpos($sanitized, '<') === false || strpos($sanitized, '&lt;') !== false, "Angle bracket not escaped for payload $i");
@@ -45,7 +46,7 @@ foreach ($payloads as $i => $payload) {
 }
 
 for ($i = 0; $i < 20; $i++) {
-    runTest("Sanitization repetitive test $i", function() use ($i) {
+    runTest("Sanitization repetitive test $i", function () use ($i) {
         $input = "User input $i <script>alert($i)</script>";
         $sanitized = Security::sanitizeInput($input);
         assertTrue(strpos($sanitized, '<script') === false);
