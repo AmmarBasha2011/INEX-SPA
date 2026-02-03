@@ -1,17 +1,18 @@
 <?php
+
 // tester/generate_report.php
 
-require_once __DIR__ . '/bootstrap.php';
+require_once __DIR__.'/bootstrap.php';
 
-$resultsFile = __DIR__ . '/test_results.json';
+$resultsFile = __DIR__.'/test_results.json';
 if (!file_exists($resultsFile)) {
-    die("Results file not found. Run test_runner.php first.\n");
+    exit("Results file not found. Run test_runner.php first.\n");
 }
 
 $results = json_decode(file_get_contents($resultsFile), true);
 
-$passedCount = count(array_filter($results, fn($r) => $r['status'] === 'passed'));
-$failedCount = count(array_filter($results, fn($r) => $r['status'] === 'failed'));
+$passedCount = count(array_filter($results, fn ($r) => $r['status'] === 'passed'));
+$failedCount = count(array_filter($results, fn ($r) => $r['status'] === 'failed'));
 $totalCount = count($results);
 
 $html = <<<HTML
@@ -91,7 +92,7 @@ foreach ($results as $index => $test) {
 HTML;
 }
 
-$html .= <<<HTML
+$html .= <<<'HTML'
     </div>
 
     <script>
@@ -110,5 +111,5 @@ $html .= <<<HTML
 </html>
 HTML;
 
-file_put_contents(PROJECT_ROOT . '/test-report.html', $html);
+file_put_contents(PROJECT_ROOT.'/test-report.html', $html);
 echo "Report generated: test-report.html\n";
