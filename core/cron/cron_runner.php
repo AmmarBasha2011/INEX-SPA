@@ -40,6 +40,18 @@ if (file_exists(PROJECT_ROOT.'/core/functions/PHP/getEnvValue.php')) {
     // or tasks will handle their own config if this file is missing.
     // You might need to adjust this based on your project's .env handling
     if (!function_exists('getEnvValue')) {
+        /**
+         * Retrieves the value of an environment variable.
+         *
+         * This is a fallback implementation used if the core `getEnvValue` function
+         * is not available. It attempts to fetch the value from the system
+         * environment variables.
+         *
+         * @param string $key     The name of the environment variable.
+         * @param mixed  $default The default value to return if the variable is not set.
+         *
+         * @return mixed The value of the environment variable, or the default value.
+         */
         function getEnvValue($key, $default = null)
         {
             // A very basic fallback if the real getEnvValue is missing
