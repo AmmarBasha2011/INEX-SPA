@@ -227,7 +227,21 @@ if ($command === 'make:cron') {
     $fileContent = <<<PHP
 <?php
 
+/**
+ * A scheduled task for the INEX SPA framework.
+ *
+ * This class is a template for a custom cron job. It is automatically
+ * generated and intended to be used with the framework's cron runner.
+ */
 class {$taskName} {
+    /**
+     * Handles the execution of the cron task.
+     *
+     * This method contains the main logic of the task. It ensures logging
+     * capabilities are available and performs the task's actions.
+     *
+     * @return void
+     */
     public function handle() {
         // Ensure log_cron_message is available
         if (!function_exists('log_cron_message') && file_exists(dirname(__DIR__, 3) . '/core/cron/cron_runner.php')) {
@@ -235,6 +249,15 @@ class {$taskName} {
             // this is a simple way, might need refinement based on cron_runner.php structure
             // require_once dirname(__DIR__, 3) . '/core/cron/cron_runner.php';
             // More robust: define a local fallback if global is not present.
+
+            /**
+             * Fallback function to log messages specific to this cron task.
+             *
+             * @param string \$message The message to be logged.
+             * @param string \$task    The name of the task (defaults to the current task).
+             *
+             * @return void
+             */
              function log_cron_message(\$message, \$task = '{$taskName}') {
                 \$logFile = dirname(__DIR__, 3) . '/logs/cron.log';
                 \$timestamp = date('Y-m-d H:i:s');
@@ -243,6 +266,15 @@ class {$taskName} {
             }
         } elseif (!function_exists('log_cron_message')) {
             // Absolute fallback if cron_runner.php also couldn't be sourced or doesn't define it globally
+
+            /**
+             * Absolute fallback function to log messages to the cron log file.
+             *
+             * @param string \$message The message to be logged.
+             * @param string \$task    The name of the task (defaults to the current task).
+             *
+             * @return void
+             */
              function log_cron_message(\$message, \$task = '{$taskName}') {
                 \$logFile = dirname(__DIR__, 3) . '/logs/cron.log';
                 \$timestamp = date('Y-m-d H:i:s');
@@ -901,7 +933,17 @@ if ($command == 'clear:docs') {
         }
     }
 
-    // دالة لحذف المجلدات وما بداخلها مهما كان العمق
+    /**
+     * Recursively deletes a directory and all its contents.
+     *
+     * This function traverses the directory structure, deleting all files and
+     * subdirectories within the specified path before finally removing the
+     * directory itself.
+     *
+     * @param string $folderPath The absolute or relative path to the directory to delete.
+     *
+     * @return void
+     */
     function deleteFolderRecursively($folderPath) {
         if (!is_dir($folderPath)) return;
 

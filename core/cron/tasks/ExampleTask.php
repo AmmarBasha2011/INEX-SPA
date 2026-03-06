@@ -25,8 +25,13 @@ class ExampleTask
         // or we define a simple one if not.
 
         if (!function_exists('log_cron_message')) {
-            // Define a fallback if this task is somehow run standalone or test environments
-            // where cron_runner.php's functions aren't pre-loaded.
+            /**
+             * Fallback logging function for the example task.
+             *
+             * @param string $message The message to be logged to the cron log file.
+             *
+             * @return void
+             */
             function log_cron_message($message)
             {
                 $logFile = dirname(__DIR__, 2).'/logs/cron.log'; // Adjust path if necessary
