@@ -1,0 +1,78 @@
+{
+    "list": {
+        "success": true,
+        "output": "Available commands:\n  php ammar list - List all commands\n  php ammar list:routes - List all route files\n  php ammar list:db - List all database files\n  php ammar list:import - List all libraries\n  php ammar list:lang - List all languages\n  php ammar list:cron - List all available cron tasks\n  php ammar make:db - Create a new DB File\n  php ammar make:route - Create a new Route File\n  php ammar make:cache - Create a new cache entry\n  php ammar make:sitemap - Generate sitemap.xml\n  php ammar make:session - Create a new session\n  php ammar make:lang - Create a new language file\n  php ammar make:layout - Create a new layout file\n  php ammar make:auth - Create an auth db file\n  php ammar make:cron - Create a new cron task file\n  php ammar get:cache - Retrieve a cache entry\n  php ammar get:session - Retrieve a session entry\n  php ammar install:import - Install a new library\n  php ammar update:cache - Update an existing cache entry\n  php ammar delete:route - Delete an existing Route File\n  php ammar delete:db - Delete an existing DB File\n  php ammar delete:cache - Delete a cache entry\n  php ammar delete:import - Delete an import\n  php ammar delete:session - Delete a session\n  php ammar delete:lang - Delete a language file\n  php ammar delete:cron - Delete an existing cron task file\n  php ammar ask:gemini - Ask Gemini\n  php ammar clear:cache - Clear all cache files\n  php ammar clear:db - Clear all DB files\n  php ammar clear:db:tables - Clear all DB tables\n  php ammar clear:routes - Clear all route files\n  php ammar clear:cron - Delete ALL cron task files\n  php ammar clear:start - Clear all startup files\n  php ammar clear:docs - Clear all docs\n  php ammar run:db - Run all .sql files in db folder\n  php ammar run:cron - Manually run a specific cron task\n  php ammar serve - Serve the application\n"
+    },
+    "make:db": {
+        "success": true,
+        "output": "DB file created: createusersTable_2026_04_02_12_39_18.sql\n"
+    },
+    "make:route": {
+        "success": true,
+        "output": "Route file created: testroute_request_GET.ahmed.php\n"
+    },
+    "fix:route": {
+        "success": true,
+        "output": null
+    },
+    "make:cache": {
+        "success": true,
+        "output": "Cache entry created for key: mykey\n"
+    },
+    "get:cache": {
+        "success": true,
+        "output": "Cache value: myvalue\n"
+    },
+    "update:cache": {
+        "success": true,
+        "output": "Cache updated for key: mykey\n"
+    },
+    "get:cache_updated": {
+        "success": true,
+        "output": "Cache value: newvalue\n"
+    },
+    "delete:cache": {
+        "success": true,
+        "output": "Cache deleted for key: mykey\n"
+    },
+    "make:session": {
+        "success": true,
+        "output": "Session Created!!!\n"
+    },
+    "get:session": {
+        "success": true,
+        "output": "Session Value: sessvalue\n"
+    },
+    "delete:session": {
+        "success": true,
+        "output": "Session Deleted!!!\n"
+    },
+    "make:lang": {
+        "success": true,
+        "output": "Language file created: \/app\/lang\/fr.json\n"
+    },
+    "list:lang": {
+        "success": true,
+        "output": "Available languages:\n- fr\n"
+    },
+    "delete:lang": {
+        "success": true,
+        "output": "Deleted language file: \/app\/lang\/fr.json\n"
+    },
+    "make:layout": {
+        "success": true,
+        "output": "Layout file created: \/app\/layouts\/custom.ahmed.php\n"
+    },
+    "make:auth": {
+        "success": true,
+        "output": "DB file created: createusersTable_2026_04_02_12_39_19.sql\n"
+    },
+    "list:routes": {
+        "success": true,
+        "output": "Available routes:\n  index.ahmed.php\n  testroute_request_GET.ahmed.php\n"
+    },
+    "list:db": {
+        "success": true,
+        "output": "Available DB files:\n  createusersTable_2026_04_02_12_39_18.sql\n  createusersTable_2026_04_02_12_39_19.sql\n"
+    }
+}

@@ -360,6 +360,7 @@ if ($command === 'make:route') {
     if (!$route) exit("Route name is required!\n");
     $filedata = "<?php\n// Route handler for $route\n";
     if ($route == "index") {
+        $filename = "index.ahmed.php";
         $filedata .= "// This is the default route handler.\n";
         $filePath = WEB_FOLDER . '/' . $filename;
         file_put_contents($filePath, $filedata);
@@ -620,7 +621,7 @@ if ($command === 'run:cron') {
 }
 
 if ($command === 'clear:cache') {
-    array_map("unlink", glob("cache/*"));
+    array_map("unlink", glob(CACHE_FOLDER . "/*"));
     echo "Cache cleared!\n";
     exit(0);
 }
@@ -633,6 +634,7 @@ if ($command === 'clear:db') {
 
 if ($command === 'clear:db:tables') {
     require_once 'core/functions/PHP/classes/ClearDBTables.php';
+    ClearDBTables::run();
     exit(0);
 }
 

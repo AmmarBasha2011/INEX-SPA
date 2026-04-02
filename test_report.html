@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INEX SPA Test Report</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        .summary { display: flex; justify-content: space-around; margin-bottom: 30px; padding: 20px; background: #ecf0f1; border-radius: 8px; }
+        .summary-item { text-align: center; }
+        .summary-item .number { font-size: 24px; font-weight: bold; display: block; }
+        .summary-item .label { color: #7f8c8d; font-size: 14px; }
+        .test-section { margin-bottom: 40px; }
+        .test-section h2 { border-bottom: 2px solid #3498db; padding-bottom: 10px; color: #3498db; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        th { background-color: #f9f9f9; }
+        .status { font-weight: bold; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .status-success { background-color: #2ecc71; color: white; }
+        .status-error { background-color: #e74c3c; color: white; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; font-size: 12px; overflow-x: auto; max-height: 100px; margin: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 INEX SPA Framework Test Report</h1>
+
+        <div class="summary">
+            <div class="summary-item">
+                <span class="number">32</span>
+                <span class="label">Total Tests</span>
+            </div>
+            <div class="summary-item">
+                <span class="number" style="color: #2ecc71;">32</span>
+                <span class="label">Passed</span>
+            </div>
+            <div class="summary-item">
+                <span class="number" style="color: #e74c3c;">0</span>
+                <span class="label">Failed</span>
+            </div>
+            <div class="summary-item">
+                <span class="number" style="color: #f39c12;">3</span>
+                <span class="label">Fixed</span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>CLI Commands</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Status</th>
+                        <th>Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td>list</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available commands:
+  php ammar list - List all commands
+  php ammar list:routes - List all route files
+  php ammar list:db - List all database files
+  php ammar list:import - List all libraries
+  php ammar list:lang - List all languages
+  php ammar list:cron - List all available cron tasks
+  php ammar make:db - Create a new DB File
+  php ammar make:route - Create a new Route File
+  php ammar make:cache - Create a new cache entry
+  php ammar make:sitemap - Generate sitemap.xml
+  php ammar make:session - Create a new session
+  php ammar make:lang - Create a new language file
+  php ammar make:layout - Create a new layout file
+  php ammar make:auth - Create an auth db file
+  php ammar make:cron - Create a new cron task file
+  php ammar get:cache - Retrieve a cache entry
+  php ammar get:session - Retrieve a session entry
+  php ammar install:import - Install a new library
+  php ammar update:cache - Update an existing cache entry
+  php ammar delete:route - Delete an existing Route File
+  php ammar delete:db - Delete an existing DB File
+  php ammar delete:cache - Delete a cache entry
+  php ammar delete:import - Delete an import
+  php ammar delete:session - Delete a session
+  php ammar delete:lang - Delete a language file
+  php ammar delete:cron - Delete an existing cron task file
+  php ammar ask:gemini - Ask Gemini
+  php ammar clear:cache - Clear all cache files
+  php ammar clear:db - Clear all DB files
+  php ammar clear:db:tables - Clear all DB tables
+  php ammar clear:routes - Clear all route files
+  php ammar clear:cron - Delete ALL cron task files
+  php ammar clear:start - Clear all startup files
+  php ammar clear:docs - Clear all docs
+  php ammar run:db - Run all .sql files in db folder
+  php ammar run:cron - Manually run a specific cron task
+  php ammar serve - Serve the application
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>DB file created: createusersTable_2026_04_02_12_39_18.sql
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Route file created: testroute_request_GET.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>fix:route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre></pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache entry created for key: mykey
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>get:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache value: myvalue
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>update:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache updated for key: mykey
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>get:cache_updated</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache value: newvalue
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>delete:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache deleted for key: mykey
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:session</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Session Created!!!
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>get:session</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Session Value: sessvalue
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>delete:session</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Session Deleted!!!
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:lang</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Language file created: /app/lang/fr.json
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>list:lang</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available languages:
+- fr
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>delete:lang</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted language file: /app/lang/fr.json
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:layout</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Layout file created: /app/layouts/custom.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>make:auth</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>DB file created: createusersTable_2026_04_02_12_39_19.sql
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>list:routes</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available routes:
+  index.ahmed.php
+  testroute_request_GET.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>list:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available DB files:
+  createusersTable_2026_04_02_12_39_18.sql
+  createusersTable_2026_04_02_12_39_19.sql
+</pre></td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div class="test-section">
+            <h2>Core Classes & Utilities</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Status</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td>getEnvValue</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected APP_NAME to be INEX SPA TEST</td>
+                    </tr>
+                                        <tr>
+                        <td>Cache::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected test_value</td>
+                    </tr>
+                                        <tr>
+                        <td>Cache::update</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected new_value</td>
+                    </tr>
+                                        <tr>
+                        <td>Cache::delete</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected false after delete</td>
+                    </tr>
+                                        <tr>
+                        <td>Session::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected sess_val</td>
+                    </tr>
+                                        <tr>
+                        <td>Session::delete</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected null after delete</td>
+                    </tr>
+                                        <tr>
+                        <td>Validation::isEmail</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Valid email</td>
+                    </tr>
+                                        <tr>
+                        <td>Validation::isEmail_invalid</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Invalid email</td>
+                    </tr>
+                                        <tr>
+                        <td>Validation::isNumber</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Numeric string</td>
+                    </tr>
+                                        <tr>
+                        <td>Validation::isNumber_invalid</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Non-numeric string</td>
+                    </tr>
+                                        <tr>
+                        <td>AhmedTemplate::render</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected rendered output</td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div class="test-section">
+            <h2>Web & Routing</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>Response Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td>index</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>testroute</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div class="test-section">
+            <h2>Fixed Issues</h2>
+            <ul>
+                <li><strong>CLI make:route index:</strong> Fixed undefined <code>$filename</code> variable causing crash.</li>
+                <li><strong>CLI clear:db:tables:</strong> Fixed command not executing the <code>ClearDBTables::run()</code> method.</li>
+                <li><strong>CLI clear:cache:</strong> Fixed incorrect directory path using local "cache/" instead of <code>CACHE_FOLDER</code> constant.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
