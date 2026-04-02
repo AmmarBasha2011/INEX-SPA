@@ -8,13 +8,14 @@ require_once 'core/functions/PHP/classes/AhmedTemplate.php';
 
 $results = [];
 
-function assert_test($name, $condition, $message = '') {
+function assert_test($name, $condition, $message = '')
+{
     global $results;
     $results[$name] = [
         'success' => $condition,
-        'message' => $message
+        'message' => $message,
     ];
-    echo ($condition ? "✅ " : "❌ ") . $name . ($message ? ": $message" : "") . "\n";
+    echo ($condition ? '✅ ' : '❌ ').$name.($message ? ": $message" : '')."\n";
 }
 
 // Test getEnvValue

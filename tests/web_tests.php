@@ -2,7 +2,8 @@
 
 $baseUrl = 'http://localhost:8080/';
 
-function test_route($url, $expected_content, $expected_status = 200) {
+function test_route($url, $expected_content, $expected_status = 200)
+{
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
@@ -12,9 +13,9 @@ function test_route($url, $expected_content, $expected_status = 200) {
     $success = ($status === $expected_status) && (strpos($response, $expected_content) !== false);
 
     return [
-        'success' => $success,
-        'status' => $status,
-        'response' => $response
+        'success'  => $success,
+        'status'   => $status,
+        'response' => $response,
     ];
 }
 
@@ -24,13 +25,13 @@ $results = [];
 $results['index'] = test_route($baseUrl, 'INEX');
 
 // Test the route created by CLI
-$results['testroute'] = test_route($baseUrl . '?page=testroute', 'testroute');
+$results['testroute'] = test_route($baseUrl.'?page=testroute', 'testroute');
 
 echo "Web Tests:\n";
 foreach ($results as $name => $res) {
-    echo ($res['success'] ? "✅ " : "❌ ") . $name . " (Status: {$res['status']})\n";
+    echo ($res['success'] ? '✅ ' : '❌ ').$name." (Status: {$res['status']})\n";
     if (!$res['success']) {
-        echo "Response: " . substr($res['response'], 0, 100) . "...\n";
+        echo 'Response: '.substr($res['response'], 0, 100)."...\n";
     }
 }
 
