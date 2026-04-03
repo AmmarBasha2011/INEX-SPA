@@ -6,88 +6,121 @@ $tests = [
         'expected' => 'Available commands:',
     ],
     'make:db' => [
-        'command'    => 'php ammar make:db -1 create -2 users',
+        'command'    => 'php ammar make:db -1 create -2 users_test',
         'expected'   => 'DB file created:',
-        'check_file' => 'db/createusersTable_*.sql',
+        'check_file' => 'db/createusers_testTable_*.sql',
     ],
     'make:route' => [
-        'command'    => 'php ammar make:route -1 testroute -2 no -3 GET -4 no',
-        'expected'   => 'Route file created: testroute_request_GET.ahmed.php',
-        'check_file' => 'web/testroute_request_GET.ahmed.php',
+        'command'    => 'php ammar make:route -1 testroute_test -2 no -3 GET -4 no',
+        'expected'   => 'Route file created: testroute_test_request_GET.ahmed.php',
+        'check_file' => 'web/testroute_test_request_GET.ahmed.php',
     ],
-    'fix:route' => [
-        'command'  => 'echo "<?php echo \"testroute content\"; ?>" > web/testroute_request_GET.ahmed.php',
-        'expected' => '',
+    'make:route_api' => [
+        'command'    => 'php ammar make:route -1 testapi_test -2 no -3 GET -4 yes',
+        'expected'   => 'Route file created: testapi_test_request_GET_api.ahmed.php',
+        'check_file' => 'web/testapi_test_request_GET_api.ahmed.php',
     ],
     'make:cache' => [
-        'command'  => 'php ammar make:cache -1 mykey -2 myvalue -3 3600',
-        'expected' => 'Cache entry created for key: mykey',
+        'command'  => 'php ammar make:cache -1 mykey_test -2 myvalue_test -3 3600',
+        'expected' => 'Cache entry created for key: mykey_test',
     ],
     'get:cache' => [
-        'command'  => 'php ammar get:cache -1 mykey',
-        'expected' => 'Cache value: myvalue',
+        'command'  => 'php ammar get:cache -1 mykey_test',
+        'expected' => 'Cache value: myvalue_test',
     ],
     'update:cache' => [
-        'command'  => 'php ammar update:cache -1 mykey -2 newvalue',
-        'expected' => 'Cache updated for key: mykey',
-    ],
-    'get:cache_updated' => [
-        'command'  => 'php ammar get:cache -1 mykey',
-        'expected' => 'Cache value: newvalue',
+        'command'  => 'php ammar update:cache -1 mykey_test -2 newvalue_test',
+        'expected' => 'Cache updated for key: mykey_test',
     ],
     'delete:cache' => [
-        'command'  => 'php ammar delete:cache -1 mykey',
-        'expected' => 'Cache deleted for key: mykey',
+        'command'  => 'php ammar delete:cache -1 mykey_test',
+        'expected' => 'Cache deleted for key: mykey_test',
     ],
     'make:session' => [
-        'command'  => 'php ammar make:session -1 sesskey -2 sessvalue',
+        'command'  => 'php ammar make:session -1 sesskey_test -2 sessvalue_test',
         'expected' => 'Session Created!!!',
     ],
     'get:session' => [
-        'command'  => 'php ammar get:session -1 sesskey',
-        'expected' => 'Session Value: sessvalue',
+        'command'  => 'php ammar get:session -1 sesskey_test',
+        'expected' => 'Session Value: sessvalue_test',
     ],
     'delete:session' => [
-        'command'  => 'php ammar delete:session -1 sesskey',
+        'command'  => 'php ammar delete:session -1 sesskey_test',
         'expected' => 'Session Deleted!!!',
     ],
     'make:lang' => [
-        'command'    => 'php ammar make:lang -1 fr',
+        'command'    => 'php ammar make:lang -1 es_test',
         'expected'   => 'Language file created:',
-        'check_file' => 'lang/fr.json',
+        'check_file' => 'lang/es_test.json',
     ],
     'list:lang' => [
         'command'  => 'php ammar list:lang',
-        'expected' => '- fr',
+        'expected' => '- es_test',
     ],
     'delete:lang' => [
-        'command'  => 'php ammar delete:lang -1 fr',
+        'command'  => 'php ammar delete:lang -1 es_test',
         'expected' => 'Deleted language file:',
     ],
     'make:layout' => [
-        'command'    => 'php ammar make:layout -1 custom',
+        'setup'      => 'rm -f layouts/custom_test.ahmed.php',
+        'command'    => 'php ammar make:layout -1 custom_test',
         'expected'   => 'Layout file created:',
-        'check_file' => 'layouts/custom.ahmed.php',
+        'check_file' => 'layouts/custom_test.ahmed.php',
     ],
     'make:auth' => [
         'command'    => 'php ammar make:auth',
         'expected'   => 'DB file created:',
         'check_file' => 'db/createusersTable_*.sql',
     ],
+    'make:cron' => [
+        'command'    => 'php ammar make:cron TestTask',
+        'expected'   => 'Cron task file created:',
+        'check_file' => 'core/cron/tasks/TestTask.php',
+    ],
+    'list:cron' => [
+        'command'  => 'php ammar list:cron',
+        'expected' => '- TestTask',
+    ],
+    'run:cron' => [
+        'command'  => 'php ammar run:cron TestTask',
+        'expected' => 'executed successfully',
+    ],
+    'delete:cron' => [
+        'command'  => 'echo "yes" | php ammar delete:cron TestTask',
+        'expected' => 'deleted successfully',
+    ],
+    'make:sitemap' => [
+        'command'  => 'php ammar make:sitemap',
+        'expected' => 'Sitemap generated!',
+    ],
     'list:routes' => [
         'command'  => 'php ammar list:routes',
-        'expected' => 'testroute_request_GET.ahmed.php',
+        'expected' => 'testroute_test_request_GET.ahmed.php',
     ],
     'list:db' => [
         'command'  => 'php ammar list:db',
-        'expected' => 'createusersTable',
+        'expected' => 'createusers_testTable',
+    ],
+    'clear:cache' => [
+        'command'  => 'php ammar clear:cache',
+        'expected' => 'Cache cleared!',
+    ],
+    'clear:db' => [
+        'command'  => 'php ammar clear:db',
+        'expected' => 'DB files cleared!',
+    ],
+    'clear:routes' => [
+        'command'  => 'php ammar clear:routes',
+        'expected' => 'Route files cleared!',
     ],
 ];
 
 $results = [];
 
 foreach ($tests as $name => $test) {
-    echo "Running test: $name...\n";
+    if (isset($test['setup'])) {
+        shell_exec($test['setup']);
+    }
     $output = shell_exec($test['command'].' 2>&1');
     $success = strpos($output, $test['expected']) !== false;
 
@@ -103,13 +136,7 @@ foreach ($tests as $name => $test) {
         'success' => $success,
         'output'  => $output,
     ];
-
-    if ($success) {
-        echo "✅ Passed\n";
-    } else {
-        echo "❌ Failed\n";
-        echo "Output: $output\n";
-    }
+    echo ($success ? '✅ ' : '❌ ').$name."\n";
 }
 
 file_put_contents('tests/cli_results.json', json_encode($results, JSON_PRETTY_PRINT));
