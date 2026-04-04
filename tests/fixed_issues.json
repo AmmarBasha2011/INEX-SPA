@@ -1,0 +1,20 @@
+[
+    {
+        "id": "cli-make-route-api",
+        "title": "CLI make:route API flag",
+        "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
+        "status": "FIXED"
+    },
+    {
+        "id": "cli-list-lang-exit",
+        "title": "CLI list:lang exit behavior",
+        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
+        "status": "FIXED"
+    },
+    {
+        "id": "cli-make-layout-duplicate",
+        "title": "CLI make:layout collision",
+        "description": "Updated tests to use unique names and ensure clean state before testing.",
+        "status": "FIXED"
+    }
+]

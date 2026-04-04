@@ -385,7 +385,11 @@ if ($command === 'make:route') {
         $filename = "{$route}_request_{$method}";
     }
 
-    $isAPI = strtolower($args['3'] ?? readline("3- Is this API? (yes,no): ")) === "yes";
+    if ($isDynamic) {
+        $isAPI = strtolower($args['3'] ?? readline("3- Is this API? (yes,no): ")) === "yes";
+    } else {
+        $isAPI = strtolower($args['4'] ?? readline("4- Is this API? (yes,no): ")) === "yes";
+    }
 
     if ($isAPI) {
         $filename .= "_api.ahmed.php";
@@ -848,7 +852,7 @@ if ($command === "list:lang") {
     $files = glob(LANG_FOLDER . "/*.json");
     if (!$files) {
         echo "No language files found!\n";
-        return;
+        exit(0);
     }
     echo "Available languages:\n";
     foreach ($files as $file) {

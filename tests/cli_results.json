@@ -5,35 +5,31 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_02_12_39_18.sql\n"
+        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
     },
     "make:route": {
         "success": true,
-        "output": "Route file created: testroute_request_GET.ahmed.php\n"
+        "output": "Route file created: testroute_test_request_GET.ahmed.php\n"
     },
-    "fix:route": {
+    "make:route_api": {
         "success": true,
-        "output": null
+        "output": "Route file created: testapi_test_request_GET_api.ahmed.php\n"
     },
     "make:cache": {
         "success": true,
-        "output": "Cache entry created for key: mykey\n"
+        "output": "Cache entry created for key: mykey_test\n"
     },
     "get:cache": {
         "success": true,
-        "output": "Cache value: myvalue\n"
+        "output": "Cache value: myvalue_test\n"
     },
     "update:cache": {
         "success": true,
-        "output": "Cache updated for key: mykey\n"
-    },
-    "get:cache_updated": {
-        "success": true,
-        "output": "Cache value: newvalue\n"
+        "output": "Cache updated for key: mykey_test\n"
     },
     "delete:cache": {
         "success": true,
-        "output": "Cache deleted for key: mykey\n"
+        "output": "Cache deleted for key: mykey_test\n"
     },
     "make:session": {
         "success": true,
@@ -41,7 +37,7 @@
     },
     "get:session": {
         "success": true,
-        "output": "Session Value: sessvalue\n"
+        "output": "Session Value: sessvalue_test\n"
     },
     "delete:session": {
         "success": true,
@@ -49,30 +45,62 @@
     },
     "make:lang": {
         "success": true,
-        "output": "Language file created: \/app\/lang\/fr.json\n"
+        "output": "Language file created: \/app\/lang\/es_test.json\n"
     },
     "list:lang": {
         "success": true,
-        "output": "Available languages:\n- fr\n"
+        "output": "Available languages:\n- es_test\n"
     },
     "delete:lang": {
         "success": true,
-        "output": "Deleted language file: \/app\/lang\/fr.json\n"
+        "output": "Deleted language file: \/app\/lang\/es_test.json\n"
     },
     "make:layout": {
         "success": true,
-        "output": "Layout file created: \/app\/layouts\/custom.ahmed.php\n"
+        "output": "Layout file created: \/app\/layouts\/custom_test.ahmed.php\n"
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_02_12_39_19.sql\n"
+        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+    },
+    "make:cron": {
+        "success": true,
+        "output": "Cron task file created: \/app\/core\/cron\/tasks\/TestTask.php\n"
+    },
+    "list:cron": {
+        "success": true,
+        "output": "Available cron tasks:\n  - ExampleTask\n  - TestTask\n"
+    },
+    "run:cron": {
+        "success": true,
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+    },
+    "delete:cron": {
+        "success": true,
+        "output": "Cron task file '\/app\/core\/cron\/tasks\/TestTask.php' deleted successfully.\n"
+    },
+    "make:sitemap": {
+        "success": true,
+        "output": "Sitemap generated!\n"
     },
     "list:routes": {
         "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testroute_request_GET.ahmed.php\n"
+        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_02_12_39_18.sql\n  createusersTable_2026_04_02_12_39_19.sql\n"
+        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+    },
+    "clear:cache": {
+        "success": true,
+        "output": "Cache cleared!\n"
+    },
+    "clear:db": {
+        "success": true,
+        "output": "DB files cleared!\n"
+    },
+    "clear:routes": {
+        "success": true,
+        "output": "Route files cleared!\n"
     }
 }
