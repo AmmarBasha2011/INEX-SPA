@@ -1,12 +1,11 @@
 <?php
 
 /**
- * INEX SPA Test Runner
+ * INEX SPA Test Runner.
  *
  * This script runs all framework tests, aggregates results, and triggers
  * the HTML report generation. It also allows marking certain issues as fixed.
  */
-
 echo "🚀 Starting INEX SPA Full Test Suite...\n\n";
 
 // 1. Run CLI Tests
@@ -32,23 +31,23 @@ if ($connection) {
 // 4. Track Fixed Issues
 $fixedIssues = [
     [
-        'id' => 'cli-make-route-api',
-        'title' => 'CLI make:route API flag',
+        'id'          => 'cli-make-route-api',
+        'title'       => 'CLI make:route API flag',
         'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
-        'status' => 'FIXED'
+        'status'      => 'FIXED',
     ],
     [
-        'id' => 'cli-list-lang-exit',
-        'title' => 'CLI list:lang exit behavior',
+        'id'          => 'cli-list-lang-exit',
+        'title'       => 'CLI list:lang exit behavior',
         'description' => 'Replaced return with exit(0) to ensure consistent CLI termination.',
-        'status' => 'FIXED'
+        'status'      => 'FIXED',
     ],
     [
-        'id' => 'cli-make-layout-duplicate',
-        'title' => 'CLI make:layout collision',
+        'id'          => 'cli-make-layout-duplicate',
+        'title'       => 'CLI make:layout collision',
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
-        'status' => 'FIXED'
-    ]
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 
