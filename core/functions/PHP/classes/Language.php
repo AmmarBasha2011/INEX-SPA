@@ -28,7 +28,7 @@ class Language
         $text = self::$translations[$key] ?? ($default !== null ? $default : $key);
 
         foreach ($placeholders as $placeholder => $value) {
-            $text = str_replace('{'.$placeholder.'}', (string)$value, $text);
+            $text = str_replace('{'.$placeholder.'}', (string) $value, $text);
         }
 
         return $text;
