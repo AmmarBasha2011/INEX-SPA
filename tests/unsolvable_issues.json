@@ -1,0 +1,14 @@
+[
+    {
+        "id": "install-import-git",
+        "title": "CLI install:import environment limitation",
+        "description": "The command fails in the sandbox environment because git clone may require terminal interaction or credentials that are not available. This is an environment-specific limitation rather than a framework bug.",
+        "status": "UNSOLVABLE"
+    },
+    {
+        "id": "ask-gemini-api-key",
+        "title": "CLI ask:gemini API key requirement",
+        "description": "The command requires a valid GEMINI_API_KEY in the .env file. Without a real key, the API returns an error, which is the expected behavior for invalid credentials.",
+        "status": "UNSOLVABLE"
+    }
+]

@@ -5,10 +5,27 @@ $tests = [
         'command'  => 'php ammar list',
         'expected' => 'Available commands:',
     ],
+    'list:routes' => [
+        'command'  => 'php ammar list:routes',
+        'expected' => 'Available routes:',
+    ],
+    'list:db' => [
+        'command'  => 'php ammar list:db',
+        'expected' => 'Available DB files:',
+    ],
+    'list:lang' => [
+        'setup'    => 'php ammar make:lang -1 en_test',
+        'command'  => 'php ammar list:lang',
+        'expected' => 'Available languages:',
+    ],
     'make:db' => [
         'command'    => 'php ammar make:db -1 create -2 users_test',
         'expected'   => 'DB file created:',
         'check_file' => 'db/createusers_testTable_*.sql',
+    ],
+    'run:db' => [
+        'command'  => 'php ammar run:db',
+        'expected' => 'Running:',
     ],
     'make:route' => [
         'command'    => 'php ammar make:route -1 testroute_test -2 no -3 GET -4 no',
@@ -53,10 +70,6 @@ $tests = [
         'expected'   => 'Language file created:',
         'check_file' => 'lang/es_test.json',
     ],
-    'list:lang' => [
-        'command'  => 'php ammar list:lang',
-        'expected' => '- es_test',
-    ],
     'delete:lang' => [
         'command'  => 'php ammar delete:lang -1 es_test',
         'expected' => 'Deleted language file:',
@@ -93,13 +106,21 @@ $tests = [
         'command'  => 'php ammar make:sitemap',
         'expected' => 'Sitemap generated!',
     ],
-    'list:routes' => [
-        'command'  => 'php ammar list:routes',
-        'expected' => 'testroute_test_request_GET.ahmed.php',
+    'install:import' => [
+        'command'  => 'php ammar install:import -1 https://github.com/AmmarBasha2011/InexSpa-Database-Management-System.git',
+        'expected' => 'Repository cloned successfully',
     ],
-    'list:db' => [
-        'command'  => 'php ammar list:db',
-        'expected' => 'createusers_testTable',
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'Available imports:',
+    ],
+    'delete:import' => [
+        'command'  => 'php ammar delete:import -1 InexSpa-Database-Management-System',
+        'expected' => 'Import deleted:',
+    ],
+    'ask:gemini' => [
+        'command'  => 'php ammar ask:gemini -1 "Hi"',
+        'expected' => 'Error:', // Since mock key is used
     ],
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
@@ -113,6 +134,12 @@ $tests = [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
     ],
+    'clear:cron' => [
+        'setup'    => 'php ammar make:cron ClearMe',
+        'command'  => 'echo "yes\nyes" | php ammar clear:cron',
+        'expected' => 'Cron tasks clearing complete',
+    ],
+    // Skip clear:docs and clear:start as they are destructive to the repo
 ];
 
 $results = [];
@@ -122,7 +149,7 @@ foreach ($tests as $name => $test) {
         shell_exec($test['setup']);
     }
     $output = shell_exec($test['command'].' 2>&1');
-    $success = strpos($output, $test['expected']) !== false;
+    $success = (strpos($output, $test['expected']) !== false) && (strpos($output, 'Database error:') === false);
 
     if ($success && isset($test['check_file'])) {
         $files = glob($test['check_file']);

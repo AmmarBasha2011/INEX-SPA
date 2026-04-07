@@ -2,9 +2,6 @@
 
 /**
  * INEX SPA Test Runner.
- *
- * This script runs all framework tests, aggregates results, and triggers
- * the HTML report generation. It also allows marking certain issues as fixed.
  */
 echo "🚀 Starting INEX SPA Full Test Suite...\n\n";
 
@@ -18,7 +15,6 @@ passthru('php tests/core_tests.php');
 
 // 3. Run Web Tests (Requires server to be running)
 echo "Running Web Tests...\n";
-// Ensure server is running on port 8080 (handled externally in plan, but good to check)
 $connection = @fsockopen('localhost', 8080);
 if ($connection) {
     fclose($connection);
@@ -31,21 +27,27 @@ if ($connection) {
 // 4. Track Fixed Issues
 $fixedIssues = [
     [
-        'id'          => 'cli-make-route-api',
-        'title'       => 'CLI make:route API flag',
-        'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
+        'id'          => 'lang-get-default',
+        'title'       => 'Language::get default value support',
+        'description' => 'Updated Language::get to support an optional second parameter for a default value if the key is not found.',
         'status'      => 'FIXED',
     ],
     [
-        'id'          => 'cli-list-lang-exit',
-        'title'       => 'CLI list:lang exit behavior',
-        'description' => 'Replaced return with exit(0) to ensure consistent CLI termination.',
+        'id'          => 'ammar-ask-gemini-success',
+        'title'       => 'ammar ask:gemini success check',
+        'description' => 'Fixed ammar CLI to correctly check for success when calling useGemini (it returns "error" string on failure, not false).',
         'status'      => 'FIXED',
     ],
     [
-        'id'          => 'cli-make-layout-duplicate',
-        'title'       => 'CLI make:layout collision',
-        'description' => 'Updated tests to use unique names and ensure clean state before testing.',
+        'id'          => 'sqlite-compat-run-db',
+        'title'       => 'SQLite compatibility in run:db',
+        'description' => 'Updated SQL templates in ammar CLI to use SQLite-compatible syntax (AUTOINCREMENT instead of AUTO_INCREMENT) when using SQLite.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-list-lang-empty',
+        'title'       => 'CLI list:lang empty check',
+        'description' => 'Fixed list:lang to correctly handle the case when no language files exist.',
         'status'      => 'FIXED',
     ],
 ];

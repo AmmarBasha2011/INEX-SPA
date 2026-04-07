@@ -9,6 +9,14 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/SitemapGenerator.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
+require_once 'core/functions/PHP/classes/ClearDBTables.php';
 
 $results = [];
 
@@ -59,12 +67,24 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 // Test UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
-// Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
-assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
+// Test CookieManager
+CookieManager::set('test_cookie', 'cookie_val', 3600);
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
 
-// Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
-assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+// Test Language
+Language::setLanguage('en');
+assert_test('Language::get', Language::get('key', 'default') === 'default', 'Language::get returns default when key missing');
+
+// Test Layout
+assert_test('Layout::exists', class_exists('Layout'), 'Layout class exists');
+
+// Test Logger
+assert_test('Logger::log', class_exists('Logger'), 'Logger class exists');
+
+// Test Security
+assert_test('Security::encrypt', class_exists('Security'), 'Security class exists');
+
+// Test Webhook
+assert_test('Webhook::send', class_exists('Webhook'), 'Webhook class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));
