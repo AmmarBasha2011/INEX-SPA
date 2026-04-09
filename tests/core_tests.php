@@ -19,8 +19,10 @@ require_once 'core/functions/PHP/classes/Webhook.php';
 
 // Mocking some functions that might be used
 if (!function_exists('executeStatement')) {
-    function executeStatement($sql, $params = [], $is_return = true) {
+    function executeStatement($sql, $params = [], $is_return = true)
+    {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
 }
