@@ -31,21 +31,39 @@ if ($connection) {
 // 4. Track Fixed Issues
 $fixedIssues = [
     [
-        'id'          => 'cli-make-route-api',
-        'title'       => 'CLI make:route API flag',
-        'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
+        'id'          => 'db-sqlite-support',
+        'title'       => 'Database SQLite Support',
+        'description' => 'Added SQLite driver support to Database and executeSQLFilePDO for environments without MySQL.',
         'status'      => 'FIXED',
     ],
     [
-        'id'          => 'cli-list-lang-exit',
-        'title'       => 'CLI list:lang exit behavior',
-        'description' => 'Replaced return with exit(0) to ensure consistent CLI termination.',
+        'id'          => 'cli-db-sqlite-ai',
+        'title'       => 'CLI SQLite Auto-Increment',
+        'description' => 'Updated ammar CLI and UserAuth to use INTEGER PRIMARY KEY AUTOINCREMENT for SQLite.',
         'status'      => 'FIXED',
     ],
     [
-        'id'          => 'cli-make-layout-duplicate',
-        'title'       => 'CLI make:layout collision',
-        'description' => 'Updated tests to use unique names and ensure clean state before testing.',
+        'id'          => 'core-lang-method',
+        'title'       => 'Core Language Method Name',
+        'description' => 'Corrected tests to use Language::setLanguage() instead of non-existent setLocale().',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-logger-security-tests',
+        'title'       => 'Logger and Security Tests',
+        'description' => 'Updated core tests to match actual Logger::log and Security class methods.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-install-import-local',
+        'title'       => 'CLI install:import Local Paths',
+        'description' => 'Updated install:import to allow local repository paths for easier testing.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cleardbtables-sqlite',
+        'title'       => 'ClearDBTables SQLite Support',
+        'description' => 'Added SQLite support to ClearDBTables to allow resetting database in SQLite mode.',
         'status'      => 'FIXED',
     ],
 ];

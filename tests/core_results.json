@@ -5,11 +5,11 @@
     },
     "Cache::get": {
         "success": true,
-        "message": "Expected test_value"
+        "message": "Expected test_value_core"
     },
     "Cache::update": {
         "success": true,
-        "message": "Expected new_value"
+        "message": "Expected new_value_core"
     },
     "Cache::delete": {
         "success": true,
@@ -17,7 +17,7 @@
     },
     "Session::get": {
         "success": true,
-        "message": "Expected sess_val"
+        "message": "Expected sess_val_core"
     },
     "Session::delete": {
         "success": true,
@@ -42,5 +42,49 @@
     "AhmedTemplate::render": {
         "success": true,
         "message": "Expected rendered output"
+    },
+    "Database::instance": {
+        "success": true,
+        "message": "Database instance created"
+    },
+    "UserAuth::generateSQL": {
+        "success": true,
+        "message": "Auth SQL generated"
+    },
+    "CookieManager::exists": {
+        "success": true,
+        "message": "CookieManager class exists"
+    },
+    "Language::get": {
+        "success": true,
+        "message": "Expected world for key hello"
+    },
+    "Layout::exists": {
+        "success": true,
+        "message": "Layout class exists"
+    },
+    "Logger::log": {
+        "success": true,
+        "message": "Log file should contain message"
+    },
+    "Security::sanitizeInput": {
+        "success": true,
+        "message": "Sanitization should encode HTML special characters"
+    },
+    "SitemapGenerator::exists": {
+        "success": true,
+        "message": "SitemapGenerator class exists"
+    },
+    "Webhook::exists": {
+        "success": true,
+        "message": "Webhook class exists"
+    },
+    "RateLimiter::exists": {
+        "success": true,
+        "message": "RateLimiter class exists"
+    },
+    "Firewall::exists": {
+        "success": true,
+        "message": "Firewall class exists"
     }
 }

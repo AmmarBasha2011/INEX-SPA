@@ -37,8 +37,11 @@ class UserAuth
         }
 
         // Initialize the SQL query
+        $driver = getEnvValue('DB_DRIVER', 'mysql');
+        $autoIncrement = ($driver === 'sqlite') ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
+
         $sql = "CREATE TABLE IF NOT EXISTS users (\n";
-        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n"; // Auto-increment ID
+        $sql .= "  id $autoIncrement,\n"; // Auto-increment ID
 
         // Mapping JSON data types to SQL types
         $typeMapping = [

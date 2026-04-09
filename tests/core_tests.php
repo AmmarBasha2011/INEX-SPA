@@ -9,6 +9,21 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/SitemapGenerator.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
+
+// Mocking some functions that might be used
+if (!function_exists('executeStatement')) {
+    function executeStatement($sql, $params = [], $is_return = true) {
+        $DB = new Database();
+        return $DB->query($sql, $params, $is_return);
+    }
+}
 
 $results = [];
 
@@ -59,12 +74,41 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 // Test UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
+// Test CookieManager
+CookieManager::set('test_cookie', 'cookie_val', 3600);
+// We can't easily test if it was set in the browser but we can check if the class exists and methods are callable
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Language
+file_put_contents('lang/en_test_core.json', json_encode(['hello' => 'world']));
+Language::setLanguage('en_test_core');
+assert_test('Language::get', Language::get('hello') === 'world', 'Expected world for key hello');
+unlink('lang/en_test_core.json');
+
+// Test Layout
+assert_test('Layout::exists', class_exists('Layout'), 'Layout class exists');
+
+// Test Logger
+$logFile = 'core/logs/system.log';
+$initialContent = file_exists($logFile) ? file_get_contents($logFile) : '';
+Logger::log('test_type', 'test message');
+$newContent = file_get_contents($logFile);
+assert_test('Logger::log', strpos($newContent, 'test message') !== false, 'Log file should contain message');
+file_put_contents($logFile, $initialContent); // Restore initial content
+
+// Test Security
+assert_test('Security::sanitizeInput', Security::sanitizeInput('<script>alert("XSS")</script>') === '&lt;script&gt;alert(&quot;XSS&quot;)&lt;/script&gt;', 'Sanitization should encode HTML special characters');
+
+// Test SitemapGenerator
+assert_test('SitemapGenerator::exists', class_exists('SitemapGenerator'), 'SitemapGenerator class exists');
+
+// Test Webhook
+assert_test('Webhook::exists', class_exists('Webhook'), 'Webhook class exists');
+
 // Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
 assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
 
 // Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

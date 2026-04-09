@@ -10,6 +10,23 @@ $tests = [
         'expected'   => 'DB file created:',
         'check_file' => 'db/createusers_testTable_*.sql',
     ],
+    'make:auth' => [
+        'command'    => 'php ammar make:auth',
+        'expected'   => 'DB file created:',
+        'check_file' => 'db/createusersTable_*.sql',
+    ],
+    'list:db' => [
+        'command'  => 'php ammar list:db',
+        'expected' => 'createusers_testTable',
+    ],
+    'run:db' => [
+        'command'  => 'php ammar run:db',
+        'expected' => 'Running:',
+    ],
+    'delete:db' => [
+        'command'  => 'php ammar delete:db -1 create -2 users_test',
+        'expected' => 'Deleted: createusers_testTable',
+    ],
     'make:route' => [
         'command'    => 'php ammar make:route -1 testroute_test -2 no -3 GET -4 no',
         'expected'   => 'Route file created: testroute_test_request_GET.ahmed.php',
@@ -19,6 +36,14 @@ $tests = [
         'command'    => 'php ammar make:route -1 testapi_test -2 no -3 GET -4 yes',
         'expected'   => 'Route file created: testapi_test_request_GET_api.ahmed.php',
         'check_file' => 'web/testapi_test_request_GET_api.ahmed.php',
+    ],
+    'list:routes' => [
+        'command'  => 'php ammar list:routes',
+        'expected' => 'testroute_test_request_GET.ahmed.php',
+    ],
+    'delete:route' => [
+        'command'  => 'php ammar delete:route -1 testroute_test',
+        'expected' => 'Deleted: testroute_test_request_GET.ahmed.php',
     ],
     'make:cache' => [
         'command'  => 'php ammar make:cache -1 mykey_test -2 myvalue_test -3 3600',
@@ -67,11 +92,6 @@ $tests = [
         'expected'   => 'Layout file created:',
         'check_file' => 'layouts/custom_test.ahmed.php',
     ],
-    'make:auth' => [
-        'command'    => 'php ammar make:auth',
-        'expected'   => 'DB file created:',
-        'check_file' => 'db/createusersTable_*.sql',
-    ],
     'make:cron' => [
         'command'    => 'php ammar make:cron TestTask',
         'expected'   => 'Cron task file created:',
@@ -89,17 +109,14 @@ $tests = [
         'command'  => 'echo "yes" | php ammar delete:cron TestTask',
         'expected' => 'deleted successfully',
     ],
+    'clear:cron' => [
+        'setup'    => 'php ammar make:cron ClearTestTask',
+        'command'  => 'echo "yes\nyes" | php ammar clear:cron',
+        'expected' => 'Cron tasks clearing complete.',
+    ],
     'make:sitemap' => [
         'command'  => 'php ammar make:sitemap',
         'expected' => 'Sitemap generated!',
-    ],
-    'list:routes' => [
-        'command'  => 'php ammar list:routes',
-        'expected' => 'testroute_test_request_GET.ahmed.php',
-    ],
-    'list:db' => [
-        'command'  => 'php ammar list:db',
-        'expected' => 'createusers_testTable',
     ],
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
@@ -112,6 +129,23 @@ $tests = [
     'clear:routes' => [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
+    ],
+    'install:import' => [
+        'setup'    => 'mkdir -p dummy_repo && cd dummy_repo && git init && touch test.txt && git add . && git commit -m "init" && cd ..',
+        'command'  => 'php ammar install:import -1 ./dummy_repo',
+        'expected' => 'Repository cloned successfully',
+    ],
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'dummy_repo',
+    ],
+    'delete:import' => [
+        'command'  => 'php ammar delete:import -1 dummy_repo',
+        'expected' => 'Import deleted: dummy_repo',
+    ],
+    'clear:db:tables' => [
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'have been deleted!',
     ],
 ];
 

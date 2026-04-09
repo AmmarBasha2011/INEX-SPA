@@ -5,7 +5,23 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_04_09_13_11_18.sql\n"
+    },
+    "make:auth": {
+        "success": true,
+        "output": "DB file created: createusersTable_2026_04_09_13_11_18.sql\n"
+    },
+    "list:db": {
+        "success": true,
+        "output": "Available DB files:\n  createusersTable_2026_04_09_13_11_18.sql\n  createusers_testTable_2026_04_09_13_11_18.sql\n"
+    },
+    "run:db": {
+        "success": true,
+        "output": "Running: createusersTable_2026_04_09_13_11_18.sql\nRunning: createusers_testTable_2026_04_09_13_11_18.sql\n"
+    },
+    "delete:db": {
+        "success": true,
+        "output": "Deleted: createusers_testTable_2026_04_09_13_11_18.sql\n"
     },
     "make:route": {
         "success": true,
@@ -14,6 +30,14 @@
     "make:route_api": {
         "success": true,
         "output": "Route file created: testapi_test_request_GET_api.ahmed.php\n"
+    },
+    "list:routes": {
+        "success": true,
+        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
+    },
+    "delete:route": {
+        "success": true,
+        "output": "Deleted: testroute_test.ahmed.php\nDeleted: testroute_test_request_GET.ahmed.php\n"
     },
     "make:cache": {
         "success": true,
@@ -59,37 +83,29 @@
         "success": true,
         "output": "Layout file created: \/app\/layouts\/custom_test.ahmed.php\n"
     },
-    "make:auth": {
-        "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
-    },
     "make:cron": {
         "success": true,
         "output": "Cron task file created: \/app\/core\/cron\/tasks\/TestTask.php\n"
     },
     "list:cron": {
         "success": true,
-        "output": "Available cron tasks:\n  - ExampleTask\n  - TestTask\n"
+        "output": "Available cron tasks:\n  - TestTask\n"
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-09 13:11:19.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
         "output": "Cron task file '\/app\/core\/cron\/tasks\/TestTask.php' deleted successfully.\n"
     },
+    "clear:cron": {
+        "success": true,
+        "output": "WARNING: This will delete ALL cron task files in 'core\/cron\/tasks\/'.\nDeleted: ClearTestTask.php\n\nCron tasks clearing complete.\nSuccessfully deleted: 1 file(s).\n"
+    },
     "make:sitemap": {
         "success": true,
         "output": "Sitemap generated!\n"
-    },
-    "list:routes": {
-        "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
-    },
-    "list:db": {
-        "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
     },
     "clear:cache": {
         "success": true,
@@ -102,5 +118,21 @@
     "clear:routes": {
         "success": true,
         "output": "Route files cleared!\n"
+    },
+    "install:import": {
+        "success": true,
+        "output": "Cloning repository...\nCloning into '\/app\/core\/import\/dummy_repo'...\ndone.\nRepository cloned successfully to core\/import\/dummy_repo!\nPackage.json updated with new dependency.\n"
+    },
+    "list:import": {
+        "success": true,
+        "output": "Available imports:\n  dummy_repo\n"
+    },
+    "delete:import": {
+        "success": true,
+        "output": "Import deleted: dummy_repo\n"
+    },
+    "clear:db:tables": {
+        "success": true,
+        "output": "\ud83d\uddd1\ufe0f Deleted table: users\n\ud83d\uddd1\ufe0f Deleted table: users_test\n\ud83d\udd25 All tables in database 'inexspa' have been deleted!\n"
     }
 }
