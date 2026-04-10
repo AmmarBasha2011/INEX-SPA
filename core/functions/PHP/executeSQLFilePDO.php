@@ -23,7 +23,7 @@ function executeSQLFilePDO($host, $user, $password, $database, $filePath)
 
         if ($driver === 'sqlite') {
             $dbFile = getEnvValue('DB_FILE') ?: 'database.sqlite';
-            $dsn = "sqlite:" . __DIR__ . "/../../../" . $dbFile;
+            $dsn = 'sqlite:'.__DIR__.'/../../../'.$dbFile;
             $user = null;
             $password = null;
         } else {

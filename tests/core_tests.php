@@ -20,8 +20,10 @@ require_once 'core/functions/PHP/classes/SitemapGenerator.php';
 
 // Mocking required for some classes if needed, or just test existence and basic methods
 if (!function_exists('executeStatement')) {
-    function executeStatement($sql, $params = [], $is_return = true) {
+    function executeStatement($sql, $params = [], $is_return = true)
+    {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
 }
