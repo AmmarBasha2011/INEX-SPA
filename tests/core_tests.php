@@ -9,6 +9,22 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/ClearDBTables.php';
+require_once 'core/functions/PHP/classes/SitemapGenerator.php';
+
+// Mocking required for some classes if needed, or just test existence and basic methods
+if (!function_exists('executeStatement')) {
+    function executeStatement($sql, $params = [], $is_return = true) {
+        $DB = new Database();
+        return $DB->query($sql, $params, $is_return);
+    }
+}
 
 $results = [];
 
@@ -60,11 +76,55 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
 // Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
 assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
 
 // Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test CookieManager (Hard to test fully in CLI because setcookie needs headers)
+assert_test('CookieManager::exists_class', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Logger
+Logger::clearLogs();
+Logger::log('test', 'Test message');
+assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_get_contents('core/logs/system.log'), 'Test message') !== false, 'Log message found');
+
+// Test Security
+$unsanitized = '<script>alert("XSS")</script><b>Bold</b>';
+$sanitized = Security::sanitizeInput($unsanitized);
+assert_test('Security::sanitizeInput', strpos($sanitized, '<script>') === false && strpos($sanitized, '&lt;b&gt;Bold&lt;/b&gt;') !== false, 'XSS sanitized');
+
+// Test Webhook
+assert_test('Webhook::send_invalid_url', Webhook::send('not-a-url', []) === false, 'Invalid URL returns false');
+
+// Test Language
+$langFile = 'lang/test_lang.json';
+file_put_contents($langFile, json_encode(['hello' => 'Hello {name}!']));
+Language::setLanguage('test_lang');
+assert_test('Language::get', Language::get('hello', ['name' => 'User']) === 'Hello User!', 'Language translation works');
+unlink($langFile);
+
+// Test Layout
+$layoutFile = 'layouts/test_layout.ahmed.php';
+$contentFile = 'web/test_content_core.ahmed.php';
+file_put_contents($layoutFile, 'Layout Start {{ Layout::section("content") }} Layout End');
+file_put_contents($contentFile, 'test content');
+Layout::start('content');
+echo 'Captured Content';
+Layout::end();
+ob_start();
+$Ahmed = new AhmedTemplate(); // Layout::render uses global $Ahmed
+Layout::render('test_layout', 'test_content_core', 'GET');
+$layoutOutput = ob_get_clean();
+assert_test('Layout::render', strpos($layoutOutput, 'Layout Start Captured Content Layout End') !== false, 'Layout rendering works');
+unlink($layoutFile);
+unlink($contentFile);
+
+// Test ClearDBTables
+assert_test('ClearDBTables::exists', class_exists('ClearDBTables'), 'ClearDBTables class exists');
+
+// Test SitemapGenerator
+SitemapGenerator::generate();
+assert_test('SitemapGenerator::generate', file_exists('public/sitemap.xml'), 'Sitemap generated');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

@@ -101,6 +101,15 @@ $tests = [
         'command'  => 'php ammar list:db',
         'expected' => 'createusers_testTable',
     ],
+    'run:db' => [
+        'command'  => 'php ammar run:db',
+        'expected' => 'Running:',
+    ],
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'No imports found!',
+    ],
+    // Skipping install:import as it needs a real git repo and network
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
         'expected' => 'Cache cleared!',
@@ -109,9 +118,22 @@ $tests = [
         'command'  => 'php ammar clear:db',
         'expected' => 'DB files cleared!',
     ],
+    'clear:db:tables' => [
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'All tables in database',
+    ],
     'clear:routes' => [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
+    ],
+    'clear:cron' => [
+        'setup'    => 'php ammar make:cron ClearTestTask',
+        'command'  => 'echo "yes\nyes" | php ammar clear:cron',
+        'expected' => 'Cron tasks clearing complete.',
+    ],
+    'clear:start' => [
+        'command'  => 'php ammar clear:start',
+        'expected' => 'All startup files have been deleted!',
     ],
 ];
 

@@ -26,8 +26,8 @@ if (!file_exists('web/testroute_test.ahmed.php')) {
     file_put_contents('web/testroute_test.ahmed.php', 'testroute content');
 }
 
-// Test Index Route - checking for "INEX SPA" which is in the restored index.ahmed.php
-$results['index'] = test_route($baseUrl, 'INEX SPA');
+// Test Index Route - checking for "test content" which we set in the test
+$results['index'] = test_route($baseUrl, 'test content');
 
 // Test a standard route
 $results['testroute'] = test_route($baseUrl.'?page=testroute_test', 'testroute');

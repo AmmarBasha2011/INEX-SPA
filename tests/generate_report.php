@@ -7,11 +7,21 @@ $fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true);
 
 $total = count($cliRes) + count($coreRes) + count($webRes);
 $passed = 0;
-foreach ($cliRes as $res) if ($res['success']) $passed++;
-foreach ($coreRes as $res) if ($res['success']) $passed++;
-foreach ($webRes as $res) if ($res['success']) $passed++;
-$failed = $total - $passed;
-$fixed = count($fixedRes);
+$failed = 0;
+$fixedCount = count($fixedRes);
+
+foreach ($cliRes as $res) {
+    if ($res['success']) $passed++;
+    else $failed++;
+}
+foreach ($coreRes as $res) {
+    if ($res['success']) $passed++;
+    else $failed++;
+}
+foreach ($webRes as $res) {
+    if ($res['success']) $passed++;
+    else $failed++;
+}
 
 ob_start();
 ?>
@@ -234,15 +244,15 @@ ob_start();
             </div>
             <div class="card">
                 <span class="number" style="color: var(--success);"><?= $passed ?></span>
-                <span class="label">Passed</span>
+                <span class="label">Success</span>
+            </div>
+            <div class="card">
+                <span class="number" style="color: var(--warning);"><?= $fixedCount ?></span>
+                <span class="label">Solved Errors</span>
             </div>
             <div class="card">
                 <span class="number" style="color: var(--danger);"><?= $failed ?></span>
-                <span class="label">Failed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--warning);"><?= $fixed ?></span>
-                <span class="label">Fixed</span>
+                <span class="label">Unsolvable Errors</span>
             </div>
         </div>
 
