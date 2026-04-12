@@ -20,287 +20,464 @@ ob_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INEX SPA Framework Test Report</title>
+    <title>INEX SPA - Ultimate Framework Test Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #3498db;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --bg: #f4f7f6;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text: #333;
-            --text-light: #7f8c8d;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --sidebar-bg: #0f172a;
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.2s ease;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg);
             margin: 0;
             padding: 0;
-            color: var(--text);
+            color: var(--text-main);
             display: flex;
             min-height: 100vh;
         }
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
-            background: #2c3e50;
+            width: 280px;
+            background: var(--sidebar-bg);
             color: white;
-            padding: 30px 20px;
+            padding: 2rem 1.5rem;
             position: fixed;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
         }
 
-        .sidebar h1 {
-            font-size: 20px;
-            margin-bottom: 40px;
-            text-align: center;
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
         }
 
         .nav-item {
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: 6px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #94a3b8;
+            font-weight: 500;
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
         }
 
         .nav-item.active {
             background: var(--primary);
+            color: white;
         }
 
         /* Main Content */
         .main {
-            margin-left: 260px;
+            margin-left: 280px;
             flex: 1;
-            padding: 40px;
+            padding: 2.5rem;
+            max-width: 1400px;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+            align-items: flex-end;
+            margin-bottom: 2.5rem;
         }
 
-        /* Dashboard Cards */
-        .dashboard {
+        .header h2 {
+            margin: 0;
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
-        .card {
+        .stat-card {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .card .number {
-            font-size: 32px;
-            font-weight: 700;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .card .label {
-            color: var(--text-light);
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
-        }
-
-        /* Sections */
-        .section {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-        }
-
-        .section h2 {
-            margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            font-size: 18px;
-            color: var(--primary);
-        }
-
-        /* Tables */
-        table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
-        th { background: #f9f9f9; font-size: 13px; color: var(--text-light); }
-
-        .status {
-            font-weight: 600;
-            padding: 4px 10px;
+            padding: 1.5rem;
             border-radius: 20px;
-            font-size: 11px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.total::after { background: var(--info); }
+        .stat-card.passed::after { background: var(--success); }
+        .stat-card.failed::after { background: var(--danger); }
+        .stat-card.fixed::after { background: var(--warning); }
+
+        .stat-card .value {
+            font-size: 2.25rem;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* Content Sections */
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        /* Table Styling */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            background: #f8fafc;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
             text-transform: uppercase;
         }
-        .status-success { background: #e6f9ed; color: var(--success); }
-        .status-error { background: #fdeaea; color: var(--danger); }
-        .status-fixed { background: #fff4e5; color: var(--warning); }
+
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
 
         pre {
-            background: #272822;
-            color: #f8f8f2;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            max-height: 150px;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8125rem;
+            max-height: 200px;
             overflow: auto;
+            margin: 0;
         }
 
-        /* Filtering */
-        .filters {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 6px 15px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Fixed Issues List */
-        .fixed-list {
-            list-style: none;
-            padding: 0;
-        }
-
+        /* Fixed Issues Items */
         .fixed-item {
-            padding: 15px;
-            border-left: 4px solid var(--warning);
-            background: #fffcf8;
-            margin-bottom: 15px;
-            border-radius: 0 6px 6px 0;
+            padding: 1.5rem;
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            border-radius: 16px;
+            margin-bottom: 1rem;
         }
 
-        .fixed-item h3 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
+        .fixed-item h4 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .fixed-item p {
             margin: 0;
-            font-size: 14px;
-            color: var(--text-light);
+            color: #92400e;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+
+        /* Tab System */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .tab-btn {
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar { width: 80px; padding: 2rem 1rem; }
+            .sidebar-brand span, .nav-item span { display: none; }
+            .main { margin-left: 80px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <a href="#" class="sidebar-brand">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="8" fill="#6366F1"/>
+                <path d="M10 10L22 22M22 10L10 22" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <span>INEX SPA</span>
+        </a>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="scrollToSection('dashboard')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" onclick="scrollToSection('cli')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                <span>CLI Tests</span>
+            </div>
+            <div class="nav-item" onclick="scrollToSection('core')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line></svg>
+                <span>Core Library</span>
+            </div>
+            <div class="nav-item" onclick="scrollToSection('web')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                <span>Web Routes</span>
+            </div>
+        </nav>
     </div>
 
     <div class="main">
-        <div class="header">
-            <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
-        </div>
-
-        <div class="dashboard">
-            <div class="card">
-                <span class="number" style="color: var(--primary);"><?= $total ?></span>
-                <span class="label">Total Tests</span>
+        <header class="header">
+            <div id="dashboard">
+                <p style="color: var(--text-muted); font-weight: 600; margin: 0; text-transform: uppercase; font-size: 0.75rem;">Framework Analysis</p>
+                <h2>Test Execution Report</h2>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--success);"><?= $passed ?></span>
+            <div style="text-align: right;">
+                <span class="badge badge-success" style="padding: 8px 16px;">System Online</span>
+                <p style="color: var(--text-muted); font-size: 0.8125rem; margin: 8px 0 0 0;"><?= date('l, F j, Y - H:i:s') ?></p>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card total">
+                <span class="label">Total Scenarios</span>
+                <span class="value"><?= $total ?></span>
+            </div>
+            <div class="stat-card passed">
                 <span class="label">Passed</span>
+                <span class="value" style="color: var(--success);"><?= $passed ?></span>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--danger);"><?= $failed ?></span>
+            <div class="stat-card failed">
                 <span class="label">Failed</span>
+                <span class="value" style="color: var(--danger);"><?= $failed ?></span>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--warning);"><?= $fixed ?></span>
-                <span class="label">Fixed</span>
+            <div class="stat-card fixed">
+                <span class="label">Fixed Issues</span>
+                <span class="value" style="color: var(--warning);"><?= $fixed ?></span>
             </div>
         </div>
 
-        <div class="section">
-            <h2>CLI Commands</h2>
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'success')">Success</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'failed')">Failed</button>
+        <!-- CLI SECTION -->
+        <div class="section-card" id="cli">
+            <div class="section-header">
+                <h3>Ammar CLI Commands</h3>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="filterTable('cli', 'all')">All</button>
+                    <button class="tab-btn" onclick="filterTable('cli', 'success')">Passed</button>
+                    <button class="tab-btn" onclick="filterTable('cli', 'failed')">Failed</button>
+                </div>
             </div>
-            <table id="cli-table">
-                <thead>
-                    <tr>
-                        <th>Test Name</th>
-                        <th>Status</th>
-                        <th>Output</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($cliRes as $name => $res): ?>
-                    <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
-                        <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
-                        <td><pre><?= htmlspecialchars(substr($res['output'], 0, 500)) ?></pre></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <div class="table-container">
+                <table id="cli-table">
+                    <thead>
+                        <tr>
+                            <th>Command / Test</th>
+                            <th>Status</th>
+                            <th>Execution Logs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($cliRes as $name => $res): ?>
+                        <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
+                            <td style="font-weight: 600; color: var(--text-main);"><?= htmlspecialchars($name) ?></td>
+                            <td><span class="badge <?= $res['success'] ? 'badge-success' : 'badge-danger' ?>"><?= $res['success'] ? 'Passed' : 'Failed' ?></span></td>
+                            <td><pre><?= htmlspecialchars($res['output']) ?></pre></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="section">
-            <h2>Core Classes & Utilities</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Test Name</th>
-                        <th>Status</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($coreRes as $name => $res): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
-                        <td><?= htmlspecialchars($res['message']) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <!-- CORE SECTION -->
+        <div class="section-card" id="core">
+            <div class="section-header">
+                <h3>Core Framework Classes</h3>
+                <span class="badge badge-success"><?= count($coreRes) ?> Units Tested</span>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class / Function</th>
+                            <th>Status</th>
+                            <th>Assertion Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($coreRes as $name => $res): ?>
+                        <tr>
+                            <td style="font-weight: 600;"><?= htmlspecialchars($name) ?></td>
+                            <td><span class="badge <?= $res['success'] ? 'badge-success' : 'badge-danger' ?>"><?= $res['success'] ? 'Passed' : 'Failed' ?></span></td>
+                            <td style="color: var(--text-muted); font-size: 0.875rem;"><?= htmlspecialchars($res['message']) ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="section">
-            <h2>Fixed Issues</h2>
+        <!-- WEB SECTION -->
+        <div class="section-card" id="web">
+            <div class="section-header">
+                <h3>Routing & Web Integration</h3>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Endpoint</th>
+                            <th>Status</th>
+                            <th>HTTP Code</th>
+                            <th>Response Preview</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($webRes as $name => $res): ?>
+                        <tr>
+                            <td style="font-weight: 600;"><?= htmlspecialchars($name) ?></td>
+                            <td><span class="badge <?= $res['success'] ? 'badge-success' : 'badge-danger' ?>"><?= $res['success'] ? 'Passed' : 'Failed' ?></span></td>
+                            <td><code><?= $res['status'] ?></code></td>
+                            <td><pre><?= htmlspecialchars(substr($res['response'], 0, 200)) ?>...</pre></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- FIXED ISSUES -->
+        <div class="section-card">
+            <div class="section-header">
+                <h3>Resolved During Testing</h3>
+            </div>
             <div class="fixed-list">
                 <?php foreach ($fixedRes as $issue): ?>
                 <div class="fixed-item">
-                    <h3><?= htmlspecialchars($issue['title']) ?> <span class="status status-fixed">Fixed</span></h3>
+                    <h4>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" color="var(--success)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <?= htmlspecialchars($issue['title']) ?>
+                    </h4>
                     <p><?= htmlspecialchars($issue['description']) ?></p>
                 </div>
                 <?php endforeach; ?>
@@ -312,7 +489,7 @@ ob_start();
         function filterTable(tableId, status) {
             const table = document.getElementById(tableId + '-table');
             const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
+            const buttons = document.querySelectorAll('.tab-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
@@ -322,6 +499,18 @@ ob_start();
                     row.style.display = '';
                 } else {
                     row.style.display = 'none';
+                }
+            });
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+
+            // Update active state in sidebar
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('onclick').includes(id)) {
+                    item.classList.add('active');
                 }
             });
         }

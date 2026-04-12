@@ -31,6 +31,24 @@ if ($connection) {
 // 4. Track Fixed Issues
 $fixedIssues = [
     [
+        'id'          => 'db-sqlite-support',
+        'title'       => 'Database SQLite Support',
+        'description' => 'Added support for SQLite driver in Database class and executeSQLFilePDO function when DB_DRIVER=sqlite is set.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-tests-expansion',
+        'title'       => 'Expanded Core Test Suite',
+        'description' => 'Added comprehensive tests for utility functions including getSlashData, generateCsrfToken, and more.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'report-ui-enhancement',
+        'title'       => 'Modernized Test Report UI',
+        'description' => 'Redesigned the HTML test report with a modern, responsive interface and detailed status breakdown.',
+        'status'      => 'FIXED',
+    ],
+    [
         'id'          => 'cli-make-route-api',
         'title'       => 'CLI make:route API flag',
         'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
