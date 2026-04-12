@@ -35,7 +35,7 @@ function assert_test($name, $condition, $message = '')
         'success' => $condition,
         'message' => $message,
     ];
-    echo ($condition ? '✅ ' : '❌ ').$name.": ".($condition ? "Success" : "Failed - $message")."\n";
+    echo ($condition ? '✅ ' : '❌ ').$name.': '.($condition ? 'Success' : "Failed - $message")."\n";
 }
 
 // Test getEnvValue
@@ -67,14 +67,16 @@ file_put_contents($templateFile, 'Hello {{ $name }}! @if(true) Yes @endif');
 $engine = new AhmedTemplate();
 $output = $engine->render($templateFile, ['name' => 'World']);
 assert_test('AhmedTemplate::render', trim($output) === 'Hello World!  Yes', 'Expected rendered output');
-if (file_exists($templateFile)) unlink($templateFile);
+if (file_exists($templateFile)) {
+    unlink($templateFile);
+}
 
 // Test Database (SQLite)
 $db = new Database();
 assert_test('Database::instance', $db instanceof Database, 'Database instance created');
-$db->query("CREATE TABLE IF NOT EXISTS test_table (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
-$db->query("INSERT INTO test_table (name) VALUES (?)", ['Test Name'], false);
-$res = $db->query("SELECT * FROM test_table WHERE name = ?", ['Test Name']);
+$db->query('CREATE TABLE IF NOT EXISTS test_table (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)');
+$db->query('INSERT INTO test_table (name) VALUES (?)', ['Test Name'], false);
+$res = $db->query('SELECT * FROM test_table WHERE name = ?', ['Test Name']);
 assert_test('Database::query', count($res) > 0 && $res[0]['name'] === 'Test Name', 'Database query should return inserted data');
 
 // Test getSlashData
