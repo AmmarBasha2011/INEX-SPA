@@ -29,12 +29,21 @@ class Database
      */
     public function __construct($charset = 'utf8mb4')
     {
-        $host = getEnvValue('DB_HOST');
-        $dbname = getEnvValue('DB_NAME');
-        $username = getEnvValue('DB_USER');
-        $password = getEnvValue('DB_PASS');
+        $driver = getEnvValue('DB_DRIVER', 'mysql');
 
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+        if ($driver === 'sqlite') {
+            $dbFile = getEnvValue('DB_FILE', 'database.sqlite');
+            $dsn = "sqlite:$dbFile";
+            $username = null;
+            $password = null;
+        } else {
+            $host = getEnvValue('DB_HOST');
+            $dbname = getEnvValue('DB_NAME');
+            $username = getEnvValue('DB_USER');
+            $password = getEnvValue('DB_PASS');
+            $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+        }
+
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

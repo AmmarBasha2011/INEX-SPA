@@ -207,16 +207,16 @@
     <div class="main">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-03 13:12:13</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-15 12:52:31</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">39</span>
+                <span class="number" style="color: var(--primary);">56</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">38</span>
+                <span class="number" style="color: var(--success);">55</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
@@ -224,7 +224,7 @@
                 <span class="label">Failed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
+                <span class="number" style="color: var(--warning);">6</span>
                 <span class="label">Fixed</span>
             </div>
         </div>
@@ -264,7 +264,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusers_testTable_2026_04_15_12_52_30.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -349,7 +349,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusersTable_2026_04_15_12_52_31.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -362,7 +362,6 @@
                         <td>list:cron</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available cron tasks:
-  - ExampleTask
   - TestTask
 </pre></td>
                     </tr>
@@ -371,7 +370,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-04-03 13:12:12.
+TestTask executed successfully at 2026-04-15 12:52:31.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -392,7 +391,6 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available routes:
-  index.ahmed.php
   testapi_test_request_GET_api.ahmed.php
   testroute_test.ahmed.php
   testroute_test_request_GET.ahmed.php
@@ -402,8 +400,8 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_04_03_13_12_12.sql
-  createusers_testTable_2026_04_03_13_12_12.sql
+  createusersTable_2026_04_15_12_52_31.sql
+  createusers_testTable_2026_04_15_12_52_30.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -422,6 +420,42 @@ Cron task &#039;TestTask&#039; finished.
                         <td>clear:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Route files cleared!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>list:import</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>No imports found!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:db:tables</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>✅ No tables found in database.
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:cron</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>WARNING: This will delete ALL cron task files in &#039;core/cron/tasks/&#039;.
+Deleted: DummyTask.php
+
+Cron tasks clearing complete.
+Successfully deleted: 1 file(s).
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:docs</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>❌ File not found: /app/README (1).md
+❌ File not found: /app/README.md
+❌ File not found: /app/SUMMARY.md
+❌ File not found: /app/LICENSE
+❌ Not found folder: /app/about-me
+❌ Not found folder: /app/changelog
+❌ Not found folder: /app/inex-spa
+❌ Not found folder: /app/.gitbook
+🔥 All docs have been deleted!
 </pre></td>
                     </tr>
                                     </tbody>
@@ -447,12 +481,12 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Cache::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected test_value</td>
+                        <td>Expected test_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::update</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected new_value</td>
+                        <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::delete</td>
@@ -462,7 +496,7 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Session::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected sess_val</td>
+                        <td>Expected sess_val_core</td>
                     </tr>
                                         <tr>
                         <td>Session::delete</td>
@@ -494,6 +528,71 @@ Cron task &#039;TestTask&#039; finished.
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected rendered output</td>
                     </tr>
+                                        <tr>
+                        <td>Database::instance</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Database instance created</td>
+                    </tr>
+                                        <tr>
+                        <td>UserAuth::generateSQL</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Auth SQL generated</td>
+                    </tr>
+                                        <tr>
+                        <td>RateLimiter::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>RateLimiter class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Firewall::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Firewall class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>CookieManager class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Language::get_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Language::get method exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Layout::render_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Layout::render method exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Logger::log_file_created</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Logger created log file</td>
+                    </tr>
+                                        <tr>
+                        <td>Security::sanitizeInput_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Security::sanitizeInput method exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Webhook::send_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Webhook::send method exists</td>
+                    </tr>
+                                        <tr>
+                        <td>animate_function_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>animate function exists</td>
+                    </tr>
+                                        <tr>
+                        <td>getSlashData_function_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>getSlashData function exists</td>
+                    </tr>
+                                        <tr>
+                        <td>runDB_function_exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>runDB function exists</td>
+                    </tr>
                                     </tbody>
             </table>
         </div>
@@ -512,6 +611,18 @@ Cron task &#039;TestTask&#039; finished.
                                 <div class="fixed-item">
                     <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
                     <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Full SQLite Support <span class="status status-fixed">Fixed</span></h3>
+                    <p>Added support for SQLite driver in Database class, SQL executor, and table clearing utility.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>CLI list:import package.json filter <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated list:import to correctly ignore package.json and only show actual libraries.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Expanded Core Test Suite <span class="status status-fixed">Fixed</span></h3>
+                    <p>Added tests for CookieManager, Language, Layout, Logger, Security, and Webhook classes.</p>
                 </div>
                             </div>
         </div>

@@ -752,14 +752,17 @@ if ($command === 'list:import') {
         exit(0);
     }
     $imports = array_diff(scandir($importDir), ['.', '..']);
+
+    // Filter out package.json
+    $imports = array_filter($imports, function($item) {
+        return $item !== 'package.json';
+    });
+
     if (empty($imports)) {
         echo "No imports found!\n";
     } else {
         echo "Available imports:\n";
         foreach ($imports as $import) {
-            if ($import === "package.json") {
-                continue;
-            }
             echo "  $import\n";
         }
     }

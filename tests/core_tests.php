@@ -9,6 +9,15 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
+require_once 'core/functions/PHP/animate.php';
+require_once 'core/functions/PHP/getSlashData.php';
+require_once 'core/functions/PHP/runDB.php';
 
 $results = [];
 
@@ -66,5 +75,36 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test CookieManager
+CookieManager::set('test_cookie', 'test_val', 3600);
+// Note: In CLI, setcookie() might not actually set $_COOKIE, but we check if the class is usable
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Language
+Language::setLanguage('en');
+assert_test('Language::get_exists', method_exists('Language', 'get'), 'Language::get method exists');
+
+// Test Layout
+assert_test('Layout::render_exists', method_exists('Layout', 'render'), 'Layout::render method exists');
+
+// Test Logger
+Logger::log('system', 'Test log message');
+assert_test('Logger::log_file_created', file_exists('core/logs/system.log'), 'Logger created log file');
+
+// Test Security
+assert_test('Security::sanitizeInput_exists', method_exists('Security', 'sanitizeInput'), 'Security::sanitizeInput method exists');
+
+// Test Webhook
+assert_test('Webhook::send_exists', method_exists('Webhook', 'send'), 'Webhook::send method exists');
+
+// Test animate.php
+assert_test('animate_function_exists', function_exists('animate'), 'animate function exists');
+
+// Test getSlashData.php
+assert_test('getSlashData_function_exists', function_exists('getSlashData'), 'getSlashData function exists');
+
+// Test runDB.php
+assert_test('runDB_function_exists', function_exists('runDB'), 'runDB function exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

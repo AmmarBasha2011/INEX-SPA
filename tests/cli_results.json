@@ -5,7 +5,7 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_04_15_12_52_30.sql\n"
     },
     "make:route": {
         "success": true,
@@ -61,7 +61,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusersTable_2026_04_15_12_52_31.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -69,11 +69,11 @@
     },
     "list:cron": {
         "success": true,
-        "output": "Available cron tasks:\n  - ExampleTask\n  - TestTask\n"
+        "output": "Available cron tasks:\n  - TestTask\n"
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-15 12:52:31.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
@@ -85,11 +85,11 @@
     },
     "list:routes": {
         "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
+        "output": "Available routes:\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "Available DB files:\n  createusersTable_2026_04_15_12_52_31.sql\n  createusers_testTable_2026_04_15_12_52_30.sql\n"
     },
     "clear:cache": {
         "success": true,
@@ -102,5 +102,21 @@
     "clear:routes": {
         "success": true,
         "output": "Route files cleared!\n"
+    },
+    "list:import": {
+        "success": true,
+        "output": "No imports found!\n"
+    },
+    "clear:db:tables": {
+        "success": true,
+        "output": "\u2705 No tables found in database.\n"
+    },
+    "clear:cron": {
+        "success": true,
+        "output": "WARNING: This will delete ALL cron task files in 'core\/cron\/tasks\/'.\nDeleted: DummyTask.php\n\nCron tasks clearing complete.\nSuccessfully deleted: 1 file(s).\n"
+    },
+    "clear:docs": {
+        "success": true,
+        "output": "\u274c File not found: \/app\/README (1).md\n\u274c File not found: \/app\/README.md\n\u274c File not found: \/app\/SUMMARY.md\n\u274c File not found: \/app\/LICENSE\n\u274c Not found folder: \/app\/about-me\n\u274c Not found folder: \/app\/changelog\n\u274c Not found folder: \/app\/inex-spa\n\u274c Not found folder: \/app\/.gitbook\n\ud83d\udd25 All docs have been deleted!\n"
     }
 }

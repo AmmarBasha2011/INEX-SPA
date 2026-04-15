@@ -48,6 +48,24 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'db-sqlite-support',
+        'title'       => 'Full SQLite Support',
+        'description' => 'Added support for SQLite driver in Database class, SQL executor, and table clearing utility.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-list-import-pkg',
+        'title'       => 'CLI list:import package.json filter',
+        'description' => 'Updated list:import to correctly ignore package.json and only show actual libraries.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-test-expansion',
+        'title'       => 'Expanded Core Test Suite',
+        'description' => 'Added tests for CookieManager, Language, Layout, Logger, Security, and Webhook classes.',
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 
