@@ -48,6 +48,18 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'core-sqlite-support',
+        'title'       => 'SQLite Database Support',
+        'description' => 'Implemented SQLite driver support in Database, executeSQLFilePDO, and ClearDBTables classes, and updated ammar CLI for SQLite-compatible migrations.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-list-import-filter',
+        'title'       => 'CLI list:import package.json filter',
+        'description' => 'Improved filtering of package.json in list:import command for more accurate reporting of empty imports.',
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 

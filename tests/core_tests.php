@@ -67,4 +67,27 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
+// Test Logger
+require_once 'core/functions/PHP/classes/Logger.php';
+Logger::log('test_log', 'Test message');
+assert_test('Logger::log', file_exists('core/logs/test_log.log'), 'Log file should be created');
+if (file_exists('core/logs/test_log.log')) unlink('core/logs/test_log.log');
+
+// Test Language
+require_once 'core/functions/PHP/classes/Language.php';
+file_put_contents('lang/en_test_core.json', json_encode(['hello' => 'Hello World']));
+Language::setLanguage('en_test_core');
+assert_test('Language::get', Language::get('hello') === 'Hello World', 'Expected Hello World');
+unlink('lang/en_test_core.json');
+
+// Test CookieManager
+require_once 'core/functions/PHP/classes/CookieManager.php';
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Security
+require_once 'core/functions/PHP/classes/Security.php';
+$dirty = '<script>alert("xss")</script><b>Bold</b>';
+$clean = Security::sanitizeInput($dirty);
+assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false, 'XSS should be stripped');
+
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

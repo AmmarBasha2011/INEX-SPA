@@ -113,6 +113,19 @@ $tests = [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
     ],
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'No imports found!',
+    ],
+    'clear:db:tables' => [
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'No tables found in database',
+    ],
+    'clear:cron' => [
+        'setup'    => 'php ammar make:cron TempTask > /dev/null',
+        'command'  => 'echo "yes\nyes" | php ammar clear:cron',
+        'expected' => 'Cron tasks clearing complete',
+    ],
 ];
 
 $results = [];
