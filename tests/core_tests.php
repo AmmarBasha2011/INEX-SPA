@@ -71,7 +71,9 @@ assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists
 require_once 'core/functions/PHP/classes/Logger.php';
 Logger::log('test_log', 'Test message');
 assert_test('Logger::log', file_exists('core/logs/test_log.log'), 'Log file should be created');
-if (file_exists('core/logs/test_log.log')) unlink('core/logs/test_log.log');
+if (file_exists('core/logs/test_log.log')) {
+    unlink('core/logs/test_log.log');
+}
 
 // Test Language
 require_once 'core/functions/PHP/classes/Language.php';
