@@ -1,11 +1,19 @@
 <?php
 
 require_once 'core/functions/PHP/getEnvValue.php';
+require_once 'core/functions/PHP/classes/Database.php';
+
+// Define executeStatement for core tests as it is usually defined in index.php or ammar
+function executeStatement($sql, $params = [], $is_return = true)
+{
+    $DB = new Database();
+    return $DB->query($sql, $params, $is_return);
+}
+
 require_once 'core/functions/PHP/classes/Cache.php';
 require_once 'core/functions/PHP/classes/Session.php';
 require_once 'core/functions/PHP/classes/Validation.php';
 require_once 'core/functions/PHP/classes/AhmedTemplate.php';
-require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
@@ -55,16 +63,18 @@ unlink($templateFile);
 // Test Database
 $db = new Database();
 assert_test('Database::instance', $db instanceof Database, 'Database instance created');
+$res = $db->query("SELECT name FROM sqlite_master WHERE type='table';");
+assert_test('Database::query_sqlite', is_array($res), 'Database query on SQLite master table');
 
 // Test UserAuth
-assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
+$authSql = UserAuth::generateSQL();
+assert_test('UserAuth::generateSQL', strpos($authSql, 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
+assert_test('UserAuth::generateSQL_sqlite', strpos($authSql, 'INTEGER PRIMARY KEY AUTOINCREMENT') !== false, 'Auth SQL uses SQLite auto-increment');
 
 // Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
 assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
 
 // Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

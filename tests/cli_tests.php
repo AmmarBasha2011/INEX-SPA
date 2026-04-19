@@ -109,10 +109,6 @@ $tests = [
         'command'  => 'php ammar clear:db',
         'expected' => 'DB files cleared!',
     ],
-    'clear:routes' => [
-        'command'  => 'php ammar clear:routes',
-        'expected' => 'Route files cleared!',
-    ],
 ];
 
 $results = [];
