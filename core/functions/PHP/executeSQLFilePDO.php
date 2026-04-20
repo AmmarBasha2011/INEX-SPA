@@ -19,12 +19,20 @@
 function executeSQLFilePDO($host, $user, $password, $database, $filePath)
 {
     try {
-        // Connect to MySQL with PDO
-        $dsn = "mysql:host=$host;dbname=$database;charset=utf8mb4";
-        $pdo = new PDO($dsn, $user, $password, [
+        $driver = getEnvValue('DB_DRIVER') ?: 'mysql';
+        $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ]);
+        ];
+
+        if ($driver === 'sqlite') {
+            $dbFile = getEnvValue('DB_FILE') ?: 'database.sqlite';
+            $dsn = "sqlite:$dbFile";
+            $pdo = new PDO($dsn, null, null, $options);
+        } else {
+            $dsn = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+            $pdo = new PDO($dsn, $user, $password, $options);
+        }
 
         // Read SQL file
         $sqlContent = file_get_contents($filePath);

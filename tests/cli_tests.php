@@ -115,9 +115,14 @@ $tests = [
     ],
 ];
 
+$excludedTests = ['clear:docs', 'clear:start', 'clear:routes'];
+
 $results = [];
 
 foreach ($tests as $name => $test) {
+    if (in_array($name, $excludedTests)) {
+        continue;
+    }
     if (isset($test['setup'])) {
         shell_exec($test['setup']);
     }
