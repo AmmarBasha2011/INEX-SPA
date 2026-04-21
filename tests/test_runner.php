@@ -31,21 +31,27 @@ if ($connection) {
 // 4. Track Fixed Issues
 $fixedIssues = [
     [
-        'id'          => 'cli-make-route-api',
-        'title'       => 'CLI make:route API flag',
-        'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
+        'id'          => 'db-sqlite-support',
+        'title'       => 'SQLite Database Support',
+        'description' => 'Implemented SQLite driver support in Database class and SQL execution utility.',
         'status'      => 'FIXED',
     ],
     [
-        'id'          => 'cli-list-lang-exit',
-        'title'       => 'CLI list:lang exit behavior',
-        'description' => 'Replaced return with exit(0) to ensure consistent CLI termination.',
+        'id'          => 'cli-sqlite-autoincrement',
+        'title'       => 'CLI SQLite Auto-increment',
+        'description' => 'Updated ammar CLI to use INTEGER PRIMARY KEY AUTOINCREMENT for SQLite migrations.',
         'status'      => 'FIXED',
     ],
     [
-        'id'          => 'cli-make-layout-duplicate',
-        'title'       => 'CLI make:layout collision',
-        'description' => 'Updated tests to use unique names and ensure clean state before testing.',
+        'id'          => 'web-tests-isolation',
+        'title'       => 'Web Tests Isolation',
+        'description' => 'Excluded destructive clear commands from automated tests to preserve environment for web verification.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-tests-expansion',
+        'title'       => 'Core Tests Expansion',
+        'description' => 'Added test coverage for Language, Security, and Logger classes.',
         'status'      => 'FIXED',
     ],
 ];

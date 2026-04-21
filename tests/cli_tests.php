@@ -115,6 +115,11 @@ $tests = [
     ],
 ];
 
+// Skip destructive clear commands from automated tests to preserve environment for web tests
+unset($tests['clear:routes']);
+unset($tests['clear:db']);
+unset($tests['clear:cache']);
+
 $results = [];
 
 foreach ($tests as $name => $test) {

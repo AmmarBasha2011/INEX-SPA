@@ -7,11 +7,18 @@ $fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true);
 
 $total = count($cliRes) + count($coreRes) + count($webRes);
 $passed = 0;
-foreach ($cliRes as $res) if ($res['success']) $passed++;
+foreach ($cliRes as $name => $res) {
+    if ($res['success']) {
+        $passed++;
+    }
+}
 foreach ($coreRes as $res) if ($res['success']) $passed++;
 foreach ($webRes as $res) if ($res['success']) $passed++;
 $failed = $total - $passed;
 $fixed = count($fixedRes);
+
+// Map fixed issues to their test names if applicable
+$fixedTestNames = array_column($fixedRes, 'title');
 
 ob_start();
 ?>

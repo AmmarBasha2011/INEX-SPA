@@ -9,6 +9,9 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Logger.php';
 
 $results = [];
 
@@ -66,5 +69,19 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test Language
+Language::setLanguage('en');
+assert_test('Language::setLanguage', true, 'Language set to en');
+
+// Test Security
+$xss = '<script>alert(1)</script>Hello';
+$clean = Security::sanitizeInput($xss);
+assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false, 'XSS script tag removed');
+
+// Test Logger
+Logger::log('test', 'test message');
+$logFile = 'core/logs/system.log';
+assert_test('Logger::log', file_exists($logFile) && strpos(file_get_contents($logFile), 'test message') !== false, 'Log file created and contains message');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

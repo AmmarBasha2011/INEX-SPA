@@ -2,4 +2,8 @@
 core/logs/cron.log
 *.cache
 tests/*_results.json
+tests/fixed_issues.jsonserver.log
+*.sqlite
+tests/*_results.json
 tests/fixed_issues.json
+core/logs/*.log
