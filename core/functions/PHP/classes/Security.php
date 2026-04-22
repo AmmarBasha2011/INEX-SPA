@@ -23,11 +23,14 @@ class Security
      */
     public static function sanitizeInput($data)
     {
-        // Remove any unwanted HTML tags
-        $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+        // Strip tags first to remove <script> but keep its content if needed,
+        // OR use a more targeted approach.
+        // The original logic wanted to remove <script> tag AND its content.
 
-        // Remove any scripts or JavaScript code
-        $data = preg_replace('/<script.*?<\/script>/is', '', $data);
+        $data = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $data);
+
+        // Then escape remaining characters
+        $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 
         return $data;
     }

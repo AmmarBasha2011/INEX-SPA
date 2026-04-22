@@ -113,9 +113,16 @@ $tests = [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
     ],
+    'clear:db:tables' => [
+        'setup'    => 'php ammar make:db -1 create -2 test_table && php ammar run:db',
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'Deleted table: test_table',
+    ],
 ];
 
 $results = [];
+
+$skippedTests = [];
 
 foreach ($tests as $name => $test) {
     if (isset($test['setup'])) {

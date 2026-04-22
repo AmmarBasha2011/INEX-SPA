@@ -60,11 +60,19 @@ class Language
      *
      * @return string The translated and formatted string, or the key if not found.
      */
-    public static function get($key, $placeholders = [])
+    public static function get($key, $default = null, $placeholders = [])
     {
-        $text = self::$translations[$key] ?? $key;
-        foreach ($placeholders as $placeholder => $value) {
-            $text = str_replace('{'.$placeholder.'}', $value, $text);
+        // Maintain backward compatibility for (key, placeholders)
+        if (is_array($default)) {
+            $placeholders = $default;
+            $default = $key;
+        }
+
+        $text = self::$translations[$key] ?? ($default ?? $key);
+        if (is_array($placeholders)) {
+            foreach ($placeholders as $placeholder => $value) {
+                $text = str_replace('{'.$placeholder.'}', $value, $text);
+            }
         }
 
         return $text;

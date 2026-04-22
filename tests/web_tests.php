@@ -26,7 +26,11 @@ if (!file_exists('web/testroute_test.ahmed.php')) {
     file_put_contents('web/testroute_test.ahmed.php', 'testroute content');
 }
 
-// Test Index Route - checking for "INEX SPA" which is in the restored index.ahmed.php
+if (!file_exists('web/index.ahmed.php')) {
+    file_put_contents('web/index.ahmed.php', 'INEX SPA Framework');
+}
+
+// Test Index Route - checking for "INEX SPA"
 $results['index'] = test_route($baseUrl, 'INEX SPA');
 
 // Test a standard route

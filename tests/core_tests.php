@@ -9,8 +9,22 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/ClearDBTables.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/SitemapGenerator.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
 
 $results = [];
+
+function executeStatement($sql, $params = [], $is_return = true)
+{
+    $DB = new Database();
+    return $DB->query($sql, $params, $is_return);
+}
 
 function assert_test($name, $condition, $message = '')
 {
@@ -66,5 +80,34 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test Language
+Language::setLanguage('en_test');
+assert_test('Language::get', Language::get('welcome', 'Welcome') === 'Welcome', 'Expected default value');
+
+// Test Security
+// Note: Security::sanitizeInput as implemented removes the whole script tag AND its content,
+// then calls htmlspecialchars.
+// So '<script>alert(1)</script>' becomes empty string.
+assert_test('Security::sanitize', Security::sanitizeInput('<script>alert(1)</script>') === '', 'Expected sanitized output: empty string');
+
+// Test Logger
+Logger::log('system', 'Core test log message');
+assert_test('Logger::log', file_exists('core/logs/system.log'), 'Log file should exist');
+
+// Test ClearDBTables
+assert_test('ClearDBTables::exists', class_exists('ClearDBTables'), 'ClearDBTables class exists');
+
+// Test CookieManager
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Layout
+assert_test('Layout::exists', class_exists('Layout'), 'Layout class exists');
+
+// Test SitemapGenerator
+assert_test('SitemapGenerator::exists', class_exists('SitemapGenerator'), 'SitemapGenerator class exists');
+
+// Test Webhook
+assert_test('Webhook::exists', class_exists('Webhook'), 'Webhook class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

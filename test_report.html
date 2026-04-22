@@ -207,20 +207,20 @@
     <div class="main">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-03 13:12:13</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-22 12:57:56</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">39</span>
+                <span class="number" style="color: var(--primary);">52</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">38</span>
+                <span class="number" style="color: var(--success);">52</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--danger);">1</span>
+                <span class="number" style="color: var(--danger);">0</span>
                 <span class="label">Failed</span>
             </div>
             <div class="card">
@@ -264,7 +264,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusers_testTable_2026_04_22_12_57_55.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -349,7 +349,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusersTable_2026_04_22_12_57_55.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -371,7 +371,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-04-03 13:12:12.
+TestTask executed successfully at 2026-04-22 12:57:55.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -402,8 +402,8 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_04_03_13_12_12.sql
-  createusers_testTable_2026_04_03_13_12_12.sql
+  createusersTable_2026_04_22_12_57_55.sql
+  createusers_testTable_2026_04_22_12_57_55.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -422,6 +422,13 @@ Cron task &#039;TestTask&#039; finished.
                         <td>clear:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Route files cleared!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:db:tables</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>🗑️ Deleted table: test_table
+🔥 All tables in database &#039;inexspa&#039; have been deleted!
 </pre></td>
                     </tr>
                                     </tbody>
@@ -447,12 +454,12 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Cache::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected test_value</td>
+                        <td>Expected test_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::update</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected new_value</td>
+                        <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::delete</td>
@@ -462,7 +469,7 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Session::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected sess_val</td>
+                        <td>Expected sess_val_core</td>
                     </tr>
                                         <tr>
                         <td>Session::delete</td>
@@ -493,6 +500,66 @@ Cron task &#039;TestTask&#039; finished.
                         <td>AhmedTemplate::render</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected rendered output</td>
+                    </tr>
+                                        <tr>
+                        <td>Database::instance</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Database instance created</td>
+                    </tr>
+                                        <tr>
+                        <td>UserAuth::generateSQL</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Auth SQL generated</td>
+                    </tr>
+                                        <tr>
+                        <td>RateLimiter::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>RateLimiter class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Firewall::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Firewall class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Language::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected default value</td>
+                    </tr>
+                                        <tr>
+                        <td>Security::sanitize</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected sanitized output: empty string</td>
+                    </tr>
+                                        <tr>
+                        <td>Logger::log</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Log file should exist</td>
+                    </tr>
+                                        <tr>
+                        <td>ClearDBTables::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>ClearDBTables class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>CookieManager class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Layout::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Layout class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>SitemapGenerator::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>SitemapGenerator class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Webhook::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Webhook class exists</td>
                     </tr>
                                     </tbody>
             </table>
