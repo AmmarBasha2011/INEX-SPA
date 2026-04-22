@@ -23,6 +23,7 @@ $results = [];
 function executeStatement($sql, $params = [], $is_return = true)
 {
     $DB = new Database();
+
     return $DB->query($sql, $params, $is_return);
 }
 
