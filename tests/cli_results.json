@@ -5,7 +5,7 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_04_23_13_01_47.sql\n"
     },
     "make:route": {
         "success": true,
@@ -61,7 +61,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusersTable_2026_04_23_13_01_48.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -73,7 +73,7 @@
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-23 13:01:48.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
@@ -89,7 +89,19 @@
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "Available DB files:\n  createusersTable_2026_04_23_13_01_48.sql\n  createusers_testTable_2026_04_23_13_01_47.sql\n"
+    },
+    "import:local": {
+        "success": true,
+        "output": "Available imports:\n  local_lib\n  local_test\n"
+    },
+    "delete:import:local": {
+        "success": true,
+        "output": "Import deleted: local_test\n"
+    },
+    "clear:db:tables": {
+        "success": true,
+        "output": "\u2705 No tables found in database.\n"
     },
     "clear:cache": {
         "success": true,

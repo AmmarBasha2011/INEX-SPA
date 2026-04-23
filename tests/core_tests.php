@@ -9,6 +9,9 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Language.php';
 
 $results = [];
 
@@ -59,12 +62,21 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 // Test UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
-// Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
-assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
+// Test Logger
+Logger::log('system', 'Core test log message');
+assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_get_contents('core/logs/system.log'), 'Core test log message') !== false, 'Log file created and contains message');
 
-// Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
-assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+// Test Security
+$xssInput = '<script>alert("xss")</script><b>Hello</b>';
+$sanitized = Security::sanitizeInput($xssInput);
+assert_test('Security::sanitizeInput', strpos($sanitized, '<script>') === false && strpos($sanitized, '&lt;b&gt;Hello&lt;/b&gt;') !== false, 'XSS script removed and tags encoded');
+
+// Test Language
+if (!is_dir('lang')) mkdir('lang');
+file_put_contents('lang/en_test_core.json', json_encode(['welcome' => 'Welcome {name}']));
+Language::setLanguage('en_test_core');
+assert_test('Language::get_placeholders', Language::get('welcome', ['name' => 'Ammar']) === 'Welcome Ammar', 'Language placeholders working');
+assert_test('Language::get_fallback', Language::get('nonexistent', 'Default') === 'Default', 'Language fallback working');
+unlink('lang/en_test_core.json');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

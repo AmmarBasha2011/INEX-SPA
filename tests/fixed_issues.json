@@ -1,20 +1,32 @@
 [
     {
+        "id": "sqlite-support",
+        "title": "SQLite Database Support",
+        "description": "Added support for SQLite driver in Database and executeSQLFilePDO classes, and enabled SQLite-compatible migrations in CLI.",
+        "status": "FIXED"
+    },
+    {
+        "id": "security-xss-fix",
+        "title": "Security XSS Sanitization",
+        "description": "Fixed regex and order of operations in Security::sanitizeInput to correctly strip script tags before HTML encoding.",
+        "status": "FIXED"
+    },
+    {
+        "id": "language-placeholders",
+        "title": "Language Placeholder Support",
+        "description": "Updated Language::get to support {placeholder} replacement and maintained backward compatibility with old method signatures.",
+        "status": "FIXED"
+    },
+    {
+        "id": "cli-cleardbtables-driver",
+        "title": "Driver-aware Table Clearing",
+        "description": "Updated ClearDBTables utility to correctly identify and drop tables in both MySQL and SQLite environments.",
+        "status": "FIXED"
+    },
+    {
         "id": "cli-make-route-api",
         "title": "CLI make:route API flag",
         "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
-        "status": "FIXED"
-    },
-    {
-        "id": "cli-list-lang-exit",
-        "title": "CLI list:lang exit behavior",
-        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
-        "status": "FIXED"
-    },
-    {
-        "id": "cli-make-layout-duplicate",
-        "title": "CLI make:layout collision",
-        "description": "Updated tests to use unique names and ensure clean state before testing.",
         "status": "FIXED"
     }
 ]

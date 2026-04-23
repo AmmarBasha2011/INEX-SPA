@@ -339,8 +339,11 @@ if ($command === 'make:db') {
     $filename = "{$action}{$table}Table_{$timestamp}.sql";
     $filePath = DB_FOLDER . '/' . $filename;
     
+    $isSqlite = getEnvValue('DB_DRIVER') === 'sqlite';
+    $autoIncrement = $isSqlite ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT PRIMARY KEY AUTO_INCREMENT';
+
     $sqlTemplate = match ($action) {
-        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id $autoIncrement,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
         'delete' => "DROP TABLE IF EXISTS $table;\n",
         'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
         'truncate' => "TRUNCATE TABLE $table;\n",
@@ -352,6 +355,12 @@ if ($command === 'make:db') {
     
     file_put_contents($filePath, $sqlTemplate);
     echo "DB file created: $filename\n";
+    exit(0);
+}
+
+if ($command === 'clear:db:tables') {
+    require_once 'core/functions/PHP/classes/ClearDBTables.php';
+    ClearDBTables::run();
     exit(0);
 }
 

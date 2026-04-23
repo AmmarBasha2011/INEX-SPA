@@ -29,16 +29,26 @@ class ClearDBTables
     public static function run()
     {
         $dbName = getEnvValue('DB_NAME');
+        $driver = getEnvValue('DB_DRIVER', 'mysql');
 
         try {
-            // Disable foreign key checks
-            executeStatement('SET FOREIGN_KEY_CHECKS = 0;', [], false);
+            if ($driver !== 'sqlite') {
+                // Disable foreign key checks for MySQL
+                executeStatement('SET FOREIGN_KEY_CHECKS = 0;', [], false);
+            }
 
             // Get all table names
-            $query = executeStatement('SHOW TABLES;');
+            if ($driver === 'sqlite') {
+                $query = executeStatement("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
+            } else {
+                $query = executeStatement('SHOW TABLES;');
+            }
+
             if (!$query || !is_array($query)) {
                 echo "✅ No tables found in database.\n";
-
+                if ($driver !== 'sqlite') {
+                    executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
+                }
                 return;
             }
 
@@ -50,7 +60,9 @@ class ClearDBTables
 
             if (empty($tables)) {
                 echo "✅ No tables found in database.\n";
-
+                if ($driver !== 'sqlite') {
+                    executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
+                }
                 return;
             }
 
@@ -62,10 +74,12 @@ class ClearDBTables
                 }
             }
 
-            // Re-enable foreign key checks
-            executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
+            if ($driver !== 'sqlite') {
+                // Re-enable foreign key checks for MySQL
+                executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
+            }
 
-            echo "🔥 All tables in database '$dbName' have been deleted!\n";
+            echo "🔥 All tables in database " . ($driver === 'sqlite' ? 'SQLite' : "'$dbName'") . " have been deleted!\n";
         } catch (Exception $e) {
             echo '❌ Error: '.$e->getMessage()."\n";
         }
