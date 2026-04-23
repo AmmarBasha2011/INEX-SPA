@@ -49,6 +49,7 @@ class ClearDBTables
                 if ($driver !== 'sqlite') {
                     executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
                 }
+
                 return;
             }
 
@@ -63,6 +64,7 @@ class ClearDBTables
                 if ($driver !== 'sqlite') {
                     executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
                 }
+
                 return;
             }
 
@@ -79,7 +81,7 @@ class ClearDBTables
                 executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
             }
 
-            echo "🔥 All tables in database " . ($driver === 'sqlite' ? 'SQLite' : "'$dbName'") . " have been deleted!\n";
+            echo '🔥 All tables in database '.($driver === 'sqlite' ? 'SQLite' : "'$dbName'")." have been deleted!\n";
         } catch (Exception $e) {
             echo '❌ Error: '.$e->getMessage()."\n";
         }

@@ -111,7 +111,7 @@ $tests = [
         'expected' => 'Import deleted',
     ],
     'clear:db:tables' => [
-        'command' => 'php ammar clear:db:tables',
+        'command'  => 'php ammar clear:db:tables',
         'expected' => 'No tables found',
     ],
     'clear:cache' => [

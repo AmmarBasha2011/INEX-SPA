@@ -72,7 +72,9 @@ $sanitized = Security::sanitizeInput($xssInput);
 assert_test('Security::sanitizeInput', strpos($sanitized, '<script>') === false && strpos($sanitized, '&lt;b&gt;Hello&lt;/b&gt;') !== false, 'XSS script removed and tags encoded');
 
 // Test Language
-if (!is_dir('lang')) mkdir('lang');
+if (!is_dir('lang')) {
+    mkdir('lang');
+}
 file_put_contents('lang/en_test_core.json', json_encode(['welcome' => 'Welcome {name}']));
 Language::setLanguage('en_test_core');
 assert_test('Language::get_placeholders', Language::get('welcome', ['name' => 'Ammar']) === 'Welcome Ammar', 'Language placeholders working');
