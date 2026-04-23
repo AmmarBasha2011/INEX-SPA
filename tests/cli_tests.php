@@ -101,6 +101,19 @@ $tests = [
         'command'  => 'php ammar list:db',
         'expected' => 'createusers_testTable',
     ],
+    'import:local' => [
+        'setup'    => 'mkdir -p core/import/local_test && touch core/import/local_test/init.php',
+        'command'  => 'php ammar list:import',
+        'expected' => 'local_test',
+    ],
+    'delete:import:local' => [
+        'command'  => 'php ammar delete:import -1 local_test',
+        'expected' => 'Import deleted',
+    ],
+    'clear:db:tables' => [
+        'command' => 'php ammar clear:db:tables',
+        'expected' => 'No tables found',
+    ],
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
         'expected' => 'Cache cleared!',

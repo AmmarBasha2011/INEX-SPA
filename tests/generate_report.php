@@ -65,6 +65,9 @@ ob_start();
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.3s;
+            text-decoration: none;
+            color: white;
+            display: block;
         }
 
         .nav-item:hover {
@@ -214,15 +217,15 @@ ob_start();
 <body>
     <div class="sidebar">
         <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <a href="#dashboard" class="nav-item active">Dashboard</a>
+        <a href="#cli" class="nav-item">CLI Commands</a>
+        <a href="#core" class="nav-item">Core Classes</a>
+        <a href="#web" class="nav-item">Web Routes</a>
+        <a href="#fixed" class="nav-item">Fixed Issues</a>
     </div>
 
     <div class="main">
-        <div class="header">
+        <div id="dashboard" class="header">
             <h2>Framework Health Dashboard</h2>
             <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
         </div>
@@ -246,7 +249,7 @@ ob_start();
             </div>
         </div>
 
-        <div class="section">
+        <div id="cli" class="section">
             <h2>CLI Commands</h2>
             <div class="filters">
                 <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
@@ -273,7 +276,7 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="core" class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -295,7 +298,29 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="web" class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route Name</th>
+                        <th>Status</th>
+                        <th>HTTP Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($webRes as $name => $res): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($name) ?></td>
+                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><?= $res['status'] ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="fixed" class="section">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                 <?php foreach ($fixedRes as $issue): ?>

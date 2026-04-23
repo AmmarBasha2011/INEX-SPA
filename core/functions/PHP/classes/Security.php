@@ -13,9 +13,9 @@ class Security
      * Sanitizes a string to mitigate Cross-Site Scripting (XSS) attacks.
      *
      * This method applies two main sanitization techniques:
-     * 1. It converts special HTML characters (like `<`, `>`, `"`) into their
+     * 1. It strips out any `<script>` tags and their content from the string.
+     * 2. It converts special HTML characters (like `<`, `>`, `"`) into their
      *    corresponding HTML entities.
-     * 2. It strips out any `<script>` tags and their content from the string.
      *
      * @param string $data The raw input string to be sanitized.
      *
@@ -23,11 +23,11 @@ class Security
      */
     public static function sanitizeInput($data)
     {
+        // Remove any scripts or JavaScript code
+        $data = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $data);
+
         // Remove any unwanted HTML tags
         $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-
-        // Remove any scripts or JavaScript code
-        $data = preg_replace('/<script.*?<\/script>/is', '', $data);
 
         return $data;
     }

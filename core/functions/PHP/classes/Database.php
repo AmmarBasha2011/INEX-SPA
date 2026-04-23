@@ -3,7 +3,7 @@
 /**
  * A PDO wrapper class for simplifying database connections and queries.
  *
- * This class provides a convenient way to connect to a MySQL database using
+ * This class provides a convenient way to connect to a MySQL or SQLite database using
  * credentials stored in the .env file. It encapsulates a PDO instance and offers
  * a streamlined method for executing prepared SQL statements.
  */
@@ -19,7 +19,7 @@ class Database
     /**
      * Initializes the database connection.
      *
-     * The constructor reads the database host, name, user, and password from
+     * The constructor reads the database driver, host, name, user, and password from
      * environment variables, then establishes a PDO connection. It sets default
      * error handling and fetch modes for all subsequent queries. If the connection
      * fails, the script will terminate with an error message.
@@ -29,17 +29,30 @@ class Database
      */
     public function __construct($charset = 'utf8mb4')
     {
-        $host = getEnvValue('DB_HOST');
-        $dbname = getEnvValue('DB_NAME');
-        $username = getEnvValue('DB_USER');
-        $password = getEnvValue('DB_PASS');
+        $driver = getEnvValue('DB_DRIVER', 'mysql');
 
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
-        $options = [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ];
+        if ($driver === 'sqlite') {
+            $dbFile = getEnvValue('DB_FILE', 'database.sqlite');
+            $dsn = "sqlite:$dbFile";
+            $username = null;
+            $password = null;
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ];
+        } else {
+            $host = getEnvValue('DB_HOST');
+            $dbname = getEnvValue('DB_NAME');
+            $username = getEnvValue('DB_USER');
+            $password = getEnvValue('DB_PASS');
+
+            $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+            $options = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+            ];
+        }
 
         try {
             $this->pdo = new PDO($dsn, $username, $password, $options);

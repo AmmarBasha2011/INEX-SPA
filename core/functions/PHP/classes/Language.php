@@ -54,15 +54,21 @@ class Language
      * format `{placeholder_name}` with values from the `$placeholders` array.
      *
      * @param string $key          The unique key for the translation string.
+     * @param mixed  $default      The default value or placeholders array (for backward compatibility).
      * @param array  $placeholders An associative array where keys are placeholder names
      *                             (without curly braces) and values are the strings to
      *                             be injected.
      *
      * @return string The translated and formatted string, or the key if not found.
      */
-    public static function get($key, $placeholders = [])
+    public static function get($key, $default = null, $placeholders = [])
     {
-        $text = self::$translations[$key] ?? $key;
+        if (is_array($default)) {
+            $placeholders = $default;
+            $default = null;
+        }
+
+        $text = self::$translations[$key] ?? ($default ?? $key);
         foreach ($placeholders as $placeholder => $value) {
             $text = str_replace('{'.$placeholder.'}', $value, $text);
         }
