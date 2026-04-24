@@ -48,6 +48,18 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'db-sqlite-support',
+        'title'       => 'SQLite Database Support',
+        'description' => 'Updated Database and executeSQLFilePDO classes to support SQLite driver via DB_DRIVER env variable.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'web-index-missing',
+        'title'       => 'Missing Web Index File',
+        'description' => 'Created web/index.ahmed.php to ensure the framework has a default landing page for web tests.',
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 
