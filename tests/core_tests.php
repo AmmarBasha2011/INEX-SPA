@@ -24,6 +24,7 @@ if (!function_exists('executeStatement')) {
     function executeStatement($sql, $params = [], $is_return = true)
     {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
 }
@@ -84,7 +85,9 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
 // Test Language
-if (!is_dir('lang')) mkdir('lang');
+if (!is_dir('lang')) {
+    mkdir('lang');
+}
 file_put_contents('lang/en_test.json', json_encode(['hello' => 'Hello World']));
 Language::setLanguage('en_test');
 assert_test('Language::get', Language::get('hello') === 'Hello World', 'Expected Hello World');
@@ -97,7 +100,9 @@ assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false, 'XS
 
 // Test Logger
 $logFile = 'core/logs/system.log';
-if (!is_dir('core/logs')) mkdir('core/logs', 0777, true);
+if (!is_dir('core/logs')) {
+    mkdir('core/logs', 0777, true);
+}
 Logger::log('system', 'Test log message');
 assert_test('Logger::log', file_exists($logFile) && strpos(file_get_contents($logFile), 'Test log message') !== false, 'Log message found in file');
 
