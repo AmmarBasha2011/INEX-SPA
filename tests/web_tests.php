@@ -22,6 +22,9 @@ function test_route($url, $expected_content, $expected_status = 200)
 $results = [];
 
 // Ensure test files exist for web tests
+if (!file_exists('web/index.ahmed.php')) {
+    file_put_contents('web/index.ahmed.php', '<h1>INEX SPA</h1>');
+}
 if (!file_exists('web/testroute_test.ahmed.php')) {
     file_put_contents('web/testroute_test.ahmed.php', 'testroute content');
 }

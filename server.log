@@ -1,0 +1,10 @@
+[Sat Apr 25 12:04:43 2026] PHP 8.3.6 Development Server (http://localhost:8080) started
+[Sat Apr 25 12:04:47 2026] [::1]:58896 Accepted
+[Sat Apr 25 12:04:47 2026] [::1]:58896 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sat Apr 25 12:04:47 2026] [::1]:58896 Closing
+[Sat Apr 25 12:04:47 2026] [::1]:58908 Accepted
+[Sat Apr 25 12:04:47 2026] [::1]:58908 [200]: GET /
+[Sat Apr 25 12:04:47 2026] [::1]:58908 Closing
+[Sat Apr 25 12:04:47 2026] [::1]:58922 Accepted
+[Sat Apr 25 12:04:47 2026] [::1]:58922 [200]: GET /?page=testroute_test
+[Sat Apr 25 12:04:47 2026] [::1]:58922 Closing
