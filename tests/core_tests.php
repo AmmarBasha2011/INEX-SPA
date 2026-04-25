@@ -9,8 +9,24 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/useGemini.php';
 
 $results = [];
+
+/**
+ * Executes a prepared SQL statement using the database connection.
+ * Fallback for standalone tests.
+ */
+if (!function_exists('executeStatement')) {
+    function executeStatement($sql, $params = [], $is_return = true)
+    {
+        $DB = new Database();
+        return $DB->query($sql, $params, $is_return);
+    }
+}
 
 function assert_test($name, $condition, $message = '')
 {
@@ -66,5 +82,26 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test Language
+if (!is_dir('lang')) mkdir('lang');
+file_put_contents('lang/en_test.json', json_encode(['hello' => 'Hello World']));
+Language::setLanguage('en_test');
+assert_test('Language::get', Language::get('hello') === 'Hello World', 'Expected Hello World');
+unlink('lang/en_test.json');
+
+// Test Security
+$dirty = "<script>alert('xss')</script>Hello";
+$clean = Security::sanitizeInput($dirty);
+assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false, 'XSS script tag removed');
+
+// Test Logger
+$logFile = 'core/logs/system.log';
+if (!is_dir('core/logs')) mkdir('core/logs', 0777, true);
+Logger::log('system', 'Test log message');
+assert_test('Logger::log', file_exists($logFile) && strpos(file_get_contents($logFile), 'Test log message') !== false, 'Log message found in file');
+
+// Test useGemini (Mock/Check existence)
+assert_test('useGemini::exists', function_exists('useGemini'), 'useGemini function exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

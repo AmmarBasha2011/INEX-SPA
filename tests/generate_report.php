@@ -262,10 +262,21 @@ ob_start();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($cliRes as $name => $res): ?>
+                    <?php foreach ($cliRes as $name => $res):
+                        $statusClass = $res['success'] ? 'status-success' : 'status-error';
+                        $statusText = $res['success'] ? 'SUCCESS' : 'FAILED';
+                        // Check if it was a solved error (it passes now but is in fixed issues)
+                        foreach($fixedRes as $fixed) {
+                            if (strpos(strtolower($fixed['title']), strtolower($name)) !== false && $res['success']) {
+                                $statusClass = 'status-fixed';
+                                $statusText = 'SOLVED';
+                                break;
+                            }
+                        }
+                    ?>
                     <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
                         <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><span class="status <?= $statusClass ?>"><?= $statusText ?></span></td>
                         <td><pre><?= htmlspecialchars(substr($res['output'], 0, 500)) ?></pre></td>
                     </tr>
                     <?php endforeach; ?>
@@ -284,11 +295,44 @@ ob_start();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($coreRes as $name => $res): ?>
+                    <?php foreach ($coreRes as $name => $res):
+                        $statusClass = $res['success'] ? 'status-success' : 'status-error';
+                        $statusText = $res['success'] ? 'SUCCESS' : 'FAILED';
+                        // Logic for Solved Errors in Core
+                        foreach($fixedRes as $fixed) {
+                            if (strpos(strtolower($fixed['title']), strtolower($name)) !== false && $res['success']) {
+                                $statusClass = 'status-fixed';
+                                $statusText = 'SOLVED';
+                                break;
+                            }
+                        }
+                    ?>
+                    <tr>
+                        <td><?= htmlspecialchars($name) ?></td>
+                        <td><span class="status <?= $statusClass ?>"><?= $statusText ?></span></td>
+                        <td><?= htmlspecialchars($res['message']) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route Name</th>
+                        <th>Status</th>
+                        <th>HTTP Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($webRes as $name => $res): ?>
                     <tr>
                         <td><?= htmlspecialchars($name) ?></td>
                         <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
-                        <td><?= htmlspecialchars($res['message']) ?></td>
+                        <td><?= $res['status'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
