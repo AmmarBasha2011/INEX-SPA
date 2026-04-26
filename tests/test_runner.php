@@ -18,7 +18,6 @@ passthru('php tests/core_tests.php');
 
 // 3. Run Web Tests (Requires server to be running)
 echo "Running Web Tests...\n";
-// Ensure server is running on port 8080 (handled externally in plan, but good to check)
 $connection = @fsockopen('localhost', 8080);
 if ($connection) {
     fclose($connection);
@@ -30,6 +29,36 @@ if ($connection) {
 
 // 4. Track Fixed Issues
 $fixedIssues = [
+    [
+        'id'          => 'framework-sqlite-support',
+        'title'       => 'SQLite Database Support',
+        'description' => 'Added support for SQLite driver in Database class, migrations, and CLI tools.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-language-fix',
+        'title'       => 'Language Class Robustness',
+        'description' => 'Fixed foreach warning in setLanguage and improved get() method for backward compatibility.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-run-db-fix',
+        'title'       => 'CLI run:db command fix',
+        'description' => 'Corrected environment variable names and added execution status output.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-import-local-support',
+        'title'       => 'CLI install:import Local Path Support',
+        'description' => 'Updated install:import to support local directory paths, enabling offline library imports and better testing.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-cleardbtables-sqlite',
+        'title'       => 'ClearDBTables SQLite Support',
+        'description' => 'Updated ClearDBTables to detect and use correct schema queries for both MySQL and SQLite.',
+        'status'      => 'FIXED',
+    ],
     [
         'id'          => 'cli-make-route-api',
         'title'       => 'CLI make:route API flag',

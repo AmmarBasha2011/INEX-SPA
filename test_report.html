@@ -14,6 +14,7 @@
             --card-bg: #ffffff;
             --text: #333;
             --text-light: #7f8c8d;
+            --sidebar-bg: #2c3e50;
         }
 
         body {
@@ -29,17 +30,19 @@
         /* Sidebar */
         .sidebar {
             width: 260px;
-            background: #2c3e50;
+            background: var(--sidebar-bg);
             color: white;
             padding: 30px 20px;
             position: fixed;
             height: 100vh;
+            overflow-y: auto;
         }
 
         .sidebar h1 {
             font-size: 20px;
             margin-bottom: 40px;
             text-align: center;
+            letter-spacing: 1px;
         }
 
         .nav-item {
@@ -48,14 +51,19 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.3s;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            display: block;
         }
 
         .nav-item:hover {
             background: rgba(255,255,255,0.1);
+            color: white;
         }
 
         .nav-item.active {
             background: var(--primary);
+            color: white;
         }
 
         /* Main Content */
@@ -144,6 +152,7 @@
             font-size: 11px;
             max-height: 150px;
             overflow: auto;
+            margin: 0;
         }
 
         /* Filtering */
@@ -197,45 +206,40 @@
 <body>
     <div class="sidebar">
         <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <a href="#dashboard" class="nav-item active">Dashboard</a>
+        <a href="#cli" class="nav-item">CLI Commands</a>
+        <a href="#core" class="nav-item">Core Classes</a>
+        <a href="#web" class="nav-item">Web Routes</a>
+        <a href="#fixed" class="nav-item">Fixed Issues</a>
     </div>
 
     <div class="main">
-        <div class="header">
+        <div id="dashboard" class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-03 13:12:13</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-26 12:04:56</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">39</span>
+                <span class="number" style="color: var(--primary);">56</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">38</span>
+                <span class="number" style="color: var(--success);">56</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--danger);">1</span>
+                <span class="number" style="color: var(--danger);">0</span>
                 <span class="label">Failed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
-                <span class="label">Fixed</span>
+                <span class="number" style="color: var(--warning);">8</span>
+                <span class="label">Fixed Issues</span>
             </div>
         </div>
 
-        <div class="section">
+        <div id="cli" class="section">
             <h2>CLI Commands</h2>
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'success')">Success</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'failed')">Failed</button>
-            </div>
             <table id="cli-table">
                 <thead>
                     <tr>
@@ -245,7 +249,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
                         <td>list</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available commands:
@@ -261,134 +265,39 @@
   php ammar make:sitemap - Generate sitemap.xml
   php ammar make:s</pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusers_testTable_2026_04_26_12_04_54.sql
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
+                        <td>run:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Running: createusers_testTable_2026_04_26_12_04_54.sql
+Success executing: createusers_testTable_2026_04_26_12_04_54.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>list:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available DB files:
+  createusers_testTable_2026_04_26_12_04_54.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
                         <td>make:route</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Route file created: testroute_test_request_GET.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
                         <td>make:route_api</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Route file created: testapi_test_request_GET_api.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Cache entry created for key: mykey_test
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>get:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Cache value: myvalue_test
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>update:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Cache updated for key: mykey_test
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>delete:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Cache deleted for key: mykey_test
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:session</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Session Created!!!
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>get:session</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Session Value: sessvalue_test
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>delete:session</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Session Deleted!!!
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:lang</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Language file created: /app/lang/es_test.json
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>list:lang</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Available languages:
-- es_test
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>delete:lang</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Deleted language file: /app/lang/es_test.json
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:layout</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Layout file created: /app/layouts/custom_test.ahmed.php
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:auth</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_04_03_13_12_12.sql
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Cron task file created: /app/core/cron/tasks/TestTask.php
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>list:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Available cron tasks:
-  - ExampleTask
-  - TestTask
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>run:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Executing cron task: TestTask
-Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-04-03 13:12:12.
-Task &#039;TestTask&#039; executed successfully.
-Cron task &#039;TestTask&#039; finished.
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>delete:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Cron task file &#039;/app/core/cron/tasks/TestTask.php&#039; deleted successfully.
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>make:sitemap</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Sitemap generated!
-</pre></td>
-                    </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
                         <td>list:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available routes:
@@ -396,39 +305,169 @@ Cron task &#039;TestTask&#039; finished.
   testapi_test_request_GET_api.ahmed.php
   testroute_test.ahmed.php
   testroute_test_request_GET.ahmed.php
+  user_dynamic.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
-                        <td>list:db</td>
+                                        <tr class="test-row">
+                        <td>make:cache</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>Available DB files:
-  createusersTable_2026_04_03_13_12_12.sql
-  createusers_testTable_2026_04_03_13_12_12.sql
+                        <td><pre>Cache entry created for key: mykey_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
+                        <td>get:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache value: myvalue_test
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>update:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache updated for key: mykey_test
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>delete:cache</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cache deleted for key: mykey_test
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>make:session</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Session Created!!!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>get:session</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Session Value: sessvalue_test
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>delete:session</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Session Deleted!!!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>make:lang</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Language file created: /app/lang/es_test.json
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>list:lang</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available languages:
+- es_test
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>delete:lang</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted language file: /app/lang/es_test.json
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>make:layout</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Layout file created: /app/layouts/custom_test.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>make:auth</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>DB file created: createusersTable_2026_04_26_12_04_55.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>make:cron</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cron task file created: /app/core/cron/tasks/TestTask.php
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>list:cron</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available cron tasks:
+  - ExampleTask
+  - TestTask
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>run:cron</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Executing cron task: TestTask
+Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
+TestTask executed successfully at 2026-04-26 12:04:55.
+Task &#039;TestTask&#039; executed successfully.
+Cron task &#039;TestTask&#039; finished.
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>delete:cron</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Cron task file &#039;/app/core/cron/tasks/TestTask.php&#039; deleted successfully.
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>make:sitemap</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Sitemap generated!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>install:import</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Importing from local path: tests/mock_repo
+Repository cloned successfully to core/import/mock_repo!
+Package.json updated with new dependency.
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>list:import</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Available imports:
+  mock_repo
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>delete:import</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Import deleted: mock_repo
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
                         <td>clear:cache</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Cache cleared!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
                         <td>clear:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>DB files cleared!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr class="test-row">
                         <td>clear:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Route files cleared!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row">
+                        <td>clear:db:tables</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>🗑️ Deleted table: users_test
+🔥 All tables in database &#039;&#039; have been deleted!
 </pre></td>
                     </tr>
                                     </tbody>
             </table>
         </div>
 
-        <div class="section">
+        <div id="core" class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -447,12 +486,12 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Cache::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected test_value</td>
+                        <td>Expected test_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::update</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected new_value</td>
+                        <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::delete</td>
@@ -462,7 +501,7 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Session::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected sess_val</td>
+                        <td>Expected sess_val_core</td>
                     </tr>
                                         <tr>
                         <td>Session::delete</td>
@@ -485,22 +524,127 @@ Cron task &#039;TestTask&#039; finished.
                         <td>Numeric string</td>
                     </tr>
                                         <tr>
-                        <td>Validation::isNumber_invalid</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Non-numeric string</td>
-                    </tr>
-                                        <tr>
                         <td>AhmedTemplate::render</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected rendered output</td>
+                    </tr>
+                                        <tr>
+                        <td>Database::instance</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Database instance created</td>
+                    </tr>
+                                        <tr>
+                        <td>UserAuth::generateSQL</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Auth SQL generated</td>
+                    </tr>
+                                        <tr>
+                        <td>Logger::log</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Log file created</td>
+                    </tr>
+                                        <tr>
+                        <td>Security::sanitizeInput</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>XSS script tag removed</td>
+                    </tr>
+                                        <tr>
+                        <td>Language::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Language::get returns string</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>CookieManager class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Layout::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Layout class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>SitemapGenerator::generate</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>SitemapGenerator::generate exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Webhook::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Webhook class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>ClearDBTables::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>ClearDBTables class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>getSlashData</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>getSlashData parses dynamic route</td>
                     </tr>
                                     </tbody>
             </table>
         </div>
 
-        <div class="section">
+        <div id="web" class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>HTTP Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td>index</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>testroute</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>404</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>dynamic_route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div id="fixed" class="section">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
+                                <div class="fixed-item">
+                    <h3>SQLite Database Support <span class="status status-fixed">Fixed</span></h3>
+                    <p>Added support for SQLite driver in Database class, migrations, and CLI tools.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Language Class Robustness <span class="status status-fixed">Fixed</span></h3>
+                    <p>Fixed foreach warning in setLanguage and improved get() method for backward compatibility.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>CLI run:db command fix <span class="status status-fixed">Fixed</span></h3>
+                    <p>Corrected environment variable names and added execution status output.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>CLI install:import Local Path Support <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated install:import to support local directory paths, enabling offline library imports and better testing.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>ClearDBTables SQLite Support <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated ClearDBTables to detect and use correct schema queries for both MySQL and SQLite.</p>
+                </div>
                                 <div class="fixed-item">
                     <h3>CLI make:route API flag <span class="status status-fixed">Fixed</span></h3>
                     <p>Corrected positional argument flag position from -3 to -4 for non-dynamic routes.</p>
@@ -518,22 +662,13 @@ Cron task &#039;TestTask&#039; finished.
     </div>
 
     <script>
-        function filterTable(tableId, status) {
-            const table = document.getElementById(tableId + '-table');
-            const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+        // Simple navigation handling
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
             });
-        }
+        });
     </script>
 </body>
 </html>

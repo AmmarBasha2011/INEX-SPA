@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * CLI Tests for INEX SPA.
+ * Covers all commands found in 'php ammar list'.
+ */
+
 $tests = [
     'list' => [
         'command'  => 'php ammar list',
@@ -10,6 +15,14 @@ $tests = [
         'expected'   => 'DB file created:',
         'check_file' => 'db/createusers_testTable_*.sql',
     ],
+    'run:db' => [
+        'command'  => 'php ammar run:db',
+        'expected' => 'Success executing:',
+    ],
+    'list:db' => [
+        'command'  => 'php ammar list:db',
+        'expected' => 'createusers_testTable',
+    ],
     'make:route' => [
         'command'    => 'php ammar make:route -1 testroute_test -2 no -3 GET -4 no',
         'expected'   => 'Route file created: testroute_test_request_GET.ahmed.php',
@@ -19,6 +32,10 @@ $tests = [
         'command'    => 'php ammar make:route -1 testapi_test -2 no -3 GET -4 yes',
         'expected'   => 'Route file created: testapi_test_request_GET_api.ahmed.php',
         'check_file' => 'web/testapi_test_request_GET_api.ahmed.php',
+    ],
+    'list:routes' => [
+        'command'  => 'php ammar list:routes',
+        'expected' => 'testroute_test_request_GET.ahmed.php',
     ],
     'make:cache' => [
         'command'  => 'php ammar make:cache -1 mykey_test -2 myvalue_test -3 3600',
@@ -93,13 +110,17 @@ $tests = [
         'command'  => 'php ammar make:sitemap',
         'expected' => 'Sitemap generated!',
     ],
-    'list:routes' => [
-        'command'  => 'php ammar list:routes',
-        'expected' => 'testroute_test_request_GET.ahmed.php',
+    'install:import' => [
+        'command'  => 'php ammar install:import -1 tests/mock_repo',
+        'expected' => 'successfully',
     ],
-    'list:db' => [
-        'command'  => 'php ammar list:db',
-        'expected' => 'createusers_testTable',
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'mock_repo',
+    ],
+    'delete:import' => [
+        'command'  => 'echo "yes" | php ammar delete:import -1 mock_repo',
+        'expected' => 'Import deleted:',
     ],
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
@@ -112,6 +133,10 @@ $tests = [
     'clear:routes' => [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
+    ],
+    'clear:db:tables' => [
+        'command'  => 'echo "yes" | php ammar clear:db:tables',
+        'expected' => 'All tables in database',
     ],
 ];
 

@@ -340,7 +340,9 @@ if ($command === 'make:db') {
     $filePath = DB_FOLDER . '/' . $filename;
     
     $sqlTemplate = match ($action) {
-        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'create' => (getEnvValue('DB_DRIVER') === 'sqlite') ?
+            "CREATE TABLE IF NOT EXISTS $table (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n" :
+            "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
         'delete' => "DROP TABLE IF EXISTS $table;\n",
         'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
         'truncate' => "TRUNCATE TABLE $table;\n",
@@ -502,12 +504,13 @@ if ($command === 'run:db') {
         $relativePath = str_replace(DB_FOLDER . '/', '', $file);
         echo "Running: " . $relativePath . "\n";
         executeSQLFilePDO(
-            getEnvValue('DB_HOST'), 
-            getEnvValue('DB_USER'), 
-            getEnvValue("DB_PASS"), 
-            getEnvValue('DB_NAME'), 
+            getEnvValue('DB_HOST'),
+            getEnvValue('DB_USER'),
+            getEnvValue('DB_PASS'),
+            getEnvValue('DB_NAME'),
             $file
         );
+        echo "Success executing: " . $relativePath . "\n";
     }
     exit(0);
 }
@@ -704,28 +707,37 @@ if ($command === 'make:sitemap') {
 }
 
 if ($command === 'install:import') {
-    $link = $args['1'] ?? readline("1- Enter Git repository URL: ");
-    if (!filter_var($link, FILTER_VALIDATE_URL)) {
-        exit("Invalid URL provided!\n");
-    }
+    $link = $args['1'] ?? readline("1- Enter Git repository URL or local path: ");
 
-    // Extract repo name from URL
-    $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
-    
     $importDir = __DIR__ . '/core/import';
-    $repoDir = $importDir . '/' . $repoName;
-    
     if (!is_dir($importDir)) {
         mkdir($importDir, 0777, true);
     }
 
-    echo "Cloning repository...\n";
-    $command = "git clone $link $repoDir";
-    exec($command, $output, $returnVar);
+    if (filter_var($link, FILTER_VALIDATE_URL)) {
+        // Extract repo name from URL
+        $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+        $repoDir = $importDir . '/' . $repoName;
 
-    if ($returnVar !== 0) {
-        echo "Error cloning repository!\n";
-        exit(1);
+        echo "Cloning repository...\n";
+        $clone_command = "git clone $link $repoDir";
+        exec($clone_command, $output, $returnVar);
+
+        if ($returnVar !== 0) {
+            echo "Error cloning repository!\n";
+            exit(1);
+        }
+    } else if (is_dir($link)) {
+        $repoName = basename($link);
+        $repoDir = $importDir . '/' . $repoName;
+        echo "Importing from local path: $link\n";
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            exec("xcopy /E /I " . escapeshellarg($link) . " " . escapeshellarg($repoDir));
+        } else {
+            exec("cp -R " . escapeshellarg($link) . " " . escapeshellarg($repoDir));
+        }
+    } else {
+        exit("Invalid URL or local path provided!\n");
     }
 
     // Update package.json

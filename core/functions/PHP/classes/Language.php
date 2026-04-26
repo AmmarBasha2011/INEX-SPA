@@ -42,6 +42,9 @@ class Language
         if (file_exists($langFile)) {
             self::$lang = $lang;
             self::$translations = json_decode(file_get_contents($langFile), true);
+            if (!is_array(self::$translations)) {
+                self::$translations = [];
+            }
         }
     }
 
@@ -54,17 +57,24 @@ class Language
      * format `{placeholder_name}` with values from the `$placeholders` array.
      *
      * @param string $key          The unique key for the translation string.
-     * @param array  $placeholders An associative array where keys are placeholder names
-     *                             (without curly braces) and values are the strings to
-     *                             be injected.
+     * @param mixed  $default      Default value if key not found (fallback to key).
+     * @param array  $placeholders An associative array where keys are placeholder names.
      *
      * @return string The translated and formatted string, or the key if not found.
      */
-    public static function get($key, $placeholders = [])
+    public static function get($key, $default = null, $placeholders = [])
     {
-        $text = self::$translations[$key] ?? $key;
-        foreach ($placeholders as $placeholder => $value) {
-            $text = str_replace('{'.$placeholder.'}', $value, $text);
+        // Backward compatibility: if second arg is array, it's placeholders
+        if (is_array($default)) {
+            $placeholders = $default;
+            $default = null;
+        }
+
+        $text = self::$translations[$key] ?? ($default ?? $key);
+        if (is_array($placeholders)) {
+            foreach ($placeholders as $placeholder => $value) {
+                $text = str_replace('{'.$placeholder.'}', $value, $text);
+            }
         }
 
         return $text;
