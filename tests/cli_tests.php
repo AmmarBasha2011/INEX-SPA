@@ -4,7 +4,6 @@
  * CLI Tests for INEX SPA.
  * Covers all commands found in 'php ammar list'.
  */
-
 $tests = [
     'list' => [
         'command'  => 'php ammar list',

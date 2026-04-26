@@ -1,1 +1,3 @@
-<?php echo 'Mock Repo';
+<?php
+
+echo 'Mock Repo';
