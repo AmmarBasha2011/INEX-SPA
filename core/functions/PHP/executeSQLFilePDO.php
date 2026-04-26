@@ -1,30 +1,35 @@
 <?php
 
 /**
- * Connects to a MySQL database and executes a series of SQL queries from a specified file.
+ * Connects to a database and executes a series of SQL queries from a specified file.
  *
  * This function is typically used for running database migrations or seeding the database.
- * It reads an SQL file, splits its content into individual queries (delimited by semicolons),
- * and executes each one. The script will terminate and display an error message if the
- * database connection, file reading, or a query execution fails.
+ * It supports both MySQL and SQLite based on the DB_DRIVER environment variable.
  *
- * @param string $host     The hostname or IP address of the database server.
- * @param string $user     The username for the database connection.
- * @param string $password The password for the database connection.
- * @param string $database The name of the database to connect to.
- * @param string $filePath The full path to the .sql file containing the queries to be executed.
+ * @param string $host     The hostname (MySQL).
+ * @param string $user     The username (MySQL).
+ * @param string $password The password (MySQL).
+ * @param string $database The name of the database (MySQL).
+ * @param string $filePath The full path to the .sql file.
  *
  * @return void
  */
 function executeSQLFilePDO($host, $user, $password, $database, $filePath)
 {
     try {
-        // Connect to MySQL with PDO
-        $dsn = "mysql:host=$host;dbname=$database;charset=utf8mb4";
-        $pdo = new PDO($dsn, $user, $password, [
+        $driver = getEnvValue('DB_DRIVER') ?: 'mysql';
+        $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        ]);
+        ];
+
+        if ($driver === 'sqlite') {
+            $dbFile = getEnvValue('DB_FILE') ?: 'database.sqlite';
+            $pdo = new PDO("sqlite:$dbFile", null, null, $options);
+        } else {
+            $dsn = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+            $pdo = new PDO($dsn, $user, $password, $options);
+        }
 
         // Read SQL file
         $sqlContent = file_get_contents($filePath);

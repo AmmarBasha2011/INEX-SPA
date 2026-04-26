@@ -4,4 +4,5 @@
 <url><loc>http://localhost:8080/testapi_test_request_GET_api/api</loc></url>
 <url><loc>http://localhost:8080/testroute_test</loc></url>
 <url><loc>http://localhost:8080/testroute_test_request_GET</loc></url>
+<url><loc>http://localhost:8080/user_dynamic/{id}</loc></url>
 </urlset>

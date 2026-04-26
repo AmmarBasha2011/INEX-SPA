@@ -3,7 +3,9 @@
 /**
  * Defines the path to the JSON file that configures user authentication parameters.
  */
-define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
+if (!defined('JSON_FOLDER')) {
+    define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
+}
 
 /**
  * Handles user authentication processes like sign-up, sign-in, session management,
@@ -36,9 +38,16 @@ class UserAuth
             exit('Error decoding JSON.');
         }
 
+        $driver = getEnvValue('DB_DRIVER') ?: 'mysql';
+        $isSqlite = ($driver === 'sqlite');
+
         // Initialize the SQL query
         $sql = "CREATE TABLE IF NOT EXISTS users (\n";
-        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n"; // Auto-increment ID
+        if ($isSqlite) {
+            $sql .= "  id INTEGER PRIMARY KEY AUTOINCREMENT,\n";
+        } else {
+            $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n";
+        }
 
         // Mapping JSON data types to SQL types
         $typeMapping = [

@@ -1,9 +1,9 @@
 <?php
 
-$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true);
-$coreRes = json_decode(file_get_contents('tests/core_results.json'), true);
-$webRes = json_decode(file_get_contents('tests/web_results.json'), true);
-$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true);
+$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true) ?: [];
+$coreRes = json_decode(file_get_contents('tests/core_results.json'), true) ?: [];
+$webRes = json_decode(file_get_contents('tests/web_results.json'), true) ?: [];
+$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true) ?: [];
 
 $total = count($cliRes) + count($coreRes) + count($webRes);
 $passed = 0;
@@ -31,6 +31,7 @@ ob_start();
             --card-bg: #ffffff;
             --text: #333;
             --text-light: #7f8c8d;
+            --sidebar-bg: #2c3e50;
         }
 
         body {
@@ -46,17 +47,19 @@ ob_start();
         /* Sidebar */
         .sidebar {
             width: 260px;
-            background: #2c3e50;
+            background: var(--sidebar-bg);
             color: white;
             padding: 30px 20px;
             position: fixed;
             height: 100vh;
+            overflow-y: auto;
         }
 
         .sidebar h1 {
             font-size: 20px;
             margin-bottom: 40px;
             text-align: center;
+            letter-spacing: 1px;
         }
 
         .nav-item {
@@ -65,14 +68,19 @@ ob_start();
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.3s;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            display: block;
         }
 
         .nav-item:hover {
             background: rgba(255,255,255,0.1);
+            color: white;
         }
 
         .nav-item.active {
             background: var(--primary);
+            color: white;
         }
 
         /* Main Content */
@@ -161,6 +169,7 @@ ob_start();
             font-size: 11px;
             max-height: 150px;
             overflow: auto;
+            margin: 0;
         }
 
         /* Filtering */
@@ -214,15 +223,15 @@ ob_start();
 <body>
     <div class="sidebar">
         <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <a href="#dashboard" class="nav-item active">Dashboard</a>
+        <a href="#cli" class="nav-item">CLI Commands</a>
+        <a href="#core" class="nav-item">Core Classes</a>
+        <a href="#web" class="nav-item">Web Routes</a>
+        <a href="#fixed" class="nav-item">Fixed Issues</a>
     </div>
 
     <div class="main">
-        <div class="header">
+        <div id="dashboard" class="header">
             <h2>Framework Health Dashboard</h2>
             <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
         </div>
@@ -242,17 +251,12 @@ ob_start();
             </div>
             <div class="card">
                 <span class="number" style="color: var(--warning);"><?= $fixed ?></span>
-                <span class="label">Fixed</span>
+                <span class="label">Fixed Issues</span>
             </div>
         </div>
 
-        <div class="section">
+        <div id="cli" class="section">
             <h2>CLI Commands</h2>
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'success')">Success</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'failed')">Failed</button>
-            </div>
             <table id="cli-table">
                 <thead>
                     <tr>
@@ -263,7 +267,7 @@ ob_start();
                 </thead>
                 <tbody>
                     <?php foreach ($cliRes as $name => $res): ?>
-                    <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
+                    <tr class="test-row">
                         <td><?= htmlspecialchars($name) ?></td>
                         <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
                         <td><pre><?= htmlspecialchars(substr($res['output'], 0, 500)) ?></pre></td>
@@ -273,7 +277,7 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="core" class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -295,7 +299,29 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="web" class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>HTTP Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($webRes as $name => $res): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($name) ?></td>
+                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><?= htmlspecialchars($res['status']) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="fixed" class="section">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                 <?php foreach ($fixedRes as $issue): ?>
@@ -309,22 +335,13 @@ ob_start();
     </div>
 
     <script>
-        function filterTable(tableId, status) {
-            const table = document.getElementById(tableId + '-table');
-            const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+        // Simple navigation handling
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
             });
-        }
+        });
     </script>
 </body>
 </html>

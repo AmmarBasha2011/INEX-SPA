@@ -5,7 +5,15 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_04_26_12_04_54.sql\n"
+    },
+    "run:db": {
+        "success": true,
+        "output": "Running: createusers_testTable_2026_04_26_12_04_54.sql\nSuccess executing: createusers_testTable_2026_04_26_12_04_54.sql\n"
+    },
+    "list:db": {
+        "success": true,
+        "output": "Available DB files:\n  createusers_testTable_2026_04_26_12_04_54.sql\n"
     },
     "make:route": {
         "success": true,
@@ -14,6 +22,10 @@
     "make:route_api": {
         "success": true,
         "output": "Route file created: testapi_test_request_GET_api.ahmed.php\n"
+    },
+    "list:routes": {
+        "success": true,
+        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n  user_dynamic.ahmed.php\n"
     },
     "make:cache": {
         "success": true,
@@ -61,7 +73,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusersTable_2026_04_26_12_04_55.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -73,7 +85,7 @@
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-26 12:04:55.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
@@ -83,13 +95,17 @@
         "success": true,
         "output": "Sitemap generated!\n"
     },
-    "list:routes": {
+    "install:import": {
         "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
+        "output": "Importing from local path: tests\/mock_repo\nRepository cloned successfully to core\/import\/mock_repo!\nPackage.json updated with new dependency.\n"
     },
-    "list:db": {
+    "list:import": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "Available imports:\n  mock_repo\n"
+    },
+    "delete:import": {
+        "success": true,
+        "output": "Import deleted: mock_repo\n"
     },
     "clear:cache": {
         "success": true,
@@ -102,5 +118,9 @@
     "clear:routes": {
         "success": true,
         "output": "Route files cleared!\n"
+    },
+    "clear:db:tables": {
+        "success": true,
+        "output": "\ud83d\uddd1\ufe0f Deleted table: users_test\n\ud83d\udd25 All tables in database '' have been deleted!\n"
     }
 }
