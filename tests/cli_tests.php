@@ -113,6 +113,23 @@ $tests = [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
     ],
+    'clear:db:tables' => [
+        'setup'    => 'php ammar make:db -1 create -2 dummy && php ammar run:db',
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'All tables in database',
+    ],
+    'install:import' => [
+        'command'  => 'php ammar install:import -1 https://github.com/AmmarBasha2011/INEX-SPA',
+        'expected' => 'Repository cloned successfully',
+    ],
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'Available imports:',
+    ],
+    'delete:import' => [
+        'command'  => 'php ammar delete:import -1 INEX-SPA',
+        'expected' => 'Import deleted: INEX-SPA',
+    ],
 ];
 
 $results = [];

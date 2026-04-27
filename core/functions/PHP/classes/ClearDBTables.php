@@ -28,14 +28,21 @@ class ClearDBTables
      */
     public static function run()
     {
-        $dbName = getEnvValue('DB_NAME');
+        $driver = getEnvValue('DB_DRIVER') ?: 'mysql';
+        $dbName = ($driver === 'sqlite') ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME');
 
         try {
-            // Disable foreign key checks
-            executeStatement('SET FOREIGN_KEY_CHECKS = 0;', [], false);
+            if ($driver === 'mysql') {
+                // Disable foreign key checks
+                executeStatement('SET FOREIGN_KEY_CHECKS = 0;', [], false);
 
-            // Get all table names
-            $query = executeStatement('SHOW TABLES;');
+                // Get all table names
+                $query = executeStatement('SHOW TABLES;');
+            } else {
+                // SQLite
+                $query = executeStatement("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
+            }
+
             if (!$query || !is_array($query)) {
                 echo "✅ No tables found in database.\n";
 
@@ -62,8 +69,10 @@ class ClearDBTables
                 }
             }
 
-            // Re-enable foreign key checks
-            executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
+            if ($driver === 'mysql') {
+                // Re-enable foreign key checks
+                executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
+            }
 
             echo "🔥 All tables in database '$dbName' have been deleted!\n";
         } catch (Exception $e) {

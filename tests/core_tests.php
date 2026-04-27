@@ -9,6 +9,20 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/animate.php';
+require_once 'core/functions/PHP/getSlashData.php';
+require_once 'core/functions/PHP/runDB.php';
+
+// Global function for Database class used in CLI/Tests
+if (!function_exists('executeStatement')) {
+    function executeStatement($sql, $params = [], $is_return = true) {
+        $DB = new Database();
+        return $DB->query($sql, $params, $is_return);
+    }
+}
 
 $results = [];
 
@@ -66,5 +80,29 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test Logger
+Logger::log('system', 'Core test log message');
+assert_test('Logger::log', file_exists('core/logs/system.log'), 'Log file created');
+
+// Test Language
+file_put_contents('lang/en_test_core.json', json_encode(['hello' => 'world']));
+Language::setLanguage('en_test_core');
+assert_test('Language::get', Language::get('hello') === 'world', 'Language key retrieved');
+unlink('lang/en_test_core.json');
+
+// Test Security
+$dirty = '<script>alert("xss")</script><b>Bold</b>';
+$clean = Security::sanitizeInput($dirty);
+assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false && strpos($clean, '&lt;b&gt;Bold&lt;/b&gt;') !== false, 'Input sanitized');
+
+// Test animate.php
+assert_test('animate', function_exists('animate'), 'animate function exists');
+
+// Test getSlashData.php
+assert_test('getSlashData', function_exists('getSlashData'), 'getSlashData function exists');
+
+// Test runDB.php
+assert_test('runDB', function_exists('runDB'), 'runDB function exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));
