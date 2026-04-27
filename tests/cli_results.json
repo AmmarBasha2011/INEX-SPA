@@ -5,7 +5,7 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_04_27_12_12_54.sql\n"
     },
     "make:route": {
         "success": true,
@@ -61,7 +61,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusersTable_2026_04_27_12_12_55.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -73,7 +73,7 @@
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-27 12:12:55.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
@@ -89,7 +89,7 @@
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "Available DB files:\n  createdummyTable_2026_04_27_12_10_06.sql\n  createusersTable_2026_04_27_12_12_55.sql\n  createusers_testTable_2026_04_27_12_12_54.sql\n"
     },
     "clear:cache": {
         "success": true,
@@ -102,5 +102,21 @@
     "clear:routes": {
         "success": true,
         "output": "Route files cleared!\n"
+    },
+    "clear:db:tables": {
+        "success": true,
+        "output": "\ud83d\uddd1\ufe0f Deleted table: dummy\n\ud83d\udd25 All tables in database 'database.sqlite' have been deleted!\n"
+    },
+    "install:import": {
+        "success": true,
+        "output": "Cloning repository...\nCloning into '\/app\/core\/import\/INEX-SPA'...\nRepository cloned successfully to core\/import\/INEX-SPA!\nPackage.json updated with new dependency.\n"
+    },
+    "list:import": {
+        "success": true,
+        "output": "Available imports:\n  INEX-SPA\n"
+    },
+    "delete:import": {
+        "success": true,
+        "output": "Import deleted: INEX-SPA\n"
     }
 }

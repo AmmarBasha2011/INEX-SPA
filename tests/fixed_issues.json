@@ -1,20 +1,32 @@
 [
     {
-        "id": "cli-make-route-api",
-        "title": "CLI make:route API flag",
-        "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
+        "id": "sqlite-support",
+        "title": "SQLite Database Support",
+        "description": "Added support for SQLite driver in Database class, executeSQLFilePDO, and ClearDBTables.",
         "status": "FIXED"
     },
     {
-        "id": "cli-list-lang-exit",
-        "title": "CLI list:lang exit behavior",
-        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
+        "id": "userauth-sqlite-compat",
+        "title": "UserAuth SQLite Compatibility",
+        "description": "Updated UserAuth::generateSQL to use SQLite-compatible auto-increment syntax.",
         "status": "FIXED"
     },
     {
-        "id": "cli-make-layout-duplicate",
-        "title": "CLI make:layout collision",
-        "description": "Updated tests to use unique names and ensure clean state before testing.",
+        "id": "ammar-make-db-sqlite",
+        "title": "Ammar CLI make:db SQLite Syntax",
+        "description": "Updated make:db command to use INTEGER PRIMARY KEY AUTOINCREMENT for SQLite.",
+        "status": "FIXED"
+    },
+    {
+        "id": "test-suite-expansion",
+        "title": "Test Suite Expansion",
+        "description": "Expanded CLI and Core tests to cover more commands and framework classes.",
+        "status": "FIXED"
+    },
+    {
+        "id": "web-test-index-fix",
+        "title": "Web Test Index Fix",
+        "description": "Ensured web\/index.ahmed.php exists during web tests to avoid 404 errors.",
         "status": "FIXED"
     }
 ]
