@@ -501,11 +501,15 @@ if ($command === 'run:db') {
     foreach ($files as $file) {
         $relativePath = str_replace(DB_FOLDER . '/', '', $file);
         echo "Running: " . $relativePath . "\n";
+
+        $db_driver = getEnvValue('DB_DRIVER') ?: 'mysql';
+        $db_name = ($db_driver === 'sqlite') ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME');
+
         executeSQLFilePDO(
             getEnvValue('DB_HOST'), 
             getEnvValue('DB_USER'), 
             getEnvValue("DB_PASS"), 
-            getEnvValue('DB_NAME'), 
+            $db_name,
             $file
         );
     }

@@ -16,5 +16,17 @@
         "title": "CLI make:layout collision",
         "description": "Updated tests to use unique names and ensure clean state before testing.",
         "status": "FIXED"
+    },
+    {
+        "id": "core-database-sqlite",
+        "title": "SQLite Support in Core",
+        "description": "Implemented driver-aware database connection logic in Database class and executeSQLFilePDO to support SQLite.",
+        "status": "FIXED"
+    },
+    {
+        "id": "web-test-index-fallback",
+        "title": "Web Test Index Fallback",
+        "description": "Added automatic generation of web\/index.ahmed.php in web_tests.php to prevent 404 errors during test runs.",
+        "status": "FIXED"
     }
 ]
