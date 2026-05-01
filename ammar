@@ -498,6 +498,7 @@ if ($command === 'run:db') {
         glob(DB_FOLDER . '/*.sql'),
         glob(DB_FOLDER . '/**/*.sql')
     );
+    $dbName = getEnvValue('DB_DRIVER') === 'sqlite' ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME');
     foreach ($files as $file) {
         $relativePath = str_replace(DB_FOLDER . '/', '', $file);
         echo "Running: " . $relativePath . "\n";
@@ -505,7 +506,7 @@ if ($command === 'run:db') {
             getEnvValue('DB_HOST'), 
             getEnvValue('DB_USER'), 
             getEnvValue("DB_PASS"), 
-            getEnvValue('DB_NAME'), 
+            $dbName,
             $file
         );
     }
@@ -704,28 +705,41 @@ if ($command === 'make:sitemap') {
 }
 
 if ($command === 'install:import') {
-    $link = $args['1'] ?? readline("1- Enter Git repository URL: ");
-    if (!filter_var($link, FILTER_VALIDATE_URL)) {
-        exit("Invalid URL provided!\n");
-    }
-
-    // Extract repo name from URL
-    $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+    $link = $args['1'] ?? readline("1- Enter Git repository URL or local path: ");
     
     $importDir = __DIR__ . '/core/import';
-    $repoDir = $importDir . '/' . $repoName;
-    
     if (!is_dir($importDir)) {
         mkdir($importDir, 0777, true);
     }
 
-    echo "Cloning repository...\n";
-    $command = "git clone $link $repoDir";
-    exec($command, $output, $returnVar);
+    if (filter_var($link, FILTER_VALIDATE_URL)) {
+        // Extract repo name from URL
+        $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+        $repoDir = $importDir . '/' . $repoName;
 
-    if ($returnVar !== 0) {
-        echo "Error cloning repository!\n";
-        exit(1);
+        echo "Cloning repository...\n";
+        $execCommand = "git clone $link $repoDir";
+        exec($execCommand, $output, $returnVar);
+
+        if ($returnVar !== 0) {
+            echo "Error cloning repository!\n";
+            exit(1);
+        }
+    } elseif (is_dir($link)) {
+        $repoName = basename($link);
+        $repoDir = $importDir . '/' . $repoName;
+
+        echo "Importing from local path...\n";
+        $execCommand = "cp -r " . escapeshellarg($link) . " " . escapeshellarg($repoDir);
+        exec($execCommand, $output, $returnVar);
+
+        if ($returnVar !== 0) {
+            echo "Error importing from local path!\n";
+            exit(1);
+        }
+        echo "Imported from local path!\n";
+    } else {
+        exit("Invalid URL or local path provided!\n");
     }
 
     // Update package.json
@@ -752,14 +766,14 @@ if ($command === 'list:import') {
         exit(0);
     }
     $imports = array_diff(scandir($importDir), ['.', '..']);
-    if (empty($imports)) {
+    $actualImports = array_filter($imports, function($import) {
+        return $import !== "package.json";
+    });
+    if (empty($actualImports)) {
         echo "No imports found!\n";
     } else {
         echo "Available imports:\n";
-        foreach ($imports as $import) {
-            if ($import === "package.json") {
-                continue;
-            }
+        foreach ($actualImports as $import) {
             echo "  $import\n";
         }
     }

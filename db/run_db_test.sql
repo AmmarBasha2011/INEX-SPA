@@ -1,0 +1,1 @@
+CREATE TABLE run_db_test (id INTEGER PRIMARY KEY);

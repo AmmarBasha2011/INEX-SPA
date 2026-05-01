@@ -113,6 +113,30 @@ $tests = [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
     ],
+    'run:db' => [
+        'setup'    => 'php ammar clear:db:tables && echo "CREATE TABLE run_db_test (id INTEGER PRIMARY KEY);" > db/run_db_test.sql',
+        'command'  => 'php ammar run:db',
+        'expected' => 'Running: run_db_test.sql',
+    ],
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'No imports found!',
+    ],
+    'install:import' => [
+        'setup'    => 'mkdir -p tests/mock_import && echo "<?php" > tests/mock_import/init.php',
+        'command'  => 'php ammar install:import -1 tests/mock_import',
+        'expected' => 'Imported from local path',
+        'check_file' => 'core/import/mock_import/init.php',
+    ],
+    'delete:import' => [
+        'command'  => 'php ammar delete:import -1 mock_import',
+        'expected' => 'Import deleted:',
+    ],
+    'clear:db:tables' => [
+        'setup'    => 'php ammar run:db',
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'All tables in database',
+    ],
 ];
 
 $results = [];

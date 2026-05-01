@@ -5,7 +5,7 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_05_01_12_11_31.sql\n"
     },
     "make:route": {
         "success": true,
@@ -61,7 +61,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusersTable_2026_05_01_12_11_32.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -73,7 +73,7 @@
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-05-01 12:11:32.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
@@ -89,7 +89,7 @@
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "Available DB files:\n  createusersTable_2026_05_01_12_11_32.sql\n  createusers_testTable_2026_05_01_12_11_31.sql\n  run_db_test.sql\n"
     },
     "clear:cache": {
         "success": true,
@@ -102,5 +102,25 @@
     "clear:routes": {
         "success": true,
         "output": "Route files cleared!\n"
+    },
+    "run:db": {
+        "success": true,
+        "output": "Running: run_db_test.sql\n"
+    },
+    "list:import": {
+        "success": true,
+        "output": "No imports found!\n"
+    },
+    "install:import": {
+        "success": true,
+        "output": "Importing from local path...\nImported from local path!\nRepository cloned successfully to core\/import\/mock_import!\nPackage.json updated with new dependency.\n"
+    },
+    "delete:import": {
+        "success": true,
+        "output": "Import deleted: mock_import\n"
+    },
+    "clear:db:tables": {
+        "success": true,
+        "output": "\ud83d\uddd1\ufe0f Deleted table: run_db_test\n\ud83d\udd25 All tables in database 'inexspa' have been deleted!\n"
     }
 }

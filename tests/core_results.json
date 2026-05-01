@@ -5,11 +5,11 @@
     },
     "Cache::get": {
         "success": true,
-        "message": "Expected test_value"
+        "message": "Expected test_value_core"
     },
     "Cache::update": {
         "success": true,
-        "message": "Expected new_value"
+        "message": "Expected new_value_core"
     },
     "Cache::delete": {
         "success": true,
@@ -17,7 +17,7 @@
     },
     "Session::get": {
         "success": true,
-        "message": "Expected sess_val"
+        "message": "Expected sess_val_core"
     },
     "Session::delete": {
         "success": true,
@@ -42,5 +42,49 @@
     "AhmedTemplate::render": {
         "success": true,
         "message": "Expected rendered output"
+    },
+    "Database::instance": {
+        "success": true,
+        "message": "Database instance created"
+    },
+    "UserAuth::generateSQL": {
+        "success": true,
+        "message": "Auth SQL generated"
+    },
+    "Language::get": {
+        "success": true,
+        "message": "Expected translation with placeholder"
+    },
+    "Security::sanitizeInput": {
+        "success": true,
+        "message": "XSS removed and tags escaped"
+    },
+    "Logger::log": {
+        "success": true,
+        "message": "Log message written to file"
+    },
+    "Webhook::send_invalid_url": {
+        "success": true,
+        "message": "Invalid URL returns false"
+    },
+    "CookieManager::get": {
+        "success": true,
+        "message": "Expected cookie value"
+    },
+    "CookieManager::exists": {
+        "success": true,
+        "message": "Cookie exists"
+    },
+    "CookieManager::getAll": {
+        "success": true,
+        "message": "Cookie found in getAll"
+    },
+    "SitemapGenerator::generate": {
+        "success": true,
+        "message": "Sitemap generated with route"
+    },
+    "Layout::section": {
+        "success": true,
+        "message": "Section content injected into layout"
     }
 }

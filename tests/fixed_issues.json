@@ -1,20 +1,32 @@
 [
     {
-        "id": "cli-make-route-api",
-        "title": "CLI make:route API flag",
-        "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
+        "id": "sqlite-support",
+        "title": "SQLite Support",
+        "description": "Added SQLite driver support to Database class and executeSQLFilePDO.",
         "status": "FIXED"
     },
     {
-        "id": "cli-list-lang-exit",
-        "title": "CLI list:lang exit behavior",
-        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
+        "id": "cli-clear-db-tables-sqlite",
+        "title": "Clear DB Tables SQLite Support",
+        "description": "Fixed clear:db:tables to work with SQLite by using sqlite_master.",
         "status": "FIXED"
     },
     {
-        "id": "cli-make-layout-duplicate",
-        "title": "CLI make:layout collision",
-        "description": "Updated tests to use unique names and ensure clean state before testing.",
+        "id": "cli-list-import-package-json",
+        "title": "List Import package.json filtering",
+        "description": "Fixed list:import to correctly filter out package.json from the list.",
+        "status": "FIXED"
+    },
+    {
+        "id": "cli-install-import-feedback",
+        "title": "Install Import Feedback",
+        "description": "Added missing success message and local path support for install:import.",
+        "status": "FIXED"
+    },
+    {
+        "id": "web-tests-index-404",
+        "title": "Web Tests Index 404",
+        "description": "Ensured web\/index.ahmed.php exists before running web tests.",
         "status": "FIXED"
     }
 ]
