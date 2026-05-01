@@ -123,9 +123,9 @@ $tests = [
         'expected' => 'No imports found!',
     ],
     'install:import' => [
-        'setup'    => 'mkdir -p tests/mock_import && echo "<?php" > tests/mock_import/init.php',
-        'command'  => 'php ammar install:import -1 tests/mock_import',
-        'expected' => 'Imported from local path',
+        'setup'      => 'mkdir -p tests/mock_import && echo "<?php" > tests/mock_import/init.php',
+        'command'    => 'php ammar install:import -1 tests/mock_import',
+        'expected'   => 'Imported from local path',
         'check_file' => 'core/import/mock_import/init.php',
     ],
     'delete:import' => [

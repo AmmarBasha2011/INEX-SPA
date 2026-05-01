@@ -67,12 +67,14 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
 // Test Language
-$langDir = __DIR__ . '/../lang';
-if (!is_dir($langDir)) mkdir($langDir);
-file_put_contents($langDir . '/en_test_core.json', json_encode(['welcome' => 'Welcome {name}!']));
+$langDir = __DIR__.'/../lang';
+if (!is_dir($langDir)) {
+    mkdir($langDir);
+}
+file_put_contents($langDir.'/en_test_core.json', json_encode(['welcome' => 'Welcome {name}!']));
 Language::setLanguage('en_test_core');
 assert_test('Language::get', Language::get('welcome', ['name' => 'Ammar']) === 'Welcome Ammar!', 'Expected translation with placeholder');
-unlink($langDir . '/en_test_core.json');
+unlink($langDir.'/en_test_core.json');
 
 // Test Security
 $unsafe = '<script>alert("xss")</script><b>Safe</b>';
@@ -80,8 +82,10 @@ $safe = Security::sanitizeInput($unsafe);
 assert_test('Security::sanitizeInput', strpos($safe, '<script>') === false && strpos($safe, '&lt;b&gt;Safe&lt;/b&gt;') !== false, 'XSS removed and tags escaped');
 
 // Test Logger
-$logFile = __DIR__ . '/../core/logs/system.log';
-if (!is_dir(__DIR__ . '/../core/logs')) mkdir(__DIR__ . '/../core/logs', 0777, true);
+$logFile = __DIR__.'/../core/logs/system.log';
+if (!is_dir(__DIR__.'/../core/logs')) {
+    mkdir(__DIR__.'/../core/logs', 0777, true);
+}
 Logger::log('system', 'Core test message');
 assert_test('Logger::log', file_exists($logFile) && strpos(file_get_contents($logFile), 'Core test message') !== false, 'Log message written to file');
 
@@ -97,23 +101,27 @@ assert_test('CookieManager::exists', CookieManager::exists('test_cookie') === tr
 assert_test('CookieManager::getAll', isset(CookieManager::getAll()['test_cookie']), 'Cookie found in getAll');
 
 // Test SitemapGenerator
-$webDir = __DIR__ . '/../web';
-if (!is_dir($webDir)) mkdir($webDir);
-file_put_contents($webDir . '/testpage.ahmed.php', 'test');
+$webDir = __DIR__.'/../web';
+if (!is_dir($webDir)) {
+    mkdir($webDir);
+}
+file_put_contents($webDir.'/testpage.ahmed.php', 'test');
 SitemapGenerator::generate();
-$sitemapFile = __DIR__ . '/../public/sitemap.xml';
+$sitemapFile = __DIR__.'/../public/sitemap.xml';
 assert_test('SitemapGenerator::generate', file_exists($sitemapFile) && strpos(file_get_contents($sitemapFile), 'testpage') !== false, 'Sitemap generated with route');
-unlink($webDir . '/testpage.ahmed.php');
+unlink($webDir.'/testpage.ahmed.php');
 
 // Test Layout
-$layoutDir = __DIR__ . '/../layouts';
-if (!is_dir($layoutDir)) mkdir($layoutDir);
-file_put_contents($layoutDir . '/test_layout.ahmed.php', 'Header {{ Layout::section("content") }} Footer');
+$layoutDir = __DIR__.'/../layouts';
+if (!is_dir($layoutDir)) {
+    mkdir($layoutDir);
+}
+file_put_contents($layoutDir.'/test_layout.ahmed.php', 'Header {{ Layout::section("content") }} Footer');
 Layout::start('content');
-echo "Dynamic Content";
+echo 'Dynamic Content';
 Layout::end();
-$layoutOutput = $engine->render($layoutDir . '/test_layout.ahmed.php');
+$layoutOutput = $engine->render($layoutDir.'/test_layout.ahmed.php');
 assert_test('Layout::section', strpos($layoutOutput, 'Dynamic Content') !== false, 'Section content injected into layout');
-unlink($layoutDir . '/test_layout.ahmed.php');
+unlink($layoutDir.'/test_layout.ahmed.php');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));
