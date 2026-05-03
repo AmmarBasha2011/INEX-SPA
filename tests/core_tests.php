@@ -9,8 +9,21 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
 
 $results = [];
+
+/**
+ * Executes a prepared SQL statement using the database connection.
+ * Needed for UserAuth and others in standalone tests.
+ */
+function executeStatement($sql, $params = [], $is_return = true) {
+    $DB = new Database();
+    return $DB->query($sql, $params, $is_return);
+}
 
 function assert_test($name, $condition, $message = '')
 {
@@ -19,6 +32,7 @@ function assert_test($name, $condition, $message = '')
         'success' => $condition,
         'message' => $message,
     ];
+    echo ($condition ? '✅ ' : '❌ ') . $name . ($condition ? '' : ': ' . $message) . "\n";
 }
 
 // Test getEnvValue
@@ -59,12 +73,30 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 // Test UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
+// Test Logger
+Logger::log('system', 'Core test message');
+assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_get_contents('core/logs/system.log'), 'Core test message') !== false, 'Log file created and contains message');
+
+// Test Security
+$unsafe = "<script>alert('xss')</script><b>safe</b>";
+$safe = Security::sanitizeInput($unsafe);
+assert_test('Security::sanitizeInput', strpos($safe, '&lt;script&gt;') === false && strpos($safe, '&lt;b&gt;safe&lt;/b&gt;') !== false, 'Sanitization should remove script tags and escape other tags');
+
+// Test Language
+if (!is_dir('lang')) mkdir('lang');
+file_put_contents('lang/en_test.json', json_encode(['hello' => 'Hello World']));
+Language::setLanguage('en_test');
+assert_test('Language::get', Language::get('hello') === 'Hello World', 'Expected translated string');
+
+// Test CookieManager
+CookieManager::set('test_cookie', 'cookie_val', 3600);
+// Note: setcookie might not work in CLI depending on output, but we check the class
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
+
 // Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
 assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
 
 // Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

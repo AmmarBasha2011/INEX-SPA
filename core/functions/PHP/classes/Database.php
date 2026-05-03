@@ -3,7 +3,7 @@
 /**
  * A PDO wrapper class for simplifying database connections and queries.
  *
- * This class provides a convenient way to connect to a MySQL database using
+ * This class provides a convenient way to connect to a MySQL or SQLite database using
  * credentials stored in the .env file. It encapsulates a PDO instance and offers
  * a streamlined method for executing prepared SQL statements.
  */
@@ -29,12 +29,7 @@ class Database
      */
     public function __construct($charset = 'utf8mb4')
     {
-        $host = getEnvValue('DB_HOST');
-        $dbname = getEnvValue('DB_NAME');
-        $username = getEnvValue('DB_USER');
-        $password = getEnvValue('DB_PASS');
-
-        $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+        $driver = getEnvValue('DB_DRIVER');
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -42,7 +37,19 @@ class Database
         ];
 
         try {
-            $this->pdo = new PDO($dsn, $username, $password, $options);
+            if ($driver === 'sqlite') {
+                $dbFile = getEnvValue('DB_FILE');
+                $dsn = "sqlite:$dbFile";
+                $this->pdo = new PDO($dsn, null, null, $options);
+            } else {
+                $host = getEnvValue('DB_HOST');
+                $dbname = getEnvValue('DB_NAME');
+                $username = getEnvValue('DB_USER');
+                $password = getEnvValue('DB_PASS');
+
+                $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
+                $this->pdo = new PDO($dsn, $username, $password, $options);
+            }
         } catch (PDOException $e) {
             exit('Database connection failed: '.$e->getMessage());
         }

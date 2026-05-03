@@ -1,0 +1,46 @@
+[Sun May  3 12:01:04 2026] PHP 8.3.6 Development Server (http://localhost:8080) started
+[Sun May  3 12:01:07 2026] [::1]:46516 Accepted
+[Sun May  3 12:01:07 2026] [::1]:46516 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun May  3 12:01:07 2026] [::1]:46516 Closing
+[Sun May  3 12:01:07 2026] [::1]:44578 Accepted
+[Sun May  3 12:01:07 2026] [::1]:44578 [200]: GET /
+[Sun May  3 12:01:07 2026] [::1]:44578 Closing
+[Sun May  3 12:01:07 2026] [::1]:44584 Accepted
+[Sun May  3 12:01:07 2026] [::1]:44584 [200]: GET /?page=testroute_test
+[Sun May  3 12:01:07 2026] [::1]:44584 Closing
+[Sun May  3 12:05:51 2026] [::1]:42804 Accepted
+[Sun May  3 12:05:51 2026] [::1]:42804 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun May  3 12:05:51 2026] [::1]:42804 Closing
+[Sun May  3 12:05:51 2026] [::1]:42816 Accepted
+[Sun May  3 12:05:51 2026] [::1]:42816 [200]: GET /
+[Sun May  3 12:05:51 2026] [::1]:42816 Closing
+[Sun May  3 12:05:51 2026] [::1]:42826 Accepted
+[Sun May  3 12:05:51 2026] [::1]:42826 [200]: GET /?page=testroute_test
+[Sun May  3 12:05:51 2026] [::1]:42826 Closing
+[Sun May  3 12:07:01 2026] [::1]:59722 Accepted
+[Sun May  3 12:07:01 2026] [::1]:59722 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun May  3 12:07:01 2026] [::1]:59722 Closing
+[Sun May  3 12:07:01 2026] [::1]:59730 Accepted
+[Sun May  3 12:07:01 2026] [::1]:59730 [200]: GET /
+[Sun May  3 12:07:01 2026] [::1]:59730 Closing
+[Sun May  3 12:07:01 2026] [::1]:59738 Accepted
+[Sun May  3 12:07:02 2026] [::1]:59738 [200]: GET /?page=testroute_test
+[Sun May  3 12:07:02 2026] [::1]:59738 Closing
+[Sun May  3 12:08:09 2026] [::1]:42384 Accepted
+[Sun May  3 12:08:09 2026] [::1]:42384 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun May  3 12:08:09 2026] [::1]:42384 Closing
+[Sun May  3 12:08:09 2026] [::1]:42386 Accepted
+[Sun May  3 12:08:09 2026] [::1]:42386 [200]: GET /
+[Sun May  3 12:08:09 2026] [::1]:42386 Closing
+[Sun May  3 12:08:09 2026] [::1]:42388 Accepted
+[Sun May  3 12:08:09 2026] [::1]:42388 [200]: GET /?page=testroute_test
+[Sun May  3 12:08:09 2026] [::1]:42388 Closing
+[Sun May  3 12:08:50 2026] [::1]:33894 Accepted
+[Sun May  3 12:08:50 2026] [::1]:33894 Closed without sending a request; it was probably just an unused speculative preconnection
+[Sun May  3 12:08:50 2026] [::1]:33894 Closing
+[Sun May  3 12:08:50 2026] [::1]:33898 Accepted
+[Sun May  3 12:08:50 2026] [::1]:33898 [200]: GET /
+[Sun May  3 12:08:50 2026] [::1]:33898 Closing
+[Sun May  3 12:08:50 2026] [::1]:33912 Accepted
+[Sun May  3 12:08:50 2026] [::1]:33912 [200]: GET /?page=testroute_test
+[Sun May  3 12:08:50 2026] [::1]:33912 Closing

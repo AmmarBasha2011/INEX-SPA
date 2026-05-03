@@ -16,5 +16,17 @@
         "title": "CLI make:layout collision",
         "description": "Updated tests to use unique names and ensure clean state before testing.",
         "status": "FIXED"
+    },
+    {
+        "id": "core-database-sqlite",
+        "title": "Core Database SQLite support",
+        "description": "Added support for SQLite driver in Database and executeSQLFilePDO classes.",
+        "status": "FIXED"
+    },
+    {
+        "id": "core-security-xss",
+        "title": "Core Security XSS sanitization",
+        "description": "Fixed Security::sanitizeInput to correctly strip script tags before escaping.",
+        "status": "FIXED"
     }
 ]
