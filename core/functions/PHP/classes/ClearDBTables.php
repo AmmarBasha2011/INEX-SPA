@@ -46,6 +46,7 @@ class ClearDBTables
 
             if (!$query || !is_array($query)) {
                 echo "✅ No tables found in database.\n";
+
                 return;
             }
 
@@ -57,6 +58,7 @@ class ClearDBTables
 
             if (empty($tables)) {
                 echo "✅ No tables found in database.\n";
+
                 return;
             }
 

@@ -20,8 +20,10 @@ $results = [];
  * Executes a prepared SQL statement using the database connection.
  * Needed for UserAuth and others in standalone tests.
  */
-function executeStatement($sql, $params = [], $is_return = true) {
+function executeStatement($sql, $params = [], $is_return = true)
+{
     $DB = new Database();
+
     return $DB->query($sql, $params, $is_return);
 }
 
@@ -32,7 +34,7 @@ function assert_test($name, $condition, $message = '')
         'success' => $condition,
         'message' => $message,
     ];
-    echo ($condition ? '✅ ' : '❌ ') . $name . ($condition ? '' : ': ' . $message) . "\n";
+    echo ($condition ? '✅ ' : '❌ ').$name.($condition ? '' : ': '.$message)."\n";
 }
 
 // Test getEnvValue
@@ -83,7 +85,9 @@ $safe = Security::sanitizeInput($unsafe);
 assert_test('Security::sanitizeInput', strpos($safe, '&lt;script&gt;') === false && strpos($safe, '&lt;b&gt;safe&lt;/b&gt;') !== false, 'Sanitization should remove script tags and escape other tags');
 
 // Test Language
-if (!is_dir('lang')) mkdir('lang');
+if (!is_dir('lang')) {
+    mkdir('lang');
+}
 file_put_contents('lang/en_test.json', json_encode(['hello' => 'Hello World']));
 Language::setLanguage('en_test');
 assert_test('Language::get', Language::get('hello') === 'Hello World', 'Expected translated string');
