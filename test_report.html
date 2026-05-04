@@ -207,20 +207,20 @@
     <div class="main">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-03 13:12:13</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-04 11:51:42</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">39</span>
+                <span class="number" style="color: var(--primary);">43</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">38</span>
+                <span class="number" style="color: var(--success);">43</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--danger);">1</span>
+                <span class="number" style="color: var(--danger);">0</span>
                 <span class="label">Failed</span>
             </div>
             <div class="card">
@@ -264,7 +264,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusers_testTable_2026_05_04_11_51_41.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -349,7 +349,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusersTable_2026_05_04_11_51_41.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -371,7 +371,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-04-03 13:12:12.
+TestTask executed successfully at 2026-05-04 11:51:41.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -402,8 +402,8 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_04_03_13_12_12.sql
-  createusers_testTable_2026_04_03_13_12_12.sql
+  createusersTable_2026_05_04_11_51_41.sql
+  createusers_testTable_2026_05_04_11_51_41.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -429,6 +429,31 @@ Cron task &#039;TestTask&#039; finished.
         </div>
 
         <div class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>Response Body</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td>index</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>&lt;script src=&#039;http://localhost/JS/getWEBSITEURLValue.js&#039;&gt;&lt;/script&gt;&lt;link rel=&#039;stylesheet&#039; href=&#039;http://localhost/css/motion-animations.css&#039;&gt;&lt;script src=&#039;http://localhost/JS/redirect.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/popstate.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/submitData.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/csrfToken.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/submitDataWR.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/addAppNametoHTML.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http</pre></td>
+                    </tr>
+                                        <tr>
+                        <td>testroute</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>&lt;script src=&#039;http://localhost/JS/getWEBSITEURLValue.js&#039;&gt;&lt;/script&gt;&lt;link rel=&#039;stylesheet&#039; href=&#039;http://localhost/css/motion-animations.css&#039;&gt;&lt;script src=&#039;http://localhost/JS/redirect.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/popstate.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/submitData.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/csrfToken.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/submitDataWR.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http://localhost/JS/addAppNametoHTML.js&#039;&gt;&lt;/script&gt;&lt;script src=&#039;http</pre></td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -447,12 +472,12 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Cache::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected test_value</td>
+                        <td>Expected test_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::update</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected new_value</td>
+                        <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::delete</td>
@@ -462,7 +487,7 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Session::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected sess_val</td>
+                        <td>Expected sess_val_core</td>
                     </tr>
                                         <tr>
                         <td>Session::delete</td>
@@ -493,6 +518,26 @@ Cron task &#039;TestTask&#039; finished.
                         <td>AhmedTemplate::render</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected rendered output</td>
+                    </tr>
+                                        <tr>
+                        <td>Database::instance</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Database instance created</td>
+                    </tr>
+                                        <tr>
+                        <td>UserAuth::generateSQL</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Auth SQL generated</td>
+                    </tr>
+                                        <tr>
+                        <td>RateLimiter::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>RateLimiter class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Firewall::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Firewall class exists</td>
                     </tr>
                                     </tbody>
             </table>

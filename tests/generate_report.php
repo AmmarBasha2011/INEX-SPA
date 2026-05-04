@@ -274,6 +274,28 @@ ob_start();
         </div>
 
         <div class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>Response Body</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($webRes as $name => $res): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($name) ?></td>
+                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><pre><?= htmlspecialchars(substr($res['response'], 0, 500)) ?></pre></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
