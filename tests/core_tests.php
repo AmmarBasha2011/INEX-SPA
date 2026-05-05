@@ -80,7 +80,9 @@ assert_test('CookieManager::exists_class', class_exists('CookieManager'), 'Cooki
 
 // Test Language
 $langDir = 'lang';
-if (!is_dir($langDir)) mkdir($langDir);
+if (!is_dir($langDir)) {
+    mkdir($langDir);
+}
 file_put_contents($langDir.'/en_test.json', json_encode(['hello' => 'Hello {name}!']));
 Language::setLanguage('en_test');
 assert_test('Language::get', Language::get('hello', ['name' => 'Ammar']) === 'Hello Ammar!', 'Expected Hello Ammar!');
@@ -89,13 +91,15 @@ unlink($langDir.'/en_test.json');
 // Test Layout
 assert_test('Layout::exists', class_exists('Layout'), 'Layout class exists');
 Layout::start('content');
-echo "Layout Content";
+echo 'Layout Content';
 Layout::end();
 assert_test('Layout::section', Layout::section('content') === 'Layout Content', 'Expected Layout Content');
 
 // Test Logger
 $logFile = 'core/logs/system.log';
-if (!is_dir('core/logs')) mkdir('core/logs', 0777, true);
+if (!is_dir('core/logs')) {
+    mkdir('core/logs', 0777, true);
+}
 Logger::log('system', 'Test log message');
 assert_test('Logger::log', file_exists($logFile) && strpos(file_get_contents($logFile), 'Test log message') !== false, 'Log message found');
 // Logger::clearLogs(); // Might want to keep it for now
