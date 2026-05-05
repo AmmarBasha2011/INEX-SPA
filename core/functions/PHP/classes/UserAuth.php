@@ -36,9 +36,12 @@ class UserAuth
             exit('Error decoding JSON.');
         }
 
+        $driver = getEnvValue('DB_DRIVER') ?: 'mysql';
+        $auto_increment = $driver === 'sqlite' ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT AUTO_INCREMENT PRIMARY KEY';
+
         // Initialize the SQL query
         $sql = "CREATE TABLE IF NOT EXISTS users (\n";
-        $sql .= "  id INT AUTO_INCREMENT PRIMARY KEY,\n"; // Auto-increment ID
+        $sql .= "  id $auto_increment,\n"; // Auto-increment ID
 
         // Mapping JSON data types to SQL types
         $typeMapping = [

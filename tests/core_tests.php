@@ -9,6 +9,12 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
 
 $results = [];
 
@@ -66,5 +72,40 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test CookieManager
+// Note: setcookie only works if no output has been sent. In CLI this might not set $_COOKIE.
+CookieManager::set('test_cookie', 'cookie_val');
+assert_test('CookieManager::exists_class', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Language
+$langDir = 'lang';
+if (!is_dir($langDir)) mkdir($langDir);
+file_put_contents($langDir.'/en_test.json', json_encode(['hello' => 'Hello {name}!']));
+Language::setLanguage('en_test');
+assert_test('Language::get', Language::get('hello', ['name' => 'Ammar']) === 'Hello Ammar!', 'Expected Hello Ammar!');
+unlink($langDir.'/en_test.json');
+
+// Test Layout
+assert_test('Layout::exists', class_exists('Layout'), 'Layout class exists');
+Layout::start('content');
+echo "Layout Content";
+Layout::end();
+assert_test('Layout::section', Layout::section('content') === 'Layout Content', 'Expected Layout Content');
+
+// Test Logger
+$logFile = 'core/logs/system.log';
+if (!is_dir('core/logs')) mkdir('core/logs', 0777, true);
+Logger::log('system', 'Test log message');
+assert_test('Logger::log', file_exists($logFile) && strpos(file_get_contents($logFile), 'Test log message') !== false, 'Log message found');
+// Logger::clearLogs(); // Might want to keep it for now
+
+// Test Security
+$unsanitized = '<script>alert("xss")</script><b>Hello</b>';
+$sanitized = Security::sanitizeInput($unsanitized);
+assert_test('Security::sanitizeInput', strpos($sanitized, '<script>') === false, 'Script tag removed');
+
+// Test Webhook
+assert_test('Webhook::exists', class_exists('Webhook'), 'Webhook class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

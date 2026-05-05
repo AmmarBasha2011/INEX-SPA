@@ -126,6 +126,11 @@ ob_start();
             padding: 25px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            display: none; /* Hidden by default, shown by nav */
+        }
+
+        .section.active {
+            display: block;
         }
 
         .section h2 {
@@ -214,20 +219,20 @@ ob_start();
 <body>
     <div class="sidebar">
         <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <div class="nav-item active" onclick="showSection('dashboard')">Dashboard</div>
+        <div class="nav-item" onclick="showSection('cli')">CLI Commands</div>
+        <div class="nav-item" onclick="showSection('core')">Core Classes</div>
+        <div class="nav-item" onclick="showSection('web')">Web Routes</div>
+        <div class="nav-item" onclick="showSection('fixed')">Fixed Issues</div>
     </div>
 
     <div class="main">
         <div class="header">
-            <h2>Framework Health Dashboard</h2>
+            <h2>Framework Health Report</h2>
             <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
         </div>
 
-        <div class="dashboard">
+        <div id="dashboard-section" class="section active" style="background: transparent; box-shadow: none; padding: 0;">
             <div class="card">
                 <span class="number" style="color: var(--primary);"><?= $total ?></span>
                 <span class="label">Total Tests</span>
@@ -246,7 +251,7 @@ ob_start();
             </div>
         </div>
 
-        <div class="section">
+        <div id="cli-section" class="section">
             <h2>CLI Commands</h2>
             <div class="filters">
                 <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
@@ -273,7 +278,7 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="core-section" class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -295,7 +300,29 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="web-section" class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>Response Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($webRes as $name => $res): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($name) ?></td>
+                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><?= htmlspecialchars($res['status']) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="fixed-section" class="section">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                 <?php foreach ($fixedRes as $issue): ?>
@@ -309,6 +336,14 @@ ob_start();
     </div>
 
     <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId + '-section').classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
         function filterTable(tableId, status) {
             const table = document.getElementById(tableId + '-table');
             const rows = table.querySelectorAll('.test-row');
