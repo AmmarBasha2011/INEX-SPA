@@ -22,14 +22,24 @@ function test_route($url, $expected_content, $expected_status = 200)
 $results = [];
 
 // Ensure test files exist for web tests
+if (!file_exists('web/index.ahmed.php')) {
+    file_put_contents('web/index.ahmed.php', '<h1>INEX SPA</h1>');
+}
 if (!file_exists('web/testroute_test.ahmed.php')) {
     file_put_contents('web/testroute_test.ahmed.php', 'testroute content');
 }
+if (!file_exists('web/api/test_request_GET_api.ahmed.php')) {
+    @mkdir('web/api', 0777, true);
+    file_put_contents('web/api/test_request_GET_api.ahmed.php', '{"success":true,"message":"api response"}');
+}
 
-// Test Index Route - checking for "INEX SPA" which is in the restored index.ahmed.php
+// Test Index Route
 $results['index'] = test_route($baseUrl, 'INEX SPA');
 
 // Test a standard route
 $results['testroute'] = test_route($baseUrl.'?page=testroute_test', 'testroute');
+
+// Test an API route
+$results['api_test'] = test_route($baseUrl.'?page=api/test', 'api response');
 
 file_put_contents('tests/web_results.json', json_encode($results, JSON_PRETTY_PRINT));

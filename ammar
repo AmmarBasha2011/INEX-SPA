@@ -643,7 +643,11 @@ if ($command === 'clear:db:tables') {
 }
 
 if ($command === "clear:routes") {
-    array_map("unlink", glob("web/*"));
+    foreach (glob("web/*") as $file) {
+        if (is_file($file)) {
+            unlink($file);
+        }
+    }
     echo "Route files cleared!\n";
     exit(0);
 }
