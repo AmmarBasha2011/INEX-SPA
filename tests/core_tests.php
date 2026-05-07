@@ -81,7 +81,7 @@ unlink('lang/en_test_core.json');
 
 // Test Layout
 Layout::start('content');
-echo "Layout Content";
+echo 'Layout Content';
 Layout::end();
 assert_test('Layout::section', Layout::section('content') === 'Layout Content', 'Expected section content');
 
