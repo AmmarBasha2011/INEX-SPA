@@ -339,8 +339,11 @@ if ($command === 'make:db') {
     $filename = "{$action}{$table}Table_{$timestamp}.sql";
     $filePath = DB_FOLDER . '/' . $filename;
     
+    $driver = getEnvValue('DB_DRIVER');
     $sqlTemplate = match ($action) {
-        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'create' => ($driver === 'sqlite')
+            ? "CREATE TABLE IF NOT EXISTS $table (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n"
+            : "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
         'delete' => "DROP TABLE IF EXISTS $table;\n",
         'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
         'truncate' => "TRUNCATE TABLE $table;\n",
@@ -498,14 +501,18 @@ if ($command === 'run:db') {
         glob(DB_FOLDER . '/*.sql'),
         glob(DB_FOLDER . '/**/*.sql')
     );
+    $driver = getEnvValue('DB_DRIVER');
     foreach ($files as $file) {
         $relativePath = str_replace(DB_FOLDER . '/', '', $file);
         echo "Running: " . $relativePath . "\n";
+
+        $dbName = ($driver === 'sqlite') ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME');
+
         executeSQLFilePDO(
             getEnvValue('DB_HOST'), 
             getEnvValue('DB_USER'), 
             getEnvValue("DB_PASS"), 
-            getEnvValue('DB_NAME'), 
+            $dbName,
             $file
         );
     }
@@ -879,8 +886,13 @@ if ($command == "make:auth") {
     $timestamp = date('Y_m_d_H_i_s');
     $filename = "{$action}{$table}Table_{$timestamp}.sql";
     $filePath = DB_FOLDER . '/' . $filename;
+    $driver = getEnvValue('DB_DRIVER');
     $sqlTemplate = UserAuth::generateSQL();
     
+    if ($driver === 'sqlite') {
+        $sqlTemplate = str_replace('INT PRIMARY KEY AUTO_INCREMENT', 'INTEGER PRIMARY KEY AUTOINCREMENT', $sqlTemplate);
+    }
+
     file_put_contents($filePath, $sqlTemplate);
     echo "DB file created: $filename\n";
     exit(0);
