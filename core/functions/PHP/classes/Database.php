@@ -37,7 +37,7 @@ class Database
         $dbfile = getEnvValue('DB_FILE');
 
         if ($driver === 'sqlite') {
-            $dsn = "sqlite:" . ($dbfile ?: 'database.sqlite');
+            $dsn = 'sqlite:'.($dbfile ?: 'database.sqlite');
             $username = null;
             $password = null;
         } else {

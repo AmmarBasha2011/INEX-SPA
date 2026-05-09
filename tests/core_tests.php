@@ -92,7 +92,7 @@ assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_ge
 // Test Security
 $dirty = "<script>alert('xss')</script><b>Safe</b>";
 $clean = Security::sanitizeInput($dirty);
-$expected = htmlspecialchars("<b>Safe</b>", ENT_QUOTES, 'UTF-8');
+$expected = htmlspecialchars('<b>Safe</b>', ENT_QUOTES, 'UTF-8');
 assert_test('Security::sanitizeInput', $clean === $expected, "Expected sanitized output: $expected, got: $clean");
 
 // Test SitemapGenerator
