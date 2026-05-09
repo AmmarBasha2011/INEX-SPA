@@ -73,7 +73,7 @@
         }
 
         /* Dashboard Cards */
-        .dashboard {
+        .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
@@ -104,11 +104,16 @@
 
         /* Sections */
         .section {
+            display: none;
             background: var(--card-bg);
             border-radius: 10px;
             padding: 25px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+        }
+
+        .section.active {
+            display: block;
         }
 
         .section h2 {
@@ -197,39 +202,47 @@
 <body>
     <div class="sidebar">
         <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <div class="nav-item active" onclick="showSection(event, 'dashboard')">Dashboard</div>
+        <div class="nav-item" onclick="showSection(event, 'cli')">CLI Commands</div>
+        <div class="nav-item" onclick="showSection(event, 'core')">Core Classes</div>
+        <div class="nav-item" onclick="showSection(event, 'web')">Web Routes</div>
+        <div class="nav-item" onclick="showSection(event, 'fixed')">Fixed Issues</div>
     </div>
 
     <div class="main">
         <div class="header">
-            <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-04-03 13:12:13</span>
+            <h2 id="section-title">Framework Health Dashboard</h2>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-09 11:50:12</span>
         </div>
 
-        <div class="dashboard">
-            <div class="card">
-                <span class="number" style="color: var(--primary);">39</span>
-                <span class="label">Total Tests</span>
+        <div id="dashboard" class="section active">
+            <div class="dashboard-grid">
+                <div class="card">
+                    <span class="number" style="color: var(--primary);">49</span>
+                    <span class="label">Total Tests</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--success);">49</span>
+                    <span class="label">Passed</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--danger);">0</span>
+                    <span class="label">Failed</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--warning);">3</span>
+                    <span class="label">Fixed</span>
+                </div>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--success);">38</span>
-                <span class="label">Passed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--danger);">1</span>
-                <span class="label">Failed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
-                <span class="label">Fixed</span>
+
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <h3>Quick Summary</h3>
+                <p>The framework is currently <strong>100%</strong> healthy.</p>
+                <p>All core components, including Database, Cache, and Security, have been verified with 100% pass rate in the latest run.</p>
             </div>
         </div>
 
-        <div class="section">
+        <div id="cli" class="section">
             <h2>CLI Commands</h2>
             <div class="filters">
                 <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
@@ -264,7 +277,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusers_testTable_2026_05_09_11_46_59.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -349,7 +362,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_04_03_13_12_12.sql
+                        <td><pre>DB file created: createusersTable_2026_05_09_11_46_59.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -371,7 +384,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-04-03 13:12:12.
+TestTask executed successfully at 2026-05-09 11:46:59.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -402,8 +415,8 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_04_03_13_12_12.sql
-  createusers_testTable_2026_04_03_13_12_12.sql
+  createusersTable_2026_05_09_11_46_59.sql
+  createusers_testTable_2026_05_09_11_46_59.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -428,7 +441,7 @@ Cron task &#039;TestTask&#039; finished.
             </table>
         </div>
 
-        <div class="section">
+        <div id="core" class="section">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -447,12 +460,12 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Cache::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected test_value</td>
+                        <td>Expected test_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::update</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected new_value</td>
+                        <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::delete</td>
@@ -462,7 +475,7 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr>
                         <td>Session::get</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>Expected sess_val</td>
+                        <td>Expected sess_val_core</td>
                     </tr>
                                         <tr>
                         <td>Session::delete</td>
@@ -494,34 +507,120 @@ Cron task &#039;TestTask&#039; finished.
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected rendered output</td>
                     </tr>
+                                        <tr>
+                        <td>Database::instance</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Database instance created</td>
+                    </tr>
+                                        <tr>
+                        <td>UserAuth::generateSQL</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Auth SQL generated</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected cookie_val</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected true</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::get_after_delete</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected null</td>
+                    </tr>
+                                        <tr>
+                        <td>Language::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected translation</td>
+                    </tr>
+                                        <tr>
+                        <td>Logger::log</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Log message found</td>
+                    </tr>
+                                        <tr>
+                        <td>Security::sanitizeInput</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected sanitized output: &amp;lt;b&amp;gt;Safe&amp;lt;/b&amp;gt;, got: &amp;lt;b&amp;gt;Safe&amp;lt;/b&amp;gt;</td>
+                    </tr>
+                                        <tr>
+                        <td>SitemapGenerator::generate</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Sitemap exists</td>
+                    </tr>
+                                        <tr>
+                        <td>Webhook::send_invalid_url</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Expected false for invalid URL</td>
+                    </tr>
                                     </tbody>
             </table>
         </div>
 
-        <div class="section">
+        <div id="web" class="section">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>HTTP Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                                        <tr>
+                        <td>index</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>testroute</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                    </tbody>
+            </table>
+        </div>
+
+        <div id="fixed" class="section">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                                 <div class="fixed-item">
-                    <h3>CLI make:route API flag <span class="status status-fixed">Fixed</span></h3>
-                    <p>Corrected positional argument flag position from -3 to -4 for non-dynamic routes.</p>
+                    <h3>SQLite Support in Database Classes <span class="status status-fixed">Fixed</span></h3>
+                    <p>Enhanced Database, executeSQLFilePDO, and ClearDBTables to support SQLite driver using DB_DRIVER and DB_FILE environment variables.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI list:lang exit behavior <span class="status status-fixed">Fixed</span></h3>
-                    <p>Replaced return with exit(0) to ensure consistent CLI termination.</p>
+                    <h3>Security::sanitizeInput XSS Bug <span class="status status-fixed">Fixed</span></h3>
+                    <p>Fixed bug where script tags were not removed if htmlspecialchars was called first. Now script tags are stripped before encoding entities.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
-                    <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                    <h3>Web Tests Index 404 <span class="status status-fixed">Fixed</span></h3>
+                    <p>Ensured web/index.ahmed.php exists during web tests to prevent 404 errors, especially after routes are cleared in CLI tests.</p>
                 </div>
                             </div>
         </div>
     </div>
 
     <script>
+        function showSection(event, id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+
+            const title = event.target.innerText;
+            document.getElementById('section-title').innerText = title === 'Dashboard' ? 'Framework Health Dashboard' : title;
+        }
+
         function filterTable(tableId, status) {
             const table = document.getElementById(tableId + '-table');
             const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
+            const buttons = document.querySelectorAll('#' + tableId + ' .filter-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');

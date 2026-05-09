@@ -1,20 +1,20 @@
 [
     {
-        "id": "cli-make-route-api",
-        "title": "CLI make:route API flag",
-        "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
+        "id": "database-sqlite-support",
+        "title": "SQLite Support in Database Classes",
+        "description": "Enhanced Database, executeSQLFilePDO, and ClearDBTables to support SQLite driver using DB_DRIVER and DB_FILE environment variables.",
         "status": "FIXED"
     },
     {
-        "id": "cli-list-lang-exit",
-        "title": "CLI list:lang exit behavior",
-        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
+        "id": "security-sanitize-input-xss",
+        "title": "Security::sanitizeInput XSS Bug",
+        "description": "Fixed bug where script tags were not removed if htmlspecialchars was called first. Now script tags are stripped before encoding entities.",
         "status": "FIXED"
     },
     {
-        "id": "cli-make-layout-duplicate",
-        "title": "CLI make:layout collision",
-        "description": "Updated tests to use unique names and ensure clean state before testing.",
+        "id": "web-tests-index-404",
+        "title": "Web Tests Index 404",
+        "description": "Ensured web/index.ahmed.php exists during web tests to prevent 404 errors, especially after routes are cleared in CLI tests.",
         "status": "FIXED"
     }
 ]

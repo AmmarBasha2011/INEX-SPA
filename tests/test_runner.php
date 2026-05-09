@@ -18,7 +18,6 @@ passthru('php tests/core_tests.php');
 
 // 3. Run Web Tests (Requires server to be running)
 echo "Running Web Tests...\n";
-// Ensure server is running on port 8080 (handled externally in plan, but good to check)
 $connection = @fsockopen('localhost', 8080);
 if ($connection) {
     fclose($connection);
@@ -28,30 +27,7 @@ if ($connection) {
     file_put_contents('tests/web_results.json', json_encode([]));
 }
 
-// 4. Track Fixed Issues
-$fixedIssues = [
-    [
-        'id'          => 'cli-make-route-api',
-        'title'       => 'CLI make:route API flag',
-        'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
-        'status'      => 'FIXED',
-    ],
-    [
-        'id'          => 'cli-list-lang-exit',
-        'title'       => 'CLI list:lang exit behavior',
-        'description' => 'Replaced return with exit(0) to ensure consistent CLI termination.',
-        'status'      => 'FIXED',
-    ],
-    [
-        'id'          => 'cli-make-layout-duplicate',
-        'title'       => 'CLI make:layout collision',
-        'description' => 'Updated tests to use unique names and ensure clean state before testing.',
-        'status'      => 'FIXED',
-    ],
-];
-file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
-
-// 5. Generate Report
+// 4. Generate Report
 echo "\n📊 Generating HTML Report...\n";
 passthru('php tests/generate_report.php');
 

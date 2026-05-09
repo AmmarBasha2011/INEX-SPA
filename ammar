@@ -505,7 +505,7 @@ if ($command === 'run:db') {
             getEnvValue('DB_HOST'), 
             getEnvValue('DB_USER'), 
             getEnvValue("DB_PASS"), 
-            getEnvValue('DB_NAME'), 
+            getEnvValue('DB_DRIVER') === 'sqlite' ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME'),
             $file
         );
     }
