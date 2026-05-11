@@ -48,6 +48,18 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'core-sqlite-support',
+        'title'       => 'SQLite Driver Support',
+        'description' => 'Implemented SQLite support in Database, executeSQLFilePDO, and ClearDBTables classes.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-ask-gemini-undefined-key',
+        'title'       => 'CLI ask:gemini undefined key',
+        'description' => 'Fixed undefined array key "message" in ammar CLI when Gemini API returns an error.',
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 
