@@ -74,7 +74,9 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
 // Test Language
-if (!is_dir('lang')) mkdir('lang');
+if (!is_dir('lang')) {
+    mkdir('lang');
+}
 file_put_contents('lang/en_test.json', json_encode(['test_key' => 'test_value', 'hello' => 'Hello {name}!']));
 Language::setLanguage('en_test');
 assert_test('Language::get', Language::get('test_key') === 'test_value', 'Expected test_value');
@@ -83,12 +85,14 @@ unlink('lang/en_test.json');
 
 // Test Layout
 Layout::start('content');
-echo "Layout Content";
+echo 'Layout Content';
 Layout::end();
 assert_test('Layout::section', Layout::section('content') === 'Layout Content', 'Expected Layout Content');
 
 // Test Logger
-if (!is_dir('core/logs')) mkdir('core/logs', 0777, true);
+if (!is_dir('core/logs')) {
+    mkdir('core/logs', 0777, true);
+}
 Logger::log('system', 'Test log message');
 $logContent = file_get_contents('core/logs/system.log');
 assert_test('Logger::log', strpos($logContent, 'Test log message') !== false, 'Log message found in system.log');
