@@ -3,3 +3,7 @@ core/logs/cron.log
 *.cache
 tests/*_results.json
 tests/fixed_issues.json
+database.sqlite
+server.log
+test-results/
+tests/verify_report.py

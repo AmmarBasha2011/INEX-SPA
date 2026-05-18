@@ -1,0 +1,16 @@
+[Mon May 18 13:12:16 2026] PHP 8.3.6 Development Server (http://localhost:8080) started
+[Mon May 18 13:12:32 2026] [::1]:56208 Accepted
+[Mon May 18 13:12:32 2026] [::1]:56208 [200]: GET /
+[Mon May 18 13:12:32 2026] [::1]:56208 Closing
+[Mon May 18 13:12:32 2026] [::1]:56212 Accepted
+[Mon May 18 13:12:32 2026] [::1]:56212 [200]: GET /?page=testroute_test
+[Mon May 18 13:12:32 2026] [::1]:56212 Closing
+[Mon May 18 13:13:11 2026] [::1]:53864 Accepted
+[Mon May 18 13:13:11 2026] [::1]:53864 [200]: GET /
+[Mon May 18 13:13:11 2026] [::1]:53864 Closing
+[Mon May 18 13:13:11 2026] [::1]:53878 Accepted
+[Mon May 18 13:13:11 2026] [::1]:53878 [200]: GET /?page=testroute_test
+[Mon May 18 13:13:11 2026] [::1]:53878 Closing
+[Mon May 18 13:15:22 2026] [::1]:47838 Accepted
+[Mon May 18 13:15:22 2026] [::1]:47838 [200]: GET /test_report.html
+[Mon May 18 13:15:22 2026] [::1]:47838 Closing

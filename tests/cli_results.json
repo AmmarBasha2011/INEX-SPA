@@ -5,7 +5,7 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusers_testTable_2026_05_18_13_11_52.sql\n"
     },
     "make:route": {
         "success": true,
@@ -61,7 +61,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_04_03_13_12_12.sql\n"
+        "output": "DB file created: createusersTable_2026_05_18_13_11_52.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -73,7 +73,7 @@
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-04-03 13:12:12.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-05-18 13:11:53.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
@@ -85,11 +85,11 @@
     },
     "list:routes": {
         "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
+        "output": "Available routes:\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_04_03_13_12_12.sql\n  createusers_testTable_2026_04_03_13_12_12.sql\n"
+        "output": "Available DB files:\n  createusersTable_2026_05_18_13_11_52.sql\n  createusers_testTable_2026_05_18_13_11_52.sql\n"
     },
     "clear:cache": {
         "success": true,
