@@ -152,6 +152,7 @@ ob_start();
         .status-success { background: #e6f9ed; color: var(--success); }
         .status-error { background: #fdeaea; color: var(--danger); }
         .status-fixed { background: #fff4e5; color: var(--warning); }
+        .status-unsolvable { background: #fdeaea; color: var(--danger); border: 1px dashed var(--danger); }
 
         pre {
             background: #272822;
@@ -214,14 +215,15 @@ ob_start();
 <body>
     <div class="sidebar">
         <h1>🚀 INEX SPA</h1>
-        <div class="nav-item active">Dashboard</div>
-        <div class="nav-item">CLI Commands</div>
-        <div class="nav-item">Core Classes</div>
-        <div class="nav-item">Web Routes</div>
-        <div class="nav-item">Fixed Issues</div>
+        <div class="nav-item active" onclick="showSection(event, 'dashboard-section')">Dashboard</div>
+        <div class="nav-item" onclick="showSection(event, 'cli-section')">CLI Commands</div>
+        <div class="nav-item" onclick="showSection(event, 'core-section')">Core Classes</div>
+        <div class="nav-item" onclick="showSection(event, 'web-section')">Web Routes</div>
+        <div class="nav-item" onclick="showSection(event, 'fixed-section')">Fixed Issues</div>
     </div>
 
     <div class="main">
+        <div id="dashboard-section" class="report-section">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
             <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
@@ -245,8 +247,9 @@ ob_start();
                 <span class="label">Fixed</span>
             </div>
         </div>
+        </div>
 
-        <div class="section">
+        <div id="cli-section" class="report-section section" style="display:none;">
             <h2>CLI Commands</h2>
             <div class="filters">
                 <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
@@ -273,7 +276,7 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="core-section" class="report-section section" style="display:none;">
             <h2>Core Classes & Utilities</h2>
             <table>
                 <thead>
@@ -295,7 +298,29 @@ ob_start();
             </table>
         </div>
 
-        <div class="section">
+        <div id="web-section" class="report-section section" style="display:none;">
+            <h2>Web Routes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Route</th>
+                        <th>Status</th>
+                        <th>HTTP Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($webRes as $name => $res): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($name) ?></td>
+                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><?= htmlspecialchars($res['status'] ?? 'N/A') ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="fixed-section" class="report-section section" style="display:none;">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                 <?php foreach ($fixedRes as $issue): ?>
@@ -309,13 +334,21 @@ ob_start();
     </div>
 
     <script>
+        function showSection(event, id) {
+            document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
         function filterTable(tableId, status) {
             const table = document.getElementById(tableId + '-table');
             const rows = table.querySelectorAll('.test-row');
             const buttons = document.querySelectorAll('.filter-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            // Note: event might be undefined if not called from click, but here it is
+            if (event) event.target.classList.add('active');
 
             rows.forEach(row => {
                 if (status === 'all' || row.dataset.status === status) {

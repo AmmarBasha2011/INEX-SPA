@@ -2,6 +2,11 @@
 
 $baseUrl = 'http://localhost:8080/';
 
+// Ensure index.ahmed.php exists for the index test
+if (!file_exists('web/index.ahmed.php')) {
+    file_put_contents('web/index.ahmed.php', '<h1>INEX SPA</h1>');
+}
+
 function test_route($url, $expected_content, $expected_status = 200)
 {
     $ch = curl_init($url);

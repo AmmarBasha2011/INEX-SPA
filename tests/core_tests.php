@@ -9,6 +9,12 @@ require_once 'core/functions/PHP/classes/Database.php';
 require_once 'core/functions/PHP/classes/UserAuth.php';
 require_once 'core/functions/PHP/classes/RateLimiter.php';
 require_once 'core/functions/PHP/classes/Firewall.php';
+require_once 'core/functions/PHP/classes/Language.php';
+require_once 'core/functions/PHP/classes/Security.php';
+require_once 'core/functions/PHP/classes/Logger.php';
+require_once 'core/functions/PHP/classes/CookieManager.php';
+require_once 'core/functions/PHP/classes/Layout.php';
+require_once 'core/functions/PHP/classes/Webhook.php';
 
 $results = [];
 
@@ -66,5 +72,35 @@ assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter cla
 // Test Firewall
 // Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
+
+// Test Language
+$langFile = 'lang/fr_test.json';
+file_put_contents($langFile, json_encode(['welcome' => 'Bienvenue {name}']));
+Language::setLanguage('fr_test');
+assert_test('Language::get', Language::get('welcome', ['name' => 'Ammar']) === 'Bienvenue Ammar', 'Expected translated string with placeholder');
+unlink($langFile);
+
+// Test Security
+$dirty = '<script>alert("xss")</script><b>Hello</b>';
+$clean = Security::sanitizeInput($dirty);
+assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false && strpos($clean, '&lt;b&gt;Hello&lt;/b&gt;') !== false, 'Expected sanitized output');
+
+// Test Logger
+Logger::log('system', 'Test log message');
+assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_get_contents('core/logs/system.log'), 'Test log message') !== false, 'Log file should contain message');
+
+// Test CookieManager
+CookieManager::set('test_cookie', 'test_value', 1);
+// Note: $_COOKIE won't be populated until next request, but we can check if it sets the global for current process if we mock it or just check class exists
+assert_test('CookieManager::exists_mock', class_exists('CookieManager'), 'CookieManager class exists');
+
+// Test Layout
+Layout::start('content');
+echo "Layout Content";
+Layout::end();
+assert_test('Layout::section', Layout::section('content') === 'Layout Content', 'Expected captured section content');
+
+// Test Webhook
+assert_test('Webhook::exists', class_exists('Webhook'), 'Webhook class exists');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

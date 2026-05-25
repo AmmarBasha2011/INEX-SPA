@@ -501,11 +501,12 @@ if ($command === 'run:db') {
     foreach ($files as $file) {
         $relativePath = str_replace(DB_FOLDER . '/', '', $file);
         echo "Running: " . $relativePath . "\n";
+        $dbName = getEnvValue('DB_DRIVER') === 'sqlite' ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME');
         executeSQLFilePDO(
             getEnvValue('DB_HOST'), 
             getEnvValue('DB_USER'), 
             getEnvValue("DB_PASS"), 
-            getEnvValue('DB_NAME'), 
+            $dbName,
             $file
         );
     }
@@ -639,6 +640,7 @@ if ($command === 'clear:db') {
 if ($command === 'clear:db:tables') {
     require_once 'core/functions/PHP/classes/ClearDBTables.php';
     ClearDBTables::run();
+    echo "Database tables cleared!\n";
     exit(0);
 }
 
@@ -704,13 +706,15 @@ if ($command === 'make:sitemap') {
 }
 
 if ($command === 'install:import') {
-    $link = $args['1'] ?? readline("1- Enter Git repository URL: ");
-    if (!filter_var($link, FILTER_VALIDATE_URL)) {
-        exit("Invalid URL provided!\n");
-    }
+    $link = $args['1'] ?? readline("1- Enter Git repository URL or local path: ");
+    $isUrl = filter_var($link, FILTER_VALIDATE_URL);
 
-    // Extract repo name from URL
-    $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+    // Extract repo name from URL or local path
+    if ($isUrl) {
+        $repoName = basename(parse_url($link, PHP_URL_PATH), '.git');
+    } else {
+        $repoName = basename($link);
+    }
     
     $importDir = __DIR__ . '/core/import';
     $repoDir = $importDir . '/' . $repoName;
@@ -719,13 +723,25 @@ if ($command === 'install:import') {
         mkdir($importDir, 0777, true);
     }
 
-    echo "Cloning repository...\n";
-    $command = "git clone $link $repoDir";
-    exec($command, $output, $returnVar);
+    if ($isUrl) {
+        echo "Cloning repository...\n";
+        $command = "git clone $link $repoDir";
+        exec($command, $output, $returnVar);
 
-    if ($returnVar !== 0) {
-        echo "Error cloning repository!\n";
-        exit(1);
+        if ($returnVar !== 0) {
+            echo "Error cloning repository!\n";
+            exit(1);
+        }
+    } else {
+        if (!is_dir($link)) {
+            exit("Local path not found: $link\n");
+        }
+        echo "Copying local directory...\n";
+        exec("cp -r " . escapeshellarg($link) . " " . escapeshellarg($repoDir), $output, $returnVar);
+        if ($returnVar !== 0) {
+            echo "Error copying local directory!\n";
+            exit(1);
+        }
     }
 
     // Update package.json
