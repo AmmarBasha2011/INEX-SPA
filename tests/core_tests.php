@@ -96,7 +96,7 @@ assert_test('CookieManager::exists_mock', class_exists('CookieManager'), 'Cookie
 
 // Test Layout
 Layout::start('content');
-echo "Layout Content";
+echo 'Layout Content';
 Layout::end();
 assert_test('Layout::section', Layout::section('content') === 'Layout Content', 'Expected captured section content');
 
