@@ -113,6 +113,24 @@ $tests = [
         'command'  => 'php ammar clear:routes',
         'expected' => 'Route files cleared!',
     ],
+    'clear:db:tables' => [
+        'command'  => 'php ammar clear:db:tables',
+        'expected' => 'Database tables cleared!',
+    ],
+    'install:import' => [
+        'setup'      => 'mkdir -p tests/mock_import && touch tests/mock_import/init.php',
+        'command'    => 'php ammar install:import -1 tests/mock_import',
+        'expected'   => 'successfully',
+        'check_file' => 'core/import/mock_import',
+    ],
+    'list:import' => [
+        'command'  => 'php ammar list:import',
+        'expected' => 'mock_import',
+    ],
+    'delete:import' => [
+        'command'  => 'php ammar delete:import -1 mock_import',
+        'expected' => 'Import deleted: mock_import',
+    ],
 ];
 
 $results = [];
