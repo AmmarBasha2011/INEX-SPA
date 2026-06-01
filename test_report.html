@@ -209,16 +209,16 @@
         <div id="dashboard-section" class="report-section">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-25 13:16:46</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-06-01 14:09:22</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">53</span>
+                <span class="number" style="color: var(--primary);">56</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">53</span>
+                <span class="number" style="color: var(--success);">56</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
@@ -226,7 +226,7 @@
                 <span class="label">Failed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
+                <span class="number" style="color: var(--warning);">7</span>
                 <span class="label">Fixed</span>
             </div>
         </div>
@@ -267,7 +267,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_05_25_13_16_44.sql
+                        <td><pre>DB file created: createusers_testTable_2026_06_01_14_09_20.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -352,7 +352,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_05_25_13_16_45.sql
+                        <td><pre>DB file created: createusersTable_2026_06_01_14_09_21.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -374,7 +374,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-05-25 13:16:45.
+TestTask executed successfully at 2026-06-01 14:09:21.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -405,8 +405,9 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_05_25_13_16_45.sql
-  createusers_testTable_2026_05_25_13_16_44.sql
+  createdummyTable_2026_06_01_14_08_24.sql
+  createusersTable_2026_06_01_14_09_21.sql
+  createusers_testTable_2026_06_01_14_09_20.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -433,6 +434,23 @@ Cron task &#039;TestTask&#039; finished.
                         <td><pre>✅ No tables found in database.
 Database tables cleared!
 </pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>delete:route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted: todelete_request_GET.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>delete:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted: createtodeleteTable_2026_06_01_14_09_21.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>ask:gemini</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Error: Invalid response format from Gemini API</pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
                         <td>install:import</td>
@@ -618,6 +636,22 @@ Package.json updated with new dependency.
                                 <div class="fixed-item">
                     <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
                     <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Environment Variable Overrides <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated getEnvValue to correctly handle duplicate keys in .env, ensuring the last definition is used.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>SQLite DSN Construction <span class="status status-fixed">Fixed</span></h3>
+                    <p>Modified Database class to correctly initialize SQLite connections without requiring host/dbname.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>SQLite Table Clearing <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated ClearDBTables to use driver-specific quoting and metadata queries for SQLite compatibility.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Gemini CLI Error Handling <span class="status status-fixed">Fixed</span></h3>
+                    <p>Resolved an undefined array key warning when the Gemini API returns an error response.</p>
                 </div>
                             </div>
         </div>

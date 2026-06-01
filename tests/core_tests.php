@@ -18,6 +18,15 @@ require_once 'core/functions/PHP/classes/Webhook.php';
 
 $results = [];
 
+/**
+ * Executes a prepared SQL statement using the database connection.
+ */
+function executeStatement($sql, $params = [], $is_return = true)
+{
+    $DB = new Database();
+    return $DB->query($sql, $params, $is_return);
+}
+
 function assert_test($name, $condition, $message = '')
 {
     global $results;

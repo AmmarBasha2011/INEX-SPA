@@ -38,6 +38,8 @@ class Database
 
         if ($driver === 'sqlite') {
             $dsn = 'sqlite:'.($dbfile ?: 'database.sqlite');
+            $username = null;
+            $password = null;
         } else {
             $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
         }

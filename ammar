@@ -554,10 +554,10 @@ if ($command === 'delete:cache') {
 if ($command === 'ask:gemini') {
     $question = $args['1'] ?? readline("1- What's your question? ");
     $gemini = json_decode(useGemini($question), true);
-    if ($gemini['success'] == true) {
-        echo "Response: " . $gemini['message'];
+    if (isset($gemini['success']) && $gemini['success'] === true) {
+        echo "Response: " . ($gemini['message'] ?? 'No message received');
     } else {
-        echo "Error: " . $gemini['error'];
+        echo "Error: " . ($gemini['error'] ?? 'Unknown error');
     }
     exit(0);
 }

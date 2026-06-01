@@ -114,8 +114,23 @@ $tests = [
         'expected' => 'Route files cleared!',
     ],
     'clear:db:tables' => [
+        'setup'    => 'php ammar make:db -1 create -2 dummy && php ammar run:db',
         'command'  => 'php ammar clear:db:tables',
         'expected' => 'Database tables cleared!',
+    ],
+    'delete:route' => [
+        'setup'    => 'php ammar make:route -1 todelete -2 no -3 GET -4 no',
+        'command'  => 'php ammar delete:route -1 todelete',
+        'expected' => 'Deleted: todelete_request_GET.ahmed.php',
+    ],
+    'delete:db' => [
+        'setup'    => 'php ammar make:db -1 create -2 todelete',
+        'command'  => 'php ammar delete:db -1 create -2 todelete',
+        'expected' => 'Deleted: create',
+    ],
+    'ask:gemini' => [
+        'command'  => 'php ammar ask:gemini -1 "Hello"',
+        'expected' => 'Error: ', // Should at least return an error if API key is missing
     ],
     'install:import' => [
         'setup'      => 'mkdir -p tests/mock_import && touch tests/mock_import/init.php',

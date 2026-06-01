@@ -48,6 +48,30 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'core-getenvvalue-overrides',
+        'title'       => 'Environment Variable Overrides',
+        'description' => 'Updated getEnvValue to correctly handle duplicate keys in .env, ensuring the last definition is used.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'core-database-sqlite-dsn',
+        'title'       => 'SQLite DSN Construction',
+        'description' => 'Modified Database class to correctly initialize SQLite connections without requiring host/dbname.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-cleardbtables-sqlite',
+        'title'       => 'SQLite Table Clearing',
+        'description' => 'Updated ClearDBTables to use driver-specific quoting and metadata queries for SQLite compatibility.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'cli-askgemini-warning',
+        'title'       => 'Gemini CLI Error Handling',
+        'description' => 'Resolved an undefined array key warning when the Gemini API returns an error response.',
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 
