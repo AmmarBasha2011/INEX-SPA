@@ -97,6 +97,9 @@ class UserAuth
             return false;
         }
 
+        $password = $details['password'] ?? null;
+        unset($details['password']);
+
         // Extract values dynamically
         $params = [];
         $conditions = [];
@@ -109,13 +112,17 @@ class UserAuth
         $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($details)));
         $sql = "SELECT * FROM users WHERE $placeholders";
         $newUser = executeStatement($sql, array_values($details));
-        if (count($newUser) > 0) {
-            $_SESSION['user_id'] = $newUser[0]['id'];
 
-            return 'User Found';
-        } else {
-            return 'User Not Found';
+        if (count($newUser) > 0) {
+            $user = $newUser[0];
+            if ($password !== null && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+
+                return 'User Found';
+            }
         }
+
+        return 'User Not Found';
     }
 
     /**
@@ -246,10 +253,17 @@ class UserAuth
         }
 
         // Check if user already exists
-        $placeholders = implode(' AND ', array_map(fn ($k) => "$k = ?", array_keys($details)));
-        $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values($details));
+        $checkDetails = $details;
+        unset($checkDetails['password']);
+        $placeholders = implode(' AND ', array_map(fn ($k) => "$k = ?", array_keys($checkDetails)));
+        $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values($checkDetails));
         if (!empty($existingUser)) {
             return 'User already exists.';
+        }
+
+        // Hash password before saving
+        if (isset($details['password'])) {
+            $details['password'] = password_hash($details['password'], PASSWORD_DEFAULT);
         }
 
         // Insert new user
@@ -259,9 +273,11 @@ class UserAuth
 
         try {
             executeStatement($sql, array_values($details));
-            $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($details)));
+            $checkDetails = $details;
+            unset($checkDetails['password']);
+            $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($checkDetails)));
             $sql = "SELECT id FROM users WHERE $placeholders";
-            $newUser = executeStatement($sql, array_values($details))[0];
+            $newUser = executeStatement($sql, array_values($checkDetails))[0];
             $_SESSION['user_id'] = $newUser['id'];
 
             return 'User successfully registered.';
