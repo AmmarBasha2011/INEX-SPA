@@ -31,8 +31,10 @@ function assert_test($name, $condition, $message = '')
  * Global wrapper for executeStatement for Database class to work standalone if needed.
  */
 if (!function_exists('executeStatement')) {
-    function executeStatement($sql, $params = [], $is_return = true) {
+    function executeStatement($sql, $params = [], $is_return = true)
+    {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
 }
@@ -77,17 +79,21 @@ assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TAB
 
 // Test RateLimiter
 $storageFile = 'core/storage/rate_limit.json';
-if (file_exists($storageFile)) unlink($storageFile);
+if (file_exists($storageFile)) {
+    unlink($storageFile);
+}
 // We call it in a separate process because it might exit
 shell_exec('php -r "require_once \'core/functions/PHP/getEnvValue.php\'; require_once \'core/functions/PHP/classes/RateLimiter.php\'; RateLimiter::check(\'127.0.0.1\');"');
 assert_test('RateLimiter::functional', file_exists($storageFile), 'RateLimiter should create storage file');
 
 // Test Firewall
 $fwConfig = 'Json/firewall.json';
-if (!is_dir('Json')) mkdir('Json');
+if (!is_dir('Json')) {
+    mkdir('Json');
+}
 file_put_contents($fwConfig, json_encode([
-    'block_ips' => ['1.2.3.4'],
-    'redirect_blocked_to' => 'blocked'
+    'block_ips'           => ['1.2.3.4'],
+    'redirect_blocked_to' => 'blocked',
 ]));
 // Mock $_SERVER and headers
 $_SERVER['REMOTE_ADDR'] = '1.2.3.4';
@@ -96,7 +102,9 @@ assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists
 
 // Test Language
 $langFile = 'lang/fr_test.json';
-if (!is_dir('lang')) mkdir('lang');
+if (!is_dir('lang')) {
+    mkdir('lang');
+}
 file_put_contents($langFile, json_encode(['welcome' => 'Bienvenue {name}']));
 Language::setLanguage('fr_test');
 assert_test('Language::get', Language::get('welcome', ['name' => 'Ammar']) === 'Bienvenue Ammar', 'Expected translated string with placeholder');
