@@ -43,5 +43,6 @@ function getEnvValue($key)
     }
 
     $lookupKey = strtoupper($key);
+
     return isset($envData[$lookupKey]) ? $envData[$lookupKey] : null;
 }
