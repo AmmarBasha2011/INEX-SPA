@@ -9,6 +9,7 @@ if (!function_exists('executeStatement')) {
     function executeStatement($sql, $params = [], $is_return = true)
     {
         $DB = new Database();
+
         return $DB->query($sql, $params, $is_return);
     }
 }
@@ -27,15 +28,15 @@ $sql = UserAuth::generateSQL();
 executeStatement($sql, [], false);
 
 $userDetails = [
-    'name' => 'Test User',
-    'username' => 'testuserhash',
-    'email' => 'testuserhash@gmail.com',
+    'name'        => 'Test User',
+    'username'    => 'testuserhash',
+    'email'       => 'testuserhash@gmail.com',
     'phoneNumber' => '+201111111112',
-    'age' => 25,
-    'isCompany' => 0,
-    'domain' => 'sub.test.com',
-    'password' => 'secure_password_123',
-    'inviteCode' => '123456'
+    'age'         => 25,
+    'isCompany'   => 0,
+    'domain'      => 'sub.test.com',
+    'password'    => 'secure_password_123',
+    'inviteCode'  => '123456',
 ];
 
 $signUpResult = UserAuth::signUp($userDetails);
@@ -44,7 +45,7 @@ if ($signUpResult !== 'User successfully registered.') {
     exit(1);
 }
 
-$users = executeStatement("SELECT * FROM users WHERE username = ?", ['testuserhash']);
+$users = executeStatement('SELECT * FROM users WHERE username = ?', ['testuserhash']);
 $user = $users[0];
 
 if ($user['password'] === 'secure_password_123') {
