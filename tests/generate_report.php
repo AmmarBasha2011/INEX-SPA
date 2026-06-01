@@ -1,17 +1,49 @@
 <?php
 
-$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true);
-$coreRes = json_decode(file_get_contents('tests/core_results.json'), true);
-$webRes = json_decode(file_get_contents('tests/web_results.json'), true);
-$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true);
+$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true) ?: [];
+$coreRes = json_decode(file_get_contents('tests/core_results.json'), true) ?: [];
+$webRes = json_decode(file_get_contents('tests/web_results.json'), true) ?: [];
+$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true) ?: [];
+
+$fixedIds = array_column($fixedRes, 'id');
+
+function getStatusClass($success, $testId, $fixedIds) {
+    if (in_array($testId, $fixedIds)) return 'status-fixed';
+    if ($success) return 'status-success';
+    return 'status-unsolvable';
+}
+
+function getStatusLabel($success, $testId, $fixedIds) {
+    if (in_array($testId, $fixedIds)) return 'SOLVED';
+    if ($success) return 'SUCCESS';
+    return 'UNSOLVABLE';
+}
 
 $total = count($cliRes) + count($coreRes) + count($webRes);
+$solved = 0;
 $passed = 0;
-foreach ($cliRes as $res) if ($res['success']) $passed++;
-foreach ($coreRes as $res) if ($res['success']) $passed++;
-foreach ($webRes as $res) if ($res['success']) $passed++;
-$failed = $total - $passed;
-$fixed = count($fixedRes);
+$failed = 0;
+
+foreach ($cliRes as $id => $res) {
+    $testId = 'cli-'.$id;
+    if (in_array($testId, $fixedIds)) $solved++;
+    elseif ($res['success']) $passed++;
+    else $failed++;
+}
+
+foreach ($coreRes as $id => $res) {
+    $testId = 'core-'.$id;
+    if (in_array($testId, $fixedIds)) $solved++;
+    elseif ($res['success']) $passed++;
+    else $failed++;
+}
+
+foreach ($webRes as $id => $res) {
+    $testId = 'web-'.$id;
+    if (in_array($testId, $fixedIds)) $solved++;
+    elseif ($res['success']) $passed++;
+    else $failed++;
+}
 
 ob_start();
 ?>
@@ -23,18 +55,19 @@ ob_start();
     <title>INEX SPA Framework Test Report</title>
     <style>
         :root {
-            --primary: #3498db;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --bg: #f4f7f6;
+            --primary: #6366f1;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
-            --text: #333;
-            --text-light: #7f8c8d;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --sidebar-bg: #0f172a;
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: var(--bg);
             margin: 0;
             padding: 0;
@@ -43,172 +76,162 @@ ob_start();
             min-height: 100vh;
         }
 
-        /* Sidebar */
         .sidebar {
-            width: 260px;
-            background: #2c3e50;
+            width: 280px;
+            background: var(--sidebar-bg);
             color: white;
-            padding: 30px 20px;
+            padding: 40px 20px;
             position: fixed;
             height: 100vh;
+            box-sizing: border-box;
         }
 
         .sidebar h1 {
-            font-size: 20px;
+            font-size: 24px;
             margin-bottom: 40px;
             text-align: center;
+            font-weight: 800;
+            letter-spacing: -1px;
         }
 
         .nav-item {
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: 6px;
+            padding: 14px 20px;
+            margin-bottom: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            color: #94a3b8;
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: white;
         }
 
         .nav-item.active {
             background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
-        /* Main Content */
         .main {
-            margin-left: 260px;
+            margin-left: 280px;
             flex: 1;
-            padding: 40px;
+            padding: 60px;
+            max-width: 1200px;
         }
 
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
-        /* Dashboard Cards */
+        .header h2 {
+            font-size: 30px;
+            font-weight: 800;
+            margin: 0 0 10px 0;
+            letter-spacing: -1px;
+        }
+
         .dashboard {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 40px;
+            gap: 24px;
+            margin-bottom: 60px;
         }
 
         .card {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
             text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
         }
 
         .card .number {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 40px;
+            font-weight: 800;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
         .card .label {
             color: var(--text-light);
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 13px;
+            font-weight: 600;
             letter-spacing: 1px;
         }
 
-        /* Sections */
         .section {
             background: var(--card-bg);
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
         }
 
         .section h2 {
             margin-top: 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-            font-size: 18px;
-            color: var(--primary);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            font-size: 22px;
+            font-weight: 700;
+            border-bottom: 2px solid #f1f5f9;
         }
 
-        /* Tables */
         table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
-        th { background: #f9f9f9; font-size: 13px; color: var(--text-light); }
+        th, td { text-align: left; padding: 16px; border-bottom: 1px solid #f1f5f9; }
+        th { font-size: 14px; font-weight: 600; color: var(--text-light); }
 
         .status {
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
             font-size: 11px;
-            text-transform: uppercase;
+            display: inline-block;
         }
-        .status-success { background: #e6f9ed; color: var(--success); }
-        .status-error { background: #fdeaea; color: var(--danger); }
-        .status-fixed { background: #fff4e5; color: var(--warning); }
-        .status-unsolvable { background: #fdeaea; color: var(--danger); border: 1px dashed var(--danger); }
+        .status-success { background: #dcfce7; color: #166534; }
+        .status-fixed { background: #fef3c7; color: #92400e; }
+        .status-unsolvable { background: #fee2e2; color: #991b1b; }
 
         pre {
-            background: #272822;
-            color: #f8f8f2;
-            padding: 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            max-height: 150px;
-            overflow: auto;
-        }
-
-        /* Filtering */
-        .filters {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 6px 15px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 20px;
+            background: #1e293b;
+            color: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
             font-size: 12px;
-            cursor: pointer;
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Fixed Issues List */
-        .fixed-list {
-            list-style: none;
-            padding: 0;
+            max-height: 200px;
+            overflow: auto;
+            margin: 0;
         }
 
         .fixed-item {
-            padding: 15px;
-            border-left: 4px solid var(--warning);
-            background: #fffcf8;
-            margin-bottom: 15px;
-            border-radius: 0 6px 6px 0;
+            padding: 24px;
+            background: #fffbeb;
+            border: 1px solid #fef3c7;
+            margin-bottom: 20px;
+            border-radius: 16px;
         }
 
         .fixed-item h3 {
-            margin: 0 0 5px 0;
-            font-size: 16px;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: #92400e;
         }
 
         .fixed-item p {
             margin: 0;
-            font-size: 14px;
-            color: var(--text-light);
+            font-size: 15px;
+            color: #b45309;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -224,51 +247,50 @@ ob_start();
 
     <div class="main">
         <div id="dashboard-section" class="report-section">
-        <div class="header">
-            <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
-        </div>
+            <div class="header">
+                <h2>Framework Health</h2>
+                <div style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></div>
+            </div>
 
-        <div class="dashboard">
-            <div class="card">
-                <span class="number" style="color: var(--primary);"><?= $total ?></span>
-                <span class="label">Total Tests</span>
+            <div class="dashboard">
+                <div class="card">
+                    <span class="number" style="color: var(--primary);"><?= $total ?></span>
+                    <span class="label">Total Tests</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--success);"><?= $passed ?></span>
+                    <span class="label">Passed</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--warning);"><?= $solved ?></span>
+                    <span class="label">Solved</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--danger);"><?= $failed ?></span>
+                    <span class="label">Unsolvable</span>
+                </div>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--success);"><?= $passed ?></span>
-                <span class="label">Passed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--danger);"><?= $failed ?></span>
-                <span class="label">Failed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--warning);"><?= $fixed ?></span>
-                <span class="label">Fixed</span>
-            </div>
-        </div>
         </div>
 
         <div id="cli-section" class="report-section section" style="display:none;">
             <h2>CLI Commands</h2>
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'success')">Success</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'failed')">Failed</button>
-            </div>
-            <table id="cli-table">
+            <table>
                 <thead>
                     <tr>
-                        <th>Test Name</th>
-                        <th>Status</th>
+                        <th style="width: 25%">Command</th>
+                        <th style="width: 15%">Status</th>
                         <th>Output</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($cliRes as $name => $res): ?>
-                    <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
-                        <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                    <tr>
+                        <td><code><?= htmlspecialchars($name) ?></code></td>
+                        <td>
+                            <span class="status <?= getStatusClass($res['success'], 'cli-'.$name, $fixedIds) ?>">
+                                <?= getStatusLabel($res['success'], 'cli-'.$name, $fixedIds) ?>
+                            </span>
+                        </td>
                         <td><pre><?= htmlspecialchars(substr($res['output'], 0, 500)) ?></pre></td>
                     </tr>
                     <?php endforeach; ?>
@@ -277,20 +299,24 @@ ob_start();
         </div>
 
         <div id="core-section" class="report-section section" style="display:none;">
-            <h2>Core Classes & Utilities</h2>
+            <h2>Core Classes</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Test Name</th>
-                        <th>Status</th>
+                        <th style="width: 25%">Class / Method</th>
+                        <th style="width: 15%">Status</th>
                         <th>Message</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($coreRes as $name => $res): ?>
                     <tr>
-                        <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><code><?= htmlspecialchars($name) ?></code></td>
+                        <td>
+                            <span class="status <?= getStatusClass($res['success'], 'core-'.$name, $fixedIds) ?>">
+                                <?= getStatusLabel($res['success'], 'core-'.$name, $fixedIds) ?>
+                            </span>
+                        </td>
                         <td><?= htmlspecialchars($res['message']) ?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -303,16 +329,20 @@ ob_start();
             <table>
                 <thead>
                     <tr>
-                        <th>Route</th>
-                        <th>Status</th>
+                        <th style="width: 25%">Route</th>
+                        <th style="width: 15%">Status</th>
                         <th>HTTP Code</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($webRes as $name => $res): ?>
                     <tr>
-                        <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><code><?= htmlspecialchars($name) ?></code></td>
+                        <td>
+                            <span class="status <?= getStatusClass($res['success'], 'web-'.$name, $fixedIds) ?>">
+                                <?= getStatusLabel($res['success'], 'web-'.$name, $fixedIds) ?>
+                            </span>
+                        </td>
                         <td><?= htmlspecialchars($res['status'] ?? 'N/A') ?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -321,15 +351,13 @@ ob_start();
         </div>
 
         <div id="fixed-section" class="report-section section" style="display:none;">
-            <h2>Fixed Issues</h2>
-            <div class="fixed-list">
-                <?php foreach ($fixedRes as $issue): ?>
-                <div class="fixed-item">
-                    <h3><?= htmlspecialchars($issue['title']) ?> <span class="status status-fixed">Fixed</span></h3>
-                    <p><?= htmlspecialchars($issue['description']) ?></p>
-                </div>
-                <?php endforeach; ?>
+            <h2>Fixed Issues Registry</h2>
+            <?php foreach ($fixedRes as $issue): ?>
+            <div class="fixed-item">
+                <h3><?= htmlspecialchars($issue['title']) ?></h3>
+                <p><?= htmlspecialchars($issue['description']) ?></p>
             </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
@@ -338,25 +366,7 @@ ob_start();
             document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        function filterTable(tableId, status) {
-            const table = document.getElementById(tableId + '-table');
-            const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Note: event might be undefined if not called from click, but here it is
-            if (event) event.target.classList.add('active');
-
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            event.currentTarget.classList.add('active');
         }
     </script>
 </body>

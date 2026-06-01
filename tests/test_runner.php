@@ -48,6 +48,12 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'core-Language::get',
+        'title'       => 'Language::get type warning',
+        'description' => 'Resolved PHP Warning by adding array check for $placeholders and supporting default values.',
+        'status'      => 'FIXED',
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 

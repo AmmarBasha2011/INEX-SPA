@@ -7,7 +7,7 @@
         "success": true,
         "message": "Expected test_value_core"
     },
-    "Cache::update": {
+    "Cache::get_updated": {
         "success": true,
         "message": "Expected new_value_core"
     },
@@ -51,9 +51,9 @@
         "success": true,
         "message": "Auth SQL generated"
     },
-    "RateLimiter::exists": {
+    "RateLimiter::functional": {
         "success": true,
-        "message": "RateLimiter class exists"
+        "message": "RateLimiter should create storage file"
     },
     "Firewall::exists": {
         "success": true,
@@ -71,7 +71,7 @@
         "success": true,
         "message": "Log file should contain message"
     },
-    "CookieManager::exists_mock": {
+    "CookieManager::exists": {
         "success": true,
         "message": "CookieManager class exists"
     },
@@ -79,8 +79,8 @@
         "success": true,
         "message": "Expected captured section content"
     },
-    "Webhook::exists": {
+    "Webhook::url_validation": {
         "success": true,
-        "message": "Webhook class exists"
+        "message": "Webhook should return false for invalid URL"
     }
 }

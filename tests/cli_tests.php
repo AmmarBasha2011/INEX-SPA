@@ -10,10 +10,22 @@ $tests = [
         'expected'   => 'DB file created:',
         'check_file' => 'db/createusers_testTable_*.sql',
     ],
+    'run:db' => [
+        'command'    => 'php ammar run:db',
+        'expected'   => 'Running:',
+    ],
+    'delete:db' => [
+        'command'    => 'php ammar delete:db -1 create -2 users_test',
+        'expected'   => 'Deleted:',
+    ],
     'make:route' => [
         'command'    => 'php ammar make:route -1 testroute_test -2 no -3 GET -4 no',
         'expected'   => 'Route file created: testroute_test_request_GET.ahmed.php',
         'check_file' => 'web/testroute_test_request_GET.ahmed.php',
+    ],
+    'delete:route' => [
+        'command'    => 'php ammar delete:route -1 testroute_test',
+        'expected'   => 'Deleted:',
     ],
     'make:route_api' => [
         'command'    => 'php ammar make:route -1 testapi_test -2 no -3 GET -4 yes',
@@ -89,17 +101,22 @@ $tests = [
         'command'  => 'echo "yes" | php ammar delete:cron TestTask',
         'expected' => 'deleted successfully',
     ],
+    'clear:cron' => [
+        'setup'      => 'php ammar make:cron DummyTask',
+        'command'    => '(echo "yes"; echo "yes") | php ammar clear:cron',
+        'expected'   => 'Cron tasks clearing complete.',
+    ],
     'make:sitemap' => [
         'command'  => 'php ammar make:sitemap',
         'expected' => 'Sitemap generated!',
     ],
     'list:routes' => [
         'command'  => 'php ammar list:routes',
-        'expected' => 'testroute_test_request_GET.ahmed.php',
+        'expected' => 'testapi_test_request_GET_api.ahmed.php',
     ],
     'list:db' => [
         'command'  => 'php ammar list:db',
-        'expected' => 'createusers_testTable',
+        'expected' => 'createusersTable',
     ],
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
@@ -116,6 +133,16 @@ $tests = [
     'clear:db:tables' => [
         'command'  => 'php ammar clear:db:tables',
         'expected' => 'Database tables cleared!',
+    ],
+    'clear:start' => [
+        'setup'    => 'touch web/index.ahmed.php',
+        'command'  => 'php ammar clear:start',
+        'expected' => 'All startup files have been deleted!',
+    ],
+    'clear:docs' => [
+        'setup'    => 'touch "README (1).md" SUMMARY.md',
+        'command'  => 'php ammar clear:docs',
+        'expected' => 'All docs have been deleted!',
     ],
     'install:import' => [
         'setup'      => 'mkdir -p tests/mock_import && touch tests/mock_import/init.php',

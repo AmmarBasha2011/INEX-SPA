@@ -51,20 +51,32 @@ class Language
      * Looks up the translation for the given key in the currently loaded language
      * set. If the key is not found, the key itself is returned as a fallback.
      * It also supports dynamic value injection by replacing placeholders in the
-     * format `{placeholder_name}` with values from the `$placeholders` array.
+     * format `{placeholder_name}` or `{{ placeholder_name }}`.
      *
      * @param string $key          The unique key for the translation string.
+     * @param mixed  $default      Default value if key is not found, or placeholders array.
      * @param array  $placeholders An associative array where keys are placeholder names
      *                             (without curly braces) and values are the strings to
      *                             be injected.
      *
      * @return string The translated and formatted string, or the key if not found.
      */
-    public static function get($key, $placeholders = [])
+    public static function get($key, $default = null, $placeholders = [])
     {
-        $text = self::$translations[$key] ?? $key;
-        foreach ($placeholders as $placeholder => $value) {
-            $text = str_replace('{'.$placeholder.'}', $value, $text);
+        // Support old signature: get($key, $placeholders)
+        if (is_array($default)) {
+            $placeholders = $default;
+            $default = $key;
+        }
+
+        $text = self::$translations[$key] ?? ($default ?? $key);
+
+        if (is_array($placeholders)) {
+            foreach ($placeholders as $placeholder => $value) {
+                $text = str_replace('{'.$placeholder.'}', $value, $text);
+                $text = str_replace('{{ '.$placeholder.' }}', $value, $text);
+                $text = str_replace('{{'.$placeholder.'}}', $value, $text);
+            }
         }
 
         return $text;

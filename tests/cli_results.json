@@ -5,11 +5,23 @@
     },
     "make:db": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_05_25_13_16_44.sql\n"
+        "output": "DB file created: createusers_testTable_2026_06_01_13_22_56.sql\n"
+    },
+    "run:db": {
+        "success": true,
+        "output": "Running: createusers_testTable_2026_06_01_13_22_56.sql\n"
+    },
+    "delete:db": {
+        "success": true,
+        "output": "Deleted: createusers_testTable_2026_06_01_13_22_56.sql\n"
     },
     "make:route": {
         "success": true,
         "output": "Route file created: testroute_test_request_GET.ahmed.php\n"
+    },
+    "delete:route": {
+        "success": true,
+        "output": "Deleted: testroute_test.ahmed.php\nDeleted: testroute_test_request_GET.ahmed.php\n"
     },
     "make:route_api": {
         "success": true,
@@ -61,7 +73,7 @@
     },
     "make:auth": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_05_25_13_16_45.sql\n"
+        "output": "DB file created: createusersTable_2026_06_01_13_22_57.sql\n"
     },
     "make:cron": {
         "success": true,
@@ -69,15 +81,19 @@
     },
     "list:cron": {
         "success": true,
-        "output": "Available cron tasks:\n  - ExampleTask\n  - TestTask\n"
+        "output": "Available cron tasks:\n  - TestTask\n"
     },
     "run:cron": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-05-25 13:16:45.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-06-01 13:22:57.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
     },
     "delete:cron": {
         "success": true,
         "output": "Cron task file '\/app\/core\/cron\/tasks\/TestTask.php' deleted successfully.\n"
+    },
+    "clear:cron": {
+        "success": true,
+        "output": "WARNING: This will delete ALL cron task files in 'core\/cron\/tasks\/'.\nDeleted: DummyTask.php\n\nCron tasks clearing complete.\nSuccessfully deleted: 1 file(s).\n"
     },
     "make:sitemap": {
         "success": true,
@@ -85,11 +101,11 @@
     },
     "list:routes": {
         "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
+        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n"
     },
     "list:db": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_05_25_13_16_45.sql\n  createusers_testTable_2026_05_25_13_16_44.sql\n"
+        "output": "Available DB files:\n  createusersTable_2026_06_01_13_22_57.sql\n"
     },
     "clear:cache": {
         "success": true,
@@ -105,7 +121,15 @@
     },
     "clear:db:tables": {
         "success": true,
-        "output": "\u2705 No tables found in database.\nDatabase tables cleared!\n"
+        "output": "\ud83d\uddd1\ufe0f Deleted table: users_test\n\ud83d\udd25 All tables in database 'database.sqlite' have been deleted!\nDatabase tables cleared!\n"
+    },
+    "clear:start": {
+        "success": true,
+        "output": "\ud83d\uddd1\ufe0f Deleted file: \/app\/web\/index.ahmed.php\n\u274c Not found file: \/app\/public\/script.js\n\u274c Not found file: \/app\/public\/style.css\n\ud83d\uddd1\ufe0f Deleted file: \/app\/public\/sitemap.xml\n\u274c Not found file: \/app\/layouts\/main.ahmed.php\n\u274c Not found file: \/app\/lang\/ar.json\n\u274c Not found file: \/app\/lang\/en.json\n\u274c Not found file: \/app\/db\/createusersTable_2025_03_16_08_47_56.sql\n\u274c Not found file: \/app\/core\/cache\/14c4b06b824ec593239362517f538b29.cache\n\ud83d\udd25 All startup files have been deleted!\n"
+    },
+    "clear:docs": {
+        "success": true,
+        "output": "\ud83d\uddd1\ufe0f Deleted file: \/app\/README (1).md\n\u274c File not found: \/app\/README.md\n\ud83d\uddd1\ufe0f Deleted file: \/app\/SUMMARY.md\n\u274c File not found: \/app\/LICENSE\n\u274c Not found folder: \/app\/about-me\n\u274c Not found folder: \/app\/changelog\n\u274c Not found folder: \/app\/inex-spa\n\u274c Not found folder: \/app\/.gitbook\n\ud83d\udd25 All docs have been deleted!\n"
     },
     "install:import": {
         "success": true,
