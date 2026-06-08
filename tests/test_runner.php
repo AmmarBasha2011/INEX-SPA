@@ -33,7 +33,7 @@ if ($connection) {
 }
 
 // Kill the temporary server
-shell_exec("kill $(lsof -t -i:8080) 2>/dev/null");
+shell_exec('kill $(lsof -t -i:8080) 2>/dev/null');
 
 // 4. Track Fixed Issues
 $fixedIssues = [
