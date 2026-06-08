@@ -339,8 +339,11 @@ if ($command === 'make:db') {
     $filename = "{$action}{$table}Table_{$timestamp}.sql";
     $filePath = DB_FOLDER . '/' . $filename;
     
+    $driver = getEnvValue('DB_DRIVER');
+    $autoIncrement = ($driver === 'sqlite') ? 'INTEGER PRIMARY KEY AUTOINCREMENT' : 'INT PRIMARY KEY AUTO_INCREMENT';
+
     $sqlTemplate = match ($action) {
-        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id INT PRIMARY KEY AUTO_INCREMENT,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
+        'create' => "CREATE TABLE IF NOT EXISTS $table (\n    id $autoIncrement,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n",
         'delete' => "DROP TABLE IF EXISTS $table;\n",
         'addFieldTo' => "ALTER TABLE $table ADD COLUMN new_field VARCHAR(255);\n",
         'truncate' => "TRUNCATE TABLE $table;\n",
@@ -554,10 +557,10 @@ if ($command === 'delete:cache') {
 if ($command === 'ask:gemini') {
     $question = $args['1'] ?? readline("1- What's your question? ");
     $gemini = json_decode(useGemini($question), true);
-    if ($gemini['success'] == true) {
-        echo "Response: " . $gemini['message'];
+    if ($gemini['success'] === true) {
+        echo "Response: " . ($gemini['message'] ?? 'No message returned');
     } else {
-        echo "Error: " . $gemini['error'];
+        echo "Error: " . ($gemini['error'] ?? 'Unknown error');
     }
     exit(0);
 }

@@ -15,6 +15,9 @@ require_once 'core/functions/PHP/classes/Logger.php';
 require_once 'core/functions/PHP/classes/CookieManager.php';
 require_once 'core/functions/PHP/classes/Layout.php';
 require_once 'core/functions/PHP/classes/Webhook.php';
+require_once 'core/functions/PHP/animate.php';
+require_once 'core/functions/PHP/getSlashData.php';
+require_once 'core/functions/PHP/runDB.php';
 
 $results = [];
 
@@ -36,7 +39,7 @@ assert_test('Cache::get', Cache::get('test_key_core') === 'test_value_core', 'Ex
 Cache::update('test_key_core', 'new_value_core');
 assert_test('Cache::update', Cache::get('test_key_core') === 'new_value_core', 'Expected new_value_core');
 Cache::delete('test_key_core');
-assert_test('Cache::delete', Cache::get('test_key_core') === false, 'Expected false after delete');
+assert_test('Cache::get_after_delete', Cache::get('test_key_core') === false, 'Expected false after delete');
 
 // Test Session
 Session::make('sess_key_core', 'sess_val_core');
@@ -66,11 +69,9 @@ assert_test('Database::instance', $db instanceof Database, 'Database instance cr
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
 
 // Test RateLimiter
-// We can't easily test check() because it calls exit(), but we can check if it exists
 assert_test('RateLimiter::exists', class_exists('RateLimiter'), 'RateLimiter class exists');
 
 // Test Firewall
-// Firewall::check() also might exit or redirect, but we can check if the class exists
 assert_test('Firewall::exists', class_exists('Firewall'), 'Firewall class exists');
 
 // Test Language
@@ -91,8 +92,7 @@ assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_ge
 
 // Test CookieManager
 CookieManager::set('test_cookie', 'test_value', 1);
-// Note: $_COOKIE won't be populated until next request, but we can check if it sets the global for current process if we mock it or just check class exists
-assert_test('CookieManager::exists_mock', class_exists('CookieManager'), 'CookieManager class exists');
+assert_test('CookieManager::exists', class_exists('CookieManager'), 'CookieManager class exists');
 
 // Test Layout
 Layout::start('content');
@@ -102,5 +102,17 @@ assert_test('Layout::section', Layout::section('content') === 'Layout Content', 
 
 // Test Webhook
 assert_test('Webhook::exists', class_exists('Webhook'), 'Webhook class exists');
+
+// Test animate.php
+ob_start();
+animate("#test-element", "fade-in", 1000);
+$animationOutput = ob_get_clean();
+assert_test('animate', !empty($animationOutput), 'Animation should produce output');
+
+// Test getSlashData.php
+assert_test('getSlashData', getSlashData('index.ahmed.php') !== 'Not Found', 'Should find index.ahmed.php');
+
+// Test runDB.php
+assert_test('runDB_function', function_exists('runDB'), 'runDB function should exist');
 
 file_put_contents('tests/core_results.json', json_encode($results, JSON_PRETTY_PRINT));

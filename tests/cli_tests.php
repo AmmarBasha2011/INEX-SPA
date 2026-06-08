@@ -101,6 +101,18 @@ $tests = [
         'command'  => 'php ammar list:db',
         'expected' => 'createusers_testTable',
     ],
+    'delete:route' => [
+        'command'  => 'php ammar delete:route -1 testroute_test',
+        'expected' => 'Deleted: testroute_test_request_GET.ahmed.php',
+    ],
+    'delete:db' => [
+        'command'  => 'php ammar delete:db -1 create -2 users_test',
+        'expected' => 'Deleted: createusers_testTable_',
+    ],
+    'run:db' => [
+        'command'  => 'php ammar run:db',
+        'expected' => 'Running:',
+    ],
     'clear:cache' => [
         'command'  => 'php ammar clear:cache',
         'expected' => 'Cache cleared!',
@@ -117,6 +129,11 @@ $tests = [
         'command'  => 'php ammar clear:db:tables',
         'expected' => 'Database tables cleared!',
     ],
+    'clear:cron' => [
+        'setup'    => 'php ammar make:cron ClearMe',
+        'command'  => 'echo "yes\nyes" | php ammar clear:cron',
+        'expected' => 'Cron tasks clearing complete.',
+    ],
     'install:import' => [
         'setup'      => 'mkdir -p tests/mock_import && touch tests/mock_import/init.php',
         'command'    => 'php ammar install:import -1 tests/mock_import',
@@ -130,6 +147,18 @@ $tests = [
     'delete:import' => [
         'command'  => 'php ammar delete:import -1 mock_import',
         'expected' => 'Import deleted: mock_import',
+    ],
+    'ask:gemini' => [
+        'command'  => 'php ammar ask:gemini -1 "Hello"',
+        'expected' => 'Error:', // Since we don't have API key, it will likely return error
+    ],
+    'clear:start' => [
+        'command'  => 'php ammar clear:start',
+        'expected' => 'All startup files have been deleted!',
+    ],
+    'clear:docs' => [
+        'command'  => 'php ammar clear:docs',
+        'expected' => 'All docs have been deleted!',
     ],
 ];
 

@@ -7,7 +7,7 @@ if (!file_exists('web/index.ahmed.php')) {
     file_put_contents('web/index.ahmed.php', '<h1>INEX SPA</h1>');
 }
 
-function test_route($url, $expected_content, $expected_status = 200)
+function test_route($url, $expected_content = null, $expected_status = 200)
 {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -15,7 +15,10 @@ function test_route($url, $expected_content, $expected_status = 200)
     $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    $success = ($status === $expected_status) && (strpos($response, $expected_content) !== false);
+    $success = ($status === $expected_status);
+    if ($expected_content !== null && $success) {
+        $success = (strpos($response, $expected_content) !== false);
+    }
 
     return [
         'success'  => $success,
@@ -30,11 +33,26 @@ $results = [];
 if (!file_exists('web/testroute_test.ahmed.php')) {
     file_put_contents('web/testroute_test.ahmed.php', 'testroute content');
 }
+if (!file_exists('web/testapi_test_request_GET_api.ahmed.php')) {
+    file_put_contents('web/testapi_test_request_GET_api.ahmed.php', '{"status":"api success"}');
+}
+if (!file_exists('web/dynamic_test_dynamic.ahmed.php')) {
+    file_put_contents('web/dynamic_test_dynamic.ahmed.php', 'dynamic content');
+}
 
-// Test Index Route - checking for "INEX SPA" which is in the restored index.ahmed.php
+// Test Index Route
 $results['index'] = test_route($baseUrl, 'INEX SPA');
 
 // Test a standard route
 $results['testroute'] = test_route($baseUrl.'?page=testroute_test', 'testroute');
+
+// Test API route
+$results['api_route'] = test_route($baseUrl.'?page=testapi_test', 'api success');
+
+// Test Dynamic route
+$results['dynamic_route'] = test_route($baseUrl.'?page=dynamic_test/123', 'dynamic content');
+
+// Test 404 route
+$results['404_route'] = test_route($baseUrl.'?page=non_existent_route', 'Not Found', 200); // INEX SPA returns "Not Found" but 200 OK often unless specified
 
 file_put_contents('tests/web_results.json', json_encode($results, JSON_PRETTY_PRINT));

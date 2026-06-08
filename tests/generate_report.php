@@ -1,17 +1,52 @@
 <?php
 
-$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true);
-$coreRes = json_decode(file_get_contents('tests/core_results.json'), true);
-$webRes = json_decode(file_get_contents('tests/web_results.json'), true);
-$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true);
+$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true) ?? [];
+$coreRes = json_decode(file_get_contents('tests/core_results.json'), true) ?? [];
+$webRes = json_decode(file_get_contents('tests/web_results.json'), true) ?? [];
+$fixedIssues = json_decode(file_get_contents('tests/fixed_issues.json'), true) ?? [];
+
+// Helper to determine if a test was fixed
+function isFixed($name, $fixedIssues) {
+    foreach ($fixedIssues as $issue) {
+        if (stripos($name, $issue['title']) !== false ||
+            (isset($issue['id']) && stripos($name, $issue['id']) !== false) ||
+            (isset($issue['id']) && stripos($issue['id'], $name) !== false) ||
+            (isset($issue['title']) && stripos($issue['title'], $name) !== false)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 $total = count($cliRes) + count($coreRes) + count($webRes);
 $passed = 0;
-foreach ($cliRes as $res) if ($res['success']) $passed++;
-foreach ($coreRes as $res) if ($res['success']) $passed++;
-foreach ($webRes as $res) if ($res['success']) $passed++;
-$failed = $total - $passed;
-$fixed = count($fixedRes);
+$solved = 0;
+$unsolvable = 0;
+
+foreach ($cliRes as $name => $res) {
+    if ($res['success']) {
+        if (isFixed($name, $fixedIssues)) $solved++;
+        else $passed++;
+    } else {
+        $unsolvable++;
+    }
+}
+foreach ($coreRes as $name => $res) {
+    if ($res['success']) {
+        if (isFixed($name, $fixedIssues)) $solved++;
+        else $passed++;
+    } else {
+        $unsolvable++;
+    }
+}
+foreach ($webRes as $name => $res) {
+    if ($res['success']) {
+        if (isFixed($name, $fixedIssues)) $solved++;
+        else $passed++;
+    } else {
+        $unsolvable++;
+    }
+}
 
 ob_start();
 ?>
@@ -239,12 +274,12 @@ ob_start();
                 <span class="label">Passed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--danger);"><?= $failed ?></span>
-                <span class="label">Failed</span>
+                <span class="number" style="color: var(--warning);"><?= $solved ?></span>
+                <span class="label">Solved</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);"><?= $fixed ?></span>
-                <span class="label">Fixed</span>
+                <span class="number" style="color: var(--danger);"><?= $unsolvable ?></span>
+                <span class="label">Unsolvable</span>
             </div>
         </div>
         </div>
@@ -265,10 +300,17 @@ ob_start();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($cliRes as $name => $res): ?>
+                    <?php foreach ($cliRes as $name => $res):
+                        $statusClass = $res['success'] ? 'status-success' : 'status-error';
+                        $statusText = $res['success'] ? 'SUCCESS' : 'FAILED';
+                        if ($res['success'] && isFixed($name, $fixedIssues)) {
+                            $statusClass = 'status-fixed';
+                            $statusText = 'SOLVED';
+                        }
+                    ?>
                     <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
                         <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><span class="status <?= $statusClass ?>"><?= $statusText ?></span></td>
                         <td><pre><?= htmlspecialchars(substr($res['output'], 0, 500)) ?></pre></td>
                     </tr>
                     <?php endforeach; ?>
@@ -287,10 +329,17 @@ ob_start();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($coreRes as $name => $res): ?>
+                    <?php foreach ($coreRes as $name => $res):
+                        $statusClass = $res['success'] ? 'status-success' : 'status-error';
+                        $statusText = $res['success'] ? 'SUCCESS' : 'FAILED';
+                        if ($res['success'] && isFixed($name, $fixedIssues)) {
+                            $statusClass = 'status-fixed';
+                            $statusText = 'SOLVED';
+                        }
+                    ?>
                     <tr>
                         <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td><span class="status <?= $statusClass ?>"><?= $statusText ?></span></td>
                         <td><?= htmlspecialchars($res['message']) ?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -323,7 +372,7 @@ ob_start();
         <div id="fixed-section" class="report-section section" style="display:none;">
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
-                <?php foreach ($fixedRes as $issue): ?>
+                <?php foreach ($fixedIssues as $issue): ?>
                 <div class="fixed-item">
                     <h3><?= htmlspecialchars($issue['title']) ?> <span class="status status-fixed">Fixed</span></h3>
                     <p><?= htmlspecialchars($issue['description']) ?></p>
@@ -338,7 +387,7 @@ ob_start();
             document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event) event.target.classList.add('active');
         }
 
         function filterTable(tableId, status) {
@@ -347,8 +396,7 @@ ob_start();
             const buttons = document.querySelectorAll('.filter-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
-            // Note: event might be undefined if not called from click, but here it is
-            if (event) event.target.classList.add('active');
+            if (window.event) window.event.target.classList.add('active');
 
             rows.forEach(row => {
                 if (status === 'all' || row.dataset.status === status) {

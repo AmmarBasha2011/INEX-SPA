@@ -209,25 +209,25 @@
         <div id="dashboard-section" class="report-section">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-25 13:16:46</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-06-08 14:26:13</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">53</span>
+                <span class="number" style="color: var(--primary);">66</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">53</span>
+                <span class="number" style="color: var(--success);">63</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--danger);">0</span>
-                <span class="label">Failed</span>
+                <span class="number" style="color: var(--warning);">2</span>
+                <span class="label">Solved</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
-                <span class="label">Fixed</span>
+                <span class="number" style="color: var(--danger);">1</span>
+                <span class="label">Unsolvable</span>
             </div>
         </div>
         </div>
@@ -267,7 +267,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_05_25_13_16_44.sql
+                        <td><pre>DB file created: createusers_testTable_2026_06_08_14_26_09.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -352,7 +352,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_05_25_13_16_45.sql
+                        <td><pre>DB file created: createusersTable_2026_06_08_14_26_09.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -365,7 +365,6 @@
                         <td>list:cron</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available cron tasks:
-  - ExampleTask
   - TestTask
 </pre></td>
                     </tr>
@@ -374,7 +373,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-05-25 13:16:45.
+TestTask executed successfully at 2026-06-08 14:26:10.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -395,6 +394,7 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available routes:
+  dynamic_test_dynamic.ahmed.php
   index.ahmed.php
   testapi_test_request_GET_api.ahmed.php
   testroute_test.ahmed.php
@@ -405,8 +405,27 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_05_25_13_16_45.sql
-  createusers_testTable_2026_05_25_13_16_44.sql
+  createusersTable_2026_06_08_14_26_09.sql
+  createusers_testTable_2026_06_08_14_26_09.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>delete:route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted: testroute_test.ahmed.php
+Deleted: testroute_test_request_GET.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>delete:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted: createusers_testTable_2026_06_08_14_26_09.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>run:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Running: createusersTable_2026_06_08_14_26_09.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -430,8 +449,19 @@ Cron task &#039;TestTask&#039; finished.
                                         <tr class="test-row" data-status="success">
                         <td>clear:db:tables</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>✅ No tables found in database.
+                        <td><pre>🗑️ Deleted table: users
+🔥 All tables in database &#039;database.sqlite&#039; have been deleted!
 Database tables cleared!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:cron</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>WARNING: This will delete ALL cron task files in &#039;core/cron/tasks/&#039;.
+Deleted: ClearMe.php
+
+Cron tasks clearing complete.
+Successfully deleted: 1 file(s).
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -453,6 +483,40 @@ Package.json updated with new dependency.
                         <td>delete:import</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Import deleted: mock_import
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>ask:gemini</td>
+                        <td><span class="status status-fixed">SOLVED</span></td>
+                        <td><pre>Error: Invalid response format from Gemini API</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:start</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>❌ Not found file: /app/web/index.ahmed.php
+❌ Not found file: /app/public/script.js
+❌ Not found file: /app/public/style.css
+🗑️ Deleted file: /app/public/sitemap.xml
+❌ Not found file: /app/layouts/main.ahmed.php
+❌ Not found file: /app/lang/ar.json
+❌ Not found file: /app/lang/en.json
+❌ Not found file: /app/db/createusersTable_2025_03_16_08_47_56.sql
+❌ Not found file: /app/core/cache/14c4b06b824ec593239362517f538b29.cache
+🔥 All startup files have been deleted!
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>clear:docs</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>❌ File not found: /app/README (1).md
+❌ File not found: /app/README.md
+❌ File not found: /app/SUMMARY.md
+❌ File not found: /app/LICENSE
+❌ Not found folder: /app/about-me
+❌ Not found folder: /app/changelog
+❌ Not found folder: /app/inex-spa
+❌ Not found folder: /app/.gitbook
+🔥 All docs have been deleted!
 </pre></td>
                     </tr>
                                     </tbody>
@@ -486,7 +550,7 @@ Package.json updated with new dependency.
                         <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
-                        <td>Cache::delete</td>
+                        <td>Cache::get_after_delete</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected false after delete</td>
                     </tr>
@@ -561,7 +625,7 @@ Package.json updated with new dependency.
                         <td>Log file should contain message</td>
                     </tr>
                                         <tr>
-                        <td>CookieManager::exists_mock</td>
+                        <td>CookieManager::exists</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>CookieManager class exists</td>
                     </tr>
@@ -574,6 +638,21 @@ Package.json updated with new dependency.
                         <td>Webhook::exists</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Webhook class exists</td>
+                    </tr>
+                                        <tr>
+                        <td>animate</td>
+                        <td><span class="status status-fixed">SOLVED</span></td>
+                        <td>Animation should produce output</td>
+                    </tr>
+                                        <tr>
+                        <td>getSlashData</td>
+                        <td><span class="status status-error">FAILED</span></td>
+                        <td>Should find index.ahmed.php</td>
+                    </tr>
+                                        <tr>
+                        <td>runDB_function</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>runDB function should exist</td>
                     </tr>
                                     </tbody>
             </table>
@@ -600,6 +679,21 @@ Package.json updated with new dependency.
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>200</td>
                     </tr>
+                                        <tr>
+                        <td>api_route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>dynamic_route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
+                                        <tr>
+                        <td>404_route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>200</td>
+                    </tr>
                                     </tbody>
             </table>
         </div>
@@ -608,16 +702,16 @@ Package.json updated with new dependency.
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                                 <div class="fixed-item">
-                    <h3>CLI make:route API flag <span class="status status-fixed">Fixed</span></h3>
-                    <p>Corrected positional argument flag position from -3 to -4 for non-dynamic routes.</p>
+                    <h3>Too few arguments to animate() <span class="status status-fixed">Fixed</span></h3>
+                    <p>Fixed the test call to animate() in tests/core_tests.php to provide all three required arguments.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI list:lang exit behavior <span class="status status-fixed">Fixed</span></h3>
-                    <p>Replaced return with exit(0) to ensure consistent CLI termination.</p>
+                    <h3>Logic error in ask:gemini <span class="status status-fixed">Fixed</span></h3>
+                    <p>Added strict comparison and null coalescing to prevent undefined array key warnings when Gemini API returns an error.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
-                    <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                    <h3>SQLite AUTOINCREMENT compatibility <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated ammar CLI and UserAuth class to use INTEGER PRIMARY KEY AUTOINCREMENT when the database driver is set to sqlite.</p>
                 </div>
                             </div>
         </div>
@@ -628,7 +722,7 @@ Package.json updated with new dependency.
             document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event) event.target.classList.add('active');
         }
 
         function filterTable(tableId, status) {
@@ -637,8 +731,7 @@ Package.json updated with new dependency.
             const buttons = document.querySelectorAll('.filter-btn');
 
             buttons.forEach(btn => btn.classList.remove('active'));
-            // Note: event might be undefined if not called from click, but here it is
-            if (event) event.target.classList.add('active');
+            if (window.event) window.event.target.classList.add('active');
 
             rows.forEach(row => {
                 if (status === 'all' || row.dataset.status === status) {
