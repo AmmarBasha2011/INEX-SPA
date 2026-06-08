@@ -203,10 +203,12 @@ function getPage($RouteName)
         return;
     }
 
-    if (file_exists("public/{$_GET['page']}") && is_file("public/{$_GET['page']}")) {
-        include "public/{$_GET['page']}";
+    if (strpos($_GET['page'], '..') === false) {
+        if (file_exists("public/{$_GET['page']}") && is_file("public/{$_GET['page']}")) {
+            include "public/{$_GET['page']}";
 
-        return;
+            return;
+        }
     }
 
     $RouteData = getSlashData($_GET['page']);

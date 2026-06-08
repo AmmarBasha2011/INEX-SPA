@@ -21,7 +21,12 @@ class CookieManager
     public static function set($name, $value, $days = 7)
     {
         $expiry = time() + ($days * 24 * 60 * 60);
-        setcookie($name, $value, $expiry, '/');
+        setcookie($name, $value, [
+            'expires'  => $expiry,
+            'path'     => '/',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
     }
 
     /**
