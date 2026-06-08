@@ -105,7 +105,7 @@ assert_test('Webhook::exists', class_exists('Webhook'), 'Webhook class exists');
 
 // Test animate.php
 ob_start();
-animate("#test-element", "fade-in", 1000);
+animate('#test-element', 'fade-in', 1000);
 $animationOutput = ob_get_clean();
 assert_test('animate', !empty($animationOutput), 'Animation should produce output');
 
