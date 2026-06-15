@@ -151,10 +151,11 @@ function getPage($RouteName)
     global $Ahmed;
 
     if (strpos($RouteName, '..') !== false) {
-        if (file_exists(__DIR__ . '/../../../core/errors/403.php')) {
+        if (file_exists(__DIR__.'/../../../core/errors/403.php')) {
             loadScripts();
-            include __DIR__ . '/../../../core/errors/403.php';
+            include __DIR__.'/../../../core/errors/403.php';
         }
+
         return;
     }
 
