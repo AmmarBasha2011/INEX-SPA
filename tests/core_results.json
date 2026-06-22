@@ -39,6 +39,14 @@
         "success": true,
         "message": "Non-numeric string"
     },
+    "Validation::isBool": {
+        "success": true,
+        "message": "Boolean validation"
+    },
+    "Validation::isDomain": {
+        "success": true,
+        "message": "Domain validation"
+    },
     "AhmedTemplate::render": {
         "success": true,
         "message": "Expected rendered output"
@@ -71,9 +79,17 @@
         "success": true,
         "message": "Log file should contain message"
     },
-    "CookieManager::exists_mock": {
+    "Logger::log_custom": {
         "success": true,
-        "message": "CookieManager class exists"
+        "message": "Custom log type file should be created"
+    },
+    "CookieManager::exists": {
+        "success": true,
+        "message": "Cookie should exist in mock"
+    },
+    "CookieManager::get": {
+        "success": true,
+        "message": "Cookie value should match mock"
     },
     "Layout::section": {
         "success": true,

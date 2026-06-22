@@ -34,19 +34,15 @@ class Logger
         $date = date('Y-m-d H:i:s');
         $entry = "[$date] [$type] $message".PHP_EOL;
 
-        switch ($type) {
-            case 'error':
-                file_put_contents(self::$logPath.'errors.log', $entry, FILE_APPEND);
-                break;
-            case 'security':
-                file_put_contents(self::$logPath.'security.log', $entry, FILE_APPEND);
-                break;
-            case 'api':
-                file_put_contents(self::$logPath.'api.log', $entry, FILE_APPEND);
-                break;
-            default:
-                file_put_contents(self::$logPath.'system.log', $entry, FILE_APPEND);
-        }
+        $fileName = match ($type) {
+            'error' => 'errors.log',
+            'security' => 'security.log',
+            'api' => 'api.log',
+            'system' => 'system.log',
+            default => $type.'.log',
+        };
+
+        file_put_contents(self::$logPath.$fileName, $entry, FILE_APPEND);
     }
 
     /**

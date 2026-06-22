@@ -90,8 +90,9 @@ $tests = [
         'expected' => 'deleted successfully',
     ],
     'make:sitemap' => [
-        'command'  => 'php ammar make:sitemap',
-        'expected' => 'Sitemap generated!',
+        'command'    => 'php ammar make:sitemap',
+        'expected'   => 'Sitemap generated!',
+        'check_file' => 'public/sitemap.xml',
     ],
     'list:routes' => [
         'command'  => 'php ammar list:routes',

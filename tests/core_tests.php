@@ -49,6 +49,8 @@ assert_test('Validation::isEmail', Validation::isEmail('test@example.com') === t
 assert_test('Validation::isEmail_invalid', Validation::isEmail('not-an-email') === false, 'Invalid email');
 assert_test('Validation::isNumber', Validation::isNumber('123') === true, 'Numeric string');
 assert_test('Validation::isNumber_invalid', Validation::isNumber('abc') === false, 'Non-numeric string');
+assert_test('Validation::isBool', Validation::isBool(true) && Validation::isBool('false') && !Validation::isBool('not-a-bool'), 'Boolean validation');
+assert_test('Validation::isDomain', Validation::isDomain('example.com') && !Validation::isDomain('not a domain'), 'Domain validation');
 
 // Test AhmedTemplate
 $templateFile = 'tests/test_template_core.ahmed.php';
@@ -88,11 +90,14 @@ assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false && s
 // Test Logger
 Logger::log('system', 'Test log message');
 assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_get_contents('core/logs/system.log'), 'Test log message') !== false, 'Log file should contain message');
+Logger::log('test_type', 'Test type message');
+assert_test('Logger::log_custom', file_exists('core/logs/test_type.log'), 'Custom log type file should be created');
 
 // Test CookieManager
-CookieManager::set('test_cookie', 'test_value', 1);
-// Note: $_COOKIE won't be populated until next request, but we can check if it sets the global for current process if we mock it or just check class exists
-assert_test('CookieManager::exists_mock', class_exists('CookieManager'), 'CookieManager class exists');
+$_COOKIE['mock_cookie'] = 'mock_value';
+assert_test('CookieManager::exists', CookieManager::exists('mock_cookie') === true, 'Cookie should exist in mock');
+assert_test('CookieManager::get', CookieManager::get('mock_cookie') === 'mock_value', 'Cookie value should match mock');
+unset($_COOKIE['mock_cookie']);
 
 // Test Layout
 Layout::start('content');

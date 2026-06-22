@@ -62,7 +62,8 @@ class ClearDBTables
             // Drop tables one by one
             foreach ($tables as $table) {
                 if (!empty($table)) {
-                    executeStatement("DROP TABLE `$table`;", [], false);
+                    $quote = ($driver === 'sqlite') ? '"' : '`';
+                    executeStatement("DROP TABLE $quote$table$quote;", [], false);
                     echo "🗑️ Deleted table: $table\n";
                 }
             }

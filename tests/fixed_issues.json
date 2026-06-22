@@ -1,20 +1,26 @@
 [
     {
-        "id": "cli-make-route-api",
-        "title": "CLI make:route API flag",
-        "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
+        "id": "sqlite-userauth-autoincrement",
+        "title": "SQLite UserAuth Auto-increment",
+        "description": "Updated UserAuth::generateSQL to use INTEGER PRIMARY KEY AUTOINCREMENT for SQLite.",
         "status": "FIXED"
     },
     {
-        "id": "cli-list-lang-exit",
-        "title": "CLI list:lang exit behavior",
-        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
+        "id": "sqlite-cleardbtables-quotes",
+        "title": "SQLite ClearDBTables Quotes",
+        "description": "Updated ClearDBTables to use double quotes for identifiers in SQLite.",
         "status": "FIXED"
     },
     {
-        "id": "cli-make-layout-duplicate",
-        "title": "CLI make:layout collision",
-        "description": "Updated tests to use unique names and ensure clean state before testing.",
+        "id": "sqlite-ammar-make-db",
+        "title": "SQLite ammar make:db Template",
+        "description": "Updated ammar make:db to use SQLite compatible auto-increment syntax.",
+        "status": "FIXED"
+    },
+    {
+        "id": "test-coverage-enhancement",
+        "title": "Enhanced Test Coverage",
+        "description": "Added deeper coverage for Validation, Logger, CookieManager, and Sitemap verification.",
         "status": "FIXED"
     }
 ]

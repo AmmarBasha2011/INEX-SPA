@@ -209,16 +209,16 @@
         <div id="dashboard-section" class="report-section">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-25 13:16:46</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-06-22 14:48:09</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">53</span>
+                <span class="number" style="color: var(--primary);">57</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">53</span>
+                <span class="number" style="color: var(--success);">57</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
@@ -226,7 +226,7 @@
                 <span class="label">Failed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
+                <span class="number" style="color: var(--warning);">4</span>
                 <span class="label">Fixed</span>
             </div>
         </div>
@@ -267,7 +267,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_05_25_13_16_44.sql
+                        <td><pre>DB file created: createusers_testTable_2026_06_22_14_48_07.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -352,7 +352,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_05_25_13_16_45.sql
+                        <td><pre>DB file created: createusersTable_2026_06_22_14_48_08.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -374,7 +374,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-05-25 13:16:45.
+TestTask executed successfully at 2026-06-22 14:48:08.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -405,8 +405,8 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_05_25_13_16_45.sql
-  createusers_testTable_2026_05_25_13_16_44.sql
+  createusersTable_2026_06_22_14_48_08.sql
+  createusers_testTable_2026_06_22_14_48_07.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -521,6 +521,16 @@ Package.json updated with new dependency.
                         <td>Non-numeric string</td>
                     </tr>
                                         <tr>
+                        <td>Validation::isBool</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Boolean validation</td>
+                    </tr>
+                                        <tr>
+                        <td>Validation::isDomain</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Domain validation</td>
+                    </tr>
+                                        <tr>
                         <td>AhmedTemplate::render</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Expected rendered output</td>
@@ -561,9 +571,19 @@ Package.json updated with new dependency.
                         <td>Log file should contain message</td>
                     </tr>
                                         <tr>
-                        <td>CookieManager::exists_mock</td>
+                        <td>Logger::log_custom</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td>CookieManager class exists</td>
+                        <td>Custom log type file should be created</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::exists</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Cookie should exist in mock</td>
+                    </tr>
+                                        <tr>
+                        <td>CookieManager::get</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Cookie value should match mock</td>
                     </tr>
                                         <tr>
                         <td>Layout::section</td>
@@ -608,16 +628,20 @@ Package.json updated with new dependency.
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                                 <div class="fixed-item">
-                    <h3>CLI make:route API flag <span class="status status-fixed">Fixed</span></h3>
-                    <p>Corrected positional argument flag position from -3 to -4 for non-dynamic routes.</p>
+                    <h3>SQLite UserAuth Auto-increment <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated UserAuth::generateSQL to use INTEGER PRIMARY KEY AUTOINCREMENT for SQLite.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI list:lang exit behavior <span class="status status-fixed">Fixed</span></h3>
-                    <p>Replaced return with exit(0) to ensure consistent CLI termination.</p>
+                    <h3>SQLite ClearDBTables Quotes <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated ClearDBTables to use double quotes for identifiers in SQLite.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
-                    <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                    <h3>SQLite ammar make:db Template <span class="status status-fixed">Fixed</span></h3>
+                    <p>Updated ammar make:db to use SQLite compatible auto-increment syntax.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Enhanced Test Coverage <span class="status status-fixed">Fixed</span></h3>
+                    <p>Added deeper coverage for Validation, Logger, CookieManager, and Sitemap verification.</p>
                 </div>
                             </div>
         </div>
