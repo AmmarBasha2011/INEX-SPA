@@ -150,6 +150,16 @@ function getPage($RouteName)
 {
     global $Ahmed;
 
+    // Security check: Prevent path traversal by disallowing ".." in the route name.
+    if (strpos($RouteName, '..') !== false) {
+        if (file_exists('core/errors/403.php')) {
+            loadScripts();
+            include 'core/errors/403.php';
+        }
+
+        return;
+    }
+
     $_GET['page'] = $RouteName;
 
     if (empty($_GET['page'])) {
