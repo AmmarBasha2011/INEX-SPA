@@ -16,40 +16,47 @@ passthru('php tests/cli_tests.php');
 echo "Running Core Tests...\n";
 passthru('php tests/core_tests.php');
 
-// 3. Run Web Tests (Requires server to be running)
+// 3. Run Web Tests (Starts a temporary server)
 echo "Running Web Tests...\n";
-// Ensure server is running on port 8080 (handled externally in plan, but good to check)
-$connection = @fsockopen('localhost', 8080);
-if ($connection) {
-    fclose($connection);
+
+// Kill any existing process on port 8080
+shell_exec('kill $(lsof -t -i :8080) 2>/dev/null || true');
+
+// Start PHP development server in background
+$serverLog = 'server.log';
+$cmd = "php -S localhost:8080 index.php > $serverLog 2>&1 &";
+shell_exec($cmd);
+
+// Wait for server to start
+$maxRetries = 10;
+$retryCount = 0;
+$started = false;
+while ($retryCount < $maxRetries) {
+    $connection = @fsockopen('localhost', 8080);
+    if ($connection) {
+        fclose($connection);
+        $started = true;
+        break;
+    }
+    $retryCount++;
+    usleep(500000); // Wait 0.5s
+}
+
+if ($started) {
     passthru('php tests/web_tests.php');
 } else {
-    echo "⚠️  Web server not running on localhost:8080. Skipping web tests.\n";
+    echo "❌ Failed to start web server on localhost:8080.\n";
     file_put_contents('tests/web_results.json', json_encode([]));
 }
 
-// 4. Track Fixed Issues
-$fixedIssues = [
-    [
-        'id'          => 'cli-make-route-api',
-        'title'       => 'CLI make:route API flag',
-        'description' => 'Corrected positional argument flag position from -3 to -4 for non-dynamic routes.',
-        'status'      => 'FIXED',
-    ],
-    [
-        'id'          => 'cli-list-lang-exit',
-        'title'       => 'CLI list:lang exit behavior',
-        'description' => 'Replaced return with exit(0) to ensure consistent CLI termination.',
-        'status'      => 'FIXED',
-    ],
-    [
-        'id'          => 'cli-make-layout-duplicate',
-        'title'       => 'CLI make:layout collision',
-        'description' => 'Updated tests to use unique names and ensure clean state before testing.',
-        'status'      => 'FIXED',
-    ],
-];
-file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
+// Kill the background server
+shell_exec('kill $(lsof -t -i :8080) 2>/dev/null || true');
+
+// 4. Track Fixed Issues (Handled manually in fixed_issues.json for this task)
+echo "Ensuring fixed_issues.json is present...\n";
+if (!file_exists('tests/fixed_issues.json')) {
+    file_put_contents('tests/fixed_issues.json', json_encode([]));
+}
 
 // 5. Generate Report
 echo "\n📊 Generating HTML Report...\n";

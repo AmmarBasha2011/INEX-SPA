@@ -16,5 +16,17 @@
         "title": "CLI make:layout collision",
         "description": "Updated tests to use unique names and ensure clean state before testing.",
         "status": "FIXED"
+    },
+    {
+        "id": "core-getenvvalue-override",
+        "title": "getEnvValue Override and Caching",
+        "description": "Implemented static caching and ensured later definitions in .env override earlier ones.",
+        "status": "FIXED"
+    },
+    {
+        "id": "core-security-xss-order",
+        "title": "Security Sanitization Order",
+        "description": "Swapped order of operations in Security::sanitizeInput to remove script tags before HTML encoding.",
+        "status": "FIXED"
     }
 ]

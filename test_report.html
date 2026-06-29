@@ -147,29 +147,6 @@
             overflow: auto;
         }
 
-        /* Filtering */
-        .filters {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 6px 15px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Fixed Issues List */
         .fixed-list {
             list-style: none;
             padding: 0;
@@ -207,39 +184,34 @@
 
     <div class="main">
         <div id="dashboard-section" class="report-section">
-        <div class="header">
-            <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-25 13:16:46</span>
-        </div>
+            <div class="header">
+                <h2>Framework Health Dashboard</h2>
+                <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-06-29 14:25:40</span>
+            </div>
 
-        <div class="dashboard">
-            <div class="card">
-                <span class="number" style="color: var(--primary);">53</span>
-                <span class="label">Total Tests</span>
+            <div class="dashboard">
+                <div class="card">
+                    <span class="number" style="color: var(--primary);">53</span>
+                    <span class="label">Total Tests</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--success);">53</span>
+                    <span class="label">Passed</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--danger);">0</span>
+                    <span class="label">Failed / Unsolvable</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--warning);">5</span>
+                    <span class="label">Solved by Agent</span>
+                </div>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--success);">53</span>
-                <span class="label">Passed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--danger);">0</span>
-                <span class="label">Failed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
-                <span class="label">Fixed</span>
-            </div>
-        </div>
         </div>
 
         <div id="cli-section" class="report-section section" style="display:none;">
             <h2>CLI Commands</h2>
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'success')">Success</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'failed')">Failed</button>
-            </div>
-            <table id="cli-table">
+            <table>
                 <thead>
                     <tr>
                         <th>Test Name</th>
@@ -248,9 +220,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>list</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-fixed">SOLVED</span>
+                        </td>
                         <td><pre>Available commands:
   php ammar list - List all commands
   php ammar list:routes - List all route files
@@ -264,194 +238,250 @@
   php ammar make:sitemap - Generate sitemap.xml
   php ammar make:s</pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:db</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_05_25_13_16_44.sql
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
+                        <td><pre>DB file created: createusers_testTable_2026_06_29_14_24_14.sql
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:route</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Route file created: testroute_test_request_GET.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:route_api</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Route file created: testapi_test_request_GET_api.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cache entry created for key: mykey_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>get:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cache value: myvalue_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>update:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cache updated for key: mykey_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>delete:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cache deleted for key: mykey_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:session</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Session Created!!!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>get:session</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Session Value: sessvalue_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>delete:session</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Session Deleted!!!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:lang</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Language file created: /app/lang/es_test.json
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>list:lang</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Available languages:
 - es_test
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>delete:lang</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Deleted language file: /app/lang/es_test.json
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:layout</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Layout file created: /app/layouts/custom_test.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:auth</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_05_25_13_16_45.sql
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
+                        <td><pre>DB file created: createusersTable_2026_06_29_14_24_15.sql
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cron task file created: /app/core/cron/tasks/TestTask.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>list:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Available cron tasks:
   - ExampleTask
   - TestTask
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>run:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-05-25 13:16:45.
+TestTask executed successfully at 2026-06-29 14:24:15.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>delete:cron</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cron task file &#039;/app/core/cron/tasks/TestTask.php&#039; deleted successfully.
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>make:sitemap</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Sitemap generated!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>list:routes</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Available routes:
-  index.ahmed.php
   testapi_test_request_GET_api.ahmed.php
-  testroute_test.ahmed.php
   testroute_test_request_GET.ahmed.php
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>list:db</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Available DB files:
-  createusersTable_2026_05_25_13_16_45.sql
-  createusers_testTable_2026_05_25_13_16_44.sql
+  createusersTable_2026_06_29_14_24_15.sql
+  createusers_testTable_2026_06_29_14_24_14.sql
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>clear:cache</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Cache cleared!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>clear:db</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>DB files cleared!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>clear:routes</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Route files cleared!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>clear:db:tables</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>✅ No tables found in database.
 Database tables cleared!
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>install:import</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Copying local directory...
 Repository cloned successfully to core/import/mock_import!
 Package.json updated with new dependency.
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>list:import</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Available imports:
   mock_import
 </pre></td>
                     </tr>
-                                        <tr class="test-row" data-status="success">
+                                        <tr>
                         <td>delete:import</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td><pre>Import deleted: mock_import
 </pre></td>
                     </tr>
@@ -472,107 +502,149 @@ Package.json updated with new dependency.
                 <tbody>
                                         <tr>
                         <td>getEnvValue</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-fixed">SOLVED</span>
+                        </td>
                         <td>Expected APP_NAME to be INEX SPA TEST</td>
                     </tr>
                                         <tr>
                         <td>Cache::get</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected test_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::update</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected new_value_core</td>
                     </tr>
                                         <tr>
                         <td>Cache::delete</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected false after delete</td>
                     </tr>
                                         <tr>
                         <td>Session::get</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected sess_val_core</td>
                     </tr>
                                         <tr>
                         <td>Session::delete</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected null after delete</td>
                     </tr>
                                         <tr>
                         <td>Validation::isEmail</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Valid email</td>
                     </tr>
                                         <tr>
                         <td>Validation::isEmail_invalid</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Invalid email</td>
                     </tr>
                                         <tr>
                         <td>Validation::isNumber</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Numeric string</td>
                     </tr>
                                         <tr>
                         <td>Validation::isNumber_invalid</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Non-numeric string</td>
                     </tr>
                                         <tr>
                         <td>AhmedTemplate::render</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected rendered output</td>
                     </tr>
                                         <tr>
                         <td>Database::instance</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Database instance created</td>
                     </tr>
                                         <tr>
                         <td>UserAuth::generateSQL</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Auth SQL generated</td>
                     </tr>
                                         <tr>
                         <td>RateLimiter::exists</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>RateLimiter class exists</td>
                     </tr>
                                         <tr>
                         <td>Firewall::exists</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Firewall class exists</td>
                     </tr>
                                         <tr>
                         <td>Language::get</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected translated string with placeholder</td>
                     </tr>
                                         <tr>
                         <td>Security::sanitizeInput</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected sanitized output</td>
                     </tr>
                                         <tr>
                         <td>Logger::log</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Log file should contain message</td>
                     </tr>
                                         <tr>
                         <td>CookieManager::exists_mock</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>CookieManager class exists</td>
                     </tr>
                                         <tr>
                         <td>Layout::section</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Expected captured section content</td>
                     </tr>
                                         <tr>
                         <td>Webhook::exists</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>Webhook class exists</td>
                     </tr>
                                     </tbody>
@@ -592,12 +664,16 @@ Package.json updated with new dependency.
                 <tbody>
                                         <tr>
                         <td>index</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>200</td>
                     </tr>
                                         <tr>
                         <td>testroute</td>
-                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>
+                                                        <span class="status status-success">SUCCESS</span>
+                        </td>
                         <td>200</td>
                     </tr>
                                     </tbody>
@@ -608,16 +684,24 @@ Package.json updated with new dependency.
             <h2>Fixed Issues</h2>
             <div class="fixed-list">
                                 <div class="fixed-item">
-                    <h3>CLI make:route API flag <span class="status status-fixed">Fixed</span></h3>
+                    <h3>CLI make:route API flag <span class="status status-fixed">Solved</span></h3>
                     <p>Corrected positional argument flag position from -3 to -4 for non-dynamic routes.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI list:lang exit behavior <span class="status status-fixed">Fixed</span></h3>
+                    <h3>CLI list:lang exit behavior <span class="status status-fixed">Solved</span></h3>
                     <p>Replaced return with exit(0) to ensure consistent CLI termination.</p>
                 </div>
                                 <div class="fixed-item">
-                    <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
+                    <h3>CLI make:layout collision <span class="status status-fixed">Solved</span></h3>
                     <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>getEnvValue Override and Caching <span class="status status-fixed">Solved</span></h3>
+                    <p>Implemented static caching and ensured later definitions in .env override earlier ones.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Security Sanitization Order <span class="status status-fixed">Solved</span></h3>
+                    <p>Swapped order of operations in Security::sanitizeInput to remove script tags before HTML encoding.</p>
                 </div>
                             </div>
         </div>
@@ -628,25 +712,7 @@ Package.json updated with new dependency.
             document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        function filterTable(tableId, status) {
-            const table = document.getElementById(tableId + '-table');
-            const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Note: event might be undefined if not called from click, but here it is
             if (event) event.target.classList.add('active');
-
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
         }
     </script>
 </body>

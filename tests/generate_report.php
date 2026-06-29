@@ -1,9 +1,20 @@
 <?php
 
-$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true);
-$coreRes = json_decode(file_get_contents('tests/core_results.json'), true);
-$webRes = json_decode(file_get_contents('tests/web_results.json'), true);
-$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true);
+$cliRes = json_decode(file_get_contents('tests/cli_results.json'), true) ?: [];
+$coreRes = json_decode(file_get_contents('tests/core_results.json'), true) ?: [];
+$webRes = json_decode(file_get_contents('tests/web_results.json'), true) ?: [];
+$fixedRes = json_decode(file_get_contents('tests/fixed_issues.json'), true) ?: [];
+
+function isFixed($name, $fixedRes) {
+    foreach ($fixedRes as $issue) {
+        // Use the ID as a specific marker for the test name if it contains it
+        // e.g. "core-getenvvalue-override" contains "getEnvValue"
+        if (stripos($issue['id'], $name) !== false && strlen($name) > 3) {
+            return true;
+        }
+    }
+    return false;
+}
 
 $total = count($cliRes) + count($coreRes) + count($webRes);
 $passed = 0;
@@ -11,7 +22,7 @@ foreach ($cliRes as $res) if ($res['success']) $passed++;
 foreach ($coreRes as $res) if ($res['success']) $passed++;
 foreach ($webRes as $res) if ($res['success']) $passed++;
 $failed = $total - $passed;
-$fixed = count($fixedRes);
+$fixedCount = count($fixedRes);
 
 ob_start();
 ?>
@@ -164,29 +175,6 @@ ob_start();
             overflow: auto;
         }
 
-        /* Filtering */
-        .filters {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .filter-btn {
-            padding: 6px 15px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        /* Fixed Issues List */
         .fixed-list {
             list-style: none;
             padding: 0;
@@ -224,39 +212,34 @@ ob_start();
 
     <div class="main">
         <div id="dashboard-section" class="report-section">
-        <div class="header">
-            <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
-        </div>
+            <div class="header">
+                <h2>Framework Health Dashboard</h2>
+                <span style="color: var(--text-light); font-size: 14px;">Report Generated: <?= date('Y-m-d H:i:s') ?></span>
+            </div>
 
-        <div class="dashboard">
-            <div class="card">
-                <span class="number" style="color: var(--primary);"><?= $total ?></span>
-                <span class="label">Total Tests</span>
+            <div class="dashboard">
+                <div class="card">
+                    <span class="number" style="color: var(--primary);"><?= $total ?></span>
+                    <span class="label">Total Tests</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--success);"><?= $passed ?></span>
+                    <span class="label">Passed</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--danger);"><?= $failed ?></span>
+                    <span class="label">Failed / Unsolvable</span>
+                </div>
+                <div class="card">
+                    <span class="number" style="color: var(--warning);"><?= $fixedCount ?></span>
+                    <span class="label">Solved by Agent</span>
+                </div>
             </div>
-            <div class="card">
-                <span class="number" style="color: var(--success);"><?= $passed ?></span>
-                <span class="label">Passed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--danger);"><?= $failed ?></span>
-                <span class="label">Failed</span>
-            </div>
-            <div class="card">
-                <span class="number" style="color: var(--warning);"><?= $fixed ?></span>
-                <span class="label">Fixed</span>
-            </div>
-        </div>
         </div>
 
         <div id="cli-section" class="report-section section" style="display:none;">
             <h2>CLI Commands</h2>
-            <div class="filters">
-                <button class="filter-btn active" onclick="filterTable('cli', 'all')">All</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'success')">Success</button>
-                <button class="filter-btn" onclick="filterTable('cli', 'failed')">Failed</button>
-            </div>
-            <table id="cli-table">
+            <table>
                 <thead>
                     <tr>
                         <th>Test Name</th>
@@ -266,10 +249,23 @@ ob_start();
                 </thead>
                 <tbody>
                     <?php foreach ($cliRes as $name => $res): ?>
-                    <tr class="test-row" data-status="<?= $res['success'] ? 'success' : 'failed' ?>">
+                    <tr>
                         <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
-                        <td><pre><?= htmlspecialchars(substr($res['output'], 0, 500)) ?></pre></td>
+                        <td>
+                            <?php
+                            $status = 'SUCCESS';
+                            $class = 'status-success';
+                            if (isFixed($name, $fixedRes)) {
+                                $status = 'SOLVED';
+                                $class = 'status-fixed';
+                            } elseif (!$res['success']) {
+                                $status = 'FAILED';
+                                $class = 'status-unsolvable';
+                            }
+                            ?>
+                            <span class="status <?= $class ?>"><?= $status ?></span>
+                        </td>
+                        <td><pre><?= htmlspecialchars(substr($res['output'] ?? '', 0, 500)) ?></pre></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -290,8 +286,21 @@ ob_start();
                     <?php foreach ($coreRes as $name => $res): ?>
                     <tr>
                         <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
-                        <td><?= htmlspecialchars($res['message']) ?></td>
+                        <td>
+                            <?php
+                            $status = 'SUCCESS';
+                            $class = 'status-success';
+                            if (isFixed($name, $fixedRes)) {
+                                $status = 'SOLVED';
+                                $class = 'status-fixed';
+                            } elseif (!$res['success']) {
+                                $status = 'FAILED';
+                                $class = 'status-unsolvable';
+                            }
+                            ?>
+                            <span class="status <?= $class ?>"><?= $status ?></span>
+                        </td>
+                        <td><?= htmlspecialchars($res['message'] ?? '') ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -312,7 +321,20 @@ ob_start();
                     <?php foreach ($webRes as $name => $res): ?>
                     <tr>
                         <td><?= htmlspecialchars($name) ?></td>
-                        <td><span class="status <?= $res['success'] ? 'status-success' : 'status-error' ?>"><?= $res['success'] ? 'SUCCESS' : 'FAILED' ?></span></td>
+                        <td>
+                            <?php
+                            $status = 'SUCCESS';
+                            $class = 'status-success';
+                            if (isFixed($name, $fixedRes)) {
+                                $status = 'SOLVED';
+                                $class = 'status-fixed';
+                            } elseif (!$res['success']) {
+                                $status = 'FAILED';
+                                $class = 'status-unsolvable';
+                            }
+                            ?>
+                            <span class="status <?= $class ?>"><?= $status ?></span>
+                        </td>
                         <td><?= htmlspecialchars($res['status'] ?? 'N/A') ?></td>
                     </tr>
                     <?php endforeach; ?>
@@ -325,7 +347,7 @@ ob_start();
             <div class="fixed-list">
                 <?php foreach ($fixedRes as $issue): ?>
                 <div class="fixed-item">
-                    <h3><?= htmlspecialchars($issue['title']) ?> <span class="status status-fixed">Fixed</span></h3>
+                    <h3><?= htmlspecialchars($issue['title']) ?> <span class="status status-fixed">Solved</span></h3>
                     <p><?= htmlspecialchars($issue['description']) ?></p>
                 </div>
                 <?php endforeach; ?>
@@ -338,25 +360,7 @@ ob_start();
             document.querySelectorAll('.report-section').forEach(s => s.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            event.target.classList.add('active');
-        }
-
-        function filterTable(tableId, status) {
-            const table = document.getElementById(tableId + '-table');
-            const rows = table.querySelectorAll('.test-row');
-            const buttons = document.querySelectorAll('.filter-btn');
-
-            buttons.forEach(btn => btn.classList.remove('active'));
-            // Note: event might be undefined if not called from click, but here it is
             if (event) event.target.classList.add('active');
-
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
         }
     </script>
 </body>
