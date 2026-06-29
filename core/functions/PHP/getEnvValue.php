@@ -40,5 +40,6 @@ function getEnvValue($key)
     }
 
     $upperKey = strtoupper($key);
+
     return isset($cache[$upperKey]) ? $cache[$upperKey] : null;
 }
