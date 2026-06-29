@@ -113,9 +113,9 @@ class AhmedTemplate
             // Variables and data manipulation
             '/@set\("(.+?)",\s*(.+?)\)/'    => '<?php $$1 = $2; ?>',
             '/@define\("(.+?)",\s*(.+?)\)/' => '<?php $1 = $2; ?>',
-            '/@var\("(.+?)"\)/'             => '<?= $$1 ?>',
-            '/@postData\("(.+?)"\)/'        => '<?= $_POST["$1"] ?>',
-            '/@getData\("(.+?)"\)/'         => '<?= $_GET["$1"] ?? "" ?>',
+            '/@var\("(.+?)"\)/'             => '<?= htmlentities($$1) ?>',
+            '/@postData\("(.+?)"\)/'        => '<?= htmlentities($_POST["$1"] ?? "") ?>',
+            '/@getData\("(.+?)"\)/'         => '<?= htmlentities($_GET["$1"] ?? "") ?>',
             '/@toJson\((.+?)\)/'            => '<?= json_encode($1) ?>',
             '/@fromJson\((.+?)\)/'          => '<?= json_decode($1, true) ?>',
             '/@jsonFile\("(.+?)"\)/'        => '<?= json_decode(file_get_contents("$1"), true) ?>',
@@ -146,12 +146,12 @@ class AhmedTemplate
             // Language and session
             '/@setLang\("(.+?)"\)/'                => '<?php Language::set("$1"); ?>',
             '/@makeSession\("(.+?)",\s*"(.+?)"\)/' => '<?php Session::make("$1", "$2"); ?>',
-            '/@getSession\("(.+?)"\)/'             => '<?= Session::get("$1") ?>',
+            '/@getSession\("(.+?)"\)/'             => '<?= htmlentities(Session::get("$1") ?? "") ?>',
             '/@deleteSession\("(.+?)"\)/'          => '<?php Session::delete("$1"); ?>',
 
             // Cookies
             '/@setCookie\("(.+?)",\s*"(.+?)",\s*(.+?)\)/' => '<?php CookieManager::set("$1", "$2", $3); ?>',
-            '/@getCookie\("(.+?)"\)/'                     => '<?= CookieManager::get("$1") ?>',
+            '/@getCookie\("(.+?)"\)/'                     => '<?= htmlentities(CookieManager::get("$1") ?? "") ?>',
             '/@existsCookie\("(.+?)"\)/'                  => '<?= CookieManager::exists("$1") ? "true" : "false" ?>',
             '/@deleteCookie\("(.+?)"\)/'                  => '<?php CookieManager::delete("$1"); ?>',
             '/@getAllCookies()/'                          => '<?= json_encode(CookieManager::getAll()) ?>',
