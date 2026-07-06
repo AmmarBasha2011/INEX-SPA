@@ -63,11 +63,11 @@ unlink($templateFile);
 // Test Database
 $db = new Database();
 assert_test('Database::instance', $db instanceof Database, 'Database instance created');
-$db->query("CREATE TABLE IF NOT EXISTS temp_test (id INTEGER PRIMARY KEY, name TEXT)");
-$db->query("INSERT INTO temp_test (name) VALUES (?)", ['INEX'], false);
-$rows = $db->query("SELECT * FROM temp_test WHERE name = ?", ['INEX']);
+$db->query('CREATE TABLE IF NOT EXISTS temp_test (id INTEGER PRIMARY KEY, name TEXT)');
+$db->query('INSERT INTO temp_test (name) VALUES (?)', ['INEX'], false);
+$rows = $db->query('SELECT * FROM temp_test WHERE name = ?', ['INEX']);
 assert_test('Database::query', count($rows) === 1 && $rows[0]['name'] === 'INEX', 'Database query functional');
-$db->query("DROP TABLE temp_test");
+$db->query('DROP TABLE temp_test');
 
 // Test UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
