@@ -20,6 +20,11 @@ $tests = [
         'expected'   => 'Route file created: testapi_test_request_GET_api.ahmed.php',
         'check_file' => 'web/testapi_test_request_GET_api.ahmed.php',
     ],
+    'delete:route' => [
+        'setup'    => 'touch web/testdelete_request_GET.ahmed.php',
+        'command'  => 'php ammar delete:route -1 testdelete',
+        'expected' => 'Deleted: testdelete_request_GET.ahmed.php',
+    ],
     'make:cache' => [
         'command'  => 'php ammar make:cache -1 mykey_test -2 myvalue_test -3 3600',
         'expected' => 'Cache entry created for key: mykey_test',
@@ -71,6 +76,11 @@ $tests = [
         'command'    => 'php ammar make:auth',
         'expected'   => 'DB file created:',
         'check_file' => 'db/createusersTable_*.sql',
+    ],
+    'delete:db' => [
+        'setup'    => 'touch db/createusers_del_testTable_2020_01_01_00_00_00.sql',
+        'command'  => 'php ammar delete:db -1 create -2 users_del_test',
+        'expected' => 'Deleted: createusers_del_testTable_2020_01_01_00_00_00.sql',
     ],
     'make:cron' => [
         'command'    => 'php ammar make:cron TestTask',

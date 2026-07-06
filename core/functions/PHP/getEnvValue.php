@@ -33,6 +33,8 @@ function getEnvValue($key)
         // Parse file content
         $lines = preg_split('/\r\n|\r|\n/', $content);
 
+        $value = null;
+
         // Process each line
         foreach ($lines as $line) {
             $line = trim($line);
@@ -44,12 +46,12 @@ function getEnvValue($key)
 
             // Match key-value pair
             if (preg_match('/^'.preg_quote($key).'=(.*)$/i', $line, $matches)) {
-                return trim($matches[1]);
+                $value = trim($matches[1]);
             }
         }
+
+        return $value;
     } catch (Exception $e) {
         return null;
     }
-
-    return null;
 }

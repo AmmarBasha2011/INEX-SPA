@@ -62,9 +62,16 @@ class Language
      */
     public static function get($key, $placeholders = [])
     {
+        if (!is_array(self::$translations)) {
+            return $key;
+        }
+
         $text = self::$translations[$key] ?? $key;
-        foreach ($placeholders as $placeholder => $value) {
-            $text = str_replace('{'.$placeholder.'}', $value, $text);
+
+        if (is_array($placeholders)) {
+            foreach ($placeholders as $placeholder => $value) {
+                $text = str_replace('{'.$placeholder.'}', $value, $text);
+            }
         }
 
         return $text;

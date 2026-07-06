@@ -47,6 +47,8 @@ assert_test('Session::delete', Session::get('sess_key_core') === null, 'Expected
 // Test Validation
 assert_test('Validation::isEmail', Validation::isEmail('test@example.com') === true, 'Valid email');
 assert_test('Validation::isEmail_invalid', Validation::isEmail('not-an-email') === false, 'Invalid email');
+assert_test('Validation::isEmail_empty', Validation::isEmail('') === false, 'Empty string email');
+assert_test('Validation::isEmail_null', Validation::isEmail(null) === false, 'Null email');
 assert_test('Validation::isNumber', Validation::isNumber('123') === true, 'Numeric string');
 assert_test('Validation::isNumber_invalid', Validation::isNumber('abc') === false, 'Non-numeric string');
 
@@ -61,6 +63,11 @@ unlink($templateFile);
 // Test Database
 $db = new Database();
 assert_test('Database::instance', $db instanceof Database, 'Database instance created');
+$db->query("CREATE TABLE IF NOT EXISTS temp_test (id INTEGER PRIMARY KEY, name TEXT)");
+$db->query("INSERT INTO temp_test (name) VALUES (?)", ['INEX'], false);
+$rows = $db->query("SELECT * FROM temp_test WHERE name = ?", ['INEX']);
+assert_test('Database::query', count($rows) === 1 && $rows[0]['name'] === 'INEX', 'Database query functional');
+$db->query("DROP TABLE temp_test");
 
 // Test UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Auth SQL generated');
@@ -88,6 +95,8 @@ assert_test('Security::sanitizeInput', strpos($clean, '<script>') === false && s
 // Test Logger
 Logger::log('system', 'Test log message');
 assert_test('Logger::log', file_exists('core/logs/system.log') && strpos(file_get_contents('core/logs/system.log'), 'Test log message') !== false, 'Log file should contain message');
+Logger::log('error', 'Test error message');
+assert_test('Logger::log_error', file_exists('core/logs/errors.log') && strpos(file_get_contents('core/logs/errors.log'), 'Test error message') !== false, 'Error log file should contain message');
 
 // Test CookieManager
 CookieManager::set('test_cookie', 'test_value', 1);

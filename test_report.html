@@ -209,16 +209,16 @@
         <div id="dashboard-section" class="report-section">
         <div class="header">
             <h2>Framework Health Dashboard</h2>
-            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-05-25 13:16:46</span>
+            <span style="color: var(--text-light); font-size: 14px;">Report Generated: 2026-07-06 14:18:55</span>
         </div>
 
         <div class="dashboard">
             <div class="card">
-                <span class="number" style="color: var(--primary);">53</span>
+                <span class="number" style="color: var(--primary);">59</span>
                 <span class="label">Total Tests</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--success);">53</span>
+                <span class="number" style="color: var(--success);">59</span>
                 <span class="label">Passed</span>
             </div>
             <div class="card">
@@ -226,7 +226,7 @@
                 <span class="label">Failed</span>
             </div>
             <div class="card">
-                <span class="number" style="color: var(--warning);">3</span>
+                <span class="number" style="color: var(--warning);">6</span>
                 <span class="label">Fixed</span>
             </div>
         </div>
@@ -267,7 +267,7 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusers_testTable_2026_05_25_13_16_44.sql
+                        <td><pre>DB file created: createusers_testTable_2026_07_06_14_18_53.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -280,6 +280,12 @@
                         <td>make:route_api</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Route file created: testapi_test_request_GET_api.ahmed.php
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>delete:route</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted: testdelete_request_GET.ahmed.php
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -352,7 +358,13 @@
                                         <tr class="test-row" data-status="success">
                         <td>make:auth</td>
                         <td><span class="status status-success">SUCCESS</span></td>
-                        <td><pre>DB file created: createusersTable_2026_05_25_13_16_45.sql
+                        <td><pre>DB file created: createusersTable_2026_07_06_14_18_54.sql
+</pre></td>
+                    </tr>
+                                        <tr class="test-row" data-status="success">
+                        <td>delete:db</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td><pre>Deleted: createusers_del_testTable_2020_01_01_00_00_00.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -374,7 +386,7 @@
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Executing cron task: TestTask
 Command: /usr/bin/php8.3 &#039;/app/core/cron/cron_runner.php&#039; &#039;TestTask&#039;
-TestTask executed successfully at 2026-05-25 13:16:45.
+TestTask executed successfully at 2026-07-06 14:18:54.
 Task &#039;TestTask&#039; executed successfully.
 Cron task &#039;TestTask&#039; finished.
 </pre></td>
@@ -395,9 +407,7 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:routes</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available routes:
-  index.ahmed.php
   testapi_test_request_GET_api.ahmed.php
-  testroute_test.ahmed.php
   testroute_test_request_GET.ahmed.php
 </pre></td>
                     </tr>
@@ -405,8 +415,8 @@ Cron task &#039;TestTask&#039; finished.
                         <td>list:db</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td><pre>Available DB files:
-  createusersTable_2026_05_25_13_16_45.sql
-  createusers_testTable_2026_05_25_13_16_44.sql
+  createusersTable_2026_07_06_14_18_54.sql
+  createusers_testTable_2026_07_06_14_18_53.sql
 </pre></td>
                     </tr>
                                         <tr class="test-row" data-status="success">
@@ -511,6 +521,16 @@ Package.json updated with new dependency.
                         <td>Invalid email</td>
                     </tr>
                                         <tr>
+                        <td>Validation::isEmail_empty</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Empty string email</td>
+                    </tr>
+                                        <tr>
+                        <td>Validation::isEmail_null</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Null email</td>
+                    </tr>
+                                        <tr>
                         <td>Validation::isNumber</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Numeric string</td>
@@ -529,6 +549,11 @@ Package.json updated with new dependency.
                         <td>Database::instance</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Database instance created</td>
+                    </tr>
+                                        <tr>
+                        <td>Database::query</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Database query functional</td>
                     </tr>
                                         <tr>
                         <td>UserAuth::generateSQL</td>
@@ -559,6 +584,11 @@ Package.json updated with new dependency.
                         <td>Logger::log</td>
                         <td><span class="status status-success">SUCCESS</span></td>
                         <td>Log file should contain message</td>
+                    </tr>
+                                        <tr>
+                        <td>Logger::log_error</td>
+                        <td><span class="status status-success">SUCCESS</span></td>
+                        <td>Error log file should contain message</td>
                     </tr>
                                         <tr>
                         <td>CookieManager::exists_mock</td>
@@ -618,6 +648,18 @@ Package.json updated with new dependency.
                                 <div class="fixed-item">
                     <h3>CLI make:layout collision <span class="status status-fixed">Fixed</span></h3>
                     <p>Updated tests to use unique names and ensure clean state before testing.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>getEnvValue Override Bug <span class="status status-fixed">Fixed</span></h3>
+                    <p>Fixed getEnvValue to correctly allow the last definition in .env to override previous ones.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Security Sanitization Order <span class="status status-fixed">Fixed</span></h3>
+                    <p>Swapped order of htmlspecialchars and preg_replace to ensure script tags are matched correctly.</p>
+                </div>
+                                <div class="fixed-item">
+                    <h3>Language Class Robustness <span class="status status-fixed">Fixed</span></h3>
+                    <p>Added array checks to Language::get to prevent errors when translations are missing or malformed.</p>
                 </div>
                             </div>
         </div>

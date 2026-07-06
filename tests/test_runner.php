@@ -48,6 +48,24 @@ $fixedIssues = [
         'description' => 'Updated tests to use unique names and ensure clean state before testing.',
         'status'      => 'FIXED',
     ],
+    [
+        'id'          => 'getEnvValue-override',
+        'title'       => 'getEnvValue Override Bug',
+        'description' => 'Fixed getEnvValue to correctly allow the last definition in .env to override previous ones.',
+        'status'      => 'FIXED',
+    ],
+    [
+        'id'          => 'security-sanitize-order',
+        'title'       => 'Security Sanitization Order',
+        'description' => 'Swapped order of htmlspecialchars and preg_replace to ensure script tags are matched correctly.',
+        "status"      => "FIXED",
+    ],
+    [
+        'id'          => 'language-array-check',
+        'title'       => 'Language Class Robustness',
+        'description' => 'Added array checks to Language::get to prevent errors when translations are missing or malformed.',
+        "status"      => "FIXED",
+    ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
 
