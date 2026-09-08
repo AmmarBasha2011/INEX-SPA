@@ -199,6 +199,7 @@ function getPage($RouteName)
     if (!empty($_GET['page']) && !preg_match('/^[a-zA-Z0-9\/_-]+$/', $_GET['page'])) {
         loadScripts();
         include 'core/errors/400.php';
+
         return;
     }
 
