@@ -30,6 +30,17 @@ class Webhook
             return false;
         }
 
+        // SECURITY: Block SSRF — reject non-HTTPS and internal/private IPs
+        $parsed = parse_url($url);
+        if (!$parsed || ($parsed['scheme'] ?? '') !== 'https') {
+            return false;
+        }
+        $host = $parsed['host'] ?? '';
+        $ip = gethostbyname($host);
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            return false;
+        }
+
         $payload = json_encode($data);
 
         $ch = curl_init($url);
@@ -40,6 +51,8 @@ class Webhook
         ]);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
         $response = curl_exec($ch);
         curl_close($ch);
 

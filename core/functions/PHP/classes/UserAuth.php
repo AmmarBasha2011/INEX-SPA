@@ -65,7 +65,7 @@ class UserAuth
             // Unique constraint
             $unique = isset($attributes['unique']) ? 'UNIQUE' : '';
 
-            // Default value
+            // Default value — use addslashes as minimal escaping (defense in depth; JSON-sourced)
             $default = isset($attributes['default']) ? "DEFAULT '".addslashes($attributes['default'])."'" : '';
 
             // Construct column definition
@@ -100,22 +100,36 @@ class UserAuth
         $password = $details['password'] ?? null;
         unset($details['password']);
 
-        // Extract values dynamically
+        // SECURITY: Whitelist allowed column names to prevent SQL injection
+        $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
+        
         $params = [];
         $conditions = [];
 
         foreach ($details as $key => $value) {
+            // Only allow known column names
+            if (!in_array($key, $allowedColumns)) {
+                continue;
+            }
             $conditions[] = "$key = ?";
             $params[] = $value;
         }
 
-        $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($details)));
+        if (empty($conditions)) {
+            return false;
+        }
+
+        $placeholders = implode(' AND ', $conditions);
         $sql = "SELECT * FROM users WHERE $placeholders";
-        $newUser = executeStatement($sql, array_values($details));
+        $newUser = executeStatement($sql, $params);
 
         if (count($newUser) > 0) {
             $user = $newUser[0];
             if ($password !== null && password_verify($password, $user['password'])) {
+                // SECURITY: Regenerate session ID to prevent session fixation
+                if (session_status() === PHP_SESSION_ACTIVE) {
+                    session_regenerate_id(true);
+                }
                 $_SESSION['user_id'] = $user['id'];
 
                 return 'User Found';
