@@ -23,7 +23,7 @@ class Session
     /**
      * Creates or overwrites a session variable with the given value.
      *
-     * The value is JSON-encoded to support various data types and then "encrypted"
+     * The value is JSON-encoded to support various data types and then encrypted
      * before being written to a file named after the key.
      *
      * @param string $key   The unique identifier for the session variable.
@@ -34,6 +34,8 @@ class Session
      */
     public static function make($key, $value)
     {
+        // SECURITY: Sanitize key to prevent path traversal
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
         $data = self::encrypt(json_encode($value));
         file_put_contents(self::$storagePath.$key, $data);
     }
@@ -86,7 +88,11 @@ class Session
      */
     private static function encrypt($data)
     {
-        return base64_encode($data); // Simple encryption (can be improved)
+        // SECURITY: Use AES-256-CBC encryption instead of base64
+        $key = getEnvValue('APP_KEY') ?: 'default-insecure-key-change-in-production';
+        $iv = random_bytes(16);
+        $encrypted = openssl_encrypt($data, 'AES-256-CBC', $key, 0, $iv);
+        return base64_encode($iv . $encrypted);
     }
 
     /**
@@ -98,6 +104,10 @@ class Session
      */
     private static function decrypt($data)
     {
-        return base64_decode($data);
+        $key = getEnvValue('APP_KEY') ?: 'default-insecure-key-change-in-production';
+        $decoded = base64_decode($data);
+        $iv = substr($decoded, 0, 16);
+        $encrypted = substr($decoded, 16);
+        return openssl_decrypt($encrypted, 'AES-256-CBC', $key, 0, $iv);
     }
 }

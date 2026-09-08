@@ -51,7 +51,9 @@ class Database
         try {
             $this->pdo = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $e) {
-            exit('Database connection failed: '.$e->getMessage());
+            // SECURITY: Log error internally, don't expose to user
+            error_log('Database connection failed: ' . $e->getMessage());
+            exit('Database connection failed');
         }
     }
 
