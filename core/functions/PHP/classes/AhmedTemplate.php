@@ -36,7 +36,8 @@ class AhmedTemplate
         $content = file_get_contents($templateFile);
         $parsedContent = $this->parse($content);
 
-        extract($data);
+        // SECURITY: Use EXTR_SKIP to prevent variable overwriting
+        extract($data, EXTR_SKIP);
         ob_start();
         eval('?>'.$parsedContent);
 

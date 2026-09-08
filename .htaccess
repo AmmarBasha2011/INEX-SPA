@@ -28,6 +28,7 @@ ErrorDocument 415 /errors/415.php
     Header always set X-XSS-Protection "1; mode=block"
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://code.jquery.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data:; font-src 'self'"
 </IfModule>
 
 RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]

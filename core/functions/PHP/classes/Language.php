@@ -38,6 +38,11 @@ class Language
      */
     public static function setLanguage($lang)
     {
+        // SECURITY: Sanitize language code to prevent path traversal
+        $lang = preg_replace('/[^a-zA-Z0-9_-]/', '', $lang);
+        if (empty($lang)) {
+            return;
+        }
         $langFile = __DIR__."/../../../../lang/$lang.json";
         if (file_exists($langFile)) {
             self::$lang = $lang;

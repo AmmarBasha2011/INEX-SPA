@@ -47,8 +47,11 @@ function executeSQLFilePDO($host, $user, $password, $database, $filePath)
             }
         }
     } catch (PDOException $e) {
-        exit('Database error: '.$e->getMessage());
+        // SECURITY: Log error internally, don't expose details
+        error_log('Database error in executeSQLFilePDO: ' . $e->getMessage());
+        exit('Database error occurred. Check logs for details.');
     } catch (Exception $e) {
-        exit('Error: '.$e->getMessage());
+        error_log('Error in executeSQLFilePDO: ' . $e->getMessage());
+        exit('Database migration error occurred. Check logs for details.');
     }
 }
