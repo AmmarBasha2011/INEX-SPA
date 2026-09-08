@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Extended Core Tests - Comprehensive coverage for all core classes and functions
- * This supplements core_tests.php with additional edge cases and missing coverage
+ * This supplements core_tests.php with additional edge cases and missing coverage.
  */
 
 require_once 'core/functions/PHP/getEnvValue.php';
@@ -27,7 +28,8 @@ require_once 'core/functions/PHP/generateCsrfToken.php';
 require_once 'core/functions/PHP/validateCsrfToken.php';
 
 $results = [];
-function assert_test($name, $condition, $message = '') {
+function assert_test($name, $condition, $message = '')
+{
     global $results;
     $results[$name] = ['success' => $condition, 'message' => $message];
 }
@@ -36,14 +38,26 @@ function assert_test($name, $condition, $message = '') {
 if (!file_exists('.env')) {
     copy('.env.example', '.env');
 }
-if (!is_dir('core/cache')) mkdir('core/cache', 0755, true);
-if (!is_dir('core/storage/sessions')) mkdir('core/storage/sessions', 0755, true);
-if (!is_dir('core/logs')) mkdir('core/logs', 0755, true);
-if (!is_dir('lang')) mkdir('lang', 0755, true);
-if (!is_dir('db')) mkdir('db', 0755, true);
+if (!is_dir('core/cache')) {
+    mkdir('core/cache', 0755, true);
+}
+if (!is_dir('core/storage/sessions')) {
+    mkdir('core/storage/sessions', 0755, true);
+}
+if (!is_dir('core/logs')) {
+    mkdir('core/logs', 0755, true);
+}
+if (!is_dir('lang')) {
+    mkdir('lang', 0755, true);
+}
+if (!is_dir('db')) {
+    mkdir('db', 0755, true);
+}
 
 // Start session for CSRF tests
-if (session_status() === PHP_SESSION_NONE) @session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    @session_start();
+}
 
 // =============================================================================
 // getEnvValue extended
@@ -55,7 +69,9 @@ copy('.env.test', '.env');
 assert_test('getEnvValue: reads value', getEnvValue('APP_NAME') === 'Test App', 'Should read Test App');
 assert_test('getEnvValue: missing returns null', getEnvValue('NON_EXISTING_KEY_123') === null, 'Should return null');
 assert_test('getEnvValue: handles comment', getEnvValue('# This is a comment') === null, 'Should skip comments');
-if ($backup) file_put_contents('.env', $backup);
+if ($backup) {
+    file_put_contents('.env', $backup);
+}
 unlink('.env.test');
 
 // =============================================================================
@@ -72,7 +88,7 @@ Cache::set('expire_test', 'val', 1);
 sleep(2);
 assert_test('Cache::expiration', Cache::get('expire_test') === false, 'Should expire after 1s');
 Cache::set('update_exp_test', 'original', 100);
-$beforeFile = 'core/cache/' . md5('update_exp_test') . '.cache';
+$beforeFile = 'core/cache/'.md5('update_exp_test').'.cache';
 $beforeContent = json_decode(file_get_contents($beforeFile), true);
 $beforeExpiry = $beforeContent['expires'];
 sleep(1);
@@ -268,21 +284,31 @@ assert_test('CSRF: generates token', strlen($token1) === 64 && ctype_xdigit($tok
 $token2 = generateCsrfToken();
 assert_test('CSRF: returns same token', $token1 === $token2, 'Same token');
 $_POST['csrf_token'] = $token1;
-assert_test('CSRF: validate passes', (function() { ob_start(); validateCsrfToken(); $out = ob_get_clean(); return true; })() === true, 'Validates');
+assert_test('CSRF: validate passes', (function () {
+    ob_start();
+    validateCsrfToken();
+    $out = ob_get_clean();
+
+    return true;
+})() === true, 'Validates');
 $_POST['csrf_token'] = 'invalid';
 $validated = false;
+
 try {
     // validateCsrfToken will exit, need to test differently - check hash_equals path
     // We can't easily test failure without exit, so just check function exists and logic
     $validated = !hash_equals($token1, 'invalid');
-} catch (Exception $e) {}
+} catch (Exception $e) {
+}
 assert_test('CSRF: hash_equals detects invalid', $validated === true, 'Detects invalid');
 
 // Database
 $db = new Database();
 assert_test('Database: instance', $db instanceof Database, 'Instance');
 $testSqlite = 'test_extended.sqlite';
-if (file_exists($testSqlite)) unlink($testSqlite);
+if (file_exists($testSqlite)) {
+    unlink($testSqlite);
+}
 file_put_contents('.env.test2', "DB_DRIVER=sqlite\nDB_FILE=$testSqlite\n");
 $backup2 = file_exists('.env') ? file_get_contents('.env') : null;
 copy('.env.test2', '.env');
@@ -293,9 +319,13 @@ $db2->query('INSERT INTO test_table (name) VALUES (?)', ['test_val'], false);
 $result = $db2->query('SELECT * FROM test_table WHERE name = ?', ['test_val'], true);
 assert_test('Database::query insert/select', count($result) === 1 && $result[0]['name'] === 'test_val', 'Insert/select works');
 $db2->query('DROP TABLE test_table', [], false);
-if ($backup2) file_put_contents('.env', $backup2);
+if ($backup2) {
+    file_put_contents('.env', $backup2);
+}
 unlink('.env.test2');
-if (file_exists($testSqlite)) unlink($testSqlite);
+if (file_exists($testSqlite)) {
+    unlink($testSqlite);
+}
 
 // UserAuth
 assert_test('UserAuth::generateSQL', strpos(UserAuth::generateSQL(), 'CREATE TABLE IF NOT EXISTS users') !== false, 'Generates SQL');
@@ -310,7 +340,9 @@ assert_test('Webhook::exists', class_exists('Webhook'), 'Exists');
 assert_test('SitemapGenerator::exists', class_exists('SitemapGenerator'), 'Exists');
 
 // Sitemap
-if (!is_dir('web')) mkdir('web');
+if (!is_dir('web')) {
+    mkdir('web');
+}
 file_put_contents('web/test_sitemap.ahmed.php', 'test');
 SitemapGenerator::generate();
 assert_test('SitemapGenerator::generate', file_exists('public/sitemap.xml') && strpos(file_get_contents('public/sitemap.xml'), '<urlset') !== false, 'Generates XML');
@@ -320,7 +352,7 @@ SitemapGenerator::generate(); // regenerate without test file
 
 // Save results
 file_put_contents('tests/extended_results.json', json_encode($results, JSON_PRETTY_PRINT));
-echo "Extended tests: " . count($results) . " tests, " . count(array_filter($results, fn($r) => $r['success'])) . " passed\n";
+echo 'Extended tests: '.count($results).' tests, '.count(array_filter($results, fn ($r) => $r['success']))." passed\n";
 foreach ($results as $name => $res) {
-    echo ($res['success'] ? "✅ " : "❌ ") . "$name: " . $res['message'] . "\n";
+    echo ($res['success'] ? '✅ ' : '❌ ')."$name: ".$res['message']."\n";
 }

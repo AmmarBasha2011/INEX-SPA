@@ -1,19 +1,20 @@
 <?php
 
 /**
- * INEX SPA Test Runner - Full Suite
- * 
+ * INEX SPA Test Runner - Full Suite.
+ *
  * Runs all framework tests, aggregates results, and generates comprehensive HTML report.
  * Handles missing PHP gracefully via Python fallback.
  * Covers: CLI, Core, Extended, Security, Web, and Full Coverage (450 tests)
  */
-
 echo "🚀 Starting INEX SPA Full Test Suite...\n";
-echo str_repeat("=", 60) . "\n\n";
+echo str_repeat('=', 60)."\n\n";
 
 // Ensure environment
-foreach (['core/cache','core/logs','core/storage/sessions','db','web','lang','cache'] as $dir) {
-    if (!is_dir($dir)) mkdir($dir, 0755, true);
+foreach (['core/cache', 'core/logs', 'core/storage/sessions', 'db', 'web', 'lang', 'cache'] as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
 }
 if (!file_exists('.env') && file_exists('.env.example')) {
     copy('.env.example', '.env');
@@ -61,8 +62,8 @@ if ($connection) {
     // Static validation instead
     if (file_exists('web/index.ahmed.php') && strpos(file_get_contents('web/index.ahmed.php'), 'INEX SPA') !== false) {
         file_put_contents('tests/web_results.json', json_encode([
-            'index' => ['success'=>true, 'status'=>200, 'response'=>'INEX SPA'],
-            'static_check' => ['success'=>true, 'status'=>200, 'response'=>'Static validation passed']
+            'index'        => ['success'=>true, 'status'=>200, 'response'=>'INEX SPA'],
+            'static_check' => ['success'=>true, 'status'=>200, 'response'=>'Static validation passed'],
         ], JSON_PRETTY_PRINT));
         echo "✅ Web static validation passed\n";
     } else {
@@ -126,7 +127,7 @@ $fixedIssues = [
     ],
 ];
 file_put_contents('tests/fixed_issues.json', json_encode($fixedIssues, JSON_PRETTY_PRINT));
-echo "\n✅ Fixed issues tracked: " . count($fixedIssues) . "\n";
+echo "\n✅ Fixed issues tracked: ".count($fixedIssues)."\n";
 
 // 6. Generate Report - prefer full report
 echo "\n📊 Generating HTML Report...\n";
@@ -153,8 +154,8 @@ echo "\n✨ All tests completed!\n";
 if (file_exists('tests/full_results.json')) {
     $full = json_decode(file_get_contents('tests/full_results.json'), true);
     $total = count($full);
-    $passed = count(array_filter($full, fn($r)=>$r['success']));
-    echo "📊 Results: $passed/$total passed (" . round($passed/$total*100,1) . "%)\n";
+    $passed = count(array_filter($full, fn ($r) =>$r['success']));
+    echo "📊 Results: $passed/$total passed (".round($passed / $total * 100, 1)."%)\n";
 }
 echo "📄 Check test_report.html for details.\n";
 echo "💡 Also run: bash run_tests.sh for full suite without PHP dependency\n";
