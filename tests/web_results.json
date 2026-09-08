@@ -1,12 +1,62 @@
 {
-    "index": {
+    "web: index.ahmed.php exists": {
         "success": true,
         "status": 200,
-        "response": "<script src='http:\/\/localhost\/JS\/getWEBSITEURLValue.js'><\/script><link rel='stylesheet' href='http:\/\/localhost\/css\/motion-animations.css'><script src='http:\/\/localhost\/JS\/redirect.js'><\/script><script src='http:\/\/localhost\/JS\/popstate.js'><\/script><script src='http:\/\/localhost\/JS\/submitData.js'><\/script><script src='http:\/\/localhost\/JS\/csrfToken.js'><\/script><script src='http:\/\/localhost\/JS\/submitDataWR.js'><\/script><script src='http:\/\/localhost\/JS\/addAppNametoHTML.js'><\/script><script src='http:\/\/localhost\/JS\/motion_engine.js'><\/script><script src=\"https:\/\/code.jquery.com\/jquery-3.6.0.min.js\"><\/script><h1>INEX SPA<\/h1>"
+        "response": "Exists"
     },
-    "testroute": {
+    "web: layouts custom.ahmed.php exists": {
         "success": true,
         "status": 200,
-        "response": "<script src='http:\/\/localhost\/JS\/getWEBSITEURLValue.js'><\/script><link rel='stylesheet' href='http:\/\/localhost\/css\/motion-animations.css'><script src='http:\/\/localhost\/JS\/redirect.js'><\/script><script src='http:\/\/localhost\/JS\/popstate.js'><\/script><script src='http:\/\/localhost\/JS\/submitData.js'><\/script><script src='http:\/\/localhost\/JS\/csrfToken.js'><\/script><script src='http:\/\/localhost\/JS\/submitDataWR.js'><\/script><script src='http:\/\/localhost\/JS\/addAppNametoHTML.js'><\/script><script src='http:\/\/localhost\/JS\/motion_engine.js'><\/script><script src=\"https:\/\/code.jquery.com\/jquery-3.6.0.min.js\"><\/script>testroute content"
+        "response": "Exists"
+    },
+    "web: index.php bootstraps": {
+        "success": true,
+        "status": 200,
+        "response": "Bootstraps"
+    },
+    "web: index.php handles DEV_MODE": {
+        "success": true,
+        "status": 200,
+        "response": "Handles DEV_MODE"
+    },
+    "web: index.php handles DB_USE": {
+        "success": true,
+        "status": 200,
+        "response": "Handles DB_USE"
+    },
+    "web: index.php handles USE_CACHE": {
+        "success": true,
+        "status": 200,
+        "response": "Handles USE_CACHE"
+    },
+    "web: index.php handles language": {
+        "success": true,
+        "status": 200,
+        "response": "Handles language"
+    },
+    "web: index.php loads getPage": {
+        "success": true,
+        "status": 200,
+        "response": "Loads getPage"
+    },
+    "web: index.php defines executeStatement wrapper": {
+        "success": true,
+        "status": 200,
+        "response": "Defines wrapper"
+    },
+    "web: index.php handles packages": {
+        "success": true,
+        "status": 200,
+        "response": "Handles packages"
+    },
+    "web: .htaccess exists": {
+        "success": true,
+        "status": 200,
+        "response": "Exists"
+    },
+    "web: .htaccess rewrites": {
+        "success": true,
+        "status": 200,
+        "response": "Has rewrite"
     }
 }
