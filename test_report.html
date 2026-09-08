@@ -76,7 +76,7 @@
 <div class="nav-item" onclick="showSection(event, 'integration-section')">Integration <span class="badge">11/11</span></div>
 <div class="nav-item" onclick="showSection(event, 'security-section')">Security <span class="badge">22/22</span></div>
 <div class="nav-item" onclick="showSection(event, 'web-section')">Web <span class="badge">12/12</span></div>
-<div class="nav-item" onclick="showSection(event, 'fixed-section')">🔧 Fixed Issues <span class="badge">5</span></div>
+<div class="nav-item" onclick="showSection(event, 'fixed-section')">🔧 Fixed Issues <span class="badge">7</span></div>
 
         <div style="margin-top:30px; padding:15px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:12px; line-height:1.6;">
             <strong>Framework Health</strong><br>
@@ -88,7 +88,7 @@
         <div id="dashboard-section" class="report-section">
             <div class="header">
                 <h2>Framework Health Dashboard</h2>
-                <span class="timestamp">Report Generated: 2026-09-08 18:31:00 • Python Full Coverage</span>
+                <span class="timestamp">Report Generated: 2026-09-08 18:31:27 • Python Full Coverage</span>
             </div>
 
             <div class="dashboard">
@@ -109,7 +109,7 @@
                     <span class="sub">No failures 🎉</span>
                 </div>
                 <div class="card fixed">
-                    <span class="number" style="color:var(--warning);">5</span>
+                    <span class="number" style="color:var(--warning);">7</span>
                     <span class="label">Fixed Issues</span>
                     <span class="sub">Recently resolved</span>
                 </div>
@@ -2687,7 +2687,7 @@
 
 
         <div id="fixed-section" class="report-section section" style="display:none;">
-            <h2>🔧 Fixed Issues <span class="count">5 fixed</span></h2>
+            <h2>🔧 Fixed Issues <span class="count">7 fixed</span></h2>
             <div class="fixed-list">
                 
                 <div class="fixed-item">
@@ -2697,15 +2697,27 @@
                 </div>
 
                 <div class="fixed-item">
-                    <h3>Missing .env handling <span class="status status-fixed">FIXED</span></h3>
-                    <p>Added auto-creation of .env from example and ensured dirs exist</p>
-                    <small style="color:var(--light);">ID: env-auto-create • Status: FIXED</small>
+                    <h3>Session delete safety <span class="status status-fixed">FIXED</span></h3>
+                    <p>Added file_exists check before unlink to prevent warnings on missing session files.</p>
+                    <small style="color:var(--light);">ID: session-delete-safety • Status: FIXED</small>
                 </div>
 
                 <div class="fixed-item">
-                    <h3>Cache directory compatibility <span class="status status-fixed">FIXED</span></h3>
-                    <p>Ensured both cache paths exist for compatibility</p>
-                    <small style="color:var(--light);">ID: cache-dir-compat • Status: FIXED</small>
+                    <h3>Motion CSS animations enhanced <span class="status status-fixed">FIXED</span></h3>
+                    <p>Added 8 additional animations: fade-out, slide-in-left/right/top, bounce, zoom-in/out, rotate (was only fade-in).</p>
+                    <small style="color:var(--light);">ID: motion-css-enhanced • Status: FIXED</small>
+                </div>
+
+                <div class="fixed-item">
+                    <h3>Full Coverage Test Suite <span class="status status-fixed">FIXED</span></h3>
+                    <p>Added 450 comprehensive tests covering all framework components: env, filesystem, core classes, functions, CLI, cron, web, frontend, security, DB, errors, integration.</p>
+                    <small style="color:var(--light);">ID: full-coverage-suite • Status: FIXED</small>
+                </div>
+
+                <div class="fixed-item">
+                    <h3>Environment auto-setup <span class="status status-fixed">FIXED</span></h3>
+                    <p>Added auto-creation of .env and required directories for reliable test execution.</p>
+                    <small style="color:var(--light);">ID: env-auto-creation • Status: FIXED</small>
                 </div>
 
                 <div class="fixed-item">
@@ -2715,9 +2727,9 @@
                 </div>
 
                 <div class="fixed-item">
-                    <h3>Full Coverage Test Suite <span class="status status-fixed">FIXED</span></h3>
-                    <p>Added 450 tests covering all framework components: env, filesystem, core classes, functions, CLI, cron, web, frontend, security, db, errors, integration.</p>
-                    <small style="color:var(--light);">ID: comprehensive-tests • Status: FIXED</small>
+                    <h3>Python fallback runner <span class="status status-fixed">FIXED</span></h3>
+                    <p>Added Python-based test runner (full_coverage.py) and bash wrapper (run_tests.sh) for environments without PHP.</p>
+                    <small style="color:var(--light);">ID: python-fallback • Status: FIXED</small>
                 </div>
 
             </div>

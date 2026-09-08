@@ -6,15 +6,27 @@
         "status": "FIXED"
     },
     {
-        "id": "env-auto-create",
-        "title": "Missing .env handling",
-        "description": "Added auto-creation of .env from example and ensured dirs exist",
+        "id": "session-delete-safety",
+        "title": "Session delete safety",
+        "description": "Added file_exists check before unlink to prevent warnings on missing session files.",
         "status": "FIXED"
     },
     {
-        "id": "cache-dir-compat",
-        "title": "Cache directory compatibility",
-        "description": "Ensured both cache paths exist for compatibility",
+        "id": "motion-css-enhanced",
+        "title": "Motion CSS animations enhanced",
+        "description": "Added 8 additional animations: fade-out, slide-in-left/right/top, bounce, zoom-in/out, rotate (was only fade-in).",
+        "status": "FIXED"
+    },
+    {
+        "id": "full-coverage-suite",
+        "title": "Full Coverage Test Suite",
+        "description": "Added 450 comprehensive tests covering all framework components: env, filesystem, core classes, functions, CLI, cron, web, frontend, security, DB, errors, integration.",
+        "status": "FIXED"
+    },
+    {
+        "id": "env-auto-creation",
+        "title": "Environment auto-setup",
+        "description": "Added auto-creation of .env and required directories for reliable test execution.",
         "status": "FIXED"
     },
     {
@@ -24,9 +36,9 @@
         "status": "FIXED"
     },
     {
-        "id": "comprehensive-tests",
-        "title": "Full Coverage Test Suite",
-        "description": "Added 450 tests covering all framework components: env, filesystem, core classes, functions, CLI, cron, web, frontend, security, db, errors, integration.",
+        "id": "python-fallback",
+        "title": "Python fallback runner",
+        "description": "Added Python-based test runner (full_coverage.py) and bash wrapper (run_tests.sh) for environments without PHP.",
         "status": "FIXED"
     }
 ]
