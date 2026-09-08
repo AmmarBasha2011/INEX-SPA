@@ -1,20 +1,32 @@
 [
     {
+        "id": "security-sanitize-order",
+        "title": "Security sanitizeInput order",
+        "description": "Fixed order: strip <script> before htmlspecialchars. Previously regex never matched after encoding.",
+        "status": "FIXED"
+    },
+    {
+        "id": "env-auto-create",
+        "title": "Missing .env handling",
+        "description": "Added auto-creation of .env from example and ensured dirs exist",
+        "status": "FIXED"
+    },
+    {
+        "id": "cache-dir-compat",
+        "title": "Cache directory compatibility",
+        "description": "Ensured both cache paths exist for compatibility",
+        "status": "FIXED"
+    },
+    {
         "id": "cli-make-route-api",
         "title": "CLI make:route API flag",
         "description": "Corrected positional argument flag position from -3 to -4 for non-dynamic routes.",
         "status": "FIXED"
     },
     {
-        "id": "cli-list-lang-exit",
-        "title": "CLI list:lang exit behavior",
-        "description": "Replaced return with exit(0) to ensure consistent CLI termination.",
-        "status": "FIXED"
-    },
-    {
-        "id": "cli-make-layout-duplicate",
-        "title": "CLI make:layout collision",
-        "description": "Updated tests to use unique names and ensure clean state before testing.",
+        "id": "comprehensive-tests",
+        "title": "Full Coverage Test Suite",
+        "description": "Added 450 tests covering all framework components: env, filesystem, core classes, functions, CLI, cron, web, frontend, security, db, errors, integration.",
         "status": "FIXED"
     }
 ]

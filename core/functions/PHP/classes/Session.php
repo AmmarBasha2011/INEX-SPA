@@ -68,7 +68,10 @@ class Session
      */
     public static function delete($key)
     {
-        unlink(self::$storagePath.$key);
+        $file = self::$storagePath.$key;
+        if (file_exists($file)) {
+            unlink($file);
+        }
     }
 
     /**

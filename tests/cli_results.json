@@ -1,122 +1,305 @@
 {
-    "list": {
+    "cli: ammar exists": {
         "success": true,
-        "output": "Available commands:\n  php ammar list - List all commands\n  php ammar list:routes - List all route files\n  php ammar list:db - List all database files\n  php ammar list:import - List all libraries\n  php ammar list:lang - List all languages\n  php ammar list:cron - List all available cron tasks\n  php ammar make:db - Create a new DB File\n  php ammar make:route - Create a new Route File\n  php ammar make:cache - Create a new cache entry\n  php ammar make:sitemap - Generate sitemap.xml\n  php ammar make:session - Create a new session\n  php ammar make:lang - Create a new language file\n  php ammar make:layout - Create a new layout file\n  php ammar make:auth - Create an auth db file\n  php ammar make:cron - Create a new cron task file\n  php ammar get:cache - Retrieve a cache entry\n  php ammar get:session - Retrieve a session entry\n  php ammar install:import - Install a new library\n  php ammar update:cache - Update an existing cache entry\n  php ammar delete:route - Delete an existing Route File\n  php ammar delete:db - Delete an existing DB File\n  php ammar delete:cache - Delete a cache entry\n  php ammar delete:import - Delete an import\n  php ammar delete:session - Delete a session\n  php ammar delete:lang - Delete a language file\n  php ammar delete:cron - Delete an existing cron task file\n  php ammar ask:gemini - Ask Gemini\n  php ammar clear:cache - Clear all cache files\n  php ammar clear:db - Clear all DB files\n  php ammar clear:db:tables - Clear all DB tables\n  php ammar clear:routes - Clear all route files\n  php ammar clear:cron - Delete ALL cron task files\n  php ammar clear:start - Clear all startup files\n  php ammar clear:docs - Clear all docs\n  php ammar run:db - Run all .sql files in db folder\n  php ammar run:cron - Manually run a specific cron task\n  php ammar serve - Serve the application\n"
+        "message": "File exists",
+        "category": "cli"
     },
-    "make:db": {
+    "cli: ammar has shebang": {
         "success": true,
-        "output": "DB file created: createusers_testTable_2026_05_25_13_16_44.sql\n"
+        "message": "Has shebang",
+        "category": "cli"
     },
-    "make:route": {
+    "cli: ammar defines all core commands": {
         "success": true,
-        "output": "Route file created: testroute_test_request_GET.ahmed.php\n"
+        "message": "Defines commands array",
+        "category": "cli"
     },
-    "make:route_api": {
+    "cli: command list defined": {
         "success": true,
-        "output": "Route file created: testapi_test_request_GET_api.ahmed.php\n"
+        "message": "Has list",
+        "category": "cli"
     },
-    "make:cache": {
+    "cli: command list:routes defined": {
         "success": true,
-        "output": "Cache entry created for key: mykey_test\n"
+        "message": "Has list:routes",
+        "category": "cli"
     },
-    "get:cache": {
+    "cli: command list:db defined": {
         "success": true,
-        "output": "Cache value: myvalue_test\n"
+        "message": "Has list:db",
+        "category": "cli"
     },
-    "update:cache": {
+    "cli: command list:import defined": {
         "success": true,
-        "output": "Cache updated for key: mykey_test\n"
+        "message": "Has list:import",
+        "category": "cli"
     },
-    "delete:cache": {
+    "cli: command list:lang defined": {
         "success": true,
-        "output": "Cache deleted for key: mykey_test\n"
+        "message": "Has list:lang",
+        "category": "cli"
     },
-    "make:session": {
+    "cli: command list:cron defined": {
         "success": true,
-        "output": "Session Created!!!\n"
+        "message": "Has list:cron",
+        "category": "cli"
     },
-    "get:session": {
+    "cli: command make:db defined": {
         "success": true,
-        "output": "Session Value: sessvalue_test\n"
+        "message": "Has make:db",
+        "category": "cli"
     },
-    "delete:session": {
+    "cli: command make:route defined": {
         "success": true,
-        "output": "Session Deleted!!!\n"
+        "message": "Has make:route",
+        "category": "cli"
     },
-    "make:lang": {
+    "cli: command make:cache defined": {
         "success": true,
-        "output": "Language file created: \/app\/lang\/es_test.json\n"
+        "message": "Has make:cache",
+        "category": "cli"
     },
-    "list:lang": {
+    "cli: command make:sitemap defined": {
         "success": true,
-        "output": "Available languages:\n- es_test\n"
+        "message": "Has make:sitemap",
+        "category": "cli"
     },
-    "delete:lang": {
+    "cli: command make:session defined": {
         "success": true,
-        "output": "Deleted language file: \/app\/lang\/es_test.json\n"
+        "message": "Has make:session",
+        "category": "cli"
     },
-    "make:layout": {
+    "cli: command make:lang defined": {
         "success": true,
-        "output": "Layout file created: \/app\/layouts\/custom_test.ahmed.php\n"
+        "message": "Has make:lang",
+        "category": "cli"
     },
-    "make:auth": {
+    "cli: command make:layout defined": {
         "success": true,
-        "output": "DB file created: createusersTable_2026_05_25_13_16_45.sql\n"
+        "message": "Has make:layout",
+        "category": "cli"
     },
-    "make:cron": {
+    "cli: command make:auth defined": {
         "success": true,
-        "output": "Cron task file created: \/app\/core\/cron\/tasks\/TestTask.php\n"
+        "message": "Has make:auth",
+        "category": "cli"
     },
-    "list:cron": {
+    "cli: command make:cron defined": {
         "success": true,
-        "output": "Available cron tasks:\n  - ExampleTask\n  - TestTask\n"
+        "message": "Has make:cron",
+        "category": "cli"
     },
-    "run:cron": {
+    "cli: command get:cache defined": {
         "success": true,
-        "output": "Executing cron task: TestTask\nCommand: \/usr\/bin\/php8.3 '\/app\/core\/cron\/cron_runner.php' 'TestTask'\nTestTask executed successfully at 2026-05-25 13:16:45.\nTask 'TestTask' executed successfully.\nCron task 'TestTask' finished.\n"
+        "message": "Has get:cache",
+        "category": "cli"
     },
-    "delete:cron": {
+    "cli: command get:session defined": {
         "success": true,
-        "output": "Cron task file '\/app\/core\/cron\/tasks\/TestTask.php' deleted successfully.\n"
+        "message": "Has get:session",
+        "category": "cli"
     },
-    "make:sitemap": {
+    "cli: command install:import defined": {
         "success": true,
-        "output": "Sitemap generated!\n"
+        "message": "Has install:import",
+        "category": "cli"
     },
-    "list:routes": {
+    "cli: command update:cache defined": {
         "success": true,
-        "output": "Available routes:\n  index.ahmed.php\n  testapi_test_request_GET_api.ahmed.php\n  testroute_test.ahmed.php\n  testroute_test_request_GET.ahmed.php\n"
+        "message": "Has update:cache",
+        "category": "cli"
     },
-    "list:db": {
+    "cli: command delete:route defined": {
         "success": true,
-        "output": "Available DB files:\n  createusersTable_2026_05_25_13_16_45.sql\n  createusers_testTable_2026_05_25_13_16_44.sql\n"
+        "message": "Has delete:route",
+        "category": "cli"
     },
-    "clear:cache": {
+    "cli: command delete:db defined": {
         "success": true,
-        "output": "Cache cleared!\n"
+        "message": "Has delete:db",
+        "category": "cli"
     },
-    "clear:db": {
+    "cli: command delete:cache defined": {
         "success": true,
-        "output": "DB files cleared!\n"
+        "message": "Has delete:cache",
+        "category": "cli"
     },
-    "clear:routes": {
+    "cli: command delete:import defined": {
         "success": true,
-        "output": "Route files cleared!\n"
+        "message": "Has delete:import",
+        "category": "cli"
     },
-    "clear:db:tables": {
+    "cli: command delete:session defined": {
         "success": true,
-        "output": "\u2705 No tables found in database.\nDatabase tables cleared!\n"
+        "message": "Has delete:session",
+        "category": "cli"
     },
-    "install:import": {
+    "cli: command delete:lang defined": {
         "success": true,
-        "output": "Copying local directory...\nRepository cloned successfully to core\/import\/mock_import!\nPackage.json updated with new dependency.\n"
+        "message": "Has delete:lang",
+        "category": "cli"
     },
-    "list:import": {
+    "cli: command delete:cron defined": {
         "success": true,
-        "output": "Available imports:\n  mock_import\n"
+        "message": "Has delete:cron",
+        "category": "cli"
     },
-    "delete:import": {
+    "cli: command ask:gemini defined": {
         "success": true,
-        "output": "Import deleted: mock_import\n"
+        "message": "Has ask:gemini",
+        "category": "cli"
+    },
+    "cli: command clear:cache defined": {
+        "success": true,
+        "message": "Has clear:cache",
+        "category": "cli"
+    },
+    "cli: command clear:db defined": {
+        "success": true,
+        "message": "Has clear:db",
+        "category": "cli"
+    },
+    "cli: command clear:db:tables defined": {
+        "success": true,
+        "message": "Has clear:db:tables",
+        "category": "cli"
+    },
+    "cli: command clear:routes defined": {
+        "success": true,
+        "message": "Has clear:routes",
+        "category": "cli"
+    },
+    "cli: command clear:cron defined": {
+        "success": true,
+        "message": "Has clear:cron",
+        "category": "cli"
+    },
+    "cli: command clear:start defined": {
+        "success": true,
+        "message": "Has clear:start",
+        "category": "cli"
+    },
+    "cli: command clear:docs defined": {
+        "success": true,
+        "message": "Has clear:docs",
+        "category": "cli"
+    },
+    "cli: command run:db defined": {
+        "success": true,
+        "message": "Has run:db",
+        "category": "cli"
+    },
+    "cli: command run:cron defined": {
+        "success": true,
+        "message": "Has run:cron",
+        "category": "cli"
+    },
+    "cli: command serve defined": {
+        "success": true,
+        "message": "Has serve",
+        "category": "cli"
+    },
+    "cli: make:db supports 7 actions": {
+        "success": true,
+        "message": "Supports 7 actions",
+        "category": "cli"
+    },
+    "cli: make:route handles dynamic": {
+        "success": true,
+        "message": "Handles dynamic",
+        "category": "cli"
+    },
+    "cli: make:route handles api": {
+        "success": true,
+        "message": "Handles api",
+        "category": "cli"
+    },
+    "cli: make:route validates method": {
+        "success": true,
+        "message": "Validates method",
+        "category": "cli"
+    },
+    "cli: make:cache uses Cache::set": {
+        "success": true,
+        "message": "Uses Cache::set",
+        "category": "cli"
+    },
+    "cli: get:cache uses Cache::get": {
+        "success": true,
+        "message": "Uses Cache::get",
+        "category": "cli"
+    },
+    "cli: update:cache uses Cache::update": {
+        "success": true,
+        "message": "Uses Cache::update",
+        "category": "cli"
+    },
+    "cli: delete:cache uses Cache::delete": {
+        "success": true,
+        "message": "Uses Cache::delete",
+        "category": "cli"
+    },
+    "cli: clear:cache globs": {
+        "success": true,
+        "message": "Clears cache",
+        "category": "cli"
+    },
+    "cli: make:cron sanitizes": {
+        "success": true,
+        "message": "Sanitizes task name",
+        "category": "cli"
+    },
+    "cli: make:cron checks letter start": {
+        "success": true,
+        "message": "Checks letter start",
+        "category": "cli"
+    },
+    "cli: run:cron validates task file": {
+        "success": true,
+        "message": "Validates file exists",
+        "category": "cli"
+    },
+    "cli: make:sitemap uses SitemapGenerator": {
+        "success": true,
+        "message": "Uses SitemapGenerator",
+        "category": "cli"
+    },
+    "cli: ammar has php open tag": {
+        "success": true,
+        "message": "Has php tag",
+        "category": "cli"
+    },
+    "cli: ammar requires getEnvValue": {
+        "success": true,
+        "message": "Requires getEnvValue",
+        "category": "cli"
+    },
+    "cli-sim: can parse commands": {
+        "success": true,
+        "output": "Found 44 commands"
+    },
+    "cli-sim: handler for list:cron": {
+        "success": true,
+        "output": "Has handler"
+    },
+    "cli-sim: handler for delete:cron": {
+        "success": true,
+        "output": "Has handler"
+    },
+    "cli-sim: handler for make:cron": {
+        "success": true,
+        "output": "Has handler"
+    },
+    "cli-sim: handler for make:db": {
+        "success": true,
+        "output": "Has handler"
+    },
+    "cli-sim: handler for make:route": {
+        "success": true,
+        "output": "Has handler"
+    },
+    "cli-sim: DB filename pattern": {
+        "success": true,
+        "output": "Handles create table"
     }
 }

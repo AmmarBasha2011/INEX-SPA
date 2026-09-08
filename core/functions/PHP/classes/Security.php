@@ -23,11 +23,11 @@ class Security
      */
     public static function sanitizeInput($data)
     {
-        // Remove any unwanted HTML tags
-        $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-
-        // Remove any scripts or JavaScript code
+        // Remove any scripts or JavaScript code first (before encoding)
         $data = preg_replace('/<script.*?<\/script>/is', '', $data);
+
+        // Convert special HTML characters to entities
+        $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 
         return $data;
     }

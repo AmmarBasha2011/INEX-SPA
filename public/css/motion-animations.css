@@ -17,3 +17,120 @@
 .motion-fade-in {
   animation-name: motion-fade-in;
 }
+
+/* Fade-out animation */
+@keyframes motion-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.motion-fade-out {
+  animation-name: motion-fade-out;
+}
+
+/* Slide-in from left */
+@keyframes motion-slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.motion-slide-in-left {
+  animation-name: motion-slide-in-left;
+}
+
+/* Slide-in from right */
+@keyframes motion-slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.motion-slide-in-right {
+  animation-name: motion-slide-in-right;
+}
+
+/* Slide-in from top */
+@keyframes motion-slide-in-top {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.motion-slide-in-top {
+  animation-name: motion-slide-in-top;
+}
+
+/* Bounce animation */
+@keyframes motion-bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-30px);
+  }
+  60% {
+    transform: translateY(-15px);
+  }
+}
+.motion-bounce {
+  animation-name: motion-bounce;
+}
+
+/* Zoom-in animation */
+@keyframes motion-zoom-in {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.motion-zoom-in {
+  animation-name: motion-zoom-in;
+}
+
+/* Zoom-out animation */
+@keyframes motion-zoom-out {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+.motion-zoom-out {
+  animation-name: motion-zoom-out;
+}
+
+/* Rotate animation */
+@keyframes motion-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.motion-rotate {
+  animation-name: motion-rotate;
+}
