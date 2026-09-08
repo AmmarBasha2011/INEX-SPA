@@ -102,7 +102,7 @@ class UserAuth
 
         // SECURITY: Whitelist allowed column names to prevent SQL injection
         $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
-        
+
         $params = [];
         $conditions = [];
 
