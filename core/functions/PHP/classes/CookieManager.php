@@ -23,11 +23,11 @@ class CookieManager
         $expiry = time() + ($days * 24 * 60 * 60);
         // SECURITY: Add secure cookie flags (HttpOnly, Secure, SameSite)
         setcookie($name, $value, [
-            'expires' => $expiry,
-            'path' => '/',
-            'secure' => true,
+            'expires'  => $expiry,
+            'path'     => '/',
+            'secure'   => true,
             'httponly' => true,
-            'samesite' => 'Strict'
+            'samesite' => 'Strict',
         ]);
     }
 
@@ -57,11 +57,11 @@ class CookieManager
     {
         // SECURITY: Use secure cookie flags when deleting
         setcookie($name, '', [
-            'expires' => time() - 3600,
-            'path' => '/',
-            'secure' => true,
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'secure'   => true,
             'httponly' => true,
-            'samesite' => 'Strict'
+            'samesite' => 'Strict',
         ]);
     }
 

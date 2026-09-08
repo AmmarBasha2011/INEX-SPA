@@ -92,7 +92,8 @@ class Session
         $key = getEnvValue('APP_KEY') ?: 'default-insecure-key-change-in-production';
         $iv = random_bytes(16);
         $encrypted = openssl_encrypt($data, 'AES-256-CBC', $key, 0, $iv);
-        return base64_encode($iv . $encrypted);
+
+        return base64_encode($iv.$encrypted);
     }
 
     /**
@@ -108,6 +109,7 @@ class Session
         $decoded = base64_decode($data);
         $iv = substr($decoded, 0, 16);
         $encrypted = substr($decoded, 16);
+
         return openssl_decrypt($encrypted, 'AES-256-CBC', $key, 0, $iv);
     }
 }
