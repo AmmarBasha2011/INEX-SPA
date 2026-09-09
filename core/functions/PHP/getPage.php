@@ -11,7 +11,7 @@
  */
 function loadBootstrap()
 {
-    if (getEnvValue('USE_BOOTSTRAP') == 'true') {
+    if (getEnvValue('USE_BOOTSTRAP') === 'true') {
         echo '<link href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">';
         echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
     }
@@ -29,7 +29,7 @@ function loadBootstrap()
  */
 function loadPWA()
 {
-    if (getEnvValue('USE_PWA') == 'true') {
+    if (getEnvValue('USE_PWA') === 'true') {
         $manifest_config = file_get_contents(__DIR__.'/../../../public/manifest_config.html');
         echo $manifest_config;
         echo '<script src="'.getEnvValue('WEBSITE_URL').'JS/pwa.js"></script>';
@@ -60,20 +60,20 @@ function loadScripts()
             'JS/submitDataWR.js',
         ];
 
-        if (getEnvValue('USE_COOKIE') == 'true') {
+        if (getEnvValue('USE_COOKIE') === 'true') {
             $scripts[] = 'JS/classes/CookieManager.js';
         }
 
-        if (getEnvValue('USE_APP_NAME_IN_TITLE') == 'true') {
+        if (getEnvValue('USE_APP_NAME_IN_TITLE') === 'true') {
             $scripts[] = 'JS/addAppNametoHTML.js';
         }
 
-        if (getEnvValue('USE_ANIMATE') == 'true') {
+        if (getEnvValue('USE_ANIMATE') === 'true') {
             echo "<link rel='stylesheet' href='".getEnvValue('WEBSITE_URL')."css/motion-animations.css'>";
             $scripts[] = 'JS/motion_engine.js';
         }
 
-        if (getEnvValue('USE_NOTIFICATION') == 'true') {
+        if (getEnvValue('USE_NOTIFICATION') === 'true') {
             echo "<link rel='stylesheet' href='".getEnvValue('WEBSITE_URL')."errors/notification.css'/>";
             $scripts[] = 'JS/showNotification.js';
         }
@@ -166,13 +166,13 @@ function getPage($RouteName)
         return;
     }
 
-    if ($_GET['page'] == 'fetchCsrfToken') {
+    if ($_GET['page'] === 'fetchCsrfToken') {
         echo generateCsrfToken();
 
         return;
     }
 
-    if ($_GET['page'] == 'blocked') {
+    if ($_GET['page'] === 'blocked') {
         if (file_exists(__DIR__.'/../../../core/errors/403.php')) {
             loadScripts();
             include __DIR__.'/../../../core/errors/403.php';
@@ -181,7 +181,7 @@ function getPage($RouteName)
         return;
     }
 
-    if ($_GET['page'] == 'JS/getWEBSITEURLValue.js') {
+    if ($_GET['page'] === 'JS/getWEBSITEURLValue.js') {
         echo getWEBSITEURLValue();
 
         return;
