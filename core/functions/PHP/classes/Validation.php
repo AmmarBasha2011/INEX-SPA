@@ -31,7 +31,8 @@ class Validation
      */
     public static function isTextLength($text, $maxLength)
     {
-        return strlen($text) <= $maxLength;
+        // SECURITY: Use mb_strlen for multibyte string length to prevent bypass
+        return mb_strlen($text, 'UTF-8') <= $maxLength;
     }
 
     /**
@@ -45,7 +46,8 @@ class Validation
      */
     public static function isMinTextLength($text, $minLength)
     {
-        return strlen($text) >= $minLength;
+        // SECURITY: Use mb_strlen for multibyte string length to prevent bypass
+        return mb_strlen($text, 'UTF-8') >= $minLength;
     }
 
     /**
@@ -57,6 +59,10 @@ class Validation
      */
     public static function isSubDomain($domain)
     {
+        // SECURITY: Validate domain format
+        if (!preg_match('/^[a-zA-Z0-9._-]+$/', $domain)) {
+            return false;
+        }
         return substr_count($domain, '.') > 1;
     }
 
@@ -69,6 +75,10 @@ class Validation
      */
     public static function isSubDir($domain)
     {
+        // SECURITY: Validate URL first
+        if (!filter_var($domain, FILTER_VALIDATE_URL) && !preg_match('/^[a-zA-Z0-9\/_-]+$/', $domain)) {
+            return false;
+        }
         return parse_url($domain, PHP_URL_PATH) && trim(parse_url($domain, PHP_URL_PATH), '/') !== '';
     }
 

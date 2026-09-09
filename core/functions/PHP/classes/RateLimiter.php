@@ -85,6 +85,15 @@ class RateLimiter
 
         // Cleanup expired entries
         foreach ($data as $ip => $entry) {
+            // SECURITY: Validate IP format
+            if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+                unset($data[$ip]);
+                continue;
+            }
+            if (!isset($entry['timestamp']) || !is_numeric($entry['timestamp'])) {
+                unset($data[$ip]);
+                continue;
+            }
             if ($entry['timestamp'] + self::$timeFrame < time()) {
                 unset($data[$ip]);
             }

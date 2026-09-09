@@ -95,8 +95,8 @@ class AhmedTemplate
             '/@endunless/'       => '<?php endif; ?>',
 
             // Functions and helpers
-            '/@getLang\("(.+?)"\)/'      => '<?= Language::get("$1") ?>',
-            '/@getEnv\("(.+?)"\)/'       => '<?php echo getEnvValue("$1"); ?>',
+            '/@getLang\("(.+?)"\)/'      => '<?= htmlspecialchars(Language::get("$1"), ENT_QUOTES, "UTF-8") ?>',
+            '/@getEnv\("(.+?)"\)/'       => '<?php echo htmlspecialchars(getEnvValue("$1"), ENT_QUOTES, "UTF-8"); ?>',
             '/@include\("(.+?)"\)/'      => '<?php include "$1"; ?>',
             '/@require\("(.+?)"\)/'      => '<?php require "$1"; ?>',
             '/@runDB()/'                 => '<?php runDB(); ?>',
@@ -108,12 +108,12 @@ class AhmedTemplate
             '/@section\("(.+?)"\)/'                               => '<?php Layout::start("$1"); ?>',
             '/@endSection/'                                       => '<?php Layout::end(); ?>',
             '/@render\("(.+?)",\s*"(.+?)",\s*"(.+?)",\s*(.*?)\)/' => '<?php Layout::render("$1", "$2", "$3", $4); ?>',
-            '/@getSection\("(.+?)"\)/'                            => '<?= Layout::section("$1") ?>',
+            '/@getSection\("(.+?)"\)/'                            => '<?= htmlspecialchars(Layout::section("$1"), ENT_QUOTES, "UTF-8") ?>',
 
             // Variables and data manipulation
             '/@set\("(.+?)",\s*(.+?)\)/'    => '<?php $$1 = $2; ?>',
             '/@define\("(.+?)",\s*(.+?)\)/' => '<?php $1 = $2; ?>',
-            '/@var\("(.+?)"\)/'             => '<?= $$1 ?>',
+            '/@var\("(.+?)"\)/'             => '<?= htmlspecialchars($$1 ?? "", ENT_QUOTES, "UTF-8") ?>',
             '/@postData\("(.+?)"\)/'        => '<?= htmlspecialchars($_POST["$1"] ?? "", ENT_QUOTES, "UTF-8") ?>',
             '/@getData\("(.+?)"\)/'         => '<?= htmlspecialchars($_GET["$1"] ?? "", ENT_QUOTES, "UTF-8") ?>',
             '/@toJson\((.+?)\)/'            => '<?= json_encode($1) ?>',
@@ -146,12 +146,12 @@ class AhmedTemplate
             // Language and session
             '/@setLang\("(.+?)"\)/'                => '<?php Language::set("$1"); ?>',
             '/@makeSession\("(.+?)",\s*"(.+?)"\)/' => '<?php Session::make("$1", "$2"); ?>',
-            '/@getSession\("(.+?)"\)/'             => '<?= Session::get("$1") ?>',
+            '/@getSession\("(.+?)"\)/'             => '<?= htmlspecialchars(Session::get("$1"), ENT_QUOTES, "UTF-8") ?>',
             '/@deleteSession\("(.+?)"\)/'          => '<?php Session::delete("$1"); ?>',
 
             // Cookies
             '/@setCookie\("(.+?)",\s*"(.+?)",\s*(.+?)\)/' => '<?php CookieManager::set("$1", "$2", $3); ?>',
-            '/@getCookie\("(.+?)"\)/'                     => '<?= CookieManager::get("$1") ?>',
+            '/@getCookie\("(.+?)"\)/'                     => '<?= htmlspecialchars(CookieManager::get("$1"), ENT_QUOTES, "UTF-8") ?>',
             '/@existsCookie\("(.+?)"\)/'                  => '<?= CookieManager::exists("$1") ? "true" : "false" ?>',
             '/@deleteCookie\("(.+?)"\)/'                  => '<?php CookieManager::delete("$1"); ?>',
             '/@getAllCookies()/'                          => '<?= json_encode(CookieManager::getAll()) ?>',

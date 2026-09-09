@@ -44,7 +44,10 @@ function getEnvValue($key)
 
             // Match key-value pair
             if (preg_match('/^'.preg_quote($key).'=(.*)$/i', $line, $matches)) {
-                return trim($matches[1]);
+                $value = trim($matches[1]);
+                // SECURITY: Strip quotes from value
+                $value = trim($value, '"\'');
+                return $value;
             }
         }
     } catch (Exception $e) {

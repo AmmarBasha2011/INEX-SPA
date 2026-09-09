@@ -3,7 +3,9 @@
 /**
  * Defines the path to the JSON file that configures user authentication parameters.
  */
-define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
+if (!defined('JSON_FOLDER')) {
+    define('JSON_FOLDER', __DIR__.'/../../../../Json/AuthParams.json');
+}
 
 /**
  * Handles user authentication processes like sign-up, sign-in, session management,
@@ -33,6 +35,7 @@ class UserAuth
 
         // Check if JSON decoding was successful
         if ($data === null) {
+            error_log('Error decoding JSON in generateSQL.');
             exit('Error decoding JSON.');
         }
 
@@ -163,6 +166,7 @@ class UserAuth
 
         $data = json_decode($jsonString, true);
         if ($data === null) {
+            error_log('Error decoding JSON in signUp.');
             return 'Error decoding JSON.';
         }
 

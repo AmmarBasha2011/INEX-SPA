@@ -39,7 +39,10 @@ class SitemapGenerator
         }
 
         $xml .= '</urlset>';
-        file_put_contents(__DIR__.'/../../../../public/sitemap.xml', $xml); // Save to public
+        // SECURITY: Use atomic write to prevent race conditions
+        $tmpFile = __DIR__.'/../../../../public/sitemap.xml.tmp';
+        file_put_contents($tmpFile, $xml);
+        rename($tmpFile, __DIR__.'/../../../../public/sitemap.xml');
     }
 
     /**

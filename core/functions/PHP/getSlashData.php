@@ -18,8 +18,8 @@ function getSlashData($text)
 {
     $parts = explode('/', $text);
     if (count($parts) == 2) {
-        $before = $parts[0];
-        $after = $parts[1];
+        $before = preg_replace('/[^a-zA-Z0-9_-]/', '', $parts[0]);
+        $after = preg_replace('/[^a-zA-Z0-9_-]/', '', $parts[1]);
 
         return ['before' => $before, 'after' => $after];
     } else {
