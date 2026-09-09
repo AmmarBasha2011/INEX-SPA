@@ -271,7 +271,7 @@ class UserAuth
         unset($checkDetails['password']);
         // SECURITY: Whitelist column names to prevent SQL injection
         $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
-        $safeCheckKeys = array_filter(array_keys($checkDetails), fn($k) => in_array($k, $allowedColumns));
+        $safeCheckKeys = array_filter(array_keys($checkDetails), fn ($k) => in_array($k, $allowedColumns));
         $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", $safeCheckKeys));
         $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values(array_intersect_key($checkDetails, array_flip($safeCheckKeys))));
         if (!empty($existingUser)) {
@@ -285,10 +285,10 @@ class UserAuth
 
         // SECURITY: Whitelist column names to prevent SQL injection
         $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
-        $safeKeys = array_filter(array_keys($details), fn($k) => in_array($k, $allowedColumns));
+        $safeKeys = array_filter(array_keys($details), fn ($k) => in_array($k, $allowedColumns));
 
         // Insert new user
-        $columns = implode(', ', array_map(fn($k) => "`$k`", $safeKeys));
+        $columns = implode(', ', array_map(fn ($k) => "`$k`", $safeKeys));
         $placeholders = implode(', ', array_fill(0, count($safeKeys), '?'));
         $sql = "INSERT INTO users ($columns) VALUES ($placeholders)";
 
@@ -296,7 +296,7 @@ class UserAuth
             executeStatement($sql, array_values(array_intersect_key($details, array_flip($safeKeys))));
             $checkDetails = $details;
             unset($checkDetails['password']);
-            $safeCheckKeys = array_filter(array_keys($checkDetails), fn($k) => in_array($k, $allowedColumns));
+            $safeCheckKeys = array_filter(array_keys($checkDetails), fn ($k) => in_array($k, $allowedColumns));
             $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", $safeCheckKeys));
             $sql = "SELECT id FROM users WHERE $placeholders";
             $newUser = executeStatement($sql, array_values(array_intersect_key($checkDetails, array_flip($safeCheckKeys))))[0];
