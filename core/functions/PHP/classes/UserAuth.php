@@ -269,8 +269,11 @@ class UserAuth
         // Check if user already exists
         $checkDetails = $details;
         unset($checkDetails['password']);
-        $placeholders = implode(' AND ', array_map(fn ($k) => "$k = ?", array_keys($checkDetails)));
-        $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values($checkDetails));
+        // SECURITY: Whitelist column names to prevent SQL injection
+        $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
+        $safeCheckKeys = array_filter(array_keys($checkDetails), fn($k) => in_array($k, $allowedColumns));
+        $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", $safeCheckKeys));
+        $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values(array_intersect_key($checkDetails, array_flip($safeCheckKeys))));
         if (!empty($existingUser)) {
             return 'User already exists.';
         }
@@ -280,18 +283,23 @@ class UserAuth
             $details['password'] = password_hash($details['password'], PASSWORD_DEFAULT);
         }
 
+        // SECURITY: Whitelist column names to prevent SQL injection
+        $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
+        $safeKeys = array_filter(array_keys($details), fn($k) => in_array($k, $allowedColumns));
+
         // Insert new user
-        $columns = implode(', ', array_keys($details));
-        $placeholders = implode(', ', array_fill(0, count($details), '?'));
+        $columns = implode(', ', array_map(fn($k) => "`$k`", $safeKeys));
+        $placeholders = implode(', ', array_fill(0, count($safeKeys), '?'));
         $sql = "INSERT INTO users ($columns) VALUES ($placeholders)";
 
         try {
-            executeStatement($sql, array_values($details));
+            executeStatement($sql, array_values(array_intersect_key($details, array_flip($safeKeys))));
             $checkDetails = $details;
             unset($checkDetails['password']);
-            $placeholders = implode(' AND ', array_map(fn ($key) => "$key = ?", array_keys($checkDetails)));
+            $safeCheckKeys = array_filter(array_keys($checkDetails), fn($k) => in_array($k, $allowedColumns));
+            $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", $safeCheckKeys));
             $sql = "SELECT id FROM users WHERE $placeholders";
-            $newUser = executeStatement($sql, array_values($checkDetails))[0];
+            $newUser = executeStatement($sql, array_values(array_intersect_key($checkDetails, array_flip($safeCheckKeys))))[0];
             $_SESSION['user_id'] = $newUser['id'];
 
             return 'User successfully registered.';

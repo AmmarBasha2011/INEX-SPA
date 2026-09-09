@@ -34,6 +34,11 @@ class Session
      */
     public static function make($key, $value)
     {
+        // SECURITY: Sanitize session key — only alphanumeric, dash, underscore
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        if (empty($key)) {
+            return false;
+        }
         $data = self::encrypt(json_encode($value));
         file_put_contents(self::$storagePath.$key, $data);
     }
@@ -51,6 +56,11 @@ class Session
      */
     public static function get($key)
     {
+        // SECURITY: Sanitize session key — only alphanumeric, dash, underscore
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        if (empty($key)) {
+            return null;
+        }
         $file = self::$storagePath.$key;
         if (!file_exists($file)) {
             return null;
@@ -68,6 +78,11 @@ class Session
      */
     public static function delete($key)
     {
+        // SECURITY: Sanitize session key — only alphanumeric, dash, underscore
+        $key = preg_replace('/[^a-zA-Z0-9_-]/', '', $key);
+        if (empty($key)) {
+            return false;
+        }
         $file = self::$storagePath.$key;
         if (file_exists($file)) {
             unlink($file);
@@ -75,29 +90,39 @@ class Session
     }
 
     /**
-     * Obfuscates data using base64 encoding.
-     *
-     * @warning This is not a secure method of encryption. It should be replaced
-     *          with a strong cryptographic function for any sensitive data.
+     * Obfuscates data using AES-256-CBC encryption with APP_KEY.
      *
      * @param string $data The plain data to be encoded.
      *
-     * @return string The base64-encoded data.
+     * @return string The encrypted data as base64-encoded string.
      */
     private static function encrypt($data)
     {
-        return base64_encode($data); // Simple encryption (can be improved)
+        $key = getEnvValue('APP_KEY');
+        if (empty($key)) {
+            throw new \RuntimeException('APP_KEY is required for session encryption');
+        }
+        $iv = random_bytes(16);
+        $encrypted = openssl_encrypt($data, 'AES-256-CBC', $key, 0, $iv);
+        return base64_encode($iv.$encrypted);
     }
 
     /**
-     * Decodes data from a base64 encoded string.
+     * Decrypts data from an AES-256-CBC encrypted string.
      *
-     * @param string $data The base64-encoded string.
+     * @param string $data The base64-encoded encrypted string.
      *
-     * @return string The decoded, original data.
+     * @return string The decrypted, original data.
      */
     private static function decrypt($data)
     {
-        return base64_decode($data);
+        $key = getEnvValue('APP_KEY');
+        if (empty($key)) {
+            throw new \RuntimeException('APP_KEY is required for session decryption');
+        }
+        $decoded = base64_decode($data);
+        $iv = substr($decoded, 0, 16);
+        $encrypted = substr($decoded, 16);
+        return openssl_decrypt($encrypted, 'AES-256-CBC', $key, 0, $iv);
     }
 }

@@ -30,6 +30,14 @@ if ($devMode) {
     error_reporting(E_ALL);
 }
 
+// Security headers
+header('X-Content-Type-Options: nosniff');
+header('X-Frame-Options: DENY');
+header('X-XSS-Protection: 1; mode=block');
+header('Referrer-Policy: strict-origin-when-cross-origin');
+header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://code.jquery.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data:; font-src 'self'; connect-src 'self'");
+
 require_once 'core/functions/PHP/getWEBSITEURLValue.php';
 require_once 'core/functions/PHP/getSlashData.php';
 
@@ -155,7 +163,11 @@ require_once 'core/functions/PHP/classes/Session.php';
 
 if ($detectLanguage) {
     require_once 'core/functions/PHP/classes/Language.php';
-    $selectedLang = $_COOKIE['lang'] ?? 'en';
+    // SECURITY: Sanitize language cookie value — only allow alphanumeric, dash, underscore
+    $selectedLang = isset($_COOKIE['lang']) ? preg_replace('/[^a-zA-Z0-9_-]/', '', $_COOKIE['lang']) : 'en';
+    if (empty($selectedLang)) {
+        $selectedLang = 'en';
+    }
     Language::setLanguage($selectedLang);
 }
 require_once 'core/functions/PHP/classes/Validation.php';
@@ -181,7 +193,14 @@ if (file_exists($packagesJsonPath)) {
     if (is_array($packagesJson)) {
         foreach ($packagesJson as $packages) {
             foreach ($packages as $key => $value) {
-                require_once __DIR__.'/core/import/'.$key.'/init.php';
+                // SECURITY: Validate package key — only alphanumeric, dash, underscore
+                if (!preg_match('/^[a-zA-Z0-9_-]+$/', $key)) {
+                    continue;
+                }
+                $initPath = __DIR__.'/core/import/'.$key.'/init.php';
+                if (file_exists($initPath)) {
+                    require_once $initPath;
+                }
             }
         }
     }
