@@ -66,6 +66,11 @@ class Webhook
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         $response = curl_exec($ch);
+        // SECURITY: Validate response is not empty
+        if ($response === false) {
+            curl_close($ch);
+            return false;
+        }
         curl_close($ch);
 
         return $response;

@@ -29,6 +29,12 @@ class Database
      */
     public function __construct($charset = 'utf8mb4')
     {
+        // SECURITY: Validate charset to prevent SQL injection via charset
+        $allowedCharsets = ['utf8mb4', 'utf8', 'latin1', 'ascii'];
+        if (!in_array($charset, $allowedCharsets)) {
+            $charset = 'utf8mb4';
+        }
+
         $driver = getEnvValue('DB_DRIVER');
         $host = getEnvValue('DB_HOST');
         $dbname = getEnvValue('DB_NAME');

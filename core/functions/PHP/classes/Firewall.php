@@ -29,16 +29,21 @@ class Firewall
 
         $config = json_decode(file_get_contents($configPath), true);
 
+        // SECURITY: Validate config is array
+        if (!is_array($config)) {
+            return;
+        }
+
         $ip = $_SERVER['REMOTE_ADDR'] ?? '';
         $agent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
 
         // Check IP
-        if (!empty($config['block_ips']) && in_array($ip, $config['block_ips'])) {
+        if (!empty($config['block_ips']) && is_array($config['block_ips']) && in_array($ip, $config['block_ips'])) {
             self::block($config);
         }
 
         // Check User-Agent
-        if (!empty($config['block_user_agents'])) {
+        if (!empty($config['block_user_agents']) && is_array($config['block_user_agents'])) {
             foreach ($config['block_user_agents'] as $ua) {
                 if (strpos($agent, strtolower($ua)) !== false) {
                     self::block($config);
