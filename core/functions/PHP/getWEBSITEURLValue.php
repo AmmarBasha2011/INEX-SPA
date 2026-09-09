@@ -12,8 +12,9 @@
  */
 function getWEBSITEURLValue()
 {
-    $jscode = 'window.WEBSITE_URL = "'.getEnvValue('WEBSITE_URL').'";'."\n";
-    $jscode .= 'window.APP_NAME = "'.getEnvValue('APP_NAME').'";'."\n";
+    // SECURITY: Escape values for JavaScript context
+    $jscode = 'window.WEBSITE_URL = "'.htmlspecialchars(getEnvValue('WEBSITE_URL'), ENT_QUOTES, 'UTF-8').'";'."\n";
+    $jscode .= 'window.APP_NAME = "'.htmlspecialchars(getEnvValue('APP_NAME'), ENT_QUOTES, 'UTF-8').'";'."\n";
 
     return $jscode;
 }

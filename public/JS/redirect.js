@@ -48,8 +48,10 @@ function redirect(route='', requestType="GET", dynamic="") {
 
             // Wait for all styles to load
             Promise.all(stylePromises).then(() => {
-                // Update the page content
-                document.documentElement.innerHTML = xhr.responseText;
+                // SECURITY: Use DOMParser to prevent script injection
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(xhr.responseText, 'text/html');
+                document.documentElement.innerHTML = doc.documentElement.innerHTML;
                 
                 // Reload all scripts
                 const scripts = document.getElementsByTagName('script');

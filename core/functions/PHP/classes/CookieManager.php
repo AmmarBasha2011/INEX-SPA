@@ -20,6 +20,14 @@ class CookieManager
      */
     public static function set($name, $value, $days = 7)
     {
+        // SECURITY: Validate cookie name
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $name)) {
+            return false;
+        }
+        // SECURITY: Validate days is numeric and within bounds
+        if (!is_numeric($days) || $days < 0 || $days > 365) {
+            $days = 7;
+        }
         $expiry = time() + ($days * 24 * 60 * 60);
         setcookie($name, $value, [
             'expires'  => $expiry,
@@ -39,6 +47,10 @@ class CookieManager
      */
     public static function get($name)
     {
+        // SECURITY: Validate cookie name
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $name)) {
+            return null;
+        }
         return $_COOKIE[$name] ?? null;
     }
 
@@ -54,6 +66,10 @@ class CookieManager
      */
     public static function delete($name)
     {
+        // SECURITY: Validate cookie name
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $name)) {
+            return false;
+        }
         setcookie($name, '', [
             'expires'  => time() - 3600,
             'path'     => '/',

@@ -12,10 +12,13 @@ function csrfToken() {
     fetch(window.WEBSITE_URL + "fetchCsrfToken") // Get the CSRF token from the server
         .then(response => response.text())
         .then(token => {
+            // SECURITY: Sanitize token - only allow hex characters
+            token = token.replace(/[^a-f0-9]/g, '');
             document.querySelectorAll("form").forEach(form => {
                 let hiddenInput = document.createElement("input");
                 hiddenInput.type = "hidden";
                 hiddenInput.id = "csrf_token";
+                hiddenInput.name = "csrf_token";
                 hiddenInput.value = token;
                 form.appendChild(hiddenInput);
             });
