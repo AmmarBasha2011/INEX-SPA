@@ -51,6 +51,7 @@ class CookieManager
         if (!preg_match('/^[a-zA-Z0-9_-]+$/', $name)) {
             return null;
         }
+
         return $_COOKIE[$name] ?? null;
     }
 

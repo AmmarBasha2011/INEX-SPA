@@ -69,6 +69,7 @@ class Webhook
         // SECURITY: Validate response is not empty
         if ($response === false) {
             curl_close($ch);
+
             return false;
         }
         curl_close($ch);

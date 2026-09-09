@@ -6,7 +6,8 @@
  * This class is a template for a custom cron job. It is automatically
  * generated and intended to be used with the framework's cron runner.
  */
-class TestTask {
+class TestTask
+{
     /**
      * Handles the execution of the cron task.
      *
@@ -15,9 +16,10 @@ class TestTask {
      *
      * @return void
      */
-    public function handle() {
+    public function handle()
+    {
         // Ensure log_cron_message is available
-        if (!function_exists('log_cron_message') && file_exists(dirname(__DIR__, 3) . '/core/cron/cron_runner.php')) {
+        if (!function_exists('log_cron_message') && file_exists(dirname(__DIR__, 3).'/core/cron/cron_runner.php')) {
             // Attempt to load cron_runner.php's functions if not already loaded,
             // this is a simple way, might need refinement based on cron_runner.php structure
             // require_once dirname(__DIR__, 3) . '/core/cron/cron_runner.php';
@@ -31,10 +33,11 @@ class TestTask {
              *
              * @return void
              */
-             function log_cron_message($message, $task = 'TestTask') {
-                $logFile = dirname(__DIR__, 3) . '/logs/cron.log';
+            function log_cron_message($message, $task = 'TestTask')
+            {
+                $logFile = dirname(__DIR__, 3).'/logs/cron.log';
                 $timestamp = date('Y-m-d H:i:s');
-                $formattedMessage = "[\{$timestamp}] [{$task}] {$message}" . PHP_EOL;
+                $formattedMessage = "[\{$timestamp}] [{$task}] {$message}".PHP_EOL;
                 file_put_contents($logFile, $formattedMessage, FILE_APPEND);
             }
         } elseif (!function_exists('log_cron_message')) {
@@ -48,10 +51,11 @@ class TestTask {
              *
              * @return void
              */
-             function log_cron_message($message, $task = 'TestTask') {
-                $logFile = dirname(__DIR__, 3) . '/logs/cron.log';
+            function log_cron_message($message, $task = 'TestTask')
+            {
+                $logFile = dirname(__DIR__, 3).'/logs/cron.log';
                 $timestamp = date('Y-m-d H:i:s');
-                $formattedMessage = "[\{$timestamp}] [{$task}] {$message}" . PHP_EOL;
+                $formattedMessage = "[\{$timestamp}] [{$task}] {$message}".PHP_EOL;
                 file_put_contents($logFile, $formattedMessage, FILE_APPEND);
             }
         }
@@ -59,13 +63,12 @@ class TestTask {
         $timestamp = date('Y-m-d H:i:s');
         $outputMessage = "TestTask executed successfully at {$timestamp}.";
 
-        echo $outputMessage . PHP_EOL; // Output to console
+        echo $outputMessage.PHP_EOL; // Output to console
 
         // Use the available log_cron_message
         if (function_exists('log_cron_message')) {
             log_cron_message($outputMessage, 'TestTask');
         }
-
 
         // TODO: Implement your cron task logic here.
         // Example: Log environment variable
@@ -81,9 +84,7 @@ class TestTask {
         // }
 
         if (function_exists('log_cron_message')) {
-            log_cron_message("TestTask finished.", 'TestTask');
+            log_cron_message('TestTask finished.', 'TestTask');
         }
     }
 }
-
-?>

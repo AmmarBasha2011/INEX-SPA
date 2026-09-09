@@ -74,8 +74,8 @@ class ClearDBTables
 
             echo "🔥 All tables in database '$dbName' have been deleted!\n";
         } catch (Exception $e) {
-                    error_log('ClearDBTables error: '.$e->getMessage());
-                    echo '❌ Error: An internal error occurred.'.PHP_EOL;
-                }
+            error_log('ClearDBTables error: '.$e->getMessage());
+            echo '❌ Error: An internal error occurred.'.PHP_EOL;
+        }
     }
 }
