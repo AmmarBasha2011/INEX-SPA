@@ -22,9 +22,9 @@ class CookieManager
     {
         $expiry = time() + ($days * 24 * 60 * 60);
         setcookie($name, $value, [
-            'expires' => $expiry,
-            'path' => '/',
-            'secure' => true,
+            'expires'  => $expiry,
+            'path'     => '/',
+            'secure'   => true,
             'httponly' => true,
             'samesite' => 'Strict',
         ]);
@@ -55,9 +55,9 @@ class CookieManager
     public static function delete($name)
     {
         setcookie($name, '', [
-            'expires' => time() - 3600,
-            'path' => '/',
-            'secure' => true,
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'secure'   => true,
             'httponly' => true,
             'samesite' => 'Strict',
         ]);

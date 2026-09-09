@@ -190,9 +190,9 @@ function getPage($RouteName)
         if (isset($_POST['lang'])) {
             $lang = preg_match('/^[a-zA-Z_-]+$/', $_POST['lang']) ? $_POST['lang'] : 'en';
             setcookie('lang', $lang, [
-                'expires' => time() + (86400 * 30),
-                'path' => '/',
-                'secure' => true,
+                'expires'  => time() + (86400 * 30),
+                'path'     => '/',
+                'secure'   => true,
                 'httponly' => true,
                 'samesite' => 'Strict',
             ]);
