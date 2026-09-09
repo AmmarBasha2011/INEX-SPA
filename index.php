@@ -16,13 +16,13 @@ $Ahmed = new AhmedTemplate();
 require_once 'core/functions/PHP/getEnvValue.php';
 require_once 'core/functions/PHP/redirect.php';
 
-$devMode = getEnvValue('DEV_MODE') == 'true';
-$dbUse = getEnvValue('DB_USE') == 'true';
-$dbCheck = getEnvValue('DB_CHECK') == 'true';
-$useCache = getEnvValue('USE_CACHE') == 'true';
-$useRateLimiter = getEnvValue('USE_RATELIMITER') == 'true';
-$useCookie = getEnvValue('USE_COOKIE') == 'true';
-$detectLanguage = getEnvValue('DETECT_LANGUAGE') == 'true';
+$devMode = getEnvValue('DEV_MODE') === 'true';
+$dbUse = getEnvValue('DB_USE') === 'true';
+$dbCheck = getEnvValue('DB_CHECK') === 'true';
+$useCache = getEnvValue('USE_CACHE') === 'true';
+$useRateLimiter = getEnvValue('USE_RATELIMITER') === 'true';
+$useCookie = getEnvValue('USE_COOKIE') === 'true';
+$detectLanguage = getEnvValue('DETECT_LANGUAGE') === 'true';
 
 if ($devMode) {
     ini_set('display_errors', 1);
@@ -171,19 +171,19 @@ if ($detectLanguage) {
     Language::setLanguage($selectedLang);
 }
 require_once 'core/functions/PHP/classes/Validation.php';
-if (getEnvValue('USE_AUTH') == 'true') {
+if (getEnvValue('USE_AUTH') === 'true') {
     require_once 'core/functions/PHP/classes/UserAuth.php';
 }
-if (getEnvValue('USE_FIREWALL') == 'true') {
+if (getEnvValue('USE_FIREWALL') === 'true') {
     require_once 'core/functions/PHP/classes/Firewall.php';
 }
-if (getEnvValue('USE_SECURITY') == 'true') {
+if (getEnvValue('USE_SECURITY') === 'true') {
     require_once 'core/functions/PHP/classes/Security.php';
 }
-if (getEnvValue('USE_LOGGING') == 'true') {
+if (getEnvValue('USE_LOGGING') === 'true') {
     require_once 'core/functions/PHP/classes/Logger.php';
 }
-if (getEnvValue('USE_WEBHOOK') == 'true') {
+if (getEnvValue('USE_WEBHOOK') === 'true') {
     require_once 'core/functions/PHP/classes/Webhook.php';
 }
 

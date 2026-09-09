@@ -107,7 +107,7 @@ $taskFile = TASKS_DIR.$taskName.'.php';
 
 if (!file_exists($taskFile)) {
     log_cron_message("Error: Task file '{$taskFile}' not found for task '{$taskName}'.");
-    echo "Error: Task '{$taskName}' not found.".PHP_EOL;
+    echo "Error: Task '".htmlspecialchars($taskName, ENT_QUOTES, 'UTF-8')."' not found.".PHP_EOL;
     exit(1);
 }
 
@@ -127,20 +127,20 @@ try {
         if (method_exists($taskInstance, 'handle')) {
             $taskInstance->handle();
             log_cron_message("Successfully executed task: {$taskName}");
-            echo "Task '{$taskName}' executed successfully.".PHP_EOL;
+            echo "Task '".htmlspecialchars($taskName, ENT_QUOTES, 'UTF-8')."' executed successfully.".PHP_EOL;
         } else {
             log_cron_message("Error: Task '{$taskName}' class does not have a 'handle' method.");
-            echo "Error: Task '{$taskName}' is not properly configured (missing handle method).".PHP_EOL;
+            echo "Error: Task '".htmlspecialchars($taskName, ENT_QUOTES, 'UTF-8')."' is not properly configured.".PHP_EOL;
             exit(1);
         }
     } else {
         log_cron_message("Error: Class '{$taskName}' not found in '{$taskFile}'.");
-        echo "Error: Task '{$taskName}' class not found.".PHP_EOL;
+        echo "Error: Task '".htmlspecialchars($taskName, ENT_QUOTES, 'UTF-8')."' class not found.".PHP_EOL;
         exit(1);
     }
 } catch (Throwable $e) { // Catching Throwable for broader error catching (PHP 7+)
     log_cron_message("Error during task '{$taskName}': ".$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
-    echo "Error executing task '{$taskName}': An internal error occurred.".PHP_EOL;
+    echo "Error executing task '".htmlspecialchars($taskName, ENT_QUOTES, 'UTF-8')."': An internal error occurred.".PHP_EOL;
     exit(1);
 }
 

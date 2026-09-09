@@ -181,16 +181,16 @@ class UserAuth
             foreach ($data[$key] as $rule => $constraint) {
                 switch ($rule) {
                     case 'type':
-                        if ($constraint == 'email' && !Validation::isEmail($value)) {
+                        if ($constraint === 'email' && !Validation::isEmail($value)) {
                             return "$key must be a valid email.";
                         }
-                        if ($constraint == 'number' && !Validation::isNumber($value)) {
+                        if ($constraint === 'number' && !Validation::isNumber($value)) {
                             return "$key must be a valid number.";
                         }
-                        if ($constraint == 'bool' && !Validation::isBool($value)) {
+                        if ($constraint === 'bool' && !Validation::isBool($value)) {
                             return "$key must be a boolean.";
                         }
-                        if ($constraint == 'domain' && !Validation::isDomain($value)) {
+                        if ($constraint === 'domain' && !Validation::isDomain($value)) {
                             return "$key must be a valid domain.";
                         }
                         break;

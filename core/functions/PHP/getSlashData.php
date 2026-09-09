@@ -17,7 +17,7 @@
 function getSlashData($text)
 {
     $parts = explode('/', $text);
-    if (count($parts) == 2) {
+    if (count($parts) === 2) {
         $before = $parts[0];
         $after = $parts[1];
 
