@@ -47,8 +47,16 @@ function executeSQLFilePDO($host, $user, $password, $database, $filePath)
             }
         }
     } catch (PDOException $e) {
-        exit('Database error: '.$e->getMessage());
+        error_log('Database error: '.$e->getMessage());
+        if (getEnvValue('DEV_MODE') === 'true') {
+            exit('Database error: '.$e->getMessage());
+        }
+        exit('Database error occurred.');
     } catch (Exception $e) {
-        exit('Error: '.$e->getMessage());
+        error_log('Error: '.$e->getMessage());
+        if (getEnvValue('DEV_MODE') === 'true') {
+            exit('Error: '.$e->getMessage());
+        }
+        exit('Error occurred.');
     }
 }

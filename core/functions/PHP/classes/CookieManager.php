@@ -21,7 +21,13 @@ class CookieManager
     public static function set($name, $value, $days = 7)
     {
         $expiry = time() + ($days * 24 * 60 * 60);
-        setcookie($name, $value, $expiry, '/');
+        setcookie($name, $value, [
+            'expires'  => $expiry,
+            'path'     => '/',
+            'secure'   => true,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
     }
 
     /**
@@ -48,7 +54,13 @@ class CookieManager
      */
     public static function delete($name)
     {
-        setcookie($name, '', time() - 3600, '/');
+        setcookie($name, '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'secure'   => true,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
     }
 
     /**

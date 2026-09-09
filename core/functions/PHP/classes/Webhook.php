@@ -37,8 +37,16 @@ class Webhook
         }
         $host = $parsed['host'] ?? '';
         $ip = gethostbyname($host);
+        // SECURITY: DNS rebinding protection — verify IP is not private
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
             return false;
+        }
+        // SECURITY: Verify resolved IP matches expected (prevent DNS rebinding)
+        $dnsRecords = dns_get_record($host, DNS_A);
+        foreach ($dnsRecords as $record) {
+            if (filter_var($record['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+                return false;
+            }
         }
 
         $payload = json_encode($data);
@@ -53,6 +61,10 @@ class Webhook
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         $response = curl_exec($ch);
         curl_close($ch);
 

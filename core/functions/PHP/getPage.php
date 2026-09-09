@@ -82,7 +82,7 @@ function loadScripts()
             echo "<script src='".getEnvValue('WEBSITE_URL').$script."'></script>";
         }
 
-        echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>';
+        echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>';
 
         $cachedScripts = ob_get_clean();
     }
@@ -188,8 +188,14 @@ function getPage($RouteName)
 
     if ($_GET['page'] == 'setLanguage' && getEnvValue('DETECT_LANGUAGE') == 'true') {
         if (isset($_POST['lang'])) {
-            $lang = $_POST['lang'];
-            setcookie('lang', $lang, time() + (86400 * 30), '/'); // Store for 30 days
+            $lang = preg_match('/^[a-zA-Z_-]+$/', $_POST['lang']) ? $_POST['lang'] : 'en';
+            setcookie('lang', $lang, [
+                'expires'  => time() + (86400 * 30),
+                'path'     => '/',
+                'secure'   => true,
+                'httponly' => true,
+                'samesite' => 'Strict',
+            ]);
 
             return;
         }
