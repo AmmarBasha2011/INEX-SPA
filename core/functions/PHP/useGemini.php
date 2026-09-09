@@ -37,6 +37,11 @@ function useGemini(
     $geminiEndPoint = getEnvValue('GEMINI_ENDPOINT');
     $geminiModelId = getEnvValue('GEMINI_MODEL_ID');
 
+    // SECURITY: Validate endpoint URL
+    if (!filter_var($geminiEndPoint, FILTER_VALIDATE_URL)) {
+        return json_encode(['success' => 'error', 'error' => 'Invalid endpoint URL']);
+    }
+
     try {
         // Prepare the request data
         $data = [

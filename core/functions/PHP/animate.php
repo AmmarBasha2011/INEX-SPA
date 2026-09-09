@@ -59,8 +59,8 @@ function animate(string $elementSelectorOrId, string $animationName, int $durati
     $durationMs = (int) $durationMs;
 
     // Prepare strings for JavaScript. htmlspecialchars is important for $elementSelectorOrId.
-    $jsSelector = json_encode($elementSelectorOrId);
-    $jsAnimationName = json_encode($animationName); // Though used in concatenation, good practice.
+    $jsSelector = json_encode($elementSelectorOrId, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+    $jsAnimationName = json_encode($animationName, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
 
     echo "<script>\n";
     echo "  (function() {\n";

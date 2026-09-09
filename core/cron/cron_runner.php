@@ -98,6 +98,11 @@ if ($argc < 2) {
 }
 
 $taskName = $argv[1];
+
+// SECURITY: Validate task name — only alphanumeric, dash, underscore
+if (!preg_match('/^[a-zA-Z0-9_-]+$/', $taskName)) {
+    exit('Error: Invalid task name.'.PHP_EOL);
+}
 $taskFile = TASKS_DIR.$taskName.'.php';
 
 if (!file_exists($taskFile)) {
@@ -135,7 +140,7 @@ try {
     }
 } catch (Throwable $e) { // Catching Throwable for broader error catching (PHP 7+)
     log_cron_message("Error during task '{$taskName}': ".$e->getMessage().' in '.$e->getFile().' on line '.$e->getLine());
-    echo "Error executing task '{$taskName}': ".$e->getMessage().PHP_EOL;
+    echo "Error executing task '{$taskName}': An internal error occurred.".PHP_EOL;
     exit(1);
 }
 

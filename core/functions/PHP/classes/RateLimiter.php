@@ -30,7 +30,7 @@ class RateLimiter
      *
      * @var string
      */
-    private static $storageFile = __DIR__.'/../../../storage/rate_limit.json'; // Store request counts
+    private static $storageFile = __DIR__.'/../../../storage/ratelimit.json'; // Store request counts
 
     /**
      * Initializes the rate limiter's configuration settings.
@@ -63,9 +63,21 @@ class RateLimiter
      */
     public static function check($userIP)
     {
+        // SECURITY: Validate IP address
+        if (!filter_var($userIP, FILTER_VALIDATE_IP)) {
+            return;
+        }
+        // SECURITY: Sanitize IP for storage key
+        $userIP = preg_replace('/[^a-fA-F0-9.:]/', '', $userIP);
+
         // Ensure init() is called
         if (!isset(self::$limit)) {
             self::init();
+        }
+
+        // SECURITY: Validate limit is numeric
+        if (!is_numeric(self::$limit) || self::$limit < 1) {
+            self::$limit = 100;
         }
 
         // Read existing data

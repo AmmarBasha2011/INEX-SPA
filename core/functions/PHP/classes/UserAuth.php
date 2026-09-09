@@ -280,7 +280,13 @@ class UserAuth
 
         // Hash password before saving
         if (isset($details['password'])) {
-            $details['password'] = password_hash($details['password'], PASSWORD_DEFAULT);
+            $data['password'] = password_hash($details['password'], PASSWORD_DEFAULT);
+        }
+
+        // SECURITY: Use SHA-256 to generate unique check signature to detect duplicate registration
+        $checkSignature = hash('sha256', serialize($checkDetails));
+        if (isset(self::$registrationChecks[$checkSignature])) {
+            return 'User already exists.';
         }
 
         // SECURITY: Whitelist column names to prevent SQL injection
@@ -304,7 +310,11 @@ class UserAuth
 
             return 'User successfully registered.';
         } catch (Exception $e) {
-            return 'Error inserting user: '.$e->getMessage();
+            error_log('Error inserting user: '.$e->getMessage());
+            if (getEnvValue('DEV_MODE') === 'true') {
+                return 'Error inserting user: '.$e->getMessage();
+            }
+            return 'Error inserting user.';
         }
     }
 
@@ -326,6 +336,10 @@ class UserAuth
      */
     public static function logout()
     {
+        // SECURITY: Regenerate session ID to prevent session fixation
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_regenerate_id(true);
+        }
         $_SESSION['user_id'] = '';
 
         return 'User logged out.';

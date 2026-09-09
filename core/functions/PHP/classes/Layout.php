@@ -109,7 +109,7 @@ class Layout
             exit("❌ Error: Content file for '$contentFile' not found in expected paths!");
         }
 
-        extract($data);
+        extract($data, EXTR_SKIP);
         echo $Ahmed->render($layoutPath);
     }
 

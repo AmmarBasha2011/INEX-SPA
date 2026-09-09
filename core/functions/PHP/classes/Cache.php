@@ -32,7 +32,8 @@ class Cache
      */
     public static function set($key, $data, $expiration = 3600)
     {
-        $file = self::$cacheDir.md5($key).'.cache';
+        // SECURITY: Use SHA-256 instead of MD5 to prevent hash collision attacks
+        $file = self::$cacheDir.hash('sha256', $key).'.cache';
         $content = json_encode([
             'expires' => time() + $expiration,
             'data'    => $data,
@@ -54,7 +55,7 @@ class Cache
      */
     public static function get($key)
     {
-        $file = self::$cacheDir.md5($key).'.cache';
+        $file = self::$cacheDir.hash('sha256', $key).'.cache';
         if (!file_exists($file)) {
             return false;
         }
@@ -83,7 +84,7 @@ class Cache
      */
     public static function update($key, $newData)
     {
-        $file = self::$cacheDir.md5($key).'.cache';
+        $file = self::$cacheDir.hash('sha256', $key).'.cache';
         if (!file_exists($file)) {
             return false; // No cache to update
         }
@@ -108,7 +109,7 @@ class Cache
      */
     public static function delete($key)
     {
-        $file = self::$cacheDir.md5($key).'.cache';
+        $file = self::$cacheDir.hash('sha256', $key).'.cache';
         if (file_exists($file)) {
             unlink($file);
         }

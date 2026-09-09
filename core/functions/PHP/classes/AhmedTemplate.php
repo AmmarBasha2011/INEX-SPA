@@ -36,7 +36,7 @@ class AhmedTemplate
         $content = file_get_contents($templateFile);
         $parsedContent = $this->parse($content);
 
-        extract($data);
+        extract($data, EXTR_SKIP);
         ob_start();
         eval('?>'.$parsedContent);
 
@@ -114,11 +114,11 @@ class AhmedTemplate
             '/@set\("(.+?)",\s*(.+?)\)/'    => '<?php $$1 = $2; ?>',
             '/@define\("(.+?)",\s*(.+?)\)/' => '<?php $1 = $2; ?>',
             '/@var\("(.+?)"\)/'             => '<?= $$1 ?>',
-            '/@postData\("(.+?)"\)/'        => '<?= $_POST["$1"] ?>',
-            '/@getData\("(.+?)"\)/'         => '<?= $_GET["$1"] ?? "" ?>',
+            '/@postData\("(.+?)"\)/'        => '<?= htmlspecialchars($_POST["$1"] ?? "", ENT_QUOTES, "UTF-8") ?>',
+            '/@getData\("(.+?)"\)/'         => '<?= htmlspecialchars($_GET["$1"] ?? "", ENT_QUOTES, "UTF-8") ?>',
             '/@toJson\((.+?)\)/'            => '<?= json_encode($1) ?>',
             '/@fromJson\((.+?)\)/'          => '<?= json_decode($1, true) ?>',
-            '/@jsonFile\("(.+?)"\)/'        => '<?= json_decode(file_get_contents("$1"), true) ?>',
+            '/@jsonFile\("(.+?)"\)/'        => '<?= (function($f) { if(!file_exists($f)) return "[]"; $d = @json_decode(@file_get_contents($f), true); return is_array($d) ? json_encode($d) : "[]"; })("$1") ?>',
 
             // String and number functions
             '/@strtoupper\("(.+?)"\)/'             => '<?= strtoupper("$1") ?>',

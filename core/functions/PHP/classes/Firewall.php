@@ -61,7 +61,7 @@ class Firewall
      */
     private static function block($config)
     {
-        $redirectTo = getEnvValue('WEBSITE_URL').($config['redirect_blocked_to'] ?? 'blocked');
+        $redirectTo = getEnvValue('WEBSITE_URL').preg_replace('/[^a-zA-Z0-9\/_-]/', '', $config['redirect_blocked_to'] ?? 'blocked');
         header("Location: $redirectTo");
         exit;
     }

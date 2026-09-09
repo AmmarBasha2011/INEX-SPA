@@ -1500,8 +1500,8 @@
         "message": "Simulated - all directives present"
     },
     "integration: PHP files have correct opening": {
-        "success": true,
-        "message": "0 issues"
+        "success": false,
+        "message": "19 issues"
     },
     "integration: Cache.php balanced braces": {
         "success": true,

@@ -35,7 +35,7 @@ class SitemapGenerator
             if ($route === 'index') {
                 $route = '';
             }
-            $xml .= '<url><loc>'.getEnvValue('WEBSITE_URL').$route."</loc></url>\n";
+            $xml .= '<url><loc>'.htmlspecialchars(getEnvValue('WEBSITE_URL').$route, ENT_QUOTES, 'UTF-8').'</loc></url>'."\n";
         }
 
         $xml .= '</urlset>';
