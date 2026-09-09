@@ -33,6 +33,13 @@ class UserAuth
 
         // Check if JSON decoding was successful
         if ($data === null) {
+            error_log('Error decoding JSON in generateSQL.');
+            exit('Error decoding JSON.');
+        }
+
+        // SECURITY: Validate JSON structure
+        if (!is_array($data)) {
+            error_log('Invalid JSON structure in generateSQL.');
             exit('Error decoding JSON.');
         }
 
@@ -55,6 +62,10 @@ class UserAuth
 
             // Handle VARCHAR length
             $maxLength = $attributes['maxLength'] ?? 255;
+            // SECURITY: Validate maxLength is numeric and within bounds
+            if (!is_numeric($maxLength) || $maxLength < 1 || $maxLength > 65535) {
+                $maxLength = 255;
+            }
             if ($sqlType === 'VARCHAR') {
                 $sqlType .= "($maxLength)";
             }
@@ -175,6 +186,10 @@ class UserAuth
 
         // Validate fields based on JSON rules
         foreach ($details as $key => $value) {
+            // SECURITY: Validate key is a valid column name
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', $key)) {
+                return "Invalid parameter: $key";
+            }
             if (!isset($data[$key])) {
                 return "Invalid parameter: $key";
             }
@@ -326,7 +341,8 @@ class UserAuth
      */
     public static function checkUser()
     {
-        return isset($_SESSION['user_id']) && $_SESSION['user_id'] != '';
+        // SECURITY: Use strict comparison to prevent type juggling attacks
+        return isset($_SESSION['user_id']) && $_SESSION['user_id'] !== '';
     }
 
     /**
@@ -340,6 +356,18 @@ class UserAuth
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_regenerate_id(true);
         }
+        // SECURITY: Unset all session variables
+        $_SESSION = [];
+        // SECURITY: Destroy session cookie
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params['path'], $params['domain'],
+                $params['secure'], $params['httponly']
+            );
+        }
+        // SECURITY: Destroy session
+        session_destroy();
         $_SESSION['user_id'] = '';
 
         return 'User logged out.';

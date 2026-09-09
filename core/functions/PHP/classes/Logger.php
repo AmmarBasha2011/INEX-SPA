@@ -32,8 +32,12 @@ class Logger
     public static function log($type, $message)
     {
         // SECURITY: Sanitize message to prevent log injection
-        $message = str_replace(["
-", "\n"], ' ', $message);
+        $message = str_replace(["\r", "\n"], ' ', $message);
+        // SECURITY: Validate type
+        $allowedTypes = ['error', 'security', 'api', 'system'];
+        if (!in_array($type, $allowedTypes)) {
+            $type = 'system';
+        }
         $date = date('Y-m-d H:i:s');
         $entry = "[$date] [$type] $message".PHP_EOL;
 
