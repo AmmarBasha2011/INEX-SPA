@@ -1,0 +1,48 @@
+name: "CI Tests"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  php-tests:
+    name: PHP Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          coverage: none
+
+      - name: Run PHP Test Suite
+        run: |
+          php tests/full_coverage.py
+          
+  javascript-tests:
+    name: JavaScript Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run JS Tests
+        run: |
+          if [ -f package.json ]; then
+            npm install && npm test
+          else
+            echo "No package.json found, skipping JS tests"
+          fi
