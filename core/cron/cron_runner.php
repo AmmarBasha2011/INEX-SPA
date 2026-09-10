@@ -105,7 +105,8 @@ if (!preg_match('/^[a-zA-Z0-9_-]+$/', $taskName)) {
 }
 $taskFile = TASKS_DIR.$taskName.'.php';
 
-if (!file_exists($taskFile)) {
+// SECURITY: Verify file exists and is within allowed directory
+if (!file_exists($taskFile) || strpos(realpath($taskFile), realpath(TASKS_DIR)) !== 0) {
     log_cron_message("Error: Task file '{$taskFile}' not found for task '{$taskName}'.");
     echo "Error: Task '".htmlspecialchars($taskName, ENT_QUOTES, 'UTF-8')."' not found.".PHP_EOL;
     exit(1);

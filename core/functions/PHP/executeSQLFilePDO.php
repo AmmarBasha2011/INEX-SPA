@@ -19,6 +19,24 @@
 function executeSQLFilePDO($host, $user, $password, $database, $filePath)
 {
     try {
+        // SECURITY: Validate file path to prevent path traversal
+        $realFilePath = realpath($filePath);
+        if ($realFilePath === false) {
+            throw new Exception('SQL file not found.');
+        }
+        // SECURITY: Ensure file is within allowed directories
+        $allowedDirs = [realpath(__DIR__.'/../../../db'), realpath(__DIR__.'/../db')];
+        $isAllowed = false;
+        foreach ($allowedDirs as $dir) {
+            if ($dir !== false && strpos($realFilePath, $dir) === 0) {
+                $isAllowed = true;
+                break;
+            }
+        }
+        if (!$isAllowed) {
+            throw new Exception('Access denied: SQL file outside allowed directories.');
+        }
+
         $driver = getEnvValue('DB_DRIVER');
         if ($driver === 'sqlite') {
             $dsn = "sqlite:$database";
@@ -30,10 +48,11 @@ function executeSQLFilePDO($host, $user, $password, $database, $filePath)
         $pdo = new PDO($dsn, $user, $password, [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
         ]);
 
         // Read SQL file
-        $sqlContent = file_get_contents($filePath);
+        $sqlContent = file_get_contents($realFilePath);
         if ($sqlContent === false) {
             throw new Exception('Error reading SQL file.');
         }
@@ -43,6 +62,14 @@ function executeSQLFilePDO($host, $user, $password, $database, $filePath)
         foreach ($queries as $query) {
             $query = trim($query);
             if (!empty($query)) {
+                // SECURITY: Only allow safe SQL statements (no DROP, DELETE, TRUNCATE)
+                $firstWord = strtoupper(strtok($query, " \t\n
+\0\x0B"));
+                $allowedFirstWords = ['CREATE', 'ALTER', 'INSERT', 'UPDATE', 'SELECT', 'BEGIN', 'COMMIT', 'START'];
+                if (!in_array($firstWord, $allowedFirstWords)) {
+                    error_log("Skipping unsafe SQL statement: $query");
+                    continue;
+                }
                 $pdo->exec($query);
             }
         }

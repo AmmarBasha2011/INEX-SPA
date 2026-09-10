@@ -43,7 +43,10 @@ class Database
         $dbfile = getEnvValue('DB_FILE');
 
         if ($driver === 'sqlite') {
-            $dsn = 'sqlite:'.($dbfile ?: 'database.sqlite');
+            // SECURITY: Validate SQLite file path to prevent path traversal
+            $dbfile = $dbfile ?: 'database.sqlite';
+            $dbfile = basename($dbfile);
+            $dsn = 'sqlite:'.$dbfile;
         } else {
             $dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
         }

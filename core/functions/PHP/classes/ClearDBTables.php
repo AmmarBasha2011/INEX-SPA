@@ -114,6 +114,8 @@ class ClearDBTables
     private static function dropTables($tables, $driver)
     {
         foreach ($tables as $table) {
+            // SECURITY: Sanitize table name to prevent SQL injection
+            $table = preg_replace('/[^a-zA-Z0-9_]/', '', $table);
             if (!empty($table)) {
                 if ($driver === 'sqlite') {
                     executeStatement("DROP TABLE IF EXISTS `$table`;", [], false);

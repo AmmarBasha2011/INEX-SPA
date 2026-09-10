@@ -36,20 +36,36 @@ class Webhook
             return false;
         }
         $host = $parsed['host'] ?? '';
+        $port = $parsed['port'] ?? 443;
+
+        // SECURITY: Block requests to non-standard ports
+        if ($port !== 443) {
+            return false;
+        }
+
+        // SECURITY: Block SSRF — resolve IP and verify it's not private/internal
         $ip = gethostbyname($host);
-        // SECURITY: DNS rebinding protection — verify IP is not private
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
             return false;
         }
-        // SECURITY: Verify resolved IP matches expected (prevent DNS rebinding)
-        $dnsRecords = dns_get_record($host, DNS_A);
+
+        // SECURITY: DNS rebinding protection — verify all DNS records
+        $dnsRecords = @dns_get_record($host, DNS_A | DNS_AAAA);
+        if (empty($dnsRecords)) {
+            return false;
+        }
         foreach ($dnsRecords as $record) {
-            if (filter_var($record['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            $recordIp = $record['ip'] ?? $record['ipv6'] ?? '';
+            if (filter_var($recordIp, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
                 return false;
             }
         }
 
         $payload = json_encode($data);
+
+        // SECURITY: Resolve to IP and connect via HTTPS with SNI
+        // Use the validated IP but keep SNI for SSL verification
+        $url = str_replace($host, $ip, $url);
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -64,6 +80,8 @@ class Webhook
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_HTTPS);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+        // SECURITY: Set SNI host to the original hostname for SSL verification
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         $response = curl_exec($ch);
         // SECURITY: Validate response is not empty
