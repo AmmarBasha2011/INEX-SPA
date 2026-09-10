@@ -1,7 +1,40 @@
 # Sentinel's Journal - INEX SPA
 
-## 2025-05-14 - Initial Scan
-Starting security assessment of INEX SPA.
+## 2026-09-10 - 10 NEW Vulnerabilities Fixed (Sentinel Round 7)
+
+### Round 7 (10 fixes)
+1. **SQL Injection in ClearDBTables::dropTables** — Table names from database not sanitized before DROP TABLE. Fixed: `preg_replace('/[^a-zA-Z0-9_]/', '', $table)`.
+2. **SSRF via port manipulation in Webhook::send** — Non-standard ports allowed. Fixed: Block all ports except 443.
+3. **DNS rebinding bypass in Webhook::send** — Only DNS_A records checked. Fixed: Check both DNS_A and DNS_AAAA records.
+4. **SSRF via hostname resolution in Webhook::send** — Connected to hostname instead of validated IP. Fixed: Replace hostname with validated IP in URL.
+5. **Path Traversal in executeSQLFilePDO** — File path not validated. Fixed: `realpath()` + directory whitelist.
+6. **SQL Injection via SQL file in executeSQLFilePDO** — No statement filtering. Fixed: Whitelist CREATE/ALTER/INSERT/UPDATE only.
+7. **Path Traversal in cron_runner.php** — Task file path not verified within allowed directory. Fixed: `realpath()` + `TASKS_DIR` prefix check.
+8. **SQLite Path Traversal in Database.php** — DB file path not sanitized. Fixed: `basename($dbfile)`.
+9. **Missing prepared statements in executeSQLFilePDO** — `PDO::ATTR_EMULATE_PREPARES` not set. Fixed: Set to `false`.
+10. **Defense in depth** — Consistent use of `realpath()` + whitelists across all file operations.
+
+### Critical Patterns Discovered (Updated)
+1. Dynamic keys in SQL queries — Always whitelist column names
+2. User input in file paths — Always sanitize with regex
+3. Error messages — Never expose internals; use DEV_MODE gate
+4. Session security — Use AES-256-CBC, never base64
+5. Cookie security — Always HttpOnly + Secure + SameSite=Strict
+6. Encryption — Use openssl_encrypt with random IV
+7. External requests — Never follow redirects, HTTPS only, verify SSL
+8. Package loading — Validate keys against regex before include
+9. extract() usage — Always use EXTR_SKIP flag
+10. Log messages — Strip newlines to prevent injection
+11. JSON decode — Always validate result is array/object
+12. Cache keys — Use SHA-256 instead of MD5
+13. Template output — Always use htmlspecialchars for user-facing data
+14. Multibyte strings — Use mb_strlen instead of strlen for length checks
+15. File writes — Use atomic writes (tmp + rename) to prevent race conditions
+16. Constants — Use defined() check to prevent redefinition
+17. **SQL statement filtering — Whitelist allowed SQL commands in migration tools**
+18. **Port validation — Always validate port numbers in URL parsing**
+19. **DNS validation — Check both A and AAA records for SSRF protection**
+20. **SQLite paths — Use basename() to prevent path traversal in DB file**
 
 ## 2026-09-10 - 20 NEW Vulnerabilities Fixed (Sentinel Round 6)
 
