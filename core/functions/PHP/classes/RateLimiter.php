@@ -5,7 +5,7 @@
  *
  * This class tracks the number of requests from individual IP addresses over a defined
  * time window. If an IP exceeds a configured request limit, subsequent requests are
- * blocked with a 429 "Too Many Requests" status.
+ * blocked with a 429 "Too Many Requests" response.
  */
 class RateLimiter
 {
@@ -84,13 +84,9 @@ class RateLimiter
         $data = file_exists(self::$storageFile) ? json_decode(file_get_contents(self::$storageFile), true) : [];
 
         // Cleanup expired entries
-        foreach ($data as $ip => $entry) {
-            if ($entry['timestamp'] + self::$timeFrame < time()) {
-                unset($data[$ip]);
-            }
-        }
+        $data = self::cleanupExpiredEntries($data);
 
-        // Check user request count
+        // Check user request count and update
         if (!isset($data[$userIP])) {
             $data[$userIP] = ['count' => 1, 'timestamp' => time()];
         } else {
@@ -103,5 +99,23 @@ class RateLimiter
 
         // Save updated data
         file_put_contents(self::$storageFile, json_encode($data));
+    }
+
+    /**
+     * Removes expired entries from the rate limit data.
+     *
+     * @param array $data The current rate limit data.
+     *
+     * @return array The cleaned data with expired entries removed.
+     */
+    private static function cleanupExpiredEntries($data)
+    {
+        foreach ($data as $ip => $entry) {
+            if ($entry['timestamp'] + self::$timeFrame < time()) {
+                unset($data[$ip]);
+            }
+        }
+
+        return $data;
     }
 }

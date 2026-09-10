@@ -28,6 +28,10 @@ class SitemapGenerator
             exit('Error: Routes directory not found.');
         }
 
+        // SECURITY: Use HTTPS by default to ensure sitemap URLs are secure
+        $baseUrl = getEnvValue('WEBSITE_URL');
+        $secureUrl = preg_replace('/^http:\/\//', 'https://', $baseUrl);
+
         $xml = "<?xml version='1.0' encoding='UTF-8'?>\n";
         $xml .= "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>\n";
 
@@ -35,7 +39,7 @@ class SitemapGenerator
             if ($route === 'index') {
                 $route = '';
             }
-            $xml .= '<url><loc>'.htmlspecialchars(getEnvValue('WEBSITE_URL').$route, ENT_QUOTES, 'UTF-8').'</loc></url>'."\n";
+            $xml .= '<url><loc>'.htmlspecialchars($secureUrl.$route, ENT_QUOTES, 'UTF-8').'</loc></url>'."\n";
         }
 
         $xml .= '</urlset>';

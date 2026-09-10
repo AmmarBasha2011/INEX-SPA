@@ -28,7 +28,6 @@ class UserAuth
     public static function generateSQL()
     {
         $jsonString = file_get_contents(JSON_FOLDER);
-
         $data = json_decode($jsonString, true);
 
         // Check if JSON decoding was successful
@@ -151,28 +150,21 @@ class UserAuth
     }
 
     /**
-     * Registers a new user after validating their details against the rules in the JSON configuration.
+     * Validates user details against the rules in the JSON configuration.
      *
-     * This method performs comprehensive validation on the provided user details based
-     * on the rules defined in `Json/AuthParams.json`. If validation passes and the
-     * user does not already exist, it inserts a new record into the `users` table
-     * and starts a new session for the user.
+     * This helper method performs comprehensive validation on the provided user details based
+     * on the rules defined in `Json/AuthParams.json`. It checks types, lengths, formats,
+     * and other constraints specified in the configuration.
      *
      * @param array $details An associative array containing the new user's details,
      *                       where keys correspond to the `users` table columns.
      *
-     * @return string A message indicating the result of the registration attempt,
-     *                such as success, a specific validation error, or a database error.
+     * @return string|null Returns `null` if all validation passes, or an error message string
+     *                     describing the first validation failure encountered.
      */
-    public static function signUp($details)
+    private static function validateUserDetails($details)
     {
-        $jsonString = file_get_contents(JSON_FOLDER);
-
-        if ($jsonString === false) {
-            return 'Error reading JSON file.';
-        }
-
-        $data = json_decode($jsonString, true);
+        $data = self::getAuthConfig();
         if ($data === null) {
             return 'Error decoding JSON.';
         }
@@ -193,115 +185,180 @@ class UserAuth
             if (!isset($data[$key])) {
                 return "Invalid parameter: $key";
             }
-            foreach ($data[$key] as $rule => $constraint) {
-                switch ($rule) {
-                    case 'type':
-                        if ($constraint === 'email' && !Validation::isEmail($value)) {
-                            return "$key must be a valid email.";
-                        }
-                        if ($constraint === 'number' && !Validation::isNumber($value)) {
-                            return "$key must be a valid number.";
-                        }
-                        if ($constraint === 'bool' && !Validation::isBool($value)) {
-                            return "$key must be a boolean.";
-                        }
-                        if ($constraint === 'domain' && !Validation::isDomain($value)) {
-                            return "$key must be a valid domain.";
-                        }
-                        break;
-                    case 'maxLength':
-                        if (!Validation::isTextLength($value, $constraint)) {
-                            return "$key exceeds max length of $constraint.";
-                        }
-                        break;
-                    case 'minLength':
-                        if (!Validation::isMinTextLength($value, $constraint)) {
-                            return "$key must be at least $constraint characters long.";
-                        }
-                        break;
-                    case 'shouldEnd':
-                        if (!Validation::isEndWith($value, (array) $constraint)) {
-                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
-
-                            return "$key must end with $constraintStr.";
-                        }
-                        break;
-                    case 'shouldNotStart':
-                        if (Validation::isStartWith($value, (array) $constraint)) {
-                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
-
-                            return "$key should not start with $constraintStr.";
-                        }
-                        break;
-                    case 'shouldNotEnd':
-                        if (Validation::isEndWith($value, (array) $constraint)) {
-                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
-
-                            return "$key should not end with $constraintStr.";
-                        }
-                        break;
-                    case 'notEqual':
-                        if (in_array($value, (array) $constraint)) {
-                            return "$key contains a forbidden value.";
-                        }
-                        break;
-                    case 'shouldStart':
-                        if (!Validation::isStartWith($value, (array) $constraint)) {
-                            $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
-
-                            return "$key must start with $constraintStr.";
-                        }
-                        break;
-                    case 'min':
-                        if ($value < $constraint) {
-                            return "$key must be at least $constraint.";
-                        }
-                        break;
-                    case 'max':
-                        if ($value > $constraint) {
-                            return "$key must not exceed $constraint.";
-                        }
-                        break;
-                    case 'subDomain':
-                        if (!Validation::isSubDomain($value)) {
-                            return "$key must be a valid subdomain.";
-                        }
-                        break;
-                    case 'subDir':
-                        if (!Validation::isSubDir($value)) {
-                            return "$key must be a valid subdirectory.";
-                        }
-                        break;
-                    case 'equal':
-                        if (!in_array($value, (array) $constraint)) {
-                            return "$key must match one of the allowed values.";
-                        }
-                        break;
-                }
+            $validationError = self::validateFieldRules($key, $value, $data[$key]);
+            if ($validationError !== null) {
+                return $validationError;
             }
         }
 
-        // Check if user already exists
-        $checkDetails = $details;
-        unset($checkDetails['password']);
-        // SECURITY: Whitelist column names to prevent SQL injection
-        $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
-        $safeCheckKeys = array_filter(array_keys($checkDetails), fn ($k) => in_array($k, $allowedColumns));
-        $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", $safeCheckKeys));
-        $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values(array_intersect_key($checkDetails, array_flip($safeCheckKeys))));
-        if (!empty($existingUser)) {
-            return 'User already exists.';
+        return null;
+    }
+
+    /**
+     * Validates a single field against its configuration rules.
+     *
+     * @param string $key   The field name.
+     * @param mixed  $value The field value.
+     * @param array  $rules The validation rules for this field.
+     *
+     * @return string|null Returns `null` if validation passes, or an error message.
+     */
+    private static function validateFieldRules($key, $value, $rules)
+    {
+        foreach ($rules as $rule => $constraint) {
+            switch ($rule) {
+                case 'type':
+                    $typeError = self::validateFieldType($key, $value, $constraint);
+                    if ($typeError !== null) {
+                        return $typeError;
+                    }
+                    break;
+                case 'maxLength':
+                    if (!Validation::isTextLength($value, $constraint)) {
+                        return "$key exceeds max length of $constraint.";
+                    }
+                    break;
+                case 'minLength':
+                    if (!Validation::isMinTextLength($value, $constraint)) {
+                        return "$key must be at least $constraint characters long.";
+                    }
+                    break;
+                case 'shouldEnd':
+                    if (!Validation::isEndWith($value, (array) $constraint)) {
+                        $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                        return "$key must end with $constraintStr.";
+                    }
+                    break;
+                case 'shouldNotStart':
+                    if (Validation::isStartWith($value, (array) $constraint)) {
+                        $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                        return "$key should not start with $constraintStr.";
+                    }
+                    break;
+                case 'shouldNotEnd':
+                    if (Validation::isEndWith($value, (array) $constraint)) {
+                        $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                        return "$key should not end with $constraintStr.";
+                    }
+                    break;
+                case 'notEqual':
+                    if (in_array($value, (array) $constraint)) {
+                        return "$key contains a forbidden value.";
+                    }
+                    break;
+                case 'shouldStart':
+                    if (!Validation::isStartWith($value, (array) $constraint)) {
+                        $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+                        return "$key must start with $constraintStr.";
+                    }
+                    break;
+                case 'min':
+                    if ($value < $constraint) {
+                        return "$key must be at least $constraint.";
+                    }
+                    break;
+                case 'max':
+                    if ($value > $constraint) {
+                        return "$key must not exceed $constraint.";
+                    }
+                    break;
+                case 'subDomain':
+                    if (!Validation::isSubDomain($value)) {
+                        return "$key must be a valid subdomain.";
+                    }
+                    break;
+                case 'subDir':
+                    if (!Validation::isSubDir($value)) {
+                        return "$key must be a valid subdirectory.";
+                    }
+                    break;
+                case 'equal':
+                    if (!in_array($value, (array) $constraint)) {
+                        return "$key must match one of the allowed values.";
+                    }
+                    break;
+            }
         }
 
+        return null;
+    }
+
+    /**
+     * Validates a field's type against its configured constraint.
+     *
+     * @param string $key   The field name.
+     * @param mixed  $value The field value.
+     * @param string $type  The expected type constraint.
+     *
+     * @return string|null Returns `null` if validation passes, or an error message.
+     */
+    private static function validateFieldType($key, $value, $type)
+    {
+        if ($type === 'email' && !Validation::isEmail($value)) {
+            return "$key must be a valid email.";
+        }
+        if ($type === 'number' && !Validation::isNumber($value)) {
+            return "$key must be a valid number.";
+        }
+        if ($type === 'bool' && !Validation::isBool($value)) {
+            return "$key must be a valid boolean.";
+        }
+        if ($type === 'domain' && !Validation::isDomain($value)) {
+            return "$key must be a valid domain.";
+        }
+
+        return null;
+    }
+
+    /**
+     * Loads and returns the authentication configuration from the JSON file.
+     *
+     * @return array|null Returns the configuration array, or `null` on error.
+     */
+    private static function getAuthConfig()
+    {
+        $jsonString = file_get_contents(JSON_FOLDER);
+        if ($jsonString === false) {
+            return null;
+        }
+
+        $data = json_decode($jsonString, true);
+        if ($data === null || !is_array($data)) {
+            return null;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Checks if a user with the given details already exists in the database.
+     *
+     * @param array $details The user details to check (without password).
+     *
+     * @return bool True if the user exists, false otherwise.
+     */
+    private static function userExists($details)
+    {
+        $allowedColumns = array_keys(json_decode(file_get_contents(JSON_FOLDER), true));
+        $safeCheckKeys = array_filter(array_keys($details), fn ($k) => in_array($k, $allowedColumns));
+        $placeholders = implode(' AND ', array_map(fn ($k) => "`$k` = ?", $safeCheckKeys));
+        $existingUser = executeStatement("SELECT * FROM users WHERE $placeholders", array_values(array_intersect_key($details, array_flip($safeCheckKeys))));
+
+        return !empty($existingUser);
+    }
+
+    /**
+     * Inserts a new user into the database.
+     *
+     * @param array $details The user details including password.
+     *
+     * @return string The result message.
+     */
+    private static function insertUser($details)
+    {
         // Hash password before saving
         if (isset($details['password'])) {
-            $data['password'] = password_hash($details['password'], PASSWORD_DEFAULT);
-        }
-
-        // SECURITY: Use SHA-256 to generate unique check signature to detect duplicate registration
-        $checkSignature = hash('sha256', serialize($checkDetails));
-        if (isset(self::$registrationChecks[$checkSignature])) {
-            return 'User already exists.';
+            $details['password'] = password_hash($details['password'], PASSWORD_DEFAULT);
         }
 
         // SECURITY: Whitelist column names to prevent SQL injection
@@ -332,6 +389,44 @@ class UserAuth
 
             return 'Error inserting user.';
         }
+    }
+
+    /**
+     * Registers a new user after validating their details against the rules in the JSON configuration.
+     *
+     * This method performs comprehensive validation on the provided user details based
+     * on the rules defined in `Json/AuthParams.json`. If validation passes and the
+     * user does not already exist, it inserts a new record into the `users` table
+     * and starts a new session for the user.
+     *
+     * @param array $details An associative array containing the new user's details,
+     *                       where keys correspond to the `users` table columns.
+     *
+     * @return string A message indicating the result of the registration attempt,
+     *                such as success, a specific validation error, or a database error.
+     */
+    public static function signUp($details)
+    {
+        $data = self::getAuthConfig();
+        if ($data === null) {
+            return 'Error decoding JSON.';
+        }
+
+        // Validate user details
+        $validationError = self::validateUserDetails($details);
+        if ($validationError !== null) {
+            return $validationError;
+        }
+
+        // Check if user already exists
+        $checkDetails = $details;
+        unset($checkDetails['password']);
+        if (self::userExists($checkDetails)) {
+            return 'User already exists.';
+        }
+
+        // Insert new user
+        return self::insertUser($details);
     }
 
     /**

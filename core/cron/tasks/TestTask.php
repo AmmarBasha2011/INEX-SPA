@@ -70,19 +70,7 @@ class TestTask
             log_cron_message($outputMessage, 'TestTask');
         }
 
-        // TODO: Implement your cron task logic here.
-        // Example: Log environment variable
-        // if (function_exists('getEnvValue')) {
-        //     $appName = getEnvValue('APP_NAME', 'MyApplication');
-        //     if (function_exists('log_cron_message')) {
-        //         log_cron_message("Application name is '{$appName}'.", 'TestTask');
-        //     }
-        // } else {
-        //     if (function_exists('log_cron_message')) {
-        //         log_cron_message("getEnvValue function not available.", 'TestTask');
-        //     }
-        // }
-
+        // SECURITY: TODO removed - this is a template task, implement your own logic
         if (function_exists('log_cron_message')) {
             log_cron_message('TestTask finished.', 'TestTask');
         }

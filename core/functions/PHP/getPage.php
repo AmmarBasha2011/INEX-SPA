@@ -99,15 +99,16 @@ function loadScripts()
  * standard and API routes.
  *
  * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
+ * @param string $page The page name to check.
  *
  * @return bool True if a request was handled, false otherwise.
  */
-function handleRequestMethod($methods)
+function handleRequestMethodForPage($methods, $page)
 {
     global $Ahmed;
 
     foreach ($methods as $method) {
-        $filePath = "web/{$_GET['page']}_request_{$method}.ahmed.php";
+        $filePath = "web/{$page}_request_{$method}.ahmed.php";
         if (file_exists($filePath)) {
             if ($_SERVER['REQUEST_METHOD'] !== $method) {
                 loadScripts();
@@ -121,7 +122,7 @@ function handleRequestMethod($methods)
 
             return true;
         }
-        $filePath = "web/{$_GET['page']}_request_{$method}_api.ahmed.php";
+        $filePath = "web/{$page}_request_{$method}_api.ahmed.php";
         if (file_exists($filePath)) {
             if ($_SERVER['REQUEST_METHOD'] !== $method) {
                 loadScripts();
@@ -133,6 +134,142 @@ function handleRequestMethod($methods)
 
             return true;
         }
+    }
+
+    return false;
+}
+
+/**
+ * Renders a page with the standard page rendering pipeline.
+ *
+ * @param string $filePath The path to the template file.
+ * @param bool $loadBootstrap Whether to load Bootstrap assets.
+ *
+ * @return void
+ */
+function renderPage($filePath, $loadBootstrap = true)
+{
+    global $Ahmed;
+
+    if ($loadBootstrap) {
+        loadBootstrap();
+    }
+    loadScripts();
+    echo $Ahmed->render($filePath);
+}
+
+/**
+ * Handles dynamic routes by extracting the resource and identifier.
+ *
+ * @param string $page The page route string (e.g., 'user/123').
+ *
+ * @return bool True if a dynamic route was handled, false otherwise.
+ */
+function handleDynamicRoute($page)
+{
+    global $Ahmed;
+
+    $RouteData = getSlashData($page);
+    if ($RouteData === 'Not Found') {
+        return false;
+    }
+
+    if ($RouteData['after'] === '') {
+        loadScripts();
+        include 'core/errors/400.php';
+
+        return true;
+    }
+
+    $_GET['data'] = $RouteData['after'];
+
+    $dynamicFile = "web/{$RouteData['before']}_dynamic.ahmed.php";
+    if (file_exists($dynamicFile)) {
+        renderPage($dynamicFile);
+
+        return true;
+    }
+
+    $dynamicApiFile = "web/{$RouteData['before']}_dynamic_api.ahmed.php";
+    if (file_exists($dynamicApiFile)) {
+        echo $Ahmed->render($dynamicApiFile);
+
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Serves a static public file with security checks.
+ *
+ * @param string $page The requested file path.
+ *
+ * @return bool True if the file was served, false if not found or blocked.
+ */
+function servePublicFile($page)
+{
+    $filePath = "public/{$page}";
+    if (!file_exists($filePath) || !is_file($filePath)) {
+        return false;
+    }
+
+    // SECURITY: Validate public file extension — only allow safe types
+    $allowedExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot'];
+    $ext = strtolower(pathinfo($page, PATHINFO_EXTENSION));
+    if (!in_array($ext, $allowedExtensions)) {
+        loadScripts();
+        include 'core/errors/403.php';
+
+        return true;
+    }
+
+    include $filePath;
+
+    return true;
+}
+
+/**
+ * Handles special internal routes that don't map to template files.
+ *
+ * @param string $page The requested page route.
+ *
+ * @return bool True if the special route was handled, false otherwise.
+ */
+function handleSpecialRoutes($page)
+{
+    if ($page === 'fetchCsrfToken') {
+        echo generateCsrfToken();
+
+        return true;
+    }
+
+    if ($page === 'blocked') {
+        if (file_exists(__DIR__.'/../../../core/errors/403.php')) {
+            loadScripts();
+            include __DIR__.'/../../../core/errors/403.php';
+        }
+
+        return true;
+    }
+
+    if ($page === 'JS/getWEBSITEURLValue.js') {
+        echo getWEBSITEURLValue();
+
+        return true;
+    }
+
+    if ($page === 'setLanguage' && getEnvValue('DETECT_LANGUAGE') === 'true' && isset($_POST['lang'])) {
+        $lang = preg_match('/^[a-zA-Z_-]+$/', $_POST['lang']) ? $_POST['lang'] : 'en';
+        setcookie('lang', $lang, [
+            'expires'  => time() + (86400 * 30),
+            'path'     => '/',
+            'secure'   => true,
+            'httponly' => true,
+            'samesite' => 'Strict',
+        ]);
+
+        return true;
     }
 
     return false;
@@ -154,11 +291,10 @@ function getPage($RouteName)
 
     $_GET['page'] = $RouteName;
 
+    // Handle empty route (homepage)
     if (empty($_GET['page'])) {
         if (file_exists('web/index.ahmed.php')) {
-            loadBootstrap();
-            loadScripts();
-            echo $Ahmed->render('web/index.ahmed.php');
+            renderPage('web/index.ahmed.php');
         } elseif (file_exists('core/errors/404.php')) {
             loadScripts();
             include 'core/errors/404.php';
@@ -167,104 +303,46 @@ function getPage($RouteName)
         return;
     }
 
-    if ($_GET['page'] === 'fetchCsrfToken') {
-        echo generateCsrfToken();
-
-        return;
-    }
-
-    if ($_GET['page'] === 'blocked') {
-        if (file_exists(__DIR__.'/../../../core/errors/403.php')) {
-            loadScripts();
-            include __DIR__.'/../../../core/errors/403.php';
-        }
-
-        return;
-    }
-
-    if ($_GET['page'] === 'JS/getWEBSITEURLValue.js') {
-        echo getWEBSITEURLValue();
-
-        return;
-    }
-
-    if ($_GET['page'] === 'setLanguage' && getEnvValue('DETECT_LANGUAGE') === 'true') {
-        if (isset($_POST['lang'])) {
-            $lang = preg_match('/^[a-zA-Z_-]+$/', $_POST['lang']) ? $_POST['lang'] : 'en';
-            setcookie('lang', $lang, [
-                'expires'  => time() + (86400 * 30),
-                'path'     => '/',
-                'secure'   => true,
-                'httponly' => true,
-                'samesite' => 'Strict',
-            ]);
-
-            return;
-        }
-    }
-
     // SECURITY: Prevent path traversal — only allow alphanumeric, dash, underscore, slash
-    if (!empty($_GET['page']) && !preg_match('/^[a-zA-Z0-9\/_-]+$/', $_GET['page'])) {
+    if (!preg_match('/^[a-zA-Z0-9\/_-]+$/', $_GET['page'])) {
         loadScripts();
         include 'core/errors/400.php';
 
         return;
     }
 
-    if (file_exists("web/{$_GET['page']}.ahmed.php")) {
-        loadBootstrap();
-        loadScripts();
-        echo $Ahmed->render("web/{$_GET['page']}.ahmed.php");
+    // Handle special internal routes
+    if (handleSpecialRoutes($_GET['page'])) {
+        return;
+    }
+
+    // Handle static pages
+    $validatedPage = $_GET['page'];
+    $staticFile = "web/{$validatedPage}.ahmed.php";
+    if (file_exists($staticFile)) {
+        renderPage($staticFile);
 
         return;
     }
 
-    if (file_exists("public/{$_GET['page']}") && is_file("public/{$_GET['page']}")) {
-        // SECURITY: Validate public file extension — only allow safe types
-        $allowedExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot'];
-        $ext = strtolower(pathinfo($_GET['page'], PATHINFO_EXTENSION));
-        if (!in_array($ext, $allowedExtensions)) {
-            loadScripts();
-            include 'core/errors/403.php';
-
-            return;
-        }
-        include "public/{$_GET['page']}";
-
+    // Handle public files
+    if (servePublicFile($_GET['page'])) {
         return;
     }
 
-    $RouteData = getSlashData($_GET['page']);
-    if ($RouteData !== 'Not Found') {
-        if ($RouteData['after'] === '') {
-            loadScripts();
-            include 'core/errors/400.php';
-
-            return;
-        }
-        $_GET['data'] = $RouteData['after'];
-        if (file_exists("web/{$RouteData['before']}_dynamic.ahmed.php")) {
-            loadBootstrap();
-            loadScripts();
-            echo $Ahmed->render("web/{$RouteData['before']}_dynamic.ahmed.php");
-
-            return;
-        }
-        if (file_exists("web/{$RouteData['before']}_dynamic_api.ahmed.php")) {
-            echo $Ahmed->render("web/{$RouteData['before']}_dynamic_api.ahmed.php");
-
-            return;
-        }
-    }
-
-    if (handleRequestMethod(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])) {
+    // Handle dynamic routes
+    if (handleDynamicRoute($_GET['page'])) {
         return;
     }
 
+    // Handle request method routes
+    if (handleRequestMethodForPage(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], $_GET['page'])) {
+        return;
+    }
+
+    // 404 fallback
     if (file_exists('core/errors/404.php')) {
         loadScripts();
         include 'core/errors/404.php';
-
-        return;
     }
 }

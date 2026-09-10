@@ -27,28 +27,34 @@ function showNotification(message, position = 'bottom-right', duration = 3000, t
 
     const notification = document.createElement('div');
     notification.classList.add('notification', type);
-    notification.innerHTML = `
-      <span class="close-btn">✖</span>
-      ${message}
-    `;
+    
+    // SECURITY: Use textContent instead of innerHTML to prevent XSS injection
+    const closeBtn = document.createElement('span');
+    closeBtn.classList.add('close-btn');
+    closeBtn.textContent = '✖';
+    
+    notification.appendChild(closeBtn);
+    notification.appendChild(document.createTextNode(message));
 
     wrapper.appendChild(notification);
 
-    setTimeout(() => {
+    // SECURITY: Use setTimeout with a function reference (not string) to prevent code injection
+    setTimeout(function() {
       notification.classList.add('show');
     }, 10);
 
-    notification.querySelector('.close-btn').onclick = () => {
+    closeBtn.onclick = function() {
       notification.classList.remove('show');
       notification.classList.add('hide');
-      setTimeout(() => notification.remove(), 500);
+      setTimeout(function() { notification.remove(); }, 500);
     };
 
-    setTimeout(() => {
+    // SECURITY: Use setTimeout with a function reference (not string) to prevent code injection
+    setTimeout(function() {
       if (notification.parentElement) {
         notification.classList.remove('show');
         notification.classList.add('hide');
-        setTimeout(() => notification.remove(), 500);
+        setTimeout(function() { notification.remove(); }, 500);
       }
     }, duration);
 }

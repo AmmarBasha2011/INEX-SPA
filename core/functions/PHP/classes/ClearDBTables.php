@@ -32,43 +32,32 @@ class ClearDBTables
         $dbName = $driver === 'sqlite' ? getEnvValue('DB_FILE') : getEnvValue('DB_NAME');
 
         try {
+            // Disable foreign key checks for MySQL
             if ($driver !== 'sqlite') {
-                // Disable foreign key checks for MySQL
                 executeStatement('SET FOREIGN_KEY_CHECKS = 0;', [], false);
-                $query = executeStatement('SHOW TABLES;');
-            } else {
-                // For SQLite
-                $query = executeStatement("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
             }
+
+            // Fetch table list
+            $query = self::getTableList($driver);
 
             if (!$query || !is_array($query)) {
                 echo "✅ No tables found in database.\n";
-
                 return;
             }
 
             // Extract table names
-            $tables = [];
-            foreach ($query as $row) {
-                $tables[] = reset($row); // Get the first value of each row
-            }
+            $tables = self::extractTableNames($query);
 
             if (empty($tables)) {
                 echo "✅ No tables found in database.\n";
-
                 return;
             }
 
-            // Drop tables one by one
-            foreach ($tables as $table) {
-                if (!empty($table)) {
-                    executeStatement("DROP TABLE `$table`;", [], false);
-                    echo "🗑️ Deleted table: $table\n";
-                }
-            }
+            // Drop tables
+            self::dropTables($tables, $driver);
 
+            // Re-enable foreign key checks for MySQL
             if ($driver !== 'sqlite') {
-                // Re-enable foreign key checks for MySQL
                 executeStatement('SET FOREIGN_KEY_CHECKS = 1;', [], false);
             }
 
@@ -76,6 +65,61 @@ class ClearDBTables
         } catch (Exception $e) {
             error_log('ClearDBTables error: '.$e->getMessage());
             echo '❌ Error: An internal error occurred.'.PHP_EOL;
+        }
+    }
+
+    /**
+     * Retrieves a list of all tables in the database.
+     *
+     * @param string $driver The database driver (sqlite or mysql).
+     *
+     * @return array|false The query result array, or false on failure.
+     */
+    private static function getTableList($driver)
+    {
+        if ($driver === 'sqlite') {
+            return executeStatement("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';");
+        }
+
+        return executeStatement('SHOW TABLES;');
+    }
+
+    /**
+     * Extracts table names from a query result set.
+     *
+     * @param array $query The query result rows.
+     *
+     * @return array An array of table name strings.
+     */
+    private static function extractTableNames($query)
+    {
+        $tables = [];
+        foreach ($query as $row) {
+            $tables[] = reset($row); // Get the first value of each row
+        }
+
+        return array_filter($tables); // Remove empty values
+    }
+
+    /**
+     * Drops a list of tables from the database.
+     *
+     * @param array  $tables The list of table names to drop.
+     * @param string $driver The database driver (sqlite or mysql).
+     *
+     * @return void
+     */
+    private static function dropTables($tables, $driver)
+    {
+        foreach ($tables as $table) {
+            if (!empty($table)) {
+                if ($driver === 'sqlite') {
+                    executeStatement("DROP TABLE IF EXISTS `$table`;", [], false);
+                } else {
+                    executeStatement("DROP TABLE `$table`;", [], false);
+                }
+                echo "🗑️ Deleted table: $table\n";
+            }
         }
     }
 }
