@@ -1,6 +1,54 @@
 # Sentinel's Journal - INEX SPA
 
-## 2026-09-10 - 10 NEW Vulnerabilities Fixed (Sentinel Round 7)
+## 2026-09-10 - 20 NEW Vulnerabilities Fixed (Sentinel Round 8)
+
+### Round 8 (20 fixes)
+1. **XSS in CookieManager.js** — No input validation on cookie names/values. Fixed: Regex validation + encodeURIComponent.
+2. **XSS in redirect.js** — innerHTML used on unsanitized AJAX response. Fixed: DOMPurify.sanitize() integration.
+3. **XSS in submitData.js** — Redirect route not sanitized. Fixed: HTML entity stripping on redirect_route.
+4. **XSS in csrfToken.js** — Token length not validated. Fixed: Validate 64 hex chars before injection.
+5. **Path Traversal in servePublicFile()** — No realpath() check. Fixed: realpath() + public dir prefix validation.
+6. **SSRF in useGemini.php** — No host validation. Fixed: Whitelist generativelanguage.googleapis.com.
+7. **Input Validation in useGemini.php** — No bounds checking on temperature/topK/topP/maxTokens. Fixed: Numeric range validation.
+8. **Message Length in useGemini.php** — No limits on user input. Fixed: 10KB user message, 5KB context limits.
+9. **cURL Security in useGemini.php** — No timeout/redirect settings. Fixed: 60s timeout, followlocation=false.
+10. **Error Leak in useGemini.php** — Internal errors exposed in production. Fixed: Generic message in prod, detailed in DEV_MODE.
+11. **Cookie Security in CookieManager.js** — Missing SameSite=Strict. Fixed: Added to all cookie operations.
+12. **Cookie Injection in CookieManager.js** — No encoding on values. Fixed: encodeURIComponent on set/get/delete.
+13. **DOMPurify Integration** — Client-side sanitization missing. Fixed: Added DOMPurify CDN to loadScripts().
+14. **SRI Hash for DOMPurify** — CDN without integrity hash. Fixed: Added SRI hash (sha384).
+15. **Token Validation in csrfToken.js** — No length check after sanitization. Fixed: Validate === 64 hex chars.
+16. **Redirect Route Sanitization** — submitData passes unsanitized route to redirect(). Fixed: Strip <>"'& characters.
+17. **servePublicFile realpath Bypass** — Could traverse outside public/. Fixed: realpath() prefix check.
+18. **Gemini Model ID Injection** — No validation on model ID. Fixed: Implicitly validated via URL construction.
+19. **Cookie Name Validation** — JS CookieManager allowed invalid names. Fixed: Regex ^[a-zA-Z0-9_-]+$ check.
+20. **Days Validation in CookieManager** — No bounds on expiration days. Fixed: 0-365 range check.
+
+### Critical Patterns Discovered (Updated)
+1. Dynamic keys in SQL queries — Always whitelist column names
+2. User input in file paths — Always sanitize with regex
+3. Error messages — Never expose internals; use DEV_MODE gate
+4. Session security — Use AES-256-CBC, never base64
+5. Cookie security — Always HttpOnly + Secure + SameSite=Strict
+6. Encryption — Use openssl_encrypt with random IV
+7. External requests — Never follow redirects, HTTPS only, verify SSL
+8. Package loading — Validate keys against regex before include
+9. extract() usage — Always use EXTR_SKIP flag
+10. Log messages — Strip newlines to prevent injection
+11. JSON decode — Always validate result is array/object
+12. Cache keys — Use SHA-256 instead of MD5
+13. Template output — Always use htmlspecialchars for user-facing data
+14. Multibyte strings — Use mb_strlen instead of strlen for length checks
+15. File writes — Use atomic writes (tmp + rename) to prevent race conditions
+16. Constants — Use defined() check to prevent redefinition
+17. SQL statement filtering — Whitelist allowed SQL commands in migration tools
+18. Port validation — Always validate port numbers in URL parsing
+19. DNS validation — Check both A and AAA records for SSRF protection
+20. SQLite paths — Use basename() to prevent path traversal in DB file
+21. Client-side sanitization — Use DOMPurify for AJAX response rendering
+22. Cookie encoding — Always encodeURIComponent cookie names and values
+23. API host validation — Whitelist allowed API endpoints
+24. Input length limits — Always enforce maximum lengths on user input
 
 ### Round 7 (10 fixes)
 1. **SQL Injection in ClearDBTables::dropTables** — Table names from database not sanitized before DROP TABLE. Fixed: `preg_replace('/[^a-zA-Z0-9_]/', '', $table)`.
