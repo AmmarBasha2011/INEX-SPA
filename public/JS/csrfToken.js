@@ -14,6 +14,11 @@ function csrfToken() {
         .then(token => {
             // SECURITY: Sanitize token - only allow hex characters
             token = token.replace(/[^a-f0-9]/g, '');
+            // SECURITY: Validate token length (64 hex chars = 32 bytes)
+            if (token.length !== 64) {
+                console.error('CSRF token has invalid length');
+                return;
+            }
             document.querySelectorAll("form").forEach(form => {
                 let hiddenInput = document.createElement("input");
                 hiddenInput.type = "hidden";

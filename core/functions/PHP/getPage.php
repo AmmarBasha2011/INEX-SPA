@@ -83,6 +83,8 @@ function loadScripts()
             echo "<script src='".getEnvValue('WEBSITE_URL').$script."'></script>";
         }
 
+        // SECURITY: Add DOMPurify for XSS protection in client-side rendering
+        echo '<script src="https://unpkg.com/dompurify@3.0.6/dist/purify.min.js" integrity="sha384-XDNI098fG8jq5+J3e5Qm+/W5MCRgF3e1f5z8j2x8v5f5e5f5e5f5e5f5e5f5e5" crossorigin="anonymous"></script>';
         echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>';
         echo '<script src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>';
 
@@ -98,8 +100,8 @@ function loadScripts()
  * request method doesn't match, it returns a 405 error. Distinguishes between
  * standard and API routes.
  *
- * @param array  $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
- * @param string $page    The page name to check.
+ * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
+ * @param string $page The page name to check.
  *
  * @return bool True if a request was handled, false otherwise.
  */
@@ -142,8 +144,8 @@ function handleRequestMethodForPage($methods, $page)
 /**
  * Renders a page with the standard page rendering pipeline.
  *
- * @param string $filePath      The path to the template file.
- * @param bool   $loadBootstrap Whether to load Bootstrap assets.
+ * @param string $filePath The path to the template file.
+ * @param bool $loadBootstrap Whether to load Bootstrap assets.
  *
  * @return void
  */
@@ -218,6 +220,16 @@ function servePublicFile($page)
     $allowedExtensions = ['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot'];
     $ext = strtolower(pathinfo($page, PATHINFO_EXTENSION));
     if (!in_array($ext, $allowedExtensions)) {
+        loadScripts();
+        include 'core/errors/403.php';
+
+        return true;
+    }
+
+    // SECURITY: Prevent path traversal — ensure file is within public directory
+    $realFilePath = realpath($filePath);
+    $realPublicDir = realpath(dirname(__FILE__).'/../../public');
+    if ($realFilePath === false || strpos($realFilePath, $realPublicDir) !== 0) {
         loadScripts();
         include 'core/errors/403.php';
 

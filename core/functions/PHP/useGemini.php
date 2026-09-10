@@ -42,6 +42,36 @@ function useGemini(
         return json_encode(['success' => 'error', 'error' => 'Invalid endpoint URL']);
     }
 
+    // SECURITY: Validate endpoint is Google's API (prevent SSRF)
+    $allowedHosts = ['generativelanguage.googleapis.com'];
+    $parsedUrl = parse_url($geminiEndPoint);
+    if (!isset($parsedUrl['host']) || !in_array($parsedUrl['host'], $allowedHosts)) {
+        return json_encode(['success' => 'error', 'error' => 'Invalid API endpoint host']);
+    }
+
+    // SECURITY: Validate temperature is within bounds
+    if (!is_numeric($geminiTemperature) || $geminiTemperature < 0 || $geminiTemperature > 1) {
+        $geminiTemperature = 0.7;
+    }
+
+    // SECURITY: Validate topK is within bounds
+    if (!is_numeric($geminiTopK) || $geminiTopK < 1 || $geminiTopK > 100) {
+        $geminiTopK = 40;
+    }
+
+    // SECURITY: Validate topP is within bounds
+    if (!is_numeric($geminiTopP) || $geminiTopP < 0 || $geminiTopP > 1) {
+        $geminiTopP = 0.95;
+    }
+
+    // SECURITY: Validate maxOutputTokens is within bounds
+    if (!is_numeric($geminiMaxOutPutTokens) || $geminiMaxOutPutTokens < 1 || $geminiMaxOutPutTokens > 8192) {
+        $geminiMaxOutPutTokens = 2048;
+    }
+
+    // SECURITY: Sanitize user message
+    $userMessage = substr($userMessage, 0, 10000); // Limit message length
+
     try {
         // Prepare the request data
         $data = [
@@ -56,21 +86,21 @@ function useGemini(
                 ['category' => 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold' => 'BLOCK_NONE'],
             ],
             'generationConfig' => [
-                'temperature'     => $geminiTemperature,
-                'topK'            => $geminiTopK,
-                'topP'            => $geminiTopP,
-                'maxOutputTokens' => $geminiMaxOutPutTokens,
+                'temperature'     => (float) $geminiTemperature,
+                'topK'            => (int) $geminiTopK,
+                'topP'            => (float) $geminiTopP,
+                'maxOutputTokens' => (int) $geminiMaxOutPutTokens,
             ],
         ];
 
         // Add context if provided
         if (!empty($geminiKnowledge)) {
-            $data['contents']['parts'][0]['text'] = $geminiKnowledge."\n".$userMessage;
+            $data['contents']['parts'][0]['text'] = substr($geminiKnowledge, 0, 5000)."\n".$userMessage;
         }
 
         // Add instructions if provided
         if (!empty($geminiInstrcutions)) {
-            $data['contents']['parts'][0]['text'] = $geminiInstrcutions."\n".$data['contents']['parts'][0]['text'];
+            $data['contents']['parts'][0]['text'] = substr($geminiInstrcutions, 0, 5000)."\n".$data['contents']['parts'][0]['text'];
         }
 
         // Initialize cURL session
@@ -84,6 +114,11 @@ function useGemini(
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
         ]);
+        // SECURITY: Set timeouts to prevent hanging
+        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        // SECURITY: Do not follow redirects
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 
         // Execute cURL request
         $response = curl_exec($ch);
@@ -93,7 +128,13 @@ function useGemini(
             throw new Exception(curl_error($ch));
         }
 
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+
+        // SECURITY: Validate HTTP response code
+        if ($httpCode !== 200) {
+            throw new Exception('API returned HTTP '.$httpCode);
+        }
 
         // Decode response
         $responseData = json_decode($response, true);
@@ -108,9 +149,10 @@ function useGemini(
             throw new Exception('Invalid response format from Gemini API');
         }
     } catch (Exception $e) {
-        return json_encode([
-            'success' => 'error',
-            'error'   => $e->getMessage(),
-        ]);
+        // SECURITY: Don't expose internal error details
+        if (getEnvValue('DEV_MODE') === 'true') {
+            return json_encode(['success' => 'error', 'error' => $e->getMessage()]);
+        }
+        return json_encode(['success' => 'error', 'error' => 'API request failed']);
     }
 }

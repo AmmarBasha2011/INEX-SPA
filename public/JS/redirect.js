@@ -24,9 +24,16 @@ function redirect(route='', requestType="GET", dynamic="") {
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            // Create a temporary container to parse the response
+            // SECURITY: Sanitize response to prevent XSS/script injection
+            const sanitizedResponse = DOMPurify.sanitize(xhr.responseText, {
+                WHOLE_DOCUMENT: true,
+                ADD_TAGS: ['link', 'script'],
+                ADD_ATTR: ['rel', 'href', 'src', 'type', 'id', 'name', 'value']
+            });
+
+            // Create a temporary container to parse the sanitized response
             const tempContainer = document.createElement('div');
-            tempContainer.innerHTML = xhr.responseText;
+            tempContainer.innerHTML = sanitizedResponse;
             
             // Collect all style links and create promises for them
             const stylePromises = [];
@@ -48,9 +55,9 @@ function redirect(route='', requestType="GET", dynamic="") {
 
             // Wait for all styles to load
             Promise.all(stylePromises).then(() => {
-                // SECURITY: Use DOMParser to prevent script injection
+                // SECURITY: Use DOMParser on sanitized content
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(xhr.responseText, 'text/html');
+                const doc = parser.parseFromString(sanitizedResponse, 'text/html');
                 document.documentElement.innerHTML = doc.documentElement.innerHTML;
                 
                 // Reload all scripts
