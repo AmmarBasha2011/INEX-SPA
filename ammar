@@ -74,6 +74,8 @@ $commands = [
     'list:import' => 'List all libraries',
     'list:lang' => 'List all languages',
     'list:cron' => 'List all available cron tasks',
+    'key:generate' => 'Generate a new APP_KEY for session encryption',
+    'key:show' => 'Show the current APP_KEY status',
     'make:db' => 'Create a new DB File',
     'make:route' => 'Create a new Route File',
     'make:cache' => 'Create a new cache entry',
@@ -187,6 +189,126 @@ if ($command === 'delete:cron') {
     } else {
         echo "Error: Could not delete file '{$filePath}'. Check permissions.\n";
         exit(1);
+    }
+    exit(0);
+}
+
+if ($command === 'key:generate' || $command === 'key:show') {
+    $envPath = __DIR__ . '/.env';
+    $keyName = $args['1'] ?? 'APP_KEY';
+    $autoConfirm = isset($args['y']) || isset($args['yes']);
+
+    // SECURITY: Validate key name — must be uppercase with underscores/numbers
+    if (!preg_match('/^[A-Z][A-Z0-9_]*$/', $keyName)) {
+        echo "Error: Invalid key name. Use uppercase letters, numbers, and underscores.\n";
+        exit(1);
+    }
+
+    // Read existing .env content
+    $envContent = '';
+    if (file_exists($envPath)) {
+        $envContent = file_get_contents($envPath);
+        if ($envContent === false) {
+            echo "Error: Could not read .env file.\n";
+            exit(1);
+        }
+    }
+
+    // Find current key value
+    $currentKey = null;
+    if (preg_match('/^' . preg_quote($keyName) . '=(.*)$/m', $envContent, $matches)) {
+        $currentKey = trim($matches[1]);
+    }
+
+    // key:show just displays status and exits
+    if ($command === 'key:show') {
+        if ($currentKey === null) {
+            echo "Key '{$keyName}' is not set in .env\n";
+        } elseif (empty($currentKey)) {
+            echo "Key '{$keyName}' is set but empty\n";
+        } else {
+            $masked = substr($currentKey, 0, 4) . str_repeat('*', max(0, strlen($currentKey) - 8)) . substr($currentKey, -4);
+            echo "Key '{$keyName}' is set: {$masked}\n";
+            echo "Length: " . strlen($currentKey) . " characters\n";
+        }
+        exit(0);
+    }
+
+    // key:generate - backup .env first
+    $backupPath = null;
+    if (file_exists($envPath)) {
+        $backupPath = $envPath . '.backup_' . date('Ymd_His');
+        if (!copy($envPath, $backupPath)) {
+            echo "Warning: Could not create backup of .env file\n";
+            $backupPath = null;
+        }
+    }
+
+    // Generate a secure random key (64 hex chars = 32 bytes)
+    $newKey = bin2hex(random_bytes(32));
+
+    // Update or add the key in .env
+    if ($currentKey !== null && $currentKey !== '') {
+        // Key exists, ask for confirmation (unless auto-confirm)
+        if (!$autoConfirm) {
+            echo "Key '{$keyName}' already exists.\n";
+            $confirmation = strtolower(readline("Overwrite? (yes/no): "));
+            if ($confirmation !== 'yes') {
+                echo "Key generation cancelled.\n";
+                // Clean up backup if we didn't overwrite
+                if ($backupPath && file_exists($backupPath)) {
+                    unlink($backupPath);
+                }
+                exit(0);
+            }
+        }
+        // Replace existing key
+        $envContent = preg_replace('/^' . preg_quote($keyName) . '=.*$/m', $keyName . '=' . $newKey, $envContent);
+    } else {
+        // Key doesn't exist or is empty, add/update it
+        if ($currentKey === null) {
+            // Key doesn't exist, append it
+            if (!empty($envContent) && substr($envContent, -1) !== "\n") {
+                $envContent .= "\n";
+            }
+            $envContent .= "\n" . $keyName . '=' . $newKey . "\n";
+        } else {
+            // Key exists but is empty, set it
+            $envContent = preg_replace('/^' . preg_quote($keyName) . '=*$/m', $keyName . '=' . $newKey, $envContent);
+        }
+    }
+
+    // Write updated .env atomically (write to temp then rename)
+    $tempPath = $envPath . '.tmp';
+    if (file_put_contents($tempPath, $envContent) === false) {
+        echo "Error: Could not write to .env file. Check permissions.\n";
+        // Clean up backup if write failed
+        if ($backupPath && file_exists($backupPath)) {
+            unlink($backupPath);
+        }
+        exit(1);
+    }
+
+    // Atomic rename
+    if (!rename($tempPath, $envPath)) {
+        // If rename fails, try direct write (for Windows compatibility)
+        if (file_put_contents($envPath, $envContent) === false) {
+            echo "Error: Could not write to .env file. Check permissions.\n";
+            @unlink($tempPath);
+            exit(1);
+        }
+        @unlink($tempPath);
+    }
+
+    echo "✅ Key generated successfully!\n";
+    echo "Key name: {$keyName}\n";
+    echo "Key value: {$newKey}\n";
+    echo "Length: " . strlen($newKey) . " characters\n";
+    echo "\n🔐 This key is used for AES-256-CBC session encryption.\n";
+    echo "⚠️  Keep it secret and never commit it to version control!\n";
+
+    if ($backupPath) {
+        echo "\n📁 Backup saved: {$backupPath}\n";
     }
     exit(0);
 }
