@@ -226,18 +226,21 @@ class UserAuth
                 case 'shouldEnd':
                     if (!Validation::isEndWith($value, (array) $constraint)) {
                         $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+
                         return "$key must end with $constraintStr.";
                     }
                     break;
                 case 'shouldNotStart':
                     if (Validation::isStartWith($value, (array) $constraint)) {
                         $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+
                         return "$key should not start with $constraintStr.";
                     }
                     break;
                 case 'shouldNotEnd':
                     if (Validation::isEndWith($value, (array) $constraint)) {
                         $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+
                         return "$key should not end with $constraintStr.";
                     }
                     break;
@@ -249,6 +252,7 @@ class UserAuth
                 case 'shouldStart':
                     if (!Validation::isStartWith($value, (array) $constraint)) {
                         $constraintStr = is_array($constraint) ? implode(', ', $constraint) : $constraint;
+
                         return "$key must start with $constraintStr.";
                     }
                     break;

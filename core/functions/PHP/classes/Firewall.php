@@ -53,6 +53,7 @@ class Firewall
         }
 
         $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+
         return in_array($ip, $config['block_ips']);
     }
 
