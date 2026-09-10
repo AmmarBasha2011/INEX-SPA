@@ -100,8 +100,8 @@ function loadScripts()
  * request method doesn't match, it returns a 405 error. Distinguishes between
  * standard and API routes.
  *
- * @param array $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
- * @param string $page The page name to check.
+ * @param array  $methods An array of uppercase HTTP method names (e.g., ['GET', 'POST']).
+ * @param string $page    The page name to check.
  *
  * @return bool True if a request was handled, false otherwise.
  */
@@ -144,8 +144,8 @@ function handleRequestMethodForPage($methods, $page)
 /**
  * Renders a page with the standard page rendering pipeline.
  *
- * @param string $filePath The path to the template file.
- * @param bool $loadBootstrap Whether to load Bootstrap assets.
+ * @param string $filePath      The path to the template file.
+ * @param bool   $loadBootstrap Whether to load Bootstrap assets.
  *
  * @return void
  */
