@@ -195,8 +195,8 @@ if ($command === 'delete:cron') {
 
 if ($command === 'key:generate' || $command === 'key:show') {
     $envPath = __DIR__ . '/.env';
-    $keyName = $args['1'] ?? 'APP_KEY';
-    $autoConfirm = isset($args['y']) || isset($args['yes']);
+    $keyName = $args['2'] ?? 'APP_KEY';
+    $autoConfirm = isset($args['1']) && strtolower($args['1']) === 'y';
 
     // SECURITY: Validate key name — must be uppercase with underscores/numbers
     if (!preg_match('/^[A-Z][A-Z0-9_]*$/', $keyName)) {
