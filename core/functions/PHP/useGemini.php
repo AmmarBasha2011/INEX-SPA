@@ -153,6 +153,7 @@ function useGemini(
         if (getEnvValue('DEV_MODE') === 'true') {
             return json_encode(['success' => 'error', 'error' => $e->getMessage()]);
         }
+
         return json_encode(['success' => 'error', 'error' => 'API request failed']);
     }
 }
